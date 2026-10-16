@@ -237,7 +237,8 @@ code.ltr{direction:ltr;display:inline-block;background:#eef3f2;border-radius:6px
       <div class="card">
         <h3 style="margin-top:0">🏫 صفوفي وشعبي</h3>
         <div class="clschips" id="clsChips"></div>
-        <div class="row"><input type="text" id="newCls" placeholder="مثال: سابع1" style="max-width:220px"><button class="btn sm" onclick="addClass()">➕ إضافة شعبة</button></div>
+        <div id="clsRows"></div>
+        <div class="row" style="margin-top:6px"><button class="btn sm ghost" onclick="addClsRow()">➕ إضافة صف</button><button class="btn sm" onclick="addClass()">💾 حفظ الشعب</button></div>
       </div>
       <div class="card">
         <h3 style="margin-top:0">➕ إضافة طلاب دفعة واحدة</h3>
@@ -787,6 +788,7 @@ async function addTeacher() {
 
 /* ---------- الصفوف والشعب ---------- */
 function renderClassChips() {
+  if (!$('#clsRows').children.length) addClsRow();
   const C = myClasses();
   $('#clsChips').innerHTML = C.length ? C.map((c, i) => `<span>${esc(c)} <button title="حذف" onclick="removeClass(${i})">✕</button></span>`).join('') : '<p style="margin:0;color:var(--muted)">لا توجد شعب بعد. أضف أول شعبة.</p>';
 }
@@ -794,11 +796,38 @@ async function saveClasses(C) {
   try { await API.setTeacherDoc(TD.view, {classes:C}); TD.vt.classes = C; if (TD.view === ME.uid && ME.role === 'teacher') ME.classes = C; renderClassChips(); fillClassSelects(); renderStudents(); return true; }
   catch (e) { console.error(e); toast('تعذّر حفظ الشعب: ' + errMsg(e)); return false; }
 }
-async function addClass() {
-  const v = $('#newCls').value.trim(); if (!v) return toast('اكتب اسم الشعبة');
-  const C = myClasses().slice(); if (C.includes(v)) return toast('هذه الشعبة موجودة');
-  C.push(v); if (await saveClasses(C)) { $('#newCls').value = ''; toast('أُضيفت الشعبة ✓'); }
+const STAGES = {
+  'ابتدائي':[['الأول','أول'], ['الثاني','ثاني'], ['الثالث','ثالث'], ['الرابع','رابع'], ['الخامس','خامس'], ['السادس','سادس']],
+  'إعدادي':[['السابع','سابع'], ['الثامن','ثامن'], ['التاسع','تاسع']],
+  'ثانوي':[['العاشر','عاشر'], ['الحادي عشر','حادي عشر '], ['الثاني عشر','ثاني عشر ']]
+};
+function addClsRow() {
+  const box = $('#clsRows'), d = document.createElement('div');
+  d.className = 'clsrow'; d.style.cssText = 'display:grid;grid-template-columns:1fr 1.25fr .7fr auto;gap:6px;margin:6px 0;align-items:end;max-width:640px';
+  d.innerHTML = `<label style="display:flex;flex-direction:column;gap:2px;font-size:17px;min-width:0">المرحلة<select class="crSt" style="width:100%;padding:0 4px;font-size:17px"><option value="">— اختر —</option>${Object.keys(STAGES).map(k => `<option>${k}</option>`).join('')}</select></label>
+    <label style="display:flex;flex-direction:column;gap:2px;font-size:17px;min-width:0">المستوى<select class="crLv" style="width:100%;padding:0 4px;font-size:17px" disabled><option value="">—</option></select></label>
+    <label style="display:flex;flex-direction:column;gap:2px;font-size:17px;min-width:0">الشعبة<select class="crN" style="width:100%;padding:0 4px;font-size:17px"><option value="">—</option>${Array.from({length:15}, (_, i) => `<option>${i + 1}</option>`).join('')}</select></label>
+    <button class="btn sm ghost" title="حذف هذا الصف" style="padding:0 10px">✕</button>`;
+  const st = d.querySelector('.crSt'), lv = d.querySelector('.crLv');
+  st.onchange = () => { const L = STAGES[st.value]; lv.disabled = !L; lv.innerHTML = L ? '<option value="">— اختر —</option>' + L.map(([n, sh]) => `<option value="${sh}">${n}</option>`).join('') : '<option value="">—</option>'; };
+  d.querySelector('button').onclick = () => { d.remove(); if (!$('#clsRows').children.length) addClsRow(); };
+  box.appendChild(d);
 }
+async function addClass() {
+  const rows = $$('#clsRows .clsrow'), C = myClasses().slice(), added = [], dup = [];
+  let incomplete = 0;
+  rows.forEach(r => {
+    const lv = r.querySelector('.crLv').value, n = r.querySelector('.crN').value, st = r.querySelector('.crSt').value;
+    if (!st && !lv && !n) return;
+    if (!lv || !n) { incomplete++; return; }
+    const v = lv + n;
+    if (C.includes(v)) dup.push(v); else { C.push(v); added.push(v); }
+  });
+  if (incomplete) return toast('أكمل اختيار المرحلة والمستوى والشعبة في كل صف');
+  if (!added.length) return toast(dup.length ? 'هذه الشعب موجودة: ' + dup.join('، ') : 'اختر المرحلة والمستوى والشعبة أولًا');
+  if (await saveClasses(C)) { $('#clsRows').innerHTML = ''; addClsRow(); toast('أُضيفت: ' + added.join('، ') + (dup.length ? ' (وكانت موجودة: ' + dup.join('، ') + ')' : '') + ' ✓'); }
+}
+
 async function removeClass(i) {
   const C = myClasses().slice(), c = C[i];
   const n = TD.students.filter(s => s.cls === c && s.active !== false).length;
