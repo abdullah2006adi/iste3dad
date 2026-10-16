@@ -113,6 +113,13 @@ code.ltr{direction:ltr;display:inline-block;background:#eef3f2;border-radius:6px
 .backlink{background:none;border:0;color:var(--blue);cursor:pointer;font-size:20px;margin-top:6px}
 .viewas[hidden],.warnbar[hidden]{display:none!important}
 .viewas{background:var(--gold);color:#222;border-radius:14px;padding:6px 14px;margin:10px 0;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;font-weight:700}
+.clslist{display:flex;flex-direction:column;gap:8px;margin:8px 0}
+.clsitem{display:flex;flex-wrap:wrap;align-items:center;gap:8px;border:1.5px solid var(--line);border-radius:14px;padding:8px 12px;background:#fff}
+.clsitem.on{border-color:var(--teal);background:var(--green-l)}
+.clsitem .cname{font-weight:800;color:var(--teal);font-size:1.1em;min-width:90px}
+.clsitem .ccount{color:var(--muted);flex:1 1 auto}
+.clsrow select{width:100%}
+.clsrow label{display:flex;flex-direction:column;gap:2px;font-weight:700;min-width:0}
 .clschips{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
 .clschips span{background:var(--green-l);color:var(--teal);border-radius:999px;padding:0 6px 0 14px;font-weight:700;display:inline-flex;align-items:center;gap:6px}
 .clschips span button{border:0;background:rgba(0,0,0,.08);border-radius:50%;width:24px;height:24px;cursor:pointer;font-size:14px}
@@ -236,20 +243,21 @@ code.ltr{direction:ltr;display:inline-block;background:#eef3f2;border-radius:6px
     <div class="tview" id="tv-students" hidden>
       <div class="card">
         <h3 style="margin-top:0">🏫 صفوفي وشعبي</h3>
-        <div class="clschips" id="clsChips"></div>
+        <div id="clsChips"></div>
+        <h4 style="margin:14px 0 4px">➕ إضافة شعب جديدة</h4>
         <div id="clsRows"></div>
         <div class="row" style="margin-top:6px"><button class="btn sm ghost" onclick="addClsRow()">➕ إضافة صف</button><button class="btn sm" onclick="addClass()">💾 حفظ الشعب</button></div>
       </div>
-      <div class="card">
-        <h3 style="margin-top:0">➕ إضافة طلاب دفعة واحدة</h3>
-        <p style="margin:0">اختر الشعبة، ثم الصق أسماء الطلاب (اسم في كل سطر). ستُنشأ لكل طالب <b>اسم مستخدم</b> و<b>كلمة مرور</b> تلقائيًا.</p>
-        <div class="row" style="margin:6px 0"><label class="row" style="gap:4px">الشعبة: <select id="bCls" style="width:auto"></select></label></div>
+      <div class="card" id="bulkCard" hidden>
+        <div class="row" style="justify-content:space-between"><h3 style="margin:0">👥 إضافة طلاب دفعة واحدة إلى شعبة «<span class="addClsName"></span>»</h3><button class="btn sm ghost" onclick="closeAdd()">✕ إغلاق</button></div>
+        <p style="margin:6px 0">الصق أسماء الطلاب (اسم في كل سطر). ستُنشأ لكل طالب <b>اسم مستخدم</b> و<b>كلمة مرور</b> تلقائيًا.</p>
+        <select id="bCls" hidden></select>
         <textarea id="bNames" placeholder="محمد أحمد علي&#10;خالد سعيد حسن&#10;…" style="min-height:140px"></textarea>
         <div class="row" style="margin-top:6px"><button class="btn alt" id="bBtn" onclick="addBulk()">إنشاء الحسابات</button><span id="bProg"></span></div>
       </div>
-      <div class="card">
-        <h3 style="margin-top:0">👤 إضافة طالب واحد</h3>
-        <div class="row"><input type="text" id="oName" placeholder="اسم الطالب الثلاثي" style="flex:2 1 220px;width:auto"><select id="oCls" style="width:auto;flex:1 1 120px"></select><button class="btn" id="oBtn" onclick="addOne()">إضافة</button></div>
+      <div class="card" id="oneCard" hidden>
+        <div class="row" style="justify-content:space-between"><h3 style="margin:0">👤 إضافة طالب واحد إلى شعبة «<span class="addClsName"></span>»</h3><button class="btn sm ghost" onclick="closeAdd()">✕ إغلاق</button></div>
+        <div class="row" style="margin-top:8px"><input type="text" id="oName" placeholder="اسم الطالب الثلاثي" style="flex:2 1 220px;width:auto"><select id="oCls" hidden></select><button class="btn" id="oBtn" onclick="addOne()">إضافة</button></div>
       </div>
       <div id="newCreds"></div>
       <div class="card">
@@ -642,7 +650,8 @@ function fillClassSelects() {
   const C = myClasses(), opts = C.map(c => `<option>${esc(c)}</option>`).join('');
   $('#rClass').innerHTML = '<option value="">كل الشعب</option>' + opts;
   $('#sClsF').innerHTML = '<option value="">كل الشعب</option>' + opts;
-  ['bCls', 'oCls'].forEach(id => $('#' + id).innerHTML = '<option value="">— الشعبة —</option>' + opts);
+  ['bCls', 'oCls'].forEach(id => { const el = $('#' + id), v = el.value; el.innerHTML = '<option value="">— الشعبة —</option>' + opts; el.value = C.includes(v) ? v : ''; });
+  if (!$('#bCls').value) { $('#bulkCard').hidden = true; $('#oneCard').hidden = true; }
 }
 async function loadTeacherData() {
   try {
@@ -790,7 +799,9 @@ async function addTeacher() {
 function renderClassChips() {
   if (!$('#clsRows').children.length) addClsRow();
   const C = myClasses();
-  $('#clsChips').innerHTML = C.length ? C.map((c, i) => `<span>${esc(c)} <button title="حذف" onclick="removeClass(${i})">✕</button></span>`).join('') : '<p style="margin:0;color:var(--muted)">لا توجد شعب بعد. أضف أول شعبة.</p>';
+  const cur = $('#bCls').value || $('#oCls').value, cnt = c => (TD.students || []).filter(s => s.cls === c && s.active !== false).length;
+  $('#clsChips').innerHTML = C.length ? '<div class="clslist">' + C.map((c, i) => `<div class="clsitem${c === cur && (!$('#bulkCard').hidden || !$('#oneCard').hidden) ? ' on' : ''}"><span class="cname">🏫 ${esc(c)}</span><span class="ccount">👥 الطلاب: ${cnt(c)}</span>
+    <button class="btn sm" onclick="openAdd(${i},'one')">👤 إضافة طالب</button><button class="btn sm alt" onclick="openAdd(${i},'bulk')">👥 إضافة دفعة</button><button class="btn sm ghost" title="حذف الشعبة" onclick="removeClass(${i})">✕</button></div>`).join('') + '</div>' : '<p style="margin:0;color:var(--muted)">لا توجد شعب بعد. أضف أول شعبة من القوائم أدناه.</p>';
 }
 async function saveClasses(C) {
   try { await API.setTeacherDoc(TD.view, {classes:C}); TD.vt.classes = C; if (TD.view === ME.uid && ME.role === 'teacher') ME.classes = C; renderClassChips(); fillClassSelects(); renderStudents(); return true; }
@@ -803,11 +814,11 @@ const STAGES = {
 };
 function addClsRow() {
   const box = $('#clsRows'), d = document.createElement('div');
-  d.className = 'clsrow'; d.style.cssText = 'display:grid;grid-template-columns:1fr 1.25fr .7fr auto;gap:6px;margin:6px 0;align-items:end;max-width:640px';
-  d.innerHTML = `<label style="display:flex;flex-direction:column;gap:2px;font-size:17px;min-width:0">المرحلة<select class="crSt" style="width:100%;padding:0 4px;font-size:17px"><option value="">— اختر —</option>${Object.keys(STAGES).map(k => `<option>${k}</option>`).join('')}</select></label>
-    <label style="display:flex;flex-direction:column;gap:2px;font-size:17px;min-width:0">المستوى<select class="crLv" style="width:100%;padding:0 4px;font-size:17px" disabled><option value="">—</option></select></label>
-    <label style="display:flex;flex-direction:column;gap:2px;font-size:17px;min-width:0">الشعبة<select class="crN" style="width:100%;padding:0 4px;font-size:17px"><option value="">—</option>${Array.from({length:15}, (_, i) => `<option>${i + 1}</option>`).join('')}</select></label>
-    <button class="btn sm ghost" title="حذف هذا الصف" style="padding:0 10px">✕</button>`;
+  d.className = 'clsrow'; d.style.cssText = 'display:grid;grid-template-columns:1fr 1.3fr .8fr auto;gap:8px;margin:6px 0;align-items:end;max-width:760px';
+  d.innerHTML = `<label>المرحلة<select class="crSt"><option value="">— اختر —</option>${Object.keys(STAGES).map(k => `<option>${k}</option>`).join('')}</select></label>
+    <label>المستوى<select class="crLv" disabled><option value="">—</option></select></label>
+    <label>الشعبة<select class="crN"><option value="">—</option>${Array.from({length:15}, (_, i) => `<option>${i + 1}</option>`).join('')}</select></label>
+    <button class="btn ghost" title="حذف هذا الصف">✕</button>`;
   const st = d.querySelector('.crSt'), lv = d.querySelector('.crLv');
   st.onchange = () => { const L = STAGES[st.value]; lv.disabled = !L; lv.innerHTML = L ? '<option value="">— اختر —</option>' + L.map(([n, sh]) => `<option value="${sh}">${n}</option>`).join('') : '<option value="">—</option>'; };
   d.querySelector('button').onclick = () => { d.remove(); if (!$('#clsRows').children.length) addClsRow(); };
@@ -828,6 +839,15 @@ async function addClass() {
   if (await saveClasses(C)) { $('#clsRows').innerHTML = ''; addClsRow(); toast('أُضيفت: ' + added.join('، ') + (dup.length ? ' (وكانت موجودة: ' + dup.join('، ') + ')' : '') + ' ✓'); }
 }
 
+function openAdd(i, kind) {
+  const c = myClasses()[i]; if (!c) return;
+  $('#bCls').value = c; $('#oCls').value = c; $$('.addClsName').forEach(e => e.textContent = c);
+  $('#bulkCard').hidden = kind !== 'bulk'; $('#oneCard').hidden = kind !== 'one';
+  renderClassChips();
+  const card = $(kind === 'bulk' ? '#bulkCard' : '#oneCard'); card.scrollIntoView({behavior:'smooth', block:'center'});
+  setTimeout(() => $(kind === 'bulk' ? '#bNames' : '#oName').focus(), 350);
+}
+function closeAdd() { $('#bulkCard').hidden = true; $('#oneCard').hidden = true; renderClassChips(); }
 async function removeClass(i) {
   const C = myClasses().slice(), c = C[i];
   const n = TD.students.filter(s => s.cls === c && s.active !== false).length;
@@ -992,6 +1012,7 @@ function listStudentsView() {
   return TD.students.filter(s => (!f || s.cls === f) && (off || s.active !== false)).sort(byClsName);
 }
 function renderStudents() {
+  try { renderClassChips(); } catch (e) {}
   const L = listStudentsView();
   if (!L.length) { $('#stTable').innerHTML = '<p>لا يوجد طلاب في هذه القائمة.</p>'; return; }
   $('#stTable').innerHTML = `<table><tr><th>#</th><th>الاسم</th><th>الشعبة</th><th>اسم المستخدم</th><th>كلمة المرور</th><th>الحالة</th><th></th></tr>` +
