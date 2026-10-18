@@ -1,1198 +1,291 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>منصة استعداد</title>
+<title>مواقعي</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@400;500;600;700&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com/3.4.17"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          display: ['"Readex Pro"', 'Tajawal', 'Tahoma', 'sans-serif'],
+          body: ['Tajawal', '"Readex Pro"', 'Tahoma', 'sans-serif'],
+        },
+        colors: {
+          ink: { 950: '#0b1f1c', 900: '#10302b', 800: '#164039' },
+          gold: { 300: '#f3d58a', 400: '#e8bf5a', 500: '#d4a53a' },
+        },
+        boxShadow: {
+          card: '0 1px 2px rgba(16,48,43,.06), 0 8px 24px -12px rgba(16,48,43,.18)',
+          lift: '0 2px 4px rgba(16,48,43,.08), 0 24px 48px -16px rgba(16,48,43,.35)',
+        },
+        keyframes: {
+          pop: { '0%': { opacity: 0, transform: 'translateY(10px) scale(.97)' }, '100%': { opacity: 1, transform: 'none' } },
+        },
+        animation: { pop: 'pop .35s cubic-bezier(.2,.8,.2,1) both' },
+      },
+    },
+  };
+</script>
 <style>
-:root{
-  --bg:#f7f3e8; --card:#fff; --ink:#1f2a2a; --muted:#5f6b6b;
-  --green:#1f8a5b; --green-l:#d8efe3; --teal:#0f5e5a;
-  --orange:#e2673f; --orange-l:#fde3d8; --blue:#2f8fc7; --blue-l:#dcefFa;
-  --gold:#c39a3b; --gold-l:#f6ecd2; --red:#c0392b; --red-l:#f9dcd8;
-  --line:#e3dccb; --radius:16px;
-  --font:'Sakkal Majalla','Traditional Arabic','Amiri','Arabic Typesetting',serif;
-}
-*{box-sizing:border-box}
-html,body{margin:0;padding:0}
-body{background:var(--bg);color:var(--ink);font-family:var(--font);font-size:24px;line-height:1.6}
-button,input,select,textarea{font-family:var(--font);font-size:22px}
-h1,h2,h3,h4{margin:.3em 0;line-height:1.3}
-h2{font-size:34px;color:var(--teal)} h3{font-size:27px;color:var(--teal)} h4{font-size:24px}
-small{font-size:18px}
-a{color:var(--blue)}
-.wrap{max-width:1100px;margin:0 auto;padding:0 16px 60px}
-input[type=text],input[type=number],input[type=password],select,textarea{border:1.5px solid var(--line);border-radius:10px;padding:5px 10px;background:#fff;color:var(--ink);width:100%}
-textarea{min-height:90px;resize:vertical}
-input:focus,select:focus,textarea:focus{outline:2px solid var(--green);border-color:var(--green)}
-.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:14px 18px;margin:14px 0;box-shadow:0 2px 8px rgba(0,0,0,.04)}
-.note{background:var(--gold-l);border-radius:10px;padding:6px 12px;margin-top:8px;font-size:21px}
-.todo{background:var(--blue-l);border:1px solid #b9dcf1;border-inline-start:6px solid var(--blue);border-radius:12px;padding:8px 16px;margin:10px 0;font-size:21px}
-.btn{border:0;border-radius:12px;padding:5px 18px;background:var(--green);color:#fff;cursor:pointer;font-weight:700;transition:transform .1s,filter .2s;text-decoration:none;display:inline-block}
-.btn:hover{filter:brightness(1.08)} .btn:active{transform:scale(.97)}
-.btn.alt{background:var(--orange)} .btn.ghost{background:#fff;color:var(--teal);border:1.5px solid var(--teal)}
-.btn.blue{background:var(--blue)} .btn.red{background:#fff;color:var(--red);border:1.5px solid var(--red)} .btn.sm{padding:1px 12px;font-size:19px}
-.btn.big{font-size:27px;padding:8px 30px}
-.btn:disabled{opacity:.45;cursor:not-allowed}
-.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-.hbtn{background:rgba(255,255,255,.18);border:0;color:#fff;border-radius:999px;padding:0 12px;cursor:pointer;font-size:20px}
-table{border-collapse:collapse;width:100%;font-size:20px;background:#fff}
-th,td{border:1px solid var(--line);padding:5px 8px;vertical-align:middle;text-align:right}
-th{background:var(--green-l);color:var(--teal)}
-.tbl-scroll{overflow-x:auto}
-td input[type=number]{width:72px;padding:2px 6px}
-.lvl{font-weight:700;border-radius:8px;padding:0 8px;white-space:nowrap}
-.lvl.a{background:var(--green-l);color:var(--green)}.lvl.b{background:var(--blue-l);color:var(--blue)}.lvl.c{background:var(--gold-l);color:#7a5a12}.lvl.d{background:var(--red-l);color:var(--red)}
-.msg{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 14px;margin:10px 0;white-space:pre-wrap}
-.msg h4{margin:0 0 4px;color:var(--orange)}
-.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:var(--teal);color:#fff;padding:6px 22px;border-radius:999px;z-index:99;opacity:0;transition:.3s;pointer-events:none;font-size:22px;max-width:90vw;text-align:center}
-.toast.on{opacity:1}
-.subtabs{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}
-.subtabs button{border:1.5px solid var(--teal);background:#fff;color:var(--teal);border-radius:999px;padding:1px 14px;cursor:pointer;font-size:20px}
-.subtabs button.on{background:var(--teal);color:#fff}
-.topbar{background:linear-gradient(135deg,var(--teal),var(--green));color:#fff;padding:10px 0;position:sticky;top:0;z-index:20;box-shadow:0 3px 14px rgba(0,0,0,.15)}
-.topbar .wrap{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding-bottom:0}
-.topbar h1{font-size:27px;margin:0}
-.demo-banner{background:var(--orange);color:#fff;text-align:center;font-size:19px;padding:2px 8px}
-.login-card{max-width:460px;width:calc(100% - 32px);margin:36px auto;background:#fff;border-radius:24px;padding:24px;box-shadow:0 10px 30px rgba(0,0,0,.08);border:1px solid var(--line);text-align:center}
-.login-card .logo{font-size:64px;line-height:1}
-.login-card label{display:block;text-align:right;margin-top:12px;color:var(--muted);font-size:20px}
-.login-card input{direction:ltr;text-align:left;font-size:24px}
-.login-msg{color:var(--red);min-height:30px;margin-top:8px;font-weight:700}
-.lesson-card{display:flex;gap:16px;align-items:center;flex-wrap:wrap;background:#fff;border:1px solid var(--line);border-radius:20px;padding:16px 18px;box-shadow:0 4px 14px rgba(0,0,0,.05);border-inline-start:8px solid var(--green);margin:12px 0}
-.lesson-card .ic{font-size:56px;line-height:1}
-.lesson-card .info{flex:1 1 260px}
-.chip{display:inline-block;border-radius:999px;padding:0 12px;font-size:19px;font-weight:700}
-.chip.new{background:var(--blue-l);color:var(--blue)} .chip.wip{background:var(--gold-l);color:#7a5a12} .chip.done{background:var(--green-l);color:var(--green)} .chip.off{background:var(--red-l);color:var(--red)} .chip.grey{background:#eee;color:#666}
-.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:10px 0}
-.stat{background:#fff;border:1px solid var(--line);border-radius:16px;padding:8px;text-align:center;font-size:20px}
-.stat b{display:block;font-size:34px;color:var(--teal);line-height:1.3}
-tr.nosub td{color:#97a3a3;background:#fafaf7}
-#resTable td:nth-child(2),#stTable td:nth-child(2),#lsTable td:nth-child(2){min-width:150px}
-#resTable th{white-space:nowrap}
-.tview[hidden],.gview[hidden],section[hidden]{display:none!important}
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:90;display:flex;align-items:flex-start;justify-content:center;padding:30px 12px;overflow:auto}
-.modal .box{background:#fff;border-radius:18px;max-width:760px;width:100%;padding:18px;position:relative}
-.modal .x{position:absolute;top:10px;left:12px}
-.setup-step{border-inline-start:5px solid var(--gold);padding:4px 12px;margin:10px 0;background:#fffdf6;border-radius:10px}
-.setup-step b.n{color:var(--orange)}
-pre.rules{direction:ltr;text-align:left;background:#0f2524;color:#cfe;border-radius:12px;padding:10px 12px;font-size:14px;overflow:auto;max-height:320px;white-space:pre}
-code.ltr{direction:ltr;display:inline-block;background:#eef3f2;border-radius:6px;padding:0 6px;font-size:19px}
-.checks{display:flex;gap:14px;flex-wrap:wrap}
-.checks label{display:flex;gap:6px;align-items:center;font-size:21px;cursor:pointer}
-.checks input{width:20px;height:20px}
-.drop{border:3px dashed var(--teal);border-radius:16px;padding:18px;text-align:center;background:#f3faf6;cursor:pointer}
-.drop.over{background:var(--green-l)}
-/* مشغّل الدرس */
-#scrPlayer{position:fixed;inset:0;display:flex;flex-direction:column;background:var(--bg);z-index:30}
-.pbar{background:var(--teal);color:#fff;display:flex;align-items:center;gap:10px;padding:4px 12px;font-size:20px;flex-wrap:wrap}
-.pbar b{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.pbar .prev{background:var(--gold);color:#222;border-radius:999px;padding:0 10px;font-weight:700;font-size:18px}
-#plFrame{flex:1;border:0;width:100%;background:var(--bg)}
-.plload[hidden]{display:none!important}
-.plload{position:absolute;inset:44px 0 0 0;display:flex;align-items:center;justify-content:center;font-size:26px;color:var(--teal);pointer-events:none}
-#printArea{display:none}
-.pcards{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
-.pcard{border:2px dashed #888;border-radius:12px;padding:8px 12px;font-size:17px;line-height:1.7;break-inside:avoid}
-.pcard b{font-family:Consolas,monospace;direction:ltr;display:inline-block}
-@media print{
-  body.printing > *:not(#printArea){display:none!important}
-  body.printing #printArea{display:block!important}
-  body{background:#fff}
-  #printArea table{font-size:13px}
-}
-@media (max-width:640px){ body{font-size:22px} h2{font-size:28px} .topbar h1{font-size:23px} }
-</style>
-<style>
-.role-btns{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}
-.role-btns button{border:2px solid var(--line);background:#fff;border-radius:20px;padding:18px 8px;cursor:pointer;font-size:26px;font-weight:700;color:var(--teal);transition:.2s}
-.role-btns button span{display:block;font-size:56px;line-height:1.2}
-.role-btns button:hover{border-color:var(--green);background:#f3faf6;transform:translateY(-2px)}
-.backlink{background:none;border:0;color:var(--blue);cursor:pointer;font-size:20px;margin-top:6px}
-.viewas[hidden],.warnbar[hidden]{display:none!important}
-.viewas{background:var(--gold);color:#222;border-radius:14px;padding:6px 14px;margin:10px 0;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;font-weight:700}
-.clslist{display:flex;flex-direction:column;gap:8px;margin:8px 0}
-.clsitem{display:flex;flex-wrap:wrap;align-items:center;gap:8px;border:1.5px solid var(--line);border-radius:14px;padding:8px 12px;background:#fff}
-.clsitem.on{border-color:var(--teal);background:var(--green-l)}
-.clsitem .cname{font-weight:800;color:var(--teal);font-size:1.1em;min-width:90px}
-.clsitem .ccount{color:var(--muted);flex:1 1 auto}
-.clsrow select{width:100%}
-.clsrow label{display:flex;flex-direction:column;gap:2px;font-weight:700;min-width:0}
-.clschips{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
-.clschips span{background:var(--green-l);color:var(--teal);border-radius:999px;padding:0 6px 0 14px;font-weight:700;display:inline-flex;align-items:center;gap:6px}
-.clschips span button{border:0;background:rgba(0,0,0,.08);border-radius:50%;width:24px;height:24px;cursor:pointer;font-size:14px}
-.warnbar{background:var(--red-l);color:var(--red);border:1px solid #f0b4ab;border-radius:12px;padding:8px 14px;margin:10px 0;font-weight:700}
+  .pattern {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='72' viewBox='0 0 72 72'%3E%3Cg fill='none' stroke='%23ffffff' stroke-opacity='.07' stroke-width='1.2'%3E%3Cpath d='M36 6l9 21 21 9-21 9-9 21-9-21-21-9 21-9z'/%3E%3Cpath d='M15 15h42v42H15z' transform='rotate(45 36 36)'/%3E%3Ccircle cx='36' cy='36' r='6'/%3E%3C/g%3E%3C/svg%3E");
+  }
+  .clamp2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
 </style>
 </head>
-<body>
-<div class="demo-banner" id="demoBanner" hidden>🧪 وضع تجريبي: البيانات على هذا الجهاز فقط · المدير: admin@demo.com / 123456</div>
+<body class="font-body bg-stone-100 text-ink-950 dark:bg-[#0a1513] dark:text-stone-100 min-h-screen antialiased">
 
-<section id="scrLoading"><div class="login-card"><div class="logo">📖</div><h2>منصة استعداد</h2><p>⏳ جارٍ التحميل…</p></div></section>
-
-<section id="scrSetup" hidden>
-  <div class="topbar"><div class="wrap"><h1>📖 إعداد منصة استعداد (مرة واحدة)</h1></div></div>
-  <div class="wrap" id="setupBox"></div>
-</section>
-
-<section id="scrRole" hidden>
-  <div class="login-card">
-    <div class="logo">📖</div>
-    <h2 style="margin-bottom:0">منصة استعداد</h2>
-    <p style="margin-top:0;color:var(--muted)">التربية الإسلامية</p>
-    <div class="role-btns">
-      <button onclick="chooseRole('teacher')"><span>👨‍🏫</span>أنا معلم</button>
-      <button onclick="chooseRole('student')"><span>🎒</span>أنا طالب</button>
-    </div>
-  </div>
-</section>
-
-<section id="scrLogin" hidden>
-  <div class="login-card">
-    <div class="logo" id="lgIcon">🎒</div>
-    <h2 style="margin-bottom:0" id="lgTitle">دخول الطالب</h2>
-    <p style="margin-top:0;color:var(--muted)">منصة استعداد</p>
-    <label>اسم المستخدم<input type="text" id="lgUser" autocomplete="username" autocapitalize="off" spellcheck="false"></label>
-    <label>كلمة المرور<input type="password" id="lgPass" autocomplete="current-password" placeholder="••••••"></label>
-    <div class="login-msg" id="loginMsg"></div>
-    <button class="btn big" id="lgBtn" style="width:100%" onclick="doLogin()">دخول</button>
-    <p style="font-size:19px;color:var(--muted);margin-bottom:0" id="lgHint"></p>
-    <button class="backlink" onclick="showScreen('scrRole')">→ رجوع</button>
-  </div>
-</section>
-
-<section id="scrHome" hidden>
-  <div class="topbar"><div class="wrap"><h1>📖 منصة استعداد</h1><div class="row"><span id="homeWho"></span><button class="hbtn" onclick="doLogout()">🚪 خروج</button></div></div></div>
-  <div class="wrap">
-    <h2 id="homeHello"></h2>
-    <h3>📚 دروسي</h3>
-    <div id="homeLessons"></div>
-  </div>
-</section>
-
-<section id="scrPlayer" hidden>
-  <div class="pbar"><button class="hbtn" onclick="leaveLesson()">🏠 رجوع</button><b id="plTitle"></b><span class="prev" id="plPrev" hidden>👁 معاينة المعلم: لا تُحفظ الإجابات</span><span id="plWho"></span></div>
-  <div class="plload" id="plLoad">⏳ جارٍ تحميل الدرس…</div>
-  <iframe id="plFrame" title="الدرس" sandbox="allow-scripts allow-popups allow-forms allow-modals allow-popups-to-escape-sandbox" allow="autoplay; fullscreen; clipboard-write"></iframe>
-</section>
-
-<section id="scrTeacher" hidden>
-  <div class="topbar"><div class="wrap"><h1 id="tHead">📖 استعداد · لوحة المعلم</h1><div class="row"><span id="tWho"></span><button class="hbtn" onclick="doLogout()">🚪 خروج</button></div></div></div>
-  <div class="wrap">
-    <div class="warnbar" id="rulesWarn" hidden>⚠️ قواعد الحماية في Firebase قديمة. افتح تبويب «⚙️ الإعداد»، وانسخ القواعد الجديدة، والصقها في Firebase ← Firestore ← Rules، ثم اضغط Publish وحدّث الصفحة.</div>
-    <div class="subtabs" id="tTabs">
-      <button data-t="teachers" class="adminOnly" onclick="tTab('teachers')" hidden>🏫 المعلمون</button>
-      <button data-t="results" onclick="tTab('results')">📊 النتائج</button>
-      <button data-t="lessons" onclick="tTab('lessons')">📚 الدروس</button>
-      <button data-t="students" onclick="tTab('students')">👥 الطلاب والصفوف</button>
-      <button data-t="setup" onclick="tTab('setup')">⚙️ الإعداد والرسائل</button>
-    </div>
-    <div class="viewas" id="viewAs" hidden><span id="viewAsTxt"></span><button class="btn sm ghost" onclick="switchView(ME.uid)">↩ العودة إلى صفحتي</button></div>
-
-    <div class="tview" id="tv-teachers" hidden>
-      <div class="card">
-        <h3 style="margin-top:0">➕ إضافة معلم</h3>
-        <div class="row">
-          <input type="text" id="ntName" placeholder="اسم المعلم" style="flex:2 1 220px;width:auto">
-          <input type="text" id="ntUser" placeholder="اسم مستخدم (اختياري، بالإنجليزية)" dir="ltr" style="flex:1 1 200px;width:auto">
-          <button class="btn alt" id="ntBtn" onclick="addTeacher()">إنشاء الحساب</button>
+  <!-- Header band -->
+  <header class="relative bg-gradient-to-bl from-ink-800 via-ink-900 to-ink-950 text-white overflow-hidden">
+    <div class="pattern absolute inset-0"></div>
+    <div class="absolute -top-24 -left-24 w-72 h-72 rounded-full bg-gold-400/20 blur-3xl"></div>
+    <div class="relative max-w-6xl mx-auto px-4 sm:px-6 pt-10 pb-28">
+      <div class="flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <p id="hijri" class="text-gold-300 text-sm font-medium tracking-wide"></p>
+          <h1 class="font-display font-bold text-4xl sm:text-5xl mt-2">مواقعي</h1>
+          <p class="text-white/70 mt-2">كل مواقعك في مكان واحد، بضغطة واحدة.</p>
         </div>
-        <p style="font-size:19px;color:var(--muted);margin-bottom:0">تُنشأ كلمة مرور تلقائيًا، وتنسخ رسالة الدخول وترسلها للمعلم. إن تركت اسم المستخدم فارغًا يُنشأ تلقائيًا (مثل teacher02).</p>
-      </div>
-      <div id="newTeacher"></div>
-      <div class="card">
-        <h3 style="margin-top:0">🏫 معلمو المنصة</h3>
-        <div class="tbl-scroll" id="tcTable"></div>
-      </div>
-    </div>
-
-    <div class="tview" id="tv-results">
-      <div class="card">
-        <div class="row">
-          <label class="row" style="gap:4px">الدرس: <select id="rLesson" style="width:auto;max-width:340px" onchange="loadResults()"></select></label>
-          <label class="row" style="gap:4px">الشعبة: <select id="rClass" style="width:auto" onchange="renderResults()"></select></label>
-          <button class="btn" onclick="loadTeacherData()">🔄 تحديث</button>
-          <button class="btn blue" onclick="exportResults()">⬇ تصدير Excel</button>
-          <button class="btn ghost" onclick="printResults()">🖨 طباعة</button>
+        <div class="flex items-center gap-2 bg-white/10 backdrop-blur rounded-full px-4 py-2 text-sm">
+          <span class="w-2 h-2 rounded-full bg-gold-400"></span>
+          <span id="count" class="tabular-nums">لا توجد مواقع</span>
         </div>
-        <div class="stats" id="rStats"></div>
-        <div class="tbl-scroll" id="resTable"></div>
-        <p style="font-size:19px;color:var(--muted)">تُحتسب <b>أفضل محاولة</b> لكل طالب. زر «تفاصيل» يعرض كل المحاولات.</p>
+      </div>
+    </div>
+  </header>
+
+  <main class="relative max-w-6xl mx-auto px-4 sm:px-6 -mt-20 pb-16">
+
+    <!-- Add form -->
+    <form id="addForm" novalidate
+      class="bg-white dark:bg-[#12201d] rounded-3xl shadow-lift ring-1 ring-black/5 dark:ring-white/10 p-5 sm:p-6">
+      <div class="flex items-center gap-3 mb-4">
+        <span class="grid place-items-center w-9 h-9 rounded-xl bg-gold-400/20 text-gold-500">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+        </span>
+        <h2 class="font-display font-semibold text-lg">إضافة موقع جديد</h2>
+      </div>
+      <div class="grid gap-3 md:grid-cols-[1fr_1.5fr_auto] md:items-end">
+        <label class="block">
+          <span class="text-sm text-stone-500 dark:text-stone-400">اسم الموقع</span>
+          <input id="name" type="text" autocomplete="off" placeholder="مثال: منصة استعداد"
+            class="mt-1 w-full rounded-xl border-0 bg-stone-100 dark:bg-white/5 px-4 py-3 ring-1 ring-transparent focus:ring-2 focus:ring-ink-800 dark:focus:ring-gold-400 focus:bg-white dark:focus:bg-white/10 outline-none transition">
+        </label>
+        <label class="block">
+          <span class="text-sm text-stone-500 dark:text-stone-400">الرابط</span>
+          <input id="url" type="text" dir="ltr" inputmode="url" autocomplete="off" placeholder="example.com"
+            class="mt-1 w-full rounded-xl border-0 bg-stone-100 dark:bg-white/5 px-4 py-3 text-left ring-1 ring-transparent focus:ring-2 focus:ring-ink-800 dark:focus:ring-gold-400 focus:bg-white dark:focus:bg-white/10 outline-none transition">
+        </label>
+        <button type="submit"
+          class="h-12 rounded-xl px-8 font-display font-semibold text-ink-950 bg-gradient-to-l from-gold-300 to-gold-400 hover:from-gold-400 hover:to-gold-500 shadow-card active:scale-[.98] transition focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-ink-800">
+          إدخال
+        </button>
+      </div>
+      <p id="msg" role="alert" class="hidden mt-3 text-sm text-rose-600 dark:text-rose-400"></p>
+    </form>
+
+    <!-- Toolbar -->
+    <div id="toolbar" class="hidden mt-10 mb-5 flex flex-wrap items-center justify-between gap-3">
+      <h2 class="font-display font-semibold text-xl">المواقع</h2>
+      <div class="relative w-full sm:w-72">
+        <svg class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input id="search" type="search" placeholder="ابحث في مواقعك…"
+          class="w-full rounded-full border-0 bg-white dark:bg-white/5 pr-9 pl-4 py-2.5 text-sm shadow-card ring-1 ring-black/5 dark:ring-white/10 focus:ring-2 focus:ring-ink-800 dark:focus:ring-gold-400 outline-none">
       </div>
     </div>
 
-    <div class="tview" id="tv-lessons" hidden>
-      <div class="card">
-        <h3 style="margin-top:0">➕ رفع درس جديد أو تحديث درس</h3>
-        <div class="drop" id="drop" onclick="$('#lfFile').click()">📄 اضغط هنا لاختيار ملف الدرس (HTML)، أو اسحبه وأفلته هنا
-          <input type="file" id="lfFile" accept=".html,.htm,text/html" hidden></div>
-        <div id="lfForm"></div>
+    <!-- Grid -->
+    <div id="grid" class="grid gap-4 sm:gap-5 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"></div>
+
+    <!-- Empty -->
+    <div id="empty" class="hidden mt-10 rounded-3xl border-2 border-dashed border-stone-300 dark:border-white/10 py-16 px-6 text-center">
+      <div class="mx-auto w-14 h-14 grid place-items-center rounded-2xl bg-ink-900 text-gold-300 mb-4">
+        <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></svg>
       </div>
-      <div class="card">
-        <h3 style="margin-top:0">📚 دروسي</h3>
-        <div class="tbl-scroll" id="lsTable"></div>
-        <p style="font-size:19px;color:var(--muted)">الطالب يرى الدروس <b>الظاهرة</b> المخصّصة لشعبته فقط. «🔗 مشاركة» تضع الدرس في مكتبة الدروس ليستخدمه زملاؤك. حذف الدرس لا يحذف نتائج الطلاب.</p>
-      </div>
-      <div class="card">
-        <div class="row" style="justify-content:space-between"><h3 style="margin:0">📖 مكتبة الدروس المشتركة</h3><button class="btn sm ghost" onclick="loadLibrary()">🔄 تحديث المكتبة</button></div>
-        <div class="tbl-scroll" id="libTable"><p>اضغط «تحديث المكتبة» لعرض الدروس التي شاركها المعلمون.</p></div>
-      </div>
+      <p class="font-display font-semibold text-lg">لا توجد مواقع بعد</p>
+      <p class="text-stone-500 dark:text-stone-400 mt-1">اكتب اسم الموقع ورابطه في الأعلى ثم اضغط «إدخال».</p>
     </div>
+    <p id="noResults" class="hidden text-center text-stone-500 py-10">لا توجد نتائج مطابقة.</p>
 
-    <div class="tview" id="tv-students" hidden>
-      <div class="card">
-        <h3 style="margin-top:0">🏫 صفوفي وشعبي</h3>
-        <div id="clsChips"></div>
-        <h4 style="margin:14px 0 4px">➕ إضافة شعب جديدة</h4>
-        <div id="clsRows"></div>
-        <div class="row" style="margin-top:6px"><button class="btn sm ghost" onclick="addClsRow()">➕ إضافة صف</button><button class="btn sm" onclick="addClass()">💾 حفظ الشعب</button></div>
-      </div>
-      <div class="card" id="bulkCard" hidden>
-        <div class="row" style="justify-content:space-between"><h3 style="margin:0">👥 إضافة طلاب دفعة واحدة إلى شعبة «<span class="addClsName"></span>»</h3><button class="btn sm ghost" onclick="closeAdd()">✕ إغلاق</button></div>
-        <p style="margin:6px 0">الصق أسماء الطلاب (اسم في كل سطر). ستُنشأ لكل طالب <b>اسم مستخدم</b> و<b>كلمة مرور</b> تلقائيًا.</p>
-        <select id="bCls" hidden></select>
-        <textarea id="bNames" placeholder="محمد أحمد علي&#10;خالد سعيد حسن&#10;…" style="min-height:140px"></textarea>
-        <div class="row" style="margin-top:6px"><button class="btn alt" id="bBtn" onclick="addBulk()">إنشاء الحسابات</button><span id="bProg"></span></div>
-      </div>
-      <div class="card" id="oneCard" hidden>
-        <div class="row" style="justify-content:space-between"><h3 style="margin:0">👤 إضافة طالب واحد إلى شعبة «<span class="addClsName"></span>»</h3><button class="btn sm ghost" onclick="closeAdd()">✕ إغلاق</button></div>
-        <div class="row" style="margin-top:8px"><input type="text" id="oName" placeholder="اسم الطالب الثلاثي" style="flex:2 1 220px;width:auto"><select id="oCls" hidden></select><button class="btn" id="oBtn" onclick="addOne()">إضافة</button></div>
-      </div>
-      <div id="newCreds"></div>
-      <div class="card">
-        <div class="row" style="justify-content:space-between">
-          <h3 style="margin:0">📋 قائمة الطلاب</h3>
-          <div class="row">
-            <label class="row" style="gap:4px">الشعبة: <select id="sClsF" style="width:auto" onchange="renderStudents()"></select></label>
-            <label class="row" style="gap:4px;font-size:19px"><input type="checkbox" id="sShowOff" onchange="renderStudents()"> إظهار الموقوفين</label>
-          </div>
-        </div>
-        <div class="row" style="margin:6px 0"><button class="btn ghost sm" onclick="copyListCreds()">📋 نسخ بيانات الدخول للقائمة</button><button class="btn ghost sm" onclick="printCards()">🖨 طباعة بطاقات الدخول</button></div>
-        <div class="tbl-scroll" id="stTable"></div>
-        <p style="font-size:19px;color:var(--muted)">لا يمكن حذف الحساب نهائيًا أو تغيير كلمة مروره من هنا. إذا احتجت ذلك: أوقف الحساب، ثم أضف الطالب من جديد.</p>
-      </div>
-    </div>
+    <!-- Backup -->
+    <footer class="mt-14 pt-6 border-t border-stone-200 dark:border-white/10 flex flex-wrap items-center gap-3 text-sm">
+      <button id="exportBtn" type="button" class="inline-flex items-center gap-2 rounded-full bg-white dark:bg-white/5 px-4 py-2 shadow-card ring-1 ring-black/5 dark:ring-white/10 hover:ring-ink-800 dark:hover:ring-gold-400 transition">
+        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3v12m0 0-4-4m4 4 4-4M5 21h14"/></svg>
+        حفظ نسخة احتياطية
+      </button>
+      <button id="importBtn" type="button" class="inline-flex items-center gap-2 rounded-full bg-white dark:bg-white/5 px-4 py-2 shadow-card ring-1 ring-black/5 dark:ring-white/10 hover:ring-ink-800 dark:hover:ring-gold-400 transition">
+        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 21V9m0 0-4 4m4-4 4 4M5 3h14"/></svg>
+        استيراد نسخة
+      </button>
+      <input id="importFile" type="file" accept="application/json,.json" class="hidden">
+      <p id="note" class="basis-full text-stone-500 dark:text-stone-400">المواقع محفوظة في هذا المتصفح. لنقلها إلى جهاز آخر احفظ نسخة احتياطية ثم استوردها هناك.</p>
+    </footer>
+  </main>
 
-    <div class="tview" id="tv-setup" hidden>
-      <div class="card"><h3 style="margin-top:0">✉️ رسائل جاهزة للطلاب</h3><div id="msgList"></div></div>
-      <div class="card adminOnly" hidden><h3 style="margin-top:0">🔐 قواعد حماية قاعدة البيانات (للمدير)</h3>
-        <p>تضعها في Firebase ← Firestore Database ← Rules، ثم Publish. تمنع أي معلم من رؤية بيانات زملائه، وأي طالب من رؤية نتائج غيره.</p>
-        <pre class="rules" id="rulesNow"></pre><button class="btn sm" onclick="copyText($('#rulesNow').textContent)">📋 نسخ القواعد</button></div>
-      <div class="card"><h3 style="margin-top:0">🧩 كيف أصنع درسًا للمنصة؟</h3>
-        <p>أرسل ملف الدرس من الكتاب (PDF) إلى Claude مع ملف مواصفات «استعداد» (أو ملف درس عباد الرحمن نموذجًا)، واطلب «درسًا تفاعليًا متوافقًا مع منصة استعداد». ارفع الملف الناتج من تبويب «📚 الدروس».</p>
-        <p>يمكنك أيضًا رفع أي صفحة HTML عادية كدرس للعرض فقط، لكن نتائجها لا تظهر في لوحة النتائج.</p></div>
-    </div>
-  </div>
-</section>
-
-<div id="printArea"></div>
-<div id="modalRoot"></div>
-<div class="toast" id="toast"></div>
-
-<script type="module">
-(async () => {
-  if (typeof CONFIG === 'undefined' || !CONFIG.firebase || !CONFIG.firebase.apiKey || /[?&]demo=1/.test(location.search)) return;
-  try {
-    const B = 'https://www.gstatic.com/firebasejs/10.12.2/';
-    const A = await import(B + 'firebase-app.js');
-    const AU = await import(B + 'firebase-auth.js');
-    const F = await import(B + 'firebase-firestore.js');
-    const app = A.initializeApp(CONFIG.firebase);
-    const auth = AU.getAuth(app), db = F.getFirestore(app);
-    let app2 = null;
-    const ms = t => t && t.toMillis ? t.toMillis() : (typeof t === 'number' ? t : Date.now());
-    const me = () => auth.currentUser;
-    const withId = d => Object.assign({id:d.id}, d.data());
-    const withAt = d => Object.assign({id:d.id}, d.data(), {at:ms(d.data().at)});
-    const q = (col, ...w) => F.query(F.collection(db, col), ...w.map(([k, v]) => F.where(k, '==', v)));
-    const getOne = async (col, id) => { const s = await F.getDoc(F.doc(db, col, id)); return s.exists() ? s.data() : null; };
-    const newAuthUser = async (username, password) => {
-      if (!app2) app2 = A.initializeApp(CONFIG.firebase, 'creator');
-      const a2 = AU.getAuth(app2);
-      const c = await AU.createUserWithEmailAndPassword(a2, username + '@' + DOMAIN, password);
-      await AU.signOut(a2); return c.user.uid;
-    };
-    window.FBAPI = {
-      onAuth: cb => AU.onAuthStateChanged(auth, u => cb(u ? {uid:u.uid, email:u.email} : null)),
-      login: (e, p) => AU.signInWithEmailAndPassword(auth, e, p),
-      logout: () => AU.signOut(auth),
-      getTeacher: uid => getOne('teachers', uid),
-      setTeacherDoc: (uid, data) => F.setDoc(F.doc(db, 'teachers', uid), data, {merge:true}),
-      listTeachers: async () => (await F.getDocs(F.collection(db, 'teachers'))).docs.map(d => Object.assign({uid:d.id}, d.data())),
-      createTeacher: async (username, password, data) => { const uid = await newAuthUser(username, password); await F.setDoc(F.doc(db, 'teachers', uid), Object.assign({}, data, {createdAt:F.serverTimestamp()})); return uid; },
-      getStudent: uid => getOne('students', uid),
-      listStudents: async tid => (await F.getDocs(tid ? q('students', ['teacherId', tid]) : F.collection(db, 'students'))).docs.map(d => Object.assign({uid:d.id}, d.data())),
-      createStudent: async (username, password, data) => { const uid = await newAuthUser(username, password); await F.setDoc(F.doc(db, 'students', uid), Object.assign({}, data, {createdAt:F.serverTimestamp()})); return uid; },
-      setStudent: (uid, patch) => F.updateDoc(F.doc(db, 'students', uid), patch),
-      loadProgress: async lid => { const d = await getOne('progress', me().uid + '_' + lid); return d ? JSON.parse(d.s || 'null') : null; },
-      saveProgress: (lid, S) => F.setDoc(F.doc(db, 'progress', me().uid + '_' + lid), {s:JSON.stringify(S), updatedAt:F.serverTimestamp()}),
-      submit: d => F.addDoc(F.collection(db, 'submissions'), Object.assign({}, d, {at:F.serverTimestamp()})),
-      mySubmissions: async () => (await F.getDocs(q('submissions', ['uid', me().uid]))).docs.map(withAt),
-      getGrade: (uid, lid) => getOne('grades', uid + '_' + lid),
-      listSubmissions: async (lid, tid) => (await F.getDocs(q('submissions', ['lessonId', lid], ['teacherId', tid]))).docs.map(withAt),
-      listLessons: async filt => { const w = Object.entries(filt || {}); return (await F.getDocs(w.length ? q('lessons', ...w) : F.collection(db, 'lessons'))).docs.map(d => Object.assign(withId(d), {updatedAt:ms(d.data().updatedAt)})); },
-      getLessonHtml: async id => { const d = await getOne('lessonFiles', id); return d ? d.html : null; },
-      saveLesson: async (id, meta, html) => {
-        if (html != null) await F.setDoc(F.doc(db, 'lessonFiles', id), {html, teacherId:meta.teacherId});
-        await F.setDoc(F.doc(db, 'lessons', id), Object.assign({}, meta, {updatedAt:F.serverTimestamp()}), {merge:true});
-      },
-      deleteLesson: async id => { await F.deleteDoc(F.doc(db, 'lessons', id)); await F.deleteDoc(F.doc(db, 'lessonFiles', id)); },
-      listAll: async col => (await F.getDocs(F.collection(db, col))).docs.map(withId),
-      patchDoc: (col, id, patch) => F.setDoc(F.doc(db, col, id), patch, {merge:true})
-    };
-    window.dispatchEvent(new Event('fb-ready'));
-  } catch (e) { console.error(e); window.FBERR = e; window.dispatchEvent(new Event('fb-fail')); }
-})();
-</script>
 <script>
-const ORIGINAL_HTML = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
-/*CONFIG-START*/const CONFIG = {"firebase":{"apiKey":"AIzaSyAhLiI0JcQ2bv2O_Sie9S5jmaPNVY6dhTA","authDomain":"iste3dad.firebaseapp.com","projectId":"iste3dad","storageBucket":"iste3dad.firebasestorage.app","messagingSenderId":"554024504423","appId":"1:554024504423:web:641bc771edfa677e74d8c2"},"teacherEmail":"abdullah2006adigm@gmail.com","siteUrl":""};/*CONFIG-END*/
+(function () {
+  const $ = (id) => document.getElementById(id);
+  const LS_KEY = "my-sites-v1";
+  let links = load();
+  let query = "";
 
-/* ================= أدوات ================= */
-const $ = s => document.querySelector(s);
-const $$ = s => [...document.querySelectorAll(s)];
-const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const LS = {
-  get(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
-  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch (e) { return false; } },
-  del(k) { try { localStorage.removeItem(k); } catch (e) {} }
-};
-function toast(t, ms) { const el = $('#toast'); el.textContent = t; el.classList.add('on'); clearTimeout(el._t); el._t = setTimeout(() => el.classList.remove('on'), ms || 2800); }
-function copyText(t) {
-  const fallback = () => { const ta = document.createElement('textarea'); ta.value = t; ta.style.position = 'fixed'; ta.style.opacity = '0'; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); toast('تم النسخ ✓'); } catch (e) { toast('حدّد النص وانسخه يدويًا'); } ta.remove(); };
-  if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(t).then(() => toast('تم النسخ ✓'), fallback); else fallback();
-}
-function saveFile(filename, text, type) { const blob = new Blob([text], {type}); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = filename; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 2000); }
-const sleep = ms => new Promise(r => setTimeout(r, ms));
-const fmtDate = t => { try { return new Date(t).toLocaleString('ar', {day:'numeric', month:'numeric', hour:'2-digit', minute:'2-digit'}); } catch (e) { return ''; } };
-const isPerm = e => String((e && (e.code || e.message)) || '').includes('permission');
-const errMsg = e => { const c = (e && (e.code || e.message)) || ''; return c.includes('permission') ? 'لا تملك صلاحية (قد تكون قواعد الحماية قديمة).' : c.includes('unavailable') || c.includes('network') ? 'لا يوجد اتصال بالإنترنت.' : c; };
-
-/* ================= الإعدادات العامة ================= */
-const DEFAULT_CLASSES = ['تاسع5', 'تاسع6', 'تاسع7', 'تاسع8'];
-const DOMAIN = 'iste3dad-students.com';
-const DEMO = /[?&]demo=1/.test(location.search);
-let API = null, ME = null, ROLE_CHOICE = 'student';
-const adminEmail = () => (DEMO ? 'admin@demo.com' : (CONFIG.teacherEmail || '')).toLowerCase();
-const siteUrl = () => CONFIG.siteUrl || (/^https?:/.test(location.protocol) ? location.origin + location.pathname.replace(/index\.html$/, '') : 'https://iste3dad.netlify.app');
-const levelPct = p => p >= .9 ? ['a','متميز'] : p >= .75 ? ['b','متقدم'] : p >= .6 ? ['c','متمكن'] : ['d','يحتاج دعمًا'];
-const byClsName = (a, b) => (a.cls || '').localeCompare(b.cls || '', 'ar') || (a.username || '').localeCompare(b.username || '');
-const byOrder = (a, b) => (a.order ?? 999) - (b.order ?? 999) || (a.title || '').localeCompare(b.title || '', 'ar');
-const slug = s => String(s || '').toLowerCase().replace(/[^a-z0-9-]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 40);
-
-function showScreen(id) {
-  ['scrLoading', 'scrSetup', 'scrRole', 'scrLogin', 'scrHome', 'scrPlayer', 'scrTeacher'].forEach(s => { const e = $('#' + s); if (e) e.hidden = s !== id; });
-  window.scrollTo(0, 0);
-}
-
-/* ================= وضع تجريبي ================= */
-function DemoAPI() {
-  const K = 'iste3dad-demo-db3';
-  let db = LS.get(K, null) || {users:{'admin@demo.com':{uid:'A1', pass:'123456'}}, teachers:{}, students:{}, progress:{}, subs:[], grades:{}, lessons:{}, files:{}};
-  const put = () => { if (!LS.set(K, db)) toast('مساحة التخزين في الوضع التجريبي ممتلئة'); };
-  let cur = LS.get('iste3dad-demo-auth3', null); const cbs = [];
-  const emit = () => cbs.forEach(cb => cb(cur));
-  const delay = v => new Promise(r => setTimeout(() => r(v), 80));
-  const err = c => { const e = new Error(c); e.code = c; return e; };
-  const match = (o, f) => Object.entries(f || {}).every(([k, v]) => o[k] === v);
-  const newUser = (u, p) => { const e = u + '@' + DOMAIN; if (db.users[e]) throw err('auth/email-already-in-use'); const uid = 'U' + Math.random().toString(36).slice(2, 10); db.users[e] = {uid, pass:p}; return uid; };
-  const coll = {teachers:'teachers', students:'students', lessons:'lessons', lessonFiles:'files', grades:'grades'};
-  return {
-    onAuth(cb) { cbs.push(cb); setTimeout(() => cb(cur), 0); },
-    async login(e, p) { await delay(); const u = db.users[e]; if (!u || u.pass !== p) throw err('auth/invalid-credential'); cur = {uid:u.uid, email:e}; LS.set('iste3dad-demo-auth3', cur); emit(); },
-    async logout() { cur = null; LS.del('iste3dad-demo-auth3'); emit(); },
-    async getTeacher(uid) { return delay(db.teachers[uid] || null); },
-    async setTeacherDoc(uid, data) { db.teachers[uid] = Object.assign({}, db.teachers[uid] || {}, data); put(); },
-    async listTeachers() { return delay(Object.entries(db.teachers).map(([uid, t]) => Object.assign({uid}, t))); },
-    async createTeacher(u, p, data) { await delay(); const uid = newUser(u, p); db.teachers[uid] = Object.assign({}, data, {createdAt:Date.now()}); put(); return uid; },
-    async getStudent(uid) { return delay(db.students[uid] || null); },
-    async listStudents(tid) { return delay(Object.entries(db.students).filter(([, s]) => !tid || s.teacherId === tid).map(([uid, s]) => Object.assign({uid}, s))); },
-    async createStudent(u, p, data) { await delay(); const uid = newUser(u, p); db.students[uid] = Object.assign({}, data, {createdAt:Date.now()}); put(); return uid; },
-    async setStudent(uid, patch) { Object.assign(db.students[uid], patch); put(); },
-    async loadProgress(lid) { const v = db.progress[cur.uid + '_' + lid]; return delay(v ? JSON.parse(v) : null); },
-    async saveProgress(lid, S) { db.progress[cur.uid + '_' + lid] = JSON.stringify(S); put(); },
-    async submit(d) { db.subs.push(Object.assign({}, d, {id:'s' + Date.now() + Math.random(), at:Date.now()})); put(); return delay(); },
-    async mySubmissions() { return delay(db.subs.filter(s => s.uid === cur.uid)); },
-    async getGrade(uid, lid) { return delay(db.grades[uid + '_' + lid] || null); },
-    async listSubmissions(lid, tid) { return delay(db.subs.filter(s => s.lessonId === lid && s.teacherId === tid)); },
-    async listLessons(f) { return delay(Object.entries(db.lessons).map(([id, l]) => Object.assign({id}, l)).filter(l => match(l, f))); },
-    async getLessonHtml(id) { return delay(db.files[id] ? db.files[id].html : null); },
-    async saveLesson(id, meta, html) { if (html != null) db.files[id] = {html, teacherId:meta.teacherId}; db.lessons[id] = Object.assign({}, db.lessons[id] || {}, meta, {updatedAt:Date.now()}); put(); return delay(); },
-    async deleteLesson(id) { delete db.lessons[id]; delete db.files[id]; put(); },
-    async listAll(col) { if (col === 'submissions') return delay(db.subs.slice()); const o = db[coll[col]] || {}; return delay(Object.entries(o).map(([id, v]) => Object.assign({id}, v))); },
-    async patchDoc(col, id, patch) { if (col === 'submissions') { const s = db.subs.find(x => x.id === id); if (s) Object.assign(s, patch); } else { const o = db[coll[col]]; o[id] = Object.assign({}, o[id] || {}, patch); } put(); },
-    _seedLegacy(html) { // لاختبار النقل من النسخة السابقة
-      db.users['t5-01@' + DOMAIN] = {uid:'OLD1', pass:'111111'};
-      db.students.OLD1 = {name:'طالب قديم', cls:'تاسع5', username:'t5-01', password:'111111', active:true};
-      db.lessons['ebad-furqan'] = {title:'منهج عباد الرحمن القويم', icon:'🌿', tracked:true, autoMax:38, components:[{key:'quiz', label:'اختبار', max:8}], written:{max:0}, classes:DEFAULT_CLASSES, visible:true, order:1};
-      db.files['ebad-furqan'] = {html};
-      db.subs.push({id:'oldsub', uid:'OLD1', name:'طالب قديم', cls:'تاسع5', lessonId:'ebad-furqan', auto:30, scores:{quiz:8}, attempt:1, at:Date.now() - 86400000});
-      put();
-    }
-  };
-}
-
-/* ================= التشغيل والدخول ================= */
-function waitFB() {
-  return new Promise(res => {
-    if (window.FBAPI) return res(window.FBAPI);
-    const t = setTimeout(() => res(window.FBAPI || null), 20000);
-    window.addEventListener('fb-ready', () => { clearTimeout(t); res(window.FBAPI); }, {once:true});
-    window.addEventListener('fb-fail', () => { clearTimeout(t); res(null); }, {once:true});
-  });
-}
-async function boot() {
-  if (DEMO) { API = DemoAPI(); $('#demoBanner').hidden = false; }
-  else if (!CONFIG.firebase || !CONFIG.firebase.apiKey) { renderSetup(); showScreen('scrSetup'); return; }
-  else {
-    API = await waitFB();
-    if (!API) { chooseRole('student'); loginMsg('تعذّر الاتصال بالمنصة. تأكّد من الإنترنت ثم حدّث الصفحة.'); return; }
-  }
-  API.onAuth(onAuthChange);
-}
-function chooseRole(r) {
-  ROLE_CHOICE = r; LS.set('iste3dad-role', r);
-  $('#lgIcon').textContent = r === 'teacher' ? '👨‍🏫' : '🎒';
-  $('#lgTitle').textContent = r === 'teacher' ? 'دخول المعلم' : 'دخول الطالب';
-  $('#lgUser').placeholder = r === 'teacher' ? 'اسم المستخدم أو البريد' : 't5-01';
-  $('#lgHint').textContent = r === 'teacher' ? 'نسيت بياناتك؟ اطلبها من مدير المنصة.' : 'نسيت كلمة المرور؟ اطلبها من معلّمك.';
-  loginMsg(''); showScreen('scrLogin'); setTimeout(() => $('#lgUser').focus(), 50);
-}
-function loginMsg(t) { $('#loginMsg').textContent = t || ''; }
-async function onAuthChange(user) {
-  if (!user) { ME = null; showScreen('scrRole'); return; }
-  const email = (user.email || '').toLowerCase();
+  // Hijri + Gregorian date
   try {
-    if (email && email === adminEmail()) {
-      ME = {role:'admin', uid:user.uid, email, name:'المدير'};
-      await openTeacher(); return;
-    }
-    const t = await API.getTeacher(user.uid).catch(() => null);
-    if (t) {
-      if (t.active === false) { await API.logout(); chooseRole('teacher'); loginMsg('حساب المعلم موقوف. راجع مدير المنصة.'); return; }
-      ME = Object.assign({role:'teacher', uid:user.uid, email}, t); await openTeacher(); return;
-    }
-    const st = await API.getStudent(user.uid);
-    if (!st || st.active === false) { await API.logout(); chooseRole(ROLE_CHOICE); loginMsg(!st ? 'هذا الحساب غير مسجّل في المنصة.' : 'هذا الحساب موقوف. راجع معلّمك.'); return; }
-    ME = Object.assign({role:'student', uid:user.uid}, st);
-    openHome();
-  } catch (e) { console.error(e); chooseRole(ROLE_CHOICE); loginMsg('تعذّر تحميل حسابك: ' + errMsg(e)); }
-}
-async function doLogin() {
-  const u = $('#lgUser').value.trim().toLowerCase(), p = $('#lgPass').value.trim();
-  if (!u || !p) { loginMsg('اكتب اسم المستخدم وكلمة المرور'); return; }
-  const email = u.includes('@') ? u : u + '@' + DOMAIN;
-  const b = $('#lgBtn'); b.disabled = true; b.textContent = '⏳ جارٍ الدخول…'; loginMsg('');
-  try { await API.login(email, p); $('#lgPass').value = ''; }
-  catch (e) {
-    const c = e && e.code || '';
-    loginMsg(c.includes('too-many') ? 'محاولات كثيرة. انتظر دقيقة ثم حاول مرة أخرى.' : c.includes('network') ? 'لا يوجد اتصال بالإنترنت.' : 'اسم المستخدم أو كلمة المرور غير صحيحة.');
-  } finally { b.disabled = false; b.textContent = 'دخول'; }
-}
-['lgUser', 'lgPass'].forEach(id => $('#' + id).addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); }));
-async function doLogout() { await flushProgress(); await API.logout(); }
+    const d = new Date();
+    const hijri = new Intl.DateTimeFormat("ar-SA-u-ca-islamic-umalqura", { weekday: "long", day: "numeric", month: "long", year: "numeric" }).format(d);
+    $("hijri").textContent = hijri;
+  } catch (e) {}
 
-/* ================= الصفحة الرئيسية للطالب ================= */
-let LESSONS = [];
-async function openHome() {
-  showScreen('scrHome');
-  $('#homeWho').textContent = '👤 ' + ME.name + ' · ' + ME.cls;
-  $('#homeHello').textContent = 'مرحبًا يا ' + (ME.name || '').split(' ')[0] + ' 👋';
-  $('#homeLessons').innerHTML = '<p>⏳ جارٍ التحميل…</p>';
-  let subs = [];
-  try {
-    const all = ME.teacherId ? await API.listLessons({teacherId:ME.teacherId}) : [];
-    LESSONS = all.filter(l => l.visible !== false && (!l.classes || !l.classes.length || l.classes.includes(ME.cls))).sort(byOrder);
-    subs = await API.mySubmissions();
-  } catch (e) { console.error(e); $('#homeLessons').innerHTML = '<p>تعذّر تحميل الدروس. حدّث الصفحة.</p>'; return; }
-  if (!LESSONS.length) { $('#homeLessons').innerHTML = '<div class="card">لا توجد دروس متاحة الآن. سيضيف معلّمك الدروس قريبًا 🌿</div>'; return; }
-  const extra = await Promise.all(LESSONS.map(async l => ({
-    p: l.tracked === false ? null : await API.loadProgress(l.id).catch(() => null),
-    g: l.tracked === false || !(l.written && +l.written.max) ? null : await API.getGrade(ME.uid, l.id).catch(() => null)
-  })));
-  $('#homeLessons').innerHTML = LESSONS.map((l, i) => {
-    const my = subs.filter(s => s.lessonId === l.id).sort((a, b) => b.at - a.at);
-    const {p, g} = extra[i];
-    const best = my.length ? Math.max(...my.map(s => +s.auto || 0)) : null;
-    const wMax = (l.written && +l.written.max) || 0, aMax = +l.autoMax || 0;
-    const w = g && g.w !== null && g.w !== undefined && g.w !== '' ? +g.w : null;
-    const started = p && (p.page || Object.keys(p).length > 3);
-    let chip, btn;
-    if (l.tracked === false) { chip = '<span class="chip grey">📖 للاطلاع</span>'; btn = 'افتح الدرس ←'; }
-    else { chip = my.length ? '<span class="chip done">✅ أُرسل</span>' : started ? '<span class="chip wip">⏳ قيد الحل</span>' : '<span class="chip new">🆕 جديد</span>'; btn = my.length ? (p && !p.sent ? 'أكمل المحاولة الجديدة ←' : 'افتح الدرس ←') : started ? 'أكمل الدرس ←' : 'ابدأ الدرس ←'; }
-    const scoreLine = my.length ? `<div style="font-size:21px">🏅 أفضل درجة: <b>${best} / ${aMax}</b>${wMax ? (w !== null ? ` · درجة المعلم: <b>${w} / ${wMax}</b> · المجموع: <b>${best + w} / ${aMax + wMax}</b>` : ' · السؤال المكتوب ينتظر التصحيح') : ''} · المحاولات: <b>${my.length}</b></div>` : '';
-    return `<div class="lesson-card"><div class="ic">${esc(l.icon || '📘')}</div>
-      <div class="info"><h3 style="margin:0">${esc(l.title)} ${chip}</h3><div style="color:var(--muted)">${esc(l.sub || '')}</div>${scoreLine}</div>
-      <button class="btn alt big" onclick="openLesson('${l.id}','student')">${btn}</button></div>`;
-  }).join('');
-}
-
-/* ================= مشغّل الدرس ================= */
-let PL = null, plSaveT = null;
-const HTML_CACHE = {};
-async function getLessonHtml(l) {
-  const key = l.id + '@' + (l.updatedAt || 0);
-  if (HTML_CACHE[key]) return HTML_CACHE[key];
-  const h = await API.getLessonHtml(l.id); if (h) HTML_CACHE[key] = h; return h;
-}
-async function openLesson(id, mode) {
-  const pool = mode === 'preview' ? TD.lessons.concat(TD.library) : LESSONS;
-  const l = pool.find(x => x.id === id); if (!l) return;
-  showScreen('scrPlayer'); $('#plLoad').hidden = false;
-  $('#plTitle').textContent = (l.icon || '📘') + ' ' + l.title;
-  $('#plPrev').hidden = mode !== 'preview';
-  $('#plWho').textContent = mode === 'student' ? '👤 ' + ME.name : '';
-  const fr = $('#plFrame'); fr.srcdoc = '';
-  try {
-    const [html, state] = await Promise.all([getLessonHtml(l), mode === 'student' && l.tracked !== false ? API.loadProgress(id).catch(() => null) : null]);
-    if (!html) { toast('ملف الدرس غير موجود'); leaveLesson(); return; }
-    PL = {lesson:l, mode, state, ready:false};
-    fr.onload = () => { $('#plLoad').hidden = true; };
-    fr.srcdoc = html;
-  } catch (e) { console.error(e); toast('تعذّر فتح الدرس: ' + errMsg(e)); leaveLesson(); }
-}
-function postToLesson(m) { try { $('#plFrame').contentWindow.postMessage(Object.assign({iste:''}, m), '*'); } catch (e) {} }
-async function flushProgress() {
-  if (!PL || !plSaveT) return; clearTimeout(plSaveT); plSaveT = null;
-  if (PL.mode === 'student' && PL.state) { try { await API.saveProgress(PL.lesson.id, PL.state); } catch (e) { console.error(e); } }
-}
-async function leaveLesson() {
-  await flushProgress();
-  const wasPreview = PL && PL.mode === 'preview';
-  PL = null; $('#plFrame').srcdoc = '';
-  if (ME && ME.role !== 'student') { showScreen('scrTeacher'); if (wasPreview) tTab('lessons'); }
-  else if (ME) openHome(); else showScreen('scrRole');
-}
-const cleanStr = (s, n) => String(s ?? '').slice(0, n || 3000);
-function cleanSubmission(d) {
-  const out = {auto:Math.max(0, +d.auto || 0), written:cleanStr(d.written, 4000), scores:{}, extra:{}, obj:[]};
-  Object.entries(d.scores || {}).slice(0, 40).forEach(([k, v]) => { out.scores[cleanStr(k, 40)] = typeof v === 'number' ? v : cleanStr(v, 60); });
-  Object.entries(d.extra || {}).slice(0, 30).forEach(([k, v]) => { out.extra[cleanStr(k, 60)] = cleanStr(v, 600); });
-  (Array.isArray(d.obj) ? d.obj : []).slice(0, 12).forEach(o => out.obj.push({label:cleanStr(o && o.label, 120), ok:!!(o && o.ok)}));
-  return out;
-}
-window.addEventListener('message', async ev => {
-  if (!PL || ev.source !== $('#plFrame').contentWindow) return;
-  const m = ev.data || {}; if (!m || typeof m.iste !== 'string') return;
-  if (m.iste === 'ready') {
-    PL.ready = true; $('#plLoad').hidden = true;
-    postToLesson({iste:'init', mode:PL.mode, platform:'iste3dad', state:PL.state || null, user:ME && ME.role === 'student' ? {name:ME.name, cls:ME.cls} : {name:ME ? ME.name : '', cls:''}});
-  } else if (m.iste === 'save') {
-    if (PL.mode !== 'student' || PL.lesson.tracked === false) return;
-    PL.state = m.state; clearTimeout(plSaveT);
-    plSaveT = setTimeout(() => flushProgress(), m.now ? 0 : 1500);
-  } else if (m.iste === 'submit') {
-    if (PL.mode === 'preview') { postToLesson({iste:'submitted', ok:true, attempt:0, preview:true}); return; }
-    if (PL.lesson.tracked === false) { postToLesson({iste:'submitted', ok:false, error:'هذا الدرس للاطلاع فقط'}); return; }
-    try {
-      const lid = PL.lesson.id, mine = (await API.mySubmissions()).filter(s => s.lessonId === lid);
-      const data = Object.assign(cleanSubmission(m.data || {}), {uid:ME.uid, username:ME.username || '', name:ME.name, cls:ME.cls, teacherId:ME.teacherId || '', lessonId:lid, attempt:mine.length + 1});
-      await API.submit(data);
-      postToLesson({iste:'submitted', ok:true, attempt:data.attempt});
-    } catch (e) { console.error(e); postToLesson({iste:'submitted', ok:false, error:'تعذّر الإرسال. تأكّد من الإنترنت ثم حاول مرة أخرى'}); }
-  } else if (m.iste === 'home') leaveLesson();
-});
-window.addEventListener('pagehide', () => { if (plSaveT) flushProgress(); });
-document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden' && plSaveT) flushProgress(); });
-
-/* ================= لوحة المعلم / المدير ================= */
-const TD = {view:'', vt:null, teachers:[], students:[], lessons:[], library:[], subs:[], grades:{}, lid:''};
-const isAdmin = () => ME && ME.role === 'admin';
-const myClasses = () => (TD.vt && TD.vt.classes && TD.vt.classes.length ? TD.vt.classes : []);
-async function ensureAdmin() {
-  // حساب المدير معلّم أيضًا، وتنتقل إليه بيانات النسخة السابقة مرة واحدة
-  let t = null;
-  try { t = await API.getTeacher(ME.uid); } catch (e) { if (isPerm(e)) { $('#rulesWarn').hidden = false; return null; } throw e; }
-  if (!t) {
-    t = {name:'المدير', username:ME.email, active:true, isAdmin:true, code:'t', classes:DEFAULT_CLASSES.slice()};
-    try { await API.setTeacherDoc(ME.uid, t); } catch (e) { if (isPerm(e)) { $('#rulesWarn').hidden = false; return t; } throw e; }
-  }
-  if (!t.migratedV3) {
-    try {
-      const uid = ME.uid;
-      const [st, ls, lf, sb] = await Promise.all([API.listAll('students'), API.listAll('lessons'), API.listAll('lessonFiles'), API.listAll('submissions')]);
-      const jobs = [];
-      st.filter(s => !s.teacherId).forEach(s => jobs.push(API.patchDoc('students', s.id, {teacherId:uid})));
-      ls.filter(l => !l.teacherId).forEach(l => jobs.push(API.patchDoc('lessons', l.id, {teacherId:uid, teacherName:t.name, lessonKey:l.id})));
-      lf.filter(f => !f.teacherId).forEach(f => jobs.push(API.patchDoc('lessonFiles', f.id, {teacherId:uid})));
-      sb.filter(s => !s.teacherId).forEach(s => jobs.push(API.patchDoc('submissions', s.id, {teacherId:uid})));
-      await Promise.all(jobs);
-      await API.setTeacherDoc(ME.uid, {migratedV3:true});
-      t.migratedV3 = true;
-      if (jobs.length) toast('نُقلت بياناتك السابقة إلى حسابك ✓');
-    } catch (e) { console.error(e); if (isPerm(e)) $('#rulesWarn').hidden = false; }
-  }
-  return t;
-}
-async function openTeacher() {
-  showScreen('scrTeacher');
-  $('#tWho').textContent = '👤 ' + (ME.name || '') + (isAdmin() ? ' (المدير)' : '');
-  $('#tHead').textContent = isAdmin() ? '📖 استعداد · لوحة المدير' : '📖 استعداد · لوحة المعلم';
-  $$('.adminOnly').forEach(e => e.hidden = !isAdmin());
-  if (isAdmin()) { const t = await ensureAdmin(); if (t) Object.assign(ME, {tdoc:t, name:t.name || 'المدير'}); }
-  await switchView(ME.uid, true);
-  tTab(isAdmin() ? 'teachers' : 'results');
-  if (isAdmin()) loadTeachers();
-}
-async function switchView(uid, silent) {
-  TD.view = uid; TD.libLoaded = false; TD.library = [];
-  try { TD.vt = uid === ME.uid && !isAdmin() ? ME : (await API.getTeacher(uid)) || {classes:DEFAULT_CLASSES.slice(), name:ME.name}; }
-  catch (e) { TD.vt = {classes:DEFAULT_CLASSES.slice(), name:ME.name}; }
-  const other = uid !== ME.uid;
-  $('#viewAs').hidden = !other;
-  if (other) $('#viewAsTxt').textContent = '👁 تشاهد صفحة المعلم: ' + (TD.vt.name || '') + ' — أي إضافة تتم الآن تكون باسمه';
-  fillClassSelects(); renderClassChips();
-  await loadTeacherData();
-  if (!silent) { tTab('results'); window.scrollTo({top:0, behavior:'smooth'}); }
-}
-function fillClassSelects() {
-  const C = myClasses(), opts = C.map(c => `<option>${esc(c)}</option>`).join('');
-  $('#rClass').innerHTML = '<option value="">كل الشعب</option>' + opts;
-  $('#sClsF').innerHTML = '<option value="">كل الشعب</option>' + opts;
-  ['bCls', 'oCls'].forEach(id => { const el = $('#' + id), v = el.value; el.innerHTML = '<option value="">— الشعبة —</option>' + opts; el.value = C.includes(v) ? v : ''; });
-  if (!$('#bCls').value) { $('#bulkCard').hidden = true; $('#oneCard').hidden = true; }
-}
-async function loadTeacherData() {
-  try {
-    const [st, ls] = await Promise.all([API.listStudents(TD.view), API.listLessons({teacherId:TD.view})]);
-    TD.students = st; TD.lessons = ls.sort(byOrder);
-  } catch (e) { console.error(e); if (isPerm(e)) $('#rulesWarn').hidden = false; toast('تعذّر تحميل البيانات: ' + errMsg(e)); }
-  const tracked = TD.lessons.filter(l => l.tracked !== false);
-  if (!tracked.find(l => l.id === TD.lid)) TD.lid = tracked.length ? tracked[0].id : '';
-  $('#rLesson').innerHTML = tracked.length ? tracked.map(l => `<option value="${l.id}" ${l.id === TD.lid ? 'selected' : ''}>${esc((l.icon || '') + ' ' + l.title)}${l.visible === false ? ' (مخفي)' : ''}</option>`).join('') : '<option value="">— لا توجد دروس —</option>';
-  renderLessons(); renderStudents(); renderSetupTab();
-  await loadResults();
-}
-async function loadResults() {
-  TD.lid = $('#rLesson').value; TD.subs = []; TD.grades = {};
-  if (TD.lid) {
-    $('#resTable').innerHTML = '<p>⏳ جارٍ التحميل…</p>';
-    try { TD.subs = await API.listSubmissions(TD.lid, TD.view); } catch (e) { console.error(e); toast('تعذّر تحميل النتائج: ' + errMsg(e)); }
-  }
-  renderResults();
-}
-function tTab(t) {
-  $$('#tTabs button').forEach(b => b.classList.toggle('on', b.dataset.t === t));
-  $$('.tview').forEach(v => v.hidden = v.id !== 'tv-' + t);
-  if (t === 'lessons' && !TD.libLoaded) loadLibrary();
-}
-const curLesson = () => TD.lessons.find(l => l.id === TD.lid);
-function bestOf(uid) {
-  const l = TD.subs.filter(s => s.uid === uid); if (!l.length) return null;
-  const best = l.reduce((m, s) => ((+s.auto || 0) > (+m.auto || 0) || ((+s.auto || 0) === (+m.auto || 0) && s.at > m.at)) ? s : m);
-  return {best, count:l.length, all:l.slice().sort((a, b) => b.at - a.at)};
-}
-function resultRows() {
-  const f = $('#rClass').value, L = curLesson();
-  return TD.students.filter(s => s.active !== false && (!f || s.cls === f) && (!L || !L.classes || !L.classes.length || L.classes.includes(s.cls))).sort(byClsName)
-    .map(s => { const b = bestOf(s.uid); return {s, b, total:b ? (+b.best.auto || 0) : null}; });
-}
-function renderResults() {
-  const L = curLesson();
-  if (!L) { $('#rStats').innerHTML = ''; $('#resTable').innerHTML = '<p>لا توجد دروس بعد. ارفع أول درس من تبويب «📚 الدروس».</p>'; return; }
-  const comps = L.components || [], tMax = +L.autoMax || 1;
-  const R = resultRows(), sent = R.filter(r => r.b);
-  const avg = sent.length ? (sent.reduce((a, r) => a + r.total, 0) / sent.length).toFixed(1) : '—';
-  const weak = sent.filter(r => r.total / tMax < .6).length;
-  $('#rStats').innerHTML = `<div class="stat"><b>${R.length}</b>طالبًا</div><div class="stat"><b style="color:var(--green)">${sent.length}</b>أرسلوا</div><div class="stat"><b style="color:var(--orange)">${R.length - sent.length}</b>لم يرسلوا</div><div class="stat"><b>${avg}</b>متوسط الدرجة /${tMax}</div><div class="stat"><b style="color:var(--red)">${weak}</b>يحتاجون دعمًا</div>`;
-  if (!TD.students.length) { $('#resTable').innerHTML = '<p>لا يوجد طلاب بعد. أضف الطلاب من تبويب «👥 الطلاب والصفوف».</p>'; return; }
-  const ncol = 5 + comps.length + 3;
-  $('#resTable').innerHTML = `<table><tr><th>#</th><th>الاسم</th><th>الشعبة</th><th>المحاولات</th><th>آخر إرسال</th>${comps.map(c => `<th>${esc(c.label)} /${c.max}</th>`).join('')}<th>المجموع /${tMax}</th><th>المستوى</th><th></th></tr>` +
-    R.map((r, i) => {
-      if (!r.b) return `<tr class="nosub"><td>${i + 1}</td><td>${esc(r.s.name)}</td><td>${esc(r.s.cls)}</td><td colspan="${ncol - 3}">لم يرسل بعد</td></tr>`;
-      const sc = r.b.best.scores || {}, l = levelPct(r.total / tMax);
-      return `<tr><td>${i + 1}</td><td><b>${esc(r.s.name)}</b></td><td>${esc(r.s.cls)}</td><td>${r.b.count}</td><td>${fmtDate(r.b.all[0].at)}</td>
-        ${comps.map(c => `<td>${esc(sc[c.key] ?? '')}</td>`).join('')}<td><b>${r.total}</b></td><td><span class="lvl ${l[0]}">${l[1]}</span></td>
-        <td><button class="btn sm ghost" onclick="showDetails('${r.s.uid}')">تفاصيل</button></td></tr>`;
-    }).join('') + '</table>';
-}
-function closeModal() { $('#modalRoot').innerHTML = ''; }
-function openModal(html) { $('#modalRoot').innerHTML = `<div class="modal" onclick="if(event.target===this)closeModal()"><div class="box"><button class="btn sm ghost x" onclick="closeModal()">✕</button>${html}</div></div>`; }
-function showDetails(uid) {
-  const s = TD.students.find(x => x.uid === uid), b = bestOf(uid), L = curLesson(); if (!s || !b || !L) return;
-  const comps = L.components || [];
-  openModal(`<h3 style="margin-top:0">${esc(s.name)} – ${esc(s.cls)}</h3><p style="margin-top:0;color:var(--muted)">${esc(L.title)}</p>` + b.all.map(a => {
-    const sc = a.scores || {};
-    return `<div class="card" style="margin:8px 0"><b>المحاولة ${a.attempt || ''}</b> · ${fmtDate(a.at)} · الدرجة: <b>${a.auto} / ${L.autoMax || ''}</b> ${a === b.best ? '<span class="chip done">الأفضل</span>' : ''}
-      <div style="font-size:20px">${comps.map(c => `${esc(c.label)} ${esc(sc[c.key] ?? '—')}/${c.max}`).join(' · ')}</div>
-      ${a.written ? `<div class="note">${esc(a.written)}</div>` : ''}
-      ${Object.keys(a.extra || {}).length ? `<div style="font-size:20px">${Object.entries(a.extra).map(([k, v]) => `${esc(k)}: <b>${esc(v)}</b>`).join(' · ')}</div>` : ''}
-      ${(a.obj || []).length ? `<div style="font-size:20px">الأهداف: ${a.obj.map(o => (o.ok ? '✅ ' : '⚠️ ') + esc(o.label)).join(' · ')}</div>` : ''}</div>`;
-  }).join(''));
-}
-function exportResults() {
-  const L = curLesson(); if (!L) return;
-  const comps = L.components || [], tMax = +L.autoMax || 1;
-  const q = v => '"' + String(v ?? '').replace(/"/g, '""') + '"';
-  const extraKeys = [...new Set(TD.subs.flatMap(s => Object.keys(s.extra || {})))];
-  const head = ['الاسم','الشعبة','اسم المستخدم','المحاولات','آخر إرسال'].concat(comps.map(c => c.label + ' /' + c.max), ['المجموع /' + tMax, 'المستوى'], extraKeys);
-  const rows = [head.map(q).join(',')].concat(resultRows().map(r => {
-    if (!r.b) return [r.s.name, r.s.cls, r.s.username, 0, 'لم يرسل'].map(q).join(',');
-    const a = r.b.best, sc = a.scores || {};
-    return [r.s.name, r.s.cls, r.s.username, r.b.count, fmtDate(r.b.all[0].at)].concat(comps.map(c => sc[c.key]), [r.total, levelPct(r.total / tMax)[1]], extraKeys.map(k => (a.extra || {})[k])).map(q).join(',');
-  }));
-  saveFile('نتائج_' + (L.title || 'درس').replace(/\s+/g, '_') + '.csv', '﻿' + rows.join('\r\n'), 'text/csv;charset=utf-8');
-}
-function printHtml(html) {
-  $('#printArea').innerHTML = html; document.body.classList.add('printing');
-  const done = () => { document.body.classList.remove('printing'); window.removeEventListener('afterprint', done); };
-  window.addEventListener('afterprint', done); setTimeout(() => window.print(), 50); setTimeout(done, 60000);
-}
-function printResults() {
-  const L = curLesson(); if (!L) return;
-  const t = $('#resTable').cloneNode(true); t.querySelectorAll('button').forEach(b => b.remove());
-  printHtml(`<h2>منصة استعداد – ${esc(TD.vt && TD.vt.name || '')} – نتائج درس ${esc(L.title)} ${$('#rClass').value ? '– ' + esc($('#rClass').value) : ''}</h2>` + t.innerHTML);
-}
-
-/* ---------- المعلمون (للمدير) ---------- */
-async function loadTeachers() {
-  $('#tcTable').innerHTML = '<p>⏳ جارٍ التحميل…</p>';
-  try {
-    const [tc, st, ls] = await Promise.all([API.listTeachers(), API.listStudents(null), API.listLessons(null)]);
-    TD.teachers = tc;
-    const cnt = (arr, uid) => arr.filter(x => x.teacherId === uid).length;
-    const L = tc.slice().sort((a, b) => (b.isAdmin ? 1 : 0) - (a.isAdmin ? 1 : 0) || (a.name || '').localeCompare(b.name || '', 'ar'));
-    $('#tcTable').innerHTML = `<table><tr><th>المعلم</th><th>اسم المستخدم</th><th>كلمة المرور</th><th>الشعب</th><th>الطلاب</th><th>الدروس</th><th>الحالة</th><th></th></tr>` + L.map(t => `<tr>
-      <td><b>${esc(t.name)}</b>${t.isAdmin ? ' <span class="chip done">المدير</span>' : ''}</td>
-      <td><code class="ltr">${esc(t.username)}</code></td><td>${t.isAdmin ? '—' : `<code class="ltr">${esc(t.password || '')}</code>`}</td>
-      <td style="font-size:18px">${(t.classes || []).map(esc).join('، ') || '—'}</td><td>${cnt(st, t.uid)}</td><td>${cnt(ls, t.uid)}</td>
-      <td>${t.active === false ? '<span class="chip off">موقوف</span>' : '<span class="chip done">فعّال</span>'}</td>
-      <td><div class="row" style="gap:4px"><button class="btn sm" onclick="switchView('${t.uid}')">📂 فتح صفحته</button>${t.isAdmin ? '' : `<button class="btn sm ghost" onclick="copyTeacherCreds('${t.uid}')">📋 نسخ</button><button class="btn sm ghost" onclick="toggleTeacher('${t.uid}')">${t.active === false ? '✅ تفعيل' : '⛔ إيقاف'}</button>`}</div></td></tr>`).join('') + '</table>';
-  } catch (e) { console.error(e); if (isPerm(e)) $('#rulesWarn').hidden = false; $('#tcTable').innerHTML = '<p>تعذّر تحميل المعلمين: ' + esc(errMsg(e)) + '</p>'; }
-}
-const teacherCred = t => `السلام عليكم أ. ${t.name} 🌿\nتم إنشاء حسابك في منصة استعداد.\n🔗 الرابط: ${siteUrl()}\nاختر «👨‍🏫 أنا معلم»، ثم ادخل بـ:\nاسم المستخدم: ${t.username}\nكلمة المرور: ${t.password}\n\nبعد الدخول: أضف صفوفك وشعبك وطلابك من تبويب «👥 الطلاب والصفوف»، وارفع دروسك من «📚 الدروس».`;
-function copyTeacherCreds(uid) { const t = TD.teachers.find(x => x.uid === uid); if (t) copyText(teacherCred(t)); }
-async function toggleTeacher(uid) {
-  const t = TD.teachers.find(x => x.uid === uid); if (!t) return;
-  const to = t.active === false;
-  if (!to && !confirm(`إيقاف حساب المعلم ${t.name}؟ لن يستطيع الدخول، وتبقى بياناته وطلابه كما هي.`)) return;
-  try { await API.setTeacherDoc(uid, {active:to}); toast(to ? 'فُعّل الحساب ✓' : 'أُوقف الحساب'); loadTeachers(); } catch (e) { toast('تعذّر: ' + errMsg(e)); }
-}
-async function addTeacher() {
-  const name = $('#ntName').value.trim(); let username = $('#ntUser').value.trim().toLowerCase();
-  if (!name) return toast('اكتب اسم المعلم');
-  if (username && !/^[a-z0-9][a-z0-9._-]{2,30}$/.test(username)) return toast('اسم المستخدم: حروف إنجليزية صغيرة وأرقام فقط (3 أحرف على الأقل)');
-  const b = $('#ntBtn'); b.disabled = true;
-  try {
-    const n = TD.teachers.length + 1;
-    const codes = new Set(TD.teachers.map(t => t.code));
-    let code = 'm' + n; let k = n; while (codes.has(code)) code = 'm' + (++k);
-    if (!username) { let i = n; username = 'teacher' + String(i).padStart(2, '0'); while (TD.teachers.some(t => t.username === username)) username = 'teacher' + String(++i).padStart(2, '0'); }
-    const password = String(Math.floor(10000000 + Math.random() * 90000000));
-    const data = {name, username, password, code, active:true, classes:[], createdBy:ME.uid};
-    let uid;
-    try { uid = await API.createTeacher(username, password, data); }
-    catch (e) { if (String(e.code || '').includes('email-already-in-use')) { toast('اسم المستخدم مستخدم من قبل. اختر اسمًا آخر.'); b.disabled = false; return; } throw e; }
-    const rec = Object.assign({uid}, data); TD.teachers.push(rec);
-    $('#ntName').value = ''; $('#ntUser').value = '';
-    window._newT = rec;
-    $('#newTeacher').innerHTML = `<div class="card" style="border-inline-start:6px solid var(--green)"><h3 style="margin-top:0">✅ أُنشئ حساب المعلم ${esc(name)}</h3>
-      <p>اسم المستخدم: <code class="ltr">${esc(username)}</code> · كلمة المرور: <code class="ltr">${esc(password)}</code></p>
-      <div class="row"><button class="btn sm" onclick="copyText(teacherCred(window._newT))">📋 نسخ رسالة الدخول</button><button class="btn sm ghost" onclick="$('#newTeacher').innerHTML=''">إخفاء</button></div></div>`;
-    loadTeachers();
-  } catch (e) { console.error(e); toast('تعذّر إنشاء الحساب: ' + errMsg(e)); }
-  b.disabled = false;
-}
-
-/* ---------- الصفوف والشعب ---------- */
-function renderClassChips() {
-  if (!$('#clsRows').children.length) addClsRow();
-  const C = myClasses();
-  const cur = $('#bCls').value || $('#oCls').value, cnt = c => (TD.students || []).filter(s => s.cls === c && s.active !== false).length;
-  $('#clsChips').innerHTML = C.length ? '<div class="clslist">' + C.map((c, i) => `<div class="clsitem${c === cur && (!$('#bulkCard').hidden || !$('#oneCard').hidden) ? ' on' : ''}"><span class="cname">🏫 ${esc(c)}</span><span class="ccount">👥 الطلاب: ${cnt(c)}</span>
-    <button class="btn sm" onclick="openAdd(${i},'one')">👤 إضافة طالب</button><button class="btn sm alt" onclick="openAdd(${i},'bulk')">👥 إضافة دفعة</button><button class="btn sm ghost" title="حذف الشعبة" onclick="removeClass(${i})">✕</button></div>`).join('') + '</div>' : '<p style="margin:0;color:var(--muted)">لا توجد شعب بعد. أضف أول شعبة من القوائم أدناه.</p>';
-}
-async function saveClasses(C) {
-  try { await API.setTeacherDoc(TD.view, {classes:C}); TD.vt.classes = C; if (TD.view === ME.uid && ME.role === 'teacher') ME.classes = C; renderClassChips(); fillClassSelects(); renderStudents(); return true; }
-  catch (e) { console.error(e); toast('تعذّر حفظ الشعب: ' + errMsg(e)); return false; }
-}
-const STAGES = {
-  'ابتدائي':[['الأول','أول'], ['الثاني','ثاني'], ['الثالث','ثالث'], ['الرابع','رابع'], ['الخامس','خامس'], ['السادس','سادس']],
-  'إعدادي':[['السابع','سابع'], ['الثامن','ثامن'], ['التاسع','تاسع']],
-  'ثانوي':[['العاشر','عاشر'], ['الحادي عشر','حادي عشر '], ['الثاني عشر','ثاني عشر ']]
-};
-function addClsRow() {
-  const box = $('#clsRows'), d = document.createElement('div');
-  d.className = 'clsrow'; d.style.cssText = 'display:grid;grid-template-columns:1fr 1.3fr .8fr auto;gap:8px;margin:6px 0;align-items:end;max-width:760px';
-  d.innerHTML = `<label>المرحلة<select class="crSt"><option value="">— اختر —</option>${Object.keys(STAGES).map(k => `<option>${k}</option>`).join('')}</select></label>
-    <label>المستوى<select class="crLv" disabled><option value="">—</option></select></label>
-    <label>الشعبة<select class="crN"><option value="">—</option>${Array.from({length:15}, (_, i) => `<option>${i + 1}</option>`).join('')}</select></label>
-    <button class="btn ghost" title="حذف هذا الصف">✕</button>`;
-  const st = d.querySelector('.crSt'), lv = d.querySelector('.crLv');
-  st.onchange = () => { const L = STAGES[st.value]; lv.disabled = !L; lv.innerHTML = L ? '<option value="">— اختر —</option>' + L.map(([n, sh]) => `<option value="${sh}">${n}</option>`).join('') : '<option value="">—</option>'; };
-  d.querySelector('button').onclick = () => { d.remove(); if (!$('#clsRows').children.length) addClsRow(); };
-  box.appendChild(d);
-}
-async function addClass() {
-  const rows = $$('#clsRows .clsrow'), C = myClasses().slice(), added = [], dup = [];
-  let incomplete = 0;
-  rows.forEach(r => {
-    const lv = r.querySelector('.crLv').value, n = r.querySelector('.crN').value, st = r.querySelector('.crSt').value;
-    if (!st && !lv && !n) return;
-    if (!lv || !n) { incomplete++; return; }
-    const v = lv + n;
-    if (C.includes(v)) dup.push(v); else { C.push(v); added.push(v); }
-  });
-  if (incomplete) return toast('أكمل اختيار المرحلة والمستوى والشعبة في كل صف');
-  if (!added.length) return toast(dup.length ? 'هذه الشعب موجودة: ' + dup.join('، ') : 'اختر المرحلة والمستوى والشعبة أولًا');
-  if (await saveClasses(C)) { $('#clsRows').innerHTML = ''; addClsRow(); toast('أُضيفت: ' + added.join('، ') + (dup.length ? ' (وكانت موجودة: ' + dup.join('، ') + ')' : '') + ' ✓'); }
-}
-
-function openAdd(i, kind) {
-  const c = myClasses()[i]; if (!c) return;
-  $('#bCls').value = c; $('#oCls').value = c; $$('.addClsName').forEach(e => e.textContent = c);
-  $('#bulkCard').hidden = kind !== 'bulk'; $('#oneCard').hidden = kind !== 'one';
-  renderClassChips();
-  const card = $(kind === 'bulk' ? '#bulkCard' : '#oneCard'); card.scrollIntoView({behavior:'smooth', block:'center'});
-  setTimeout(() => $(kind === 'bulk' ? '#bNames' : '#oName').focus(), 350);
-}
-function closeAdd() { $('#bulkCard').hidden = true; $('#oneCard').hidden = true; renderClassChips(); }
-async function removeClass(i) {
-  const C = myClasses().slice(), c = C[i];
-  const n = TD.students.filter(s => s.cls === c && s.active !== false).length;
-  if (!confirm(n ? `في الشعبة «${c}» ${n} طالبًا. حذف الشعبة من القائمة لا يحذف الطلاب. متابعة؟` : `حذف الشعبة «${c}»؟`)) return;
-  C.splice(i, 1); saveClasses(C);
-}
-
-/* ---------- الدروس ---------- */
-const LMAX = 950000;
-function parseManifest(html) {
-  const m = html.match(/<script[^>]*id=["']iste3dad-lesson["'][^>]*>([\s\S]*?)<\/script>/i);
-  if (!m) return null; try { return JSON.parse(m[1]); } catch (e) { return null; }
-}
-let PENDING = null;
-function setupDrop() {
-  const d = $('#drop'), f = $('#lfFile');
-  f.onchange = () => { if (f.files[0]) readLessonFile(f.files[0], null); f.value = ''; };
-  ['dragenter', 'dragover'].forEach(ev => d.addEventListener(ev, e => { e.preventDefault(); d.classList.add('over'); }));
-  ['dragleave', 'drop'].forEach(ev => d.addEventListener(ev, e => { e.preventDefault(); d.classList.remove('over'); }));
-  d.addEventListener('drop', e => { const file = e.dataTransfer.files[0]; if (file) readLessonFile(file, null); });
-}
-function findOwnByKey(key) { return key && TD.lessons.find(l => (l.lessonKey || l.id) === key || l.id === key || l.id === TD.view + '__' + key); }
-function readLessonFile(file, forceId) {
-  if (!/\.html?$/i.test(file.name) && file.type !== 'text/html') return toast('اختر ملفًا بصيغة HTML');
-  const r = new FileReader();
-  r.onload = () => {
-    const html = String(r.result || ''), bytes = new Blob([html]).size;
-    if (bytes > LMAX) return toast('حجم الملف كبير جدًا (' + Math.round(bytes / 1024) + ' ك.ب). الحد الأقصى نحو 900 ك.ب.', 5000);
-    const man = parseManifest(html), key = man && slug(man.id);
-    const existing = forceId ? TD.lessons.find(l => l.id === forceId) : findOwnByKey(key);
-    PENDING = {html, bytes, man, key, existing, fileName:file.name};
-    renderUploadForm();
-  };
-  r.onerror = () => toast('تعذّر قراءة الملف');
-  r.readAsText(file, 'utf-8');
-}
-function classChecks(cls, selected) { const C = myClasses(); return C.length ? `<div class="checks">${C.map(c => `<label><input type="checkbox" class="${cls}" value="${esc(c)}" ${!selected || !selected.length || selected.includes(c) ? 'checked' : ''}> ${esc(c)}</label>`).join('')}</div>` : '<p class="note" style="margin:4px 0">لم تُضف شعبًا بعد. أضفها من تبويب «👥 الطلاب والصفوف»؛ وإلى ذلك الحين يظهر الدرس لكل طلابك.</p>'; }
-function renderUploadForm() {
-  const P = PENDING; if (!P) { $('#lfForm').innerHTML = ''; return; }
-  const m = P.man || {}, ex = P.existing || {};
-  const tTag = (P.html.match(/<title[^>]*>([^<]*)<\/title>/i) || [])[1];
-  const title = ex.title || m.title || (tTag && tTag.trim()) || P.fileName.replace(/\.html?$/i, ''), sub = ex.sub || m.sub || '', icon = ex.icon || m.icon || '📘';
-  $('#lfForm').innerHTML = `<div class="card" style="border-inline-start:6px solid ${P.existing ? 'var(--orange)' : 'var(--green)'}">
-    <b>📄 ${esc(P.fileName)}</b> · ${Math.round(P.bytes / 1024)} ك.ب
-    ${P.man ? `<div class="chip done">✅ درس متوافق مع المنصة: ${(m.components || []).length} أنشطة · ${m.autoMax || 0} درجة</div>` : `<div class="note">⚠️ هذا الملف لا يحتوي على بطاقة تعريف «استعداد»، فسيُرفع <b>درسًا للاطلاع فقط</b> ولن تظهر نتائجه.</div>`}
-    ${P.existing ? `<div class="note">🔄 لديك درس بالمعرّف نفسه: <b>${esc(ex.title)}</b>. سيُستبدل ملفه، <b>وتبقى نتائج الطلاب كما هي</b>.</div>` : ''}
-    <div class="row" style="margin-top:8px"><label style="flex:3 1 260px">عنوان الدرس<input type="text" id="lfTitle" value="${esc(title)}"></label><label style="flex:1 1 90px">الأيقونة<input type="text" id="lfIcon" value="${esc(icon)}" maxlength="4"></label></div>
-    <label>وصف قصير<input type="text" id="lfSub" value="${esc(sub)}"></label>
-    <div style="margin-top:8px">يظهر لشعب: ${classChecks('lfCls', ex.classes)}</div>
-    <label class="row" style="gap:6px;margin-top:6px;font-size:21px"><input type="checkbox" id="lfVis" style="width:20px;height:20px" ${ex.visible === false ? '' : 'checked'}> يظهر للطلاب الآن</label>
-    <div class="row" style="margin-top:10px"><button class="btn alt" id="lfBtn" onclick="uploadLesson()">${P.existing ? '🔄 تحديث الدرس' : '⬆ رفع الدرس'}</button><button class="btn ghost" onclick="PENDING=null;renderUploadForm()">إلغاء</button></div></div>`;
-}
-function buildMeta(m, extra) {
-  return Object.assign({tracked:!!m, components:m && Array.isArray(m.components) ? m.components.map(c => ({key:String(c.key), label:String(c.label || c.key), max:+c.max || 0})) : [],
-    autoMax:m ? +m.autoMax || 0 : 0, written:m && m.written ? {max:+m.written.max || 0, label:String(m.written.label || ''), question:String(m.written.question || '')} : {max:0}, version:(m && m.version) || 1}, extra);
-}
-async function uploadLesson() {
-  const P = PENDING; if (!P) return;
-  const title = $('#lfTitle').value.trim(); if (!title) return toast('اكتب عنوان الدرس');
-  const classes = $$('.lfCls').filter(c => c.checked).map(c => c.value);
-  if (myClasses().length && !classes.length) return toast('اختر شعبة واحدة على الأقل');
-  const id = P.existing ? P.existing.id : TD.view + '__' + (P.key || ('lesson-' + Date.now().toString(36)));
-  const meta = buildMeta(P.man, {title, sub:$('#lfSub').value.trim(), icon:$('#lfIcon').value.trim() || '📘', classes, visible:$('#lfVis').checked,
-    teacherId:TD.view, teacherName:(TD.vt && TD.vt.name) || '', lessonKey:P.key || id, size:P.bytes, fileName:P.fileName});
-  if (!P.existing) { meta.order = TD.lessons.length ? Math.max(...TD.lessons.map(l => l.order ?? 0)) + 1 : 1; meta.shared = false; }
-  const b = $('#lfBtn'); b.disabled = true; b.textContent = '⏳ جارٍ الرفع…';
-  try {
-    await API.saveLesson(id, meta, P.html);
-    toast(P.existing ? 'حُدّث الدرس ✓' : 'رُفع الدرس ✓');
-    PENDING = null; renderUploadForm(); await loadTeacherData(); tTab('lessons');
-  } catch (e) { console.error(e); if (isPerm(e)) $('#rulesWarn').hidden = false; toast('تعذّر الرفع: ' + errMsg(e), 6000); b.disabled = false; b.textContent = 'حاول مرة أخرى'; }
-}
-function renderLessons() {
-  const L = TD.lessons;
-  if (!L.length) { $('#lsTable').innerHTML = '<p>لا توجد دروس بعد. ارفع درسًا من الأعلى، أو انسخ درسًا من المكتبة.</p>'; return; }
-  const all = myClasses();
-  $('#lsTable').innerHTML = `<table><tr><th>الترتيب</th><th>الدرس</th><th>الشعب</th><th>الحالة</th><th>آخر تحديث</th><th></th></tr>` + L.map((l, i) => `<tr>
-    <td style="white-space:nowrap"><button class="btn sm ghost" ${i === 0 ? 'disabled' : ''} onclick="moveLesson('${l.id}',-1)">▲</button> <button class="btn sm ghost" ${i === L.length - 1 ? 'disabled' : ''} onclick="moveLesson('${l.id}',1)">▼</button></td>
-    <td><b>${esc(l.icon || '📘')} ${esc(l.title)}</b><br><small style="color:var(--muted)">${esc(l.sub || '')}${l.tracked === false ? ' · للاطلاع' : ''}</small></td>
-    <td style="font-size:18px">${!l.classes || !l.classes.length || (all.length && all.every(c => l.classes.includes(c))) ? 'كل الشعب' : l.classes.map(esc).join('، ')}</td>
-    <td>${l.visible === false ? '<span class="chip off">مخفي</span>' : '<span class="chip done">ظاهر</span>'}${l.shared ? ' <span class="chip new">🔗 مشارك</span>' : ''}</td>
-    <td style="font-size:18px">${l.updatedAt ? fmtDate(l.updatedAt) : ''}</td>
-    <td><div class="row" style="gap:4px">
-      <button class="btn sm" onclick="openLesson('${l.id}','preview')">👁 معاينة</button>
-      <button class="btn sm ghost" onclick="toggleLesson('${l.id}')">${l.visible === false ? '✅ إظهار' : '🙈 إخفاء'}</button>
-      <button class="btn sm ghost" onclick="toggleShare('${l.id}')">${l.shared ? '🔒 إلغاء المشاركة' : '🔗 مشاركة'}</button>
-      <button class="btn sm ghost" onclick="editLesson('${l.id}')">✏️ تعديل</button>
-      <button class="btn sm ghost" onclick="replaceLesson('${l.id}')">🔄 استبدال الملف</button>
-      <button class="btn sm ghost" onclick="downloadLesson('${l.id}')">⬇ تنزيل</button>
-      <button class="btn sm red" onclick="deleteLesson('${l.id}')">🗑 حذف</button></div></td></tr>`).join('') + '</table>';
-}
-async function patchLesson(id, patch, msg) {
-  try { await API.saveLesson(id, Object.assign({teacherId:TD.view}, patch), null); Object.assign(TD.lessons.find(l => l.id === id) || {}, patch); TD.lessons.sort(byOrder); renderLessons(); if (msg) toast(msg); }
-  catch (e) { console.error(e); toast('تعذّر الحفظ: ' + errMsg(e)); }
-}
-function toggleLesson(id) { const l = TD.lessons.find(x => x.id === id); patchLesson(id, {visible:l.visible === false}, l.visible === false ? 'أصبح الدرس ظاهرًا للطلاب ✓' : 'أُخفي الدرس عن الطلاب'); }
-function toggleShare(id) { const l = TD.lessons.find(x => x.id === id); patchLesson(id, {shared:!l.shared, teacherName:(TD.vt && TD.vt.name) || ''}, !l.shared ? 'أصبح الدرس في مكتبة الدروس المشتركة ✓' : 'أُزيل الدرس من المكتبة'); }
-async function moveLesson(id, dir) {
-  const L = TD.lessons, i = L.findIndex(l => l.id === id), j = i + dir; if (j < 0 || j >= L.length) return;
-  L.forEach((l, k) => l.order = k + 1); [L[i].order, L[j].order] = [L[j].order, L[i].order];
-  try { await Promise.all(L.map(l => API.saveLesson(l.id, {order:l.order, teacherId:TD.view}, null))); L.sort(byOrder); renderLessons(); } catch (e) { toast('تعذّر الحفظ: ' + errMsg(e)); }
-}
-function editLesson(id) {
-  const l = TD.lessons.find(x => x.id === id); if (!l) return;
-  openModal(`<h3 style="margin-top:0">✏️ تعديل بيانات الدرس</h3>
-    <label>العنوان<input type="text" id="edTitle" value="${esc(l.title)}"></label>
-    <div class="row"><label style="flex:3 1 260px">وصف قصير<input type="text" id="edSub" value="${esc(l.sub || '')}"></label><label style="flex:1 1 90px">الأيقونة<input type="text" id="edIcon" value="${esc(l.icon || '📘')}" maxlength="4"></label></div>
-    <div style="margin-top:8px">يظهر لشعب: ${classChecks('edCls', l.classes)}</div>
-    <div class="row" style="margin-top:12px"><button class="btn" onclick="saveEdit('${id}')">حفظ</button><button class="btn ghost" onclick="closeModal()">إلغاء</button></div>`);
-}
-function saveEdit(id) {
-  const title = $('#edTitle').value.trim(), classes = $$('.edCls').filter(c => c.checked).map(c => c.value);
-  if (!title) return toast('اكتب العنوان'); if (myClasses().length && !classes.length) return toast('اختر شعبة واحدة على الأقل');
-  closeModal(); patchLesson(id, {title, sub:$('#edSub').value.trim(), icon:$('#edIcon').value.trim() || '📘', classes}, 'حُفظ التعديل ✓');
-}
-function replaceLesson(id) {
-  const inp = document.createElement('input'); inp.type = 'file'; inp.accept = '.html,.htm,text/html';
-  inp.onchange = () => { if (inp.files[0]) { readLessonFile(inp.files[0], id); window.scrollTo({top:0, behavior:'smooth'}); } };
-  inp.click();
-}
-async function downloadLesson(id) {
-  const l = TD.lessons.concat(TD.library).find(x => x.id === id); if (!l) return;
-  try { const h = await getLessonHtml(l); if (h) saveFile((l.fileName || (l.lessonKey || 'lesson') + '.html'), h, 'text/html;charset=utf-8'); } catch (e) { toast('تعذّر التنزيل: ' + errMsg(e)); }
-}
-async function deleteLesson(id) {
-  const l = TD.lessons.find(x => x.id === id); if (!l) return;
-  if (!confirm(`حذف درس «${l.title}»؟\nلن يراه الطلاب بعد الآن، وتبقى نتائجهم السابقة محفوظة.\n(لإخفائه مؤقتًا استخدم «إخفاء».)`)) return;
-  try { await API.deleteLesson(id); toast('حُذف الدرس'); await loadTeacherData(); } catch (e) { console.error(e); toast('تعذّر الحذف: ' + errMsg(e)); }
-}
-async function loadLibrary() {
-  TD.libLoaded = true;
-  $('#libTable').innerHTML = '<p>⏳ جارٍ التحميل…</p>';
-  try {
-    TD.library = (await API.listLessons({shared:true})).filter(l => l.teacherId !== TD.view).sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
-    if (!TD.library.length) { $('#libTable').innerHTML = '<p>لا توجد دروس مشتركة من زملائك بعد.</p>'; return; }
-    $('#libTable').innerHTML = `<table><tr><th>الدرس</th><th>المعلم</th><th>النوع</th><th></th></tr>` + TD.library.map(l => `<tr>
-      <td><b>${esc(l.icon || '📘')} ${esc(l.title)}</b><br><small style="color:var(--muted)">${esc(l.sub || '')}</small></td><td>${esc(l.teacherName || '')}</td>
-      <td style="font-size:18px">${l.tracked === false ? 'للاطلاع' : 'تفاعلي بدرجات'}</td>
-      <td><div class="row" style="gap:4px"><button class="btn sm ghost" onclick="openLesson('${l.id}','preview')">👁 معاينة</button><button class="btn sm alt" onclick="copyFromLibrary('${l.id}')">📥 نسخ إلى دروسي</button></div></td></tr>`).join('') + '</table>';
-  } catch (e) { console.error(e); if (isPerm(e)) $('#rulesWarn').hidden = false; $('#libTable').innerHTML = '<p>تعذّر تحميل المكتبة: ' + esc(errMsg(e)) + '</p>'; }
-}
-async function copyFromLibrary(id) {
-  const l = TD.library.find(x => x.id === id); if (!l) return;
-  const key = l.lessonKey || slug(l.title) || ('lesson-' + Date.now().toString(36));
-  const ex = findOwnByKey(key);
-  if (ex && !confirm(`لديك درس بالمعرّف نفسه («${ex.title}»). استبدال ملفه بنسخة المكتبة؟ تبقى نتائج طلابك كما هي.`)) return;
-  try {
-    const html = await getLessonHtml(l); if (!html) return toast('ملف الدرس غير موجود');
-    const nid = ex ? ex.id : TD.view + '__' + key;
-    const meta = buildMeta(parseManifest(html), {title:ex ? ex.title : l.title, sub:ex ? ex.sub : (l.sub || ''), icon:ex ? ex.icon : (l.icon || '📘'), classes:ex ? ex.classes : myClasses().slice(),
-      visible:ex ? ex.visible !== false : false, teacherId:TD.view, teacherName:(TD.vt && TD.vt.name) || '', lessonKey:key, size:new Blob([html]).size, fileName:l.fileName || '', copiedFrom:l.teacherName || ''});
-    if (!ex) { meta.order = TD.lessons.length ? Math.max(...TD.lessons.map(x => x.order ?? 0)) + 1 : 1; meta.shared = false; }
-    await API.saveLesson(nid, meta, html);
-    toast(ex ? 'حُدّث الدرس من المكتبة ✓' : 'نُسخ الدرس إلى دروسك ✓ (مخفي حتى تُظهره)', 4000);
-    await loadTeacherData();
-  } catch (e) { console.error(e); toast('تعذّر النسخ: ' + errMsg(e)); }
-}
-
-/* ---------- الطلاب والحسابات ---------- */
-function listStudentsView() {
-  const f = $('#sClsF').value, off = $('#sShowOff').checked;
-  return TD.students.filter(s => (!f || s.cls === f) && (off || s.active !== false)).sort(byClsName);
-}
-function renderStudents() {
-  try { renderClassChips(); } catch (e) {}
-  const L = listStudentsView();
-  if (!L.length) { $('#stTable').innerHTML = '<p>لا يوجد طلاب في هذه القائمة.</p>'; return; }
-  $('#stTable').innerHTML = `<table><tr><th>#</th><th>الاسم</th><th>الشعبة</th><th>اسم المستخدم</th><th>كلمة المرور</th><th>الحالة</th><th></th></tr>` +
-    L.map((s, i) => `<tr><td>${i + 1}</td><td>${esc(s.name)}</td><td>${esc(s.cls)}</td><td><code class="ltr">${esc(s.username)}</code></td><td><code class="ltr">${esc(s.password)}</code></td>
-      <td>${s.active === false ? '<span class="chip off">موقوف</span>' : '<span class="chip done">فعّال</span>'}</td>
-      <td><div class="row" style="gap:4px;flex-wrap:nowrap"><button class="btn sm ghost" onclick="copyCreds('${s.uid}')">📋 نسخ</button><button class="btn sm ghost" onclick="toggleActive('${s.uid}')">${s.active === false ? '✅ تفعيل' : '⛔ إيقاف'}</button></div></td></tr>`).join('') + '</table>';
-}
-const credText = s => `السلام عليكم يا ${s.name} 🌿\nرابط منصة استعداد: ${siteUrl()}\nاختر «🎒 أنا طالب»، ثم ادخل بـ:\nاسم المستخدم: ${s.username}\nكلمة المرور: ${s.password}`;
-function copyCreds(uid) { const s = TD.students.find(x => x.uid === uid); if (s) copyText(credText(s)); }
-function copyListCreds() { const L = listStudentsView().filter(s => s.active !== false); if (!L.length) return toast('القائمة فارغة'); copyText(L.map(s => `${s.name} (${s.cls})\nاسم المستخدم: ${s.username} · كلمة المرور: ${s.password}`).join('\n\n') + `\n\nرابط منصة استعداد: ${siteUrl()} ← اختر «🎒 أنا طالب»`); }
-function printCards(list) {
-  const L = list || listStudentsView().filter(s => s.active !== false); if (!L.length) return toast('القائمة فارغة');
-  printHtml(`<div class="pcards">${L.map(s => `<div class="pcard">📖 <b style="font-family:inherit">منصة استعداد</b> ← «أنا طالب»<br>الاسم: ${esc(s.name)} – ${esc(s.cls)}<br>الرابط: <b>${esc(siteUrl())}</b><br>اسم المستخدم: <b>${esc(s.username)}</b><br>كلمة المرور: <b>${esc(s.password)}</b></div>`).join('')}</div>`);
-}
-async function toggleActive(uid) {
-  const s = TD.students.find(x => x.uid === uid); if (!s) return;
-  const to = s.active === false;
-  if (!to && !confirm(`إيقاف حساب ${s.name}؟ لن يستطيع الدخول، وتبقى نتائجه محفوظة.`)) return;
-  try { await API.setStudent(uid, {active:to}); s.active = to; renderStudents(); renderResults(); toast(to ? 'فُعّل الحساب ✓' : 'أُوقف الحساب'); }
-  catch (e) { console.error(e); toast('تعذّر تعديل الحساب: ' + errMsg(e)); }
-}
-const genPass = () => String(Math.floor(100000 + Math.random() * 900000));
-function nextNum(prefix) { let m = 0; const re = new RegExp('^' + prefix.replace(/[-]/g, '\\-') + '(\\d+)$'); TD.students.forEach(s => { const r = re.exec(s.username || ''); if (r) m = Math.max(m, +r[1]); }); return m + 1; }
-async function createOne(name, cls) {
-  const code = (TD.vt && TD.vt.code) || 't', prefix = code + '-';
-  let n = nextNum(prefix);
-  for (let tries = 0; tries < 8; tries++) {
-    const username = prefix + String(n).padStart(3, '0'), password = genPass();
-    const data = {name, cls, username, password, active:true, teacherId:TD.view};
-    try { const uid = await API.createStudent(username, password, data); const rec = Object.assign({uid}, data); TD.students.push(rec); return rec; }
-    catch (e) {
-      const c = e && e.code || '';
-      if (c.includes('email-already-in-use')) { n++; continue; }
-      if (c.includes('too-many-requests')) { await sleep(5000 + tries * 3000); continue; }
-      throw e;
-    }
-  }
-  throw new Error('تعذّر إنشاء الحساب');
-}
-function showNewCreds(list) {
-  if (!list.length) return;
-  window._newCreds = list;
-  $('#newCreds').innerHTML = `<div class="card" style="border-inline-start:6px solid var(--green)"><h3 style="margin-top:0">✅ أُنشئت ${list.length} حسابات</h3>
-    <table><tr><th>الاسم</th><th>الشعبة</th><th>اسم المستخدم</th><th>كلمة المرور</th></tr>${list.map(s => `<tr><td>${esc(s.name)}</td><td>${esc(s.cls)}</td><td><code class="ltr">${esc(s.username)}</code></td><td><code class="ltr">${esc(s.password)}</code></td></tr>`).join('')}</table>
-    <div class="row" style="margin-top:8px"><button class="btn sm" onclick="copyText(window._newCreds.map(credText).join('\\n\\n'))">📋 نسخ رسائل الدخول</button><button class="btn sm ghost" onclick="printCards(window._newCreds)">🖨 طباعة البطاقات</button><button class="btn sm ghost" onclick="$('#newCreds').innerHTML=''">إخفاء</button></div></div>`;
-}
-async function addBulk() {
-  const cls = $('#bCls').value; if (!cls) return toast(myClasses().length ? 'اختر الشعبة أولًا' : 'أضف شعبة أولًا من «صفوفي وشعبي»');
-  let names = $('#bNames').value.split(/\n+/).map(x => x.replace(/^\s*\d+[\.\-\)]\s*/, '').trim()).filter(Boolean);
-  if (!names.length) return toast('الصق أسماء الطلاب أولًا');
-  const exist = new Set(TD.students.filter(s => s.cls === cls).map(s => s.name));
-  const dup = names.filter(n => exist.has(n)); names = names.filter(n => !exist.has(n));
-  if (dup.length && !confirm(`هذه الأسماء موجودة في ${cls} وسيتم تجاوزها:\n${dup.join('\n')}\n\nمتابعة؟`)) return;
-  if (!names.length) return toast('كل الأسماء موجودة مسبقًا');
-  const b = $('#bBtn'); b.disabled = true; const made = [], failed = [];
-  for (let i = 0; i < names.length; i++) {
-    $('#bProg').textContent = `⏳ ${i + 1} من ${names.length}: ${names[i]}`;
-    try { made.push(await createOne(names[i], cls)); } catch (e) { console.error(e); failed.push(names[i]); }
-    await sleep(250);
-  }
-  b.disabled = false; $('#bProg').textContent = failed.length ? `⚠️ تعذّر إنشاء: ${failed.join('، ')}` : '';
-  if (!failed.length) $('#bNames').value = '';
-  showNewCreds(made); renderStudents(); renderResults();
-}
-async function addOne() {
-  const name = $('#oName').value.trim(), cls = $('#oCls').value;
-  if (!name || !cls) return toast(myClasses().length ? 'اكتب الاسم واختر الشعبة' : 'أضف شعبة أولًا من «صفوفي وشعبي»');
-  if (TD.students.some(s => s.cls === cls && s.name === name) && !confirm('يوجد طالب بالاسم نفسه في هذه الشعبة. إضافته مرة أخرى؟')) return;
-  const b = $('#oBtn'); b.disabled = true;
-  try { const rec = await createOne(name, cls); $('#oName').value = ''; showNewCreds([rec]); renderStudents(); renderResults(); }
-  catch (e) { console.error(e); toast('تعذّر إنشاء الحساب: ' + errMsg(e)); }
-  b.disabled = false;
-}
-
-/* ---------- الإعداد والرسائل ---------- */
-function messages() {
-  return [
-    ['1) رسالة إطلاق المنصة (للطلاب)', `السلام عليكم يا أبطال 🌿\nأطلقنا منصة «استعداد» للتربية الإسلامية 📖\nفيها دروس تفاعلية: قصص وألعاب وتحدّيات.\n\n🔗 رابط المنصة: ${siteUrl()}\n🔑 سيصلك اسم المستخدم وكلمة المرور في رسالة خاصة.\n\n📌 الخطوات:\n1. افتح الرابط واختر «🎒 أنا طالب».\n2. ادخل ببياناتك.\n3. اختر الدرس من «دروسي» واضغط «ابدأ الدرس».\n4. في نهاية الدرس اضغط «📤 إرسال النتيجة إلى المعلم».\n5. تستطيع إعادة الدرس لتحسين درجتك.`],
-    ['2) رسالة درس جديد', `درس جديد على منصة استعداد 🎉\n📚 الدرس: ……………\n🔗 ${siteUrl()}\n⏰ آخر موعد: ……………\nلا تنسَ الضغط على «📤 إرسال النتيجة إلى المعلم» في نهاية الدرس.`],
-    ['3) تذكير', `تذكير 🔔 آخر موعد لدرس «……………» على منصة استعداد: ……………\n🔗 ${siteUrl()}`]
+  const palettes = [
+    ["#0f766e", "#14b8a6"], ["#1e3a8a", "#3b82f6"], ["#9f1239", "#f43f5e"], ["#7c2d12", "#f97316"],
+    ["#581c87", "#a855f7"], ["#14532d", "#22c55e"], ["#0c4a6e", "#06b6d4"], ["#713f12", "#eab308"],
   ];
-}
-function renderSetupTab() {
-  $('#msgList').innerHTML = messages().map((m, i) => `<div class="msg"><h4>${m[0]}</h4>${esc(m[1])}<div class="row" style="margin-top:6px"><button class="btn sm" onclick="copyText(messages()[${i}][1])">📋 نسخ الرسالة</button></div></div>`).join('') +
-    `<p class="note">رسالة الدخول الخاصة بكل طالب تنسخها من تبويب «👥 الطلاب والصفوف» (زر «📋 نسخ» بجانب اسمه).</p>`;
-  $('#rulesNow').textContent = rulesText(adminEmail());
-}
-function rulesText(email) {
-  return `rules_version = '2';
-service cloud.firestore {
-  match /databases/{database}/documents {
-    function signedIn() { return request.auth != null; }
-    function isAdmin() {
-      return signedIn() && request.auth.token.email == '${email || 'ADMIN_EMAIL'}';
-    }
-    function isTeacher() {
-      return isAdmin() || (signedIn()
-        && exists(/databases/$(database)/documents/teachers/$(request.auth.uid))
-        && get(/databases/$(database)/documents/teachers/$(request.auth.uid)).data.active == true);
-    }
-    function isActiveStudent() {
-      return signedIn()
-        && exists(/databases/$(database)/documents/students/$(request.auth.uid))
-        && get(/databases/$(database)/documents/students/$(request.auth.uid)).data.active == true;
-    }
-    function myStudentTeacher() {
-      return get(/databases/$(database)/documents/students/$(request.auth.uid)).data.teacherId;
-    }
-    function owns(d) { return isTeacher() && d.teacherId == request.auth.uid; }
-
-    match /teachers/{uid} {
-      allow read: if isAdmin() || (signedIn() && request.auth.uid == uid);
-      allow create, delete: if isAdmin();
-      allow update: if isAdmin() || (isTeacher() && request.auth.uid == uid
-        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['classes']));
-    }
-    match /students/{uid} {
-      allow read: if isAdmin() || (signedIn() && request.auth.uid == uid) || owns(resource.data);
-      allow create: if isAdmin() || owns(request.resource.data);
-      allow update: if isAdmin() || (owns(resource.data) && owns(request.resource.data));
-      allow delete: if isAdmin();
-    }
-    match /lessons/{id} {
-      allow read: if signedIn();
-      allow create: if isAdmin() || owns(request.resource.data);
-      allow update: if isAdmin() || (owns(resource.data) && owns(request.resource.data));
-      allow delete: if isAdmin() || owns(resource.data);
-    }
-    match /lessonFiles/{id} {
-      allow read: if signedIn();
-      allow create: if isAdmin() || owns(request.resource.data);
-      allow update: if isAdmin() || (owns(resource.data) && owns(request.resource.data));
-      allow delete: if isAdmin() || owns(resource.data);
-    }
-    match /progress/{id} {
-      allow read, write: if isAdmin() || (isActiveStudent() && id.matches(request.auth.uid + '_.*'));
-    }
-    match /submissions/{id} {
-      allow read: if isAdmin() || (signedIn() && resource.data.uid == request.auth.uid) || owns(resource.data);
-      allow create: if isActiveStudent() && request.resource.data.uid == request.auth.uid
-        && request.resource.data.teacherId == myStudentTeacher();
-      allow update, delete: if isAdmin();
-    }
-    match /grades/{id} {
-      allow read: if isAdmin() || (signedIn() && id.matches(request.auth.uid + '_.*')) || owns(resource.data);
-      allow write: if isAdmin() || owns(request.resource.data);
-    }
+  function paletteFor(s) {
+    let h = 0; for (const c of s) h = (h * 31 + c.codePointAt(0)) >>> 0;
+    return palettes[h % palettes.length];
   }
-}`;
-}
+  function normalize(raw) {
+    let u = (raw || "").trim();
+    if (!u) return null;
+    if (!/^[a-z][a-z0-9+.-]*:\/\//i.test(u)) u = "https://" + u;
+    try {
+      const p = new URL(u);
+      if (!/^https?:$/.test(p.protocol) || !p.hostname.includes(".")) return null;
+      return p.href;
+    } catch (e) { return null; }
+  }
+  function hostOf(u) { try { return new URL(u).hostname.replace(/^www\./, ""); } catch (e) { return u; } }
+  function ar(n) { return n.toLocaleString("ar-EG"); }
+  function load() { try { return JSON.parse(localStorage.getItem(LS_KEY) || "[]"); } catch (e) { return []; } }
+  function save() { try { localStorage.setItem(LS_KEY, JSON.stringify(links)); } catch (e) {} }
+  function showMsg(t) { const m = $("msg"); m.textContent = t; m.classList.toggle("hidden", !t); }
 
-/* ---------- الإعداد الأول ---------- */
-function parseFirebaseConfig(txt) {
-  const out = {}; const re = /(apiKey|authDomain|projectId|storageBucket|messagingSenderId|appId|measurementId)\s*["']?\s*:\s*["']([^"']+)["']/g; let m;
-  while ((m = re.exec(txt))) out[m[1]] = m[2];
-  return out.apiKey && out.projectId && out.appId ? out : null;
-}
-function renderSetup() {
-  $('#setupBox').innerHTML = `
-    <div class="card"><h2 style="margin-top:0">إعداد المنصة</h2>
-      <p>أنشئ مشروع Firebase مجانيًا، وفعّل Email/Password، وأضف حسابك (المدير)، وأنشئ Firestore، ثم الصق القواعد والإعدادات هنا.</p>
-      <label>بريد المدير<input type="text" id="suEmail" dir="ltr" placeholder="name@gmail.com" oninput="$('#suRules').textContent=rulesText(this.value.trim().toLowerCase())"></label>
-      <h4>قواعد الحماية</h4><pre class="rules" id="suRules">${esc(rulesText(''))}</pre>
-      <button class="btn sm" onclick="copyText($('#suRules').textContent)">📋 نسخ القواعد</button>
-      <label style="margin-top:12px;display:block">إعدادات Firebase<textarea id="suCfg" dir="ltr" style="min-height:160px;font-family:Consolas,monospace;font-size:16px" placeholder="const firebaseConfig = {…};"></textarea></label>
-      <label>رابط موقعك<input type="text" id="suUrl" dir="ltr" value="https://iste3dad.netlify.app"></label>
-      <div class="row" style="margin-top:10px"><button class="btn alt big" onclick="buildConfigured()">⬇ تنزيل ملف المنصة الجاهز</button><a class="btn ghost" href="?demo=1">🧪 الوضع التجريبي</a></div>
-    </div>`;
-}
-function buildConfigured() {
-  const email = $('#suEmail').value.trim().toLowerCase(), cfg = parseFirebaseConfig($('#suCfg').value);
-  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return toast('اكتب بريد المدير بشكل صحيح');
-  if (!cfg) return toast('لم أجد apiKey و projectId و appId في الإعدادات.');
-  const c = {firebase:cfg, teacherEmail:email, siteUrl:$('#suUrl').value.trim()};
-  saveFile('index.html', ORIGINAL_HTML.replace(/\/\*CONFIG-START\*\/[\s\S]*?\/\*CONFIG-END\*\//, () => '/*CONFIG-START*/const CONFIG = ' + JSON.stringify(c) + ';/*CONFIG-END*/'), 'text/html;charset=utf-8');
-}
+  function el(tag, cls, text) { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
 
-/* ================= التشغيل ================= */
-setupDrop();
-boot();
+  function card(l, i) {
+    const [c1, c2] = paletteFor(l.name + l.url);
+    const host = hostOf(l.url);
+    const wrap = el("div", "group relative animate-pop");
+    wrap.style.animationDelay = Math.min(i * 40, 400) + "ms";
+
+    const a = el("a", "flex flex-col h-full rounded-3xl bg-white dark:bg-[#12201d] shadow-card ring-1 ring-black/5 dark:ring-white/10 overflow-hidden transition duration-300 hover:-translate-y-1.5 hover:shadow-lift focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-400");
+    a.href = l.url; a.target = "_blank"; a.rel = "noopener";
+
+    // colored top
+    const top = el("div", "relative h-24 sm:h-28 overflow-hidden");
+    top.style.background = `linear-gradient(135deg, ${c1}, ${c2})`;
+    const pat = el("div", "pattern absolute inset-0 opacity-80"); top.append(pat);
+    const glow = el("div", "absolute -bottom-10 -left-6 w-28 h-28 rounded-full bg-white/20 blur-2xl"); top.append(glow);
+
+    // icon badge
+    const badge = el("div", "absolute right-4 -bottom-7 w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-white dark:bg-[#1a2c28] shadow-lift ring-4 ring-white dark:ring-[#12201d] grid place-items-center overflow-hidden transition duration-300 group-hover:scale-105 group-hover:-rotate-3");
+    const letter = el("span", "font-display font-bold text-2xl", (l.name.trim()[0] || "؟"));
+    letter.style.color = c1;
+    const img = new Image();
+    img.alt = ""; img.className = "w-8 h-8 sm:w-9 sm:h-9 object-contain hidden";
+    img.referrerPolicy = "no-referrer";
+    img.onload = () => { if (img.naturalWidth > 16) { img.classList.remove("hidden"); letter.remove(); } };
+    img.src = "https://www.google.com/s2/favicons?sz=128&domain=" + encodeURIComponent(host);
+    badge.append(letter, img);
+
+    const body = el("div", "flex-1 flex flex-col px-4 pt-10 pb-4");
+    body.append(el("h3", "font-display font-semibold text-base sm:text-lg leading-snug clamp2", l.name));
+    const foot = el("div", "mt-auto pt-3 flex items-center justify-between gap-2");
+    const pill = el("span", "min-w-0 truncate text-xs text-stone-500 dark:text-stone-400 bg-stone-100 dark:bg-white/5 rounded-full px-2.5 py-1", host);
+    pill.dir = "ltr";
+    const arrow = el("span", "shrink-0 grid place-items-center w-8 h-8 rounded-full bg-stone-100 dark:bg-white/5 text-stone-500 transition group-hover:bg-ink-900 group-hover:text-gold-300");
+    arrow.innerHTML = '<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M17 7 7 17M8 7h9v9"/></svg>';
+    foot.append(pill, arrow);
+    body.append(foot);
+
+    a.append(top, badge, body);
+
+    const del = el("button", "absolute top-3 left-3 z-10 grid place-items-center w-8 h-8 rounded-full bg-black/25 hover:bg-rose-600 text-white backdrop-blur opacity-0 group-hover:opacity-100 focus:opacity-100 [@media(hover:none)]:opacity-100 transition");
+    del.type = "button"; del.setAttribute("aria-label", "حذف " + l.name);
+    del.innerHTML = '<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>';
+    del.addEventListener("click", () => confirmDelete(wrap, l));
+
+    wrap.append(a, del);
+    return wrap;
+  }
+
+  function confirmDelete(wrap, l) {
+    if (wrap.querySelector("[data-confirm]")) return;
+    const box = el("div", "absolute inset-0 z-20 rounded-3xl bg-white/95 dark:bg-[#12201d]/95 backdrop-blur ring-2 ring-rose-500 grid place-content-center gap-3 p-4 text-center");
+    box.dataset.confirm = "";
+    box.append(el("p", "font-display font-semibold", "حذف «" + l.name + "»؟"));
+    const row = el("div", "flex gap-2 justify-center");
+    const yes = el("button", "rounded-full bg-rose-600 hover:bg-rose-700 text-white px-4 py-1.5 text-sm", "حذف");
+    const no = el("button", "rounded-full bg-stone-100 dark:bg-white/10 px-4 py-1.5 text-sm", "إلغاء");
+    yes.type = no.type = "button";
+    yes.onclick = () => { links = links.filter((x) => x.id !== l.id); save(); render(); };
+    no.onclick = () => box.remove();
+    row.append(yes, no); box.append(row); wrap.append(box); no.focus();
+  }
+
+  function render() {
+    const grid = $("grid");
+    grid.textContent = "";
+    const q = query.trim().toLowerCase();
+    const list = links.slice().sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0))
+      .filter((l) => !q || l.name.toLowerCase().includes(q) || l.url.toLowerCase().includes(q));
+    list.forEach((l, i) => grid.append(card(l, i)));
+    $("empty").classList.toggle("hidden", links.length > 0);
+    $("toolbar").classList.toggle("hidden", links.length === 0);
+    $("noResults").classList.toggle("hidden", !(links.length && !list.length));
+    const n = links.length;
+    $("count").textContent = n === 0 ? "لا توجد مواقع" : n === 1 ? "موقع واحد" : n === 2 ? "موقعان" : n <= 10 ? ar(n) + " مواقع" : ar(n) + " موقعاً";
+  }
+
+  $("addForm").addEventListener("submit", (ev) => {
+    ev.preventDefault(); showMsg("");
+    const name = $("name").value.trim();
+    const url = normalize($("url").value);
+    if (!name) { showMsg("اكتب اسم الموقع."); $("name").focus(); return; }
+    if (!url) { showMsg("الرابط غير صحيح. اكتبه مثل: example.com"); $("url").focus(); return; }
+    links.push({ id: "l" + Date.now() + Math.random().toString(36).slice(2, 6), name, url, createdAt: Date.now() });
+    save(); render();
+    $("name").value = ""; $("url").value = ""; $("name").focus();
+  });
+
+  $("search").addEventListener("input", (e) => { query = e.target.value; render(); });
+
+  $("exportBtn").addEventListener("click", () => {
+    const blob = new Blob([JSON.stringify(links, null, 2)], { type: "application/json" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob); a.download = "mawaqi-backup.json";
+    document.body.append(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  });
+  $("importBtn").addEventListener("click", () => $("importFile").click());
+  $("importFile").addEventListener("change", async (ev) => {
+    const f = ev.target.files[0]; if (!f) return;
+    try {
+      const data = JSON.parse(await f.text());
+      if (!Array.isArray(data)) throw 0;
+      const have = new Set(links.map((l) => l.url));
+      let added = 0;
+      for (const d of data) {
+        if (!d || typeof d.name !== "string" || typeof d.url !== "string") continue;
+        const u = normalize(d.url); if (!u || have.has(u)) continue;
+        links.push({ id: "l" + Date.now() + Math.random().toString(36).slice(2, 6), name: d.name, url: u, createdAt: d.createdAt || Date.now() });
+        have.add(u); added++;
+      }
+      save(); render();
+      $("note").textContent = added ? "تم استيراد " + ar(added) + " موقع." : "لا توجد مواقع جديدة في الملف.";
+    } catch (e) { showMsg("الملف غير صالح. اختر ملف نسخة احتياطية صدّرته من هذه الصفحة."); }
+    ev.target.value = "";
+  });
+
+  render();
+})();
 </script>
 </body>
 </html>
