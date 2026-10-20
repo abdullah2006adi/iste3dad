@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>منصة استعداد</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
@@ -24,12 +24,11 @@ h2{font-size:34px;color:var(--teal)} h3{font-size:27px;color:var(--teal)} h4{fon
 small{font-size:18px}
 a{color:var(--blue)}
 .wrap{max-width:1100px;margin:0 auto;padding:0 16px 60px}
-input[type=text],input[type=number],input[type=password],select,textarea{border:1.5px solid var(--line);border-radius:10px;padding:5px 10px;background:#fff;color:var(--ink);width:100%}
+input[type=text],input[type=number],input[type=password],input[type=email],select,textarea{border:1.5px solid var(--line);border-radius:10px;padding:5px 10px;background:#fff;color:var(--ink);width:100%}
 textarea{min-height:90px;resize:vertical}
 input:focus,select:focus,textarea:focus{outline:2px solid var(--green);border-color:var(--green)}
 .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:14px 18px;margin:14px 0;box-shadow:0 2px 8px rgba(0,0,0,.04)}
 .note{background:var(--gold-l);border-radius:10px;padding:6px 12px;margin-top:8px;font-size:21px}
-.todo{background:var(--blue-l);border:1px solid #b9dcf1;border-inline-start:6px solid var(--blue);border-radius:12px;padding:8px 16px;margin:10px 0;font-size:21px}
 .btn{border:0;border-radius:12px;padding:5px 18px;background:var(--green);color:#fff;cursor:pointer;font-weight:700;transition:transform .1s,filter .2s;text-decoration:none;display:inline-block}
 .btn:hover{filter:brightness(1.08)} .btn:active{transform:scale(.97)}
 .btn.alt{background:var(--orange)} .btn.ghost{background:#fff;color:var(--teal);border:1.5px solid var(--teal)}
@@ -42,16 +41,16 @@ table{border-collapse:collapse;width:100%;font-size:20px;background:#fff}
 th,td{border:1px solid var(--line);padding:5px 8px;vertical-align:middle;text-align:right}
 th{background:var(--green-l);color:var(--teal)}
 .tbl-scroll{overflow-x:auto}
-td input[type=number]{width:72px;padding:2px 6px}
 .lvl{font-weight:700;border-radius:8px;padding:0 8px;white-space:nowrap}
 .lvl.a{background:var(--green-l);color:var(--green)}.lvl.b{background:var(--blue-l);color:var(--blue)}.lvl.c{background:var(--gold-l);color:#7a5a12}.lvl.d{background:var(--red-l);color:var(--red)}
 .msg{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 14px;margin:10px 0;white-space:pre-wrap}
 .msg h4{margin:0 0 4px;color:var(--orange)}
-.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:var(--teal);color:#fff;padding:6px 22px;border-radius:999px;z-index:99;opacity:0;transition:.3s;pointer-events:none;font-size:22px;max-width:90vw;text-align:center}
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:var(--teal);color:#fff;padding:6px 22px;border-radius:999px;z-index:999;opacity:0;transition:.3s;pointer-events:none;font-size:22px;max-width:90vw;text-align:center}
 .toast.on{opacity:1}
 .subtabs{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}
 .subtabs button{border:1.5px solid var(--teal);background:#fff;color:var(--teal);border-radius:999px;padding:1px 14px;cursor:pointer;font-size:20px}
 .subtabs button.on{background:var(--teal);color:#fff}
+.subtabs button .dot{display:inline-block;min-width:22px;border-radius:999px;background:var(--orange);color:#fff;font-size:15px;line-height:22px;text-align:center;margin-inline-start:4px}
 .topbar{background:linear-gradient(135deg,var(--teal),var(--green));color:#fff;padding:10px 0;position:sticky;top:0;z-index:20;box-shadow:0 3px 14px rgba(0,0,0,.15)}
 .topbar .wrap{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding-bottom:0}
 .topbar h1{font-size:27px;margin:0}
@@ -59,8 +58,10 @@ td input[type=number]{width:72px;padding:2px 6px}
 .login-card{max-width:460px;width:calc(100% - 32px);margin:36px auto;background:#fff;border-radius:24px;padding:24px;box-shadow:0 10px 30px rgba(0,0,0,.08);border:1px solid var(--line);text-align:center}
 .login-card .logo{font-size:64px;line-height:1}
 .login-card label{display:block;text-align:right;margin-top:12px;color:var(--muted);font-size:20px}
-.login-card input{direction:ltr;text-align:left;font-size:24px}
+.login-card input.ltr{direction:ltr;text-align:left;font-size:24px}
 .login-msg{color:var(--red);min-height:30px;margin-top:8px;font-weight:700}
+.login-msg.ok{color:var(--green)}
+.linkbtn{background:none;border:0;color:var(--blue);cursor:pointer;font-size:20px;text-decoration:underline;padding:2px 4px}
 .lesson-card{display:flex;gap:16px;align-items:center;flex-wrap:wrap;background:#fff;border:1px solid var(--line);border-radius:20px;padding:16px 18px;box-shadow:0 4px 14px rgba(0,0,0,.05);border-inline-start:8px solid var(--green);margin:12px 0}
 .lesson-card .ic{font-size:56px;line-height:1}
 .lesson-card .info{flex:1 1 260px}
@@ -70,14 +71,10 @@ td input[type=number]{width:72px;padding:2px 6px}
 .stat{background:#fff;border:1px solid var(--line);border-radius:16px;padding:8px;text-align:center;font-size:20px}
 .stat b{display:block;font-size:34px;color:var(--teal);line-height:1.3}
 tr.nosub td{color:#97a3a3;background:#fafaf7}
-#resTable td:nth-child(2),#stTable td:nth-child(2),#lsTable td:nth-child(2){min-width:150px}
-#resTable th{white-space:nowrap}
-.tview[hidden],.gview[hidden],section[hidden]{display:none!important}
+.tview[hidden],.hview[hidden],section[hidden],[hidden]{display:none!important}
 .modal{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:90;display:flex;align-items:flex-start;justify-content:center;padding:30px 12px;overflow:auto}
-.modal .box{background:#fff;border-radius:18px;max-width:760px;width:100%;padding:18px;position:relative}
+.modal .box{background:#fff;border-radius:18px;max-width:780px;width:100%;padding:18px;position:relative}
 .modal .x{position:absolute;top:10px;left:12px}
-.setup-step{border-inline-start:5px solid var(--gold);padding:4px 12px;margin:10px 0;background:#fffdf6;border-radius:10px}
-.setup-step b.n{color:var(--orange)}
 pre.rules{direction:ltr;text-align:left;background:#0f2524;color:#cfe;border-radius:12px;padding:10px 12px;font-size:14px;overflow:auto;max-height:320px;white-space:pre}
 code.ltr{direction:ltr;display:inline-block;background:#eef3f2;border-radius:6px;padding:0 6px;font-size:19px}
 .checks{display:flex;gap:14px;flex-wrap:wrap}
@@ -85,13 +82,115 @@ code.ltr{direction:ltr;display:inline-block;background:#eef3f2;border-radius:6px
 .checks input{width:20px;height:20px}
 .drop{border:3px dashed var(--teal);border-radius:16px;padding:18px;text-align:center;background:#f3faf6;cursor:pointer}
 .drop.over{background:var(--green-l)}
+.role-btns{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}
+.role-btns button{border:2px solid var(--line);background:#fff;border-radius:20px;padding:18px 8px;cursor:pointer;font-size:26px;font-weight:700;color:var(--teal);transition:.2s}
+.role-btns button span{display:block;font-size:56px;line-height:1.2}
+.role-btns button:hover{border-color:var(--green);background:#f3faf6;transform:translateY(-2px)}
+.viewas{background:var(--gold);color:#222;border-radius:14px;padding:6px 14px;margin:10px 0;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;font-weight:700}
+.warnbar{background:var(--red-l);color:var(--red);border:1px solid #f0b4ab;border-radius:12px;padding:8px 14px;margin:10px 0;font-weight:700}
+.clslist{display:flex;flex-direction:column;gap:8px;margin:8px 0}
+.clsitem{display:flex;flex-wrap:wrap;align-items:center;gap:8px;border:1.5px solid var(--line);border-radius:14px;padding:8px 12px;background:#fff}
+.clsitem.on{border-color:var(--teal);background:var(--green-l)}
+.clsitem .cname{font-weight:800;color:var(--teal);font-size:1.1em;min-width:90px}
+.clsitem .ccount{color:var(--muted);flex:1 1 auto}
+.clsrow{display:grid;grid-template-columns:1fr 1.3fr .8fr auto;gap:8px;margin:6px 0;align-items:end;max-width:760px}
+.clsrow select{width:100%}
+.clsrow label,.tree label{display:flex;flex-direction:column;gap:2px;font-weight:700;min-width:0}
+.tree{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;max-width:760px}
+.unit-head{background:linear-gradient(90deg,var(--green-l),transparent);border-radius:12px;padding:2px 14px;margin:18px 0 4px;color:var(--teal);font-weight:800;font-size:25px}
+.lrow{display:flex;gap:10px;align-items:center;flex-wrap:wrap;border:1px solid var(--line);border-radius:14px;padding:8px 12px;margin:8px 0;background:#fff}
+.lrow .t{flex:1 1 240px}
+.lrow .ic{font-size:36px;line-height:1}
+.cls-toggle{display:inline-flex;align-items:center;gap:4px;border:1.5px solid var(--line);border-radius:999px;padding:0 10px;cursor:pointer;font-size:20px;user-select:none;background:#fff}
+.cls-toggle input{width:18px;height:18px}
+.cls-toggle.on{background:var(--green-l);border-color:var(--green);color:var(--teal);font-weight:700}
+.perm{display:inline-block;background:var(--blue-l);color:var(--blue);border-radius:999px;padding:0 8px;font-size:16px;margin:1px}
+/* المايك والملاحظات */
+.mic{border:1.5px solid var(--teal);background:#fff;color:var(--teal);border-radius:999px;cursor:pointer;font-size:19px;padding:0 10px;line-height:1.6;white-space:nowrap}
+.mic.rec{background:var(--red);border-color:var(--red);color:#fff;animation:pulse 1s infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 6px rgba(192,57,43,.25)}}
+.nitem{border-radius:12px;padding:8px 12px;margin:8px 0;border-inline-start:6px solid}
+.nitem.pos{background:#e8f6ee;border-color:var(--green)} .nitem.neg{background:#fbe7e4;border-color:var(--red)}
+.nitem audio{width:100%;max-width:420px;height:40px;margin-top:4px}
+.recbar{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);background:#fff;border:2px solid var(--red);border-radius:18px;padding:8px 14px;z-index:95;box-shadow:0 8px 30px rgba(0,0,0,.2);display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:center;max-width:94vw}
+/* لوحة النقاط */
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px;margin-top:10px}
+.ptile{position:relative;border-radius:20px;overflow:hidden;background:#fff;border:2px solid var(--line);box-shadow:0 4px 12px rgba(0,0,0,.06);min-height:150px;display:flex;flex-direction:column;user-select:none;-webkit-user-select:none;touch-action:manipulation}
+.ptile .pn{padding:4px 8px 0;font-weight:800;text-align:center;font-size:21px;line-height:1.3;color:var(--teal);display:flex;align-items:center;justify-content:center;gap:4px;min-height:58px}
+.ptile .pv{font-size:44px;font-weight:800;text-align:center;line-height:1;color:var(--ink);pointer-events:none}
+.ptile .pb{display:grid;grid-template-columns:1fr 1fr;flex:1;margin-top:4px}
+.ptile .pb button{border:0;font-size:38px;font-weight:800;cursor:pointer;color:#fff}
+.ptile .pb .plus{background:var(--green)} .ptile .pb .minus{background:#c9d2d2;color:#334}
+.ptile .pb button:active{filter:brightness(.9)}
+.ptile .fly{position:absolute;top:40%;left:50%;transform:translateX(-50%);font-size:40px;font-weight:800;pointer-events:none;animation:fly .9s forwards}
+@keyframes fly{to{transform:translate(-50%,-70px);opacity:0}}
+.ptile .mic{position:absolute;top:4px;left:4px;font-size:15px;padding:0 6px}
+.pboard.full{position:fixed;inset:0;z-index:60;background:var(--bg);overflow:auto;padding:12px}
+/* الجدار */
+.wmsg{background:#fff;border:1px solid var(--line);border-radius:16px;padding:10px 14px;margin:10px 0;box-shadow:0 2px 6px rgba(0,0,0,.04);white-space:pre-wrap;word-break:break-word}
+.wmsg .who{color:var(--teal);font-weight:800}
+.wmsg .when{color:var(--muted);font-size:17px}
+.wmsg.pending{border-style:dashed;background:#fffdf3}
+.wmsg.rejected{opacity:.6}
+.wall-wrap{background:repeating-linear-gradient(0deg,#fbf7ec,#fbf7ec 34px,#f3ecda 35px);border-radius:18px;padding:8px 12px;border:1px solid var(--line)}
+/* الألعاب */
+.tpl{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.tpl label{border:2px solid var(--line);border-radius:16px;padding:10px;cursor:pointer;background:#fff;display:block}
+.tpl label b{display:block;font-size:24px;color:var(--teal)}
+.tpl input{display:none}
+.tpl label:has(input:checked){border-color:var(--orange);background:var(--orange-l)}
+.qpick{max-height:360px;overflow:auto;border:1px solid var(--line);border-radius:12px;padding:6px 10px;background:#fff}
+.qpick label{display:flex;gap:8px;align-items:flex-start;font-size:20px;padding:3px 0;border-bottom:1px dashed #eee;cursor:pointer}
+.qpick input{width:18px;height:18px;margin-top:6px;flex:none}
+#scrGame{position:fixed;inset:0;z-index:80;background:#10302e;color:#fff;display:flex;flex-direction:column;user-select:none;-webkit-user-select:none;touch-action:manipulation;overflow:hidden}
+.gbar{display:flex;align-items:center;gap:10px;padding:4px 12px;background:rgba(0,0,0,.25);font-size:20px}
+.gbar b{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gbody{flex:1;position:relative;min-height:0}
+.arena{position:absolute;inset:0;display:grid;gap:6px;padding:6px}
+.arena.p2{grid-template-columns:1fr;grid-template-rows:1fr 74px 1fr;grid-template-areas:"z1" "c" "z0"}
+.arena.p3{grid-template-columns:1fr 1.4fr;grid-template-rows:1fr 1.25fr 1fr;grid-template-areas:"z1 z1" "z2 c" "z0 z0"}
+.arena.p4{grid-template-columns:1fr 1.1fr 1fr;grid-template-rows:1fr 1.25fr 1fr;grid-template-areas:"z1 z1 z1" "z2 c z3" "z0 z0 z0"}
+.zone{position:relative;border-radius:18px;overflow:hidden;min-width:0;min-height:0}
+.zone .zi{position:absolute;inset:0;display:flex;flex-direction:column;padding:6px 8px;gap:4px}
+.zone.rot180 .zi{transform:rotate(180deg)}
+.zone.rot90 .zi,.zone.rotm90 .zi{inset:auto;top:50%;left:50%}
+.zone .zh{display:flex;justify-content:space-between;align-items:center;font-weight:800;gap:6px}
+.zone .zq{font-weight:700;line-height:1.35;text-align:center;flex:none;overflow:hidden}
+.zone .zo{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:6px;min-height:0}
+.zone .zo button{border:0;border-radius:14px;background:rgba(255,255,255,.92);color:#123;font-family:var(--font);font-weight:700;line-height:1.25;padding:2px 6px;cursor:pointer;min-height:0;overflow:hidden}
+.zone .zo button.ok{background:#3ddc84;color:#05351c}
+.zone .zo button.bad{background:#ff6b6b;color:#fff}
+.zone.locked .zo{opacity:.45;filter:grayscale(.5)}
+.zone .zlock{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:40px;pointer-events:none}
+.zone.win{animation:winflash .9s}
+@keyframes winflash{30%{box-shadow:inset 0 0 0 8px #fff,0 0 30px #fff}}
+.gcenter{grid-area:c;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;text-align:center;background:rgba(255,255,255,.08);border-radius:18px;padding:4px}
+.gcenter .tm{font-size:46px;font-weight:800;line-height:1}
+.gcenter .sc{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;font-size:22px;font-weight:800}
+.gcenter .sc span{border-radius:999px;padding:0 10px}
+.arena.p2 .gcenter{flex-direction:row;gap:18px}
+.arena.p2 .gcenter .tm{font-size:38px}
+.solo{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px;gap:12px;max-width:900px;margin:0 auto}
+.solo .sq{font-size:34px;font-weight:800;text-align:center;line-height:1.4;background:rgba(255,255,255,.08);border-radius:20px;padding:14px 18px;width:100%}
+.solo .so{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%}
+.solo .so button{border:0;border-radius:18px;background:#fff;color:#123;font-family:var(--font);font-size:26px;font-weight:700;padding:14px 10px;cursor:pointer;line-height:1.3}
+.solo .so button.ok{background:#3ddc84} .solo .so button.bad{background:#ff6b6b;color:#fff}
+.solo .hud{display:flex;gap:16px;font-size:26px;font-weight:800;flex-wrap:wrap;justify-content:center}
+.tbar{height:10px;width:100%;background:rgba(255,255,255,.15);border-radius:99px;overflow:hidden}
+.tbar i{display:block;height:100%;background:linear-gradient(90deg,#ffd166,#ef476f);transition:width .25s linear}
+.gend{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:16px;text-align:center;background:radial-gradient(circle,#1d5b57,#0c2624)}
+.gend .rk{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.gend .rk div{border-radius:18px;padding:8px 18px;min-width:150px;font-size:24px;font-weight:800}
+.confetti{position:absolute;top:-40px;font-size:34px;animation:fall linear forwards;pointer-events:none}
+@keyframes fall{to{transform:translateY(110vh) rotate(540deg)}}
+.shake{animation:shake .35s}
+@keyframes shake{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
 /* مشغّل الدرس */
 #scrPlayer{position:fixed;inset:0;display:flex;flex-direction:column;background:var(--bg);z-index:30}
 .pbar{background:var(--teal);color:#fff;display:flex;align-items:center;gap:10px;padding:4px 12px;font-size:20px;flex-wrap:wrap}
 .pbar b{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .pbar .prev{background:var(--gold);color:#222;border-radius:999px;padding:0 10px;font-weight:700;font-size:18px}
 #plFrame{flex:1;border:0;width:100%;background:var(--bg)}
-.plload[hidden]{display:none!important}
 .plload{position:absolute;inset:44px 0 0 0;display:flex;align-items:center;justify-content:center;font-size:26px;color:var(--teal);pointer-events:none}
 #printArea{display:none}
 .pcards{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
@@ -103,27 +202,11 @@ code.ltr{direction:ltr;display:inline-block;background:#eef3f2;border-radius:6px
   body{background:#fff}
   #printArea table{font-size:13px}
 }
-@media (max-width:640px){ body{font-size:22px} h2{font-size:28px} .topbar h1{font-size:23px} }
-</style>
-<style>
-.role-btns{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}
-.role-btns button{border:2px solid var(--line);background:#fff;border-radius:20px;padding:18px 8px;cursor:pointer;font-size:26px;font-weight:700;color:var(--teal);transition:.2s}
-.role-btns button span{display:block;font-size:56px;line-height:1.2}
-.role-btns button:hover{border-color:var(--green);background:#f3faf6;transform:translateY(-2px)}
-.backlink{background:none;border:0;color:var(--blue);cursor:pointer;font-size:20px;margin-top:6px}
-.viewas[hidden],.warnbar[hidden]{display:none!important}
-.viewas{background:var(--gold);color:#222;border-radius:14px;padding:6px 14px;margin:10px 0;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;font-weight:700}
-.clslist{display:flex;flex-direction:column;gap:8px;margin:8px 0}
-.clsitem{display:flex;flex-wrap:wrap;align-items:center;gap:8px;border:1.5px solid var(--line);border-radius:14px;padding:8px 12px;background:#fff}
-.clsitem.on{border-color:var(--teal);background:var(--green-l)}
-.clsitem .cname{font-weight:800;color:var(--teal);font-size:1.1em;min-width:90px}
-.clsitem .ccount{color:var(--muted);flex:1 1 auto}
-.clsrow select{width:100%}
-.clsrow label{display:flex;flex-direction:column;gap:2px;font-weight:700;min-width:0}
-.clschips{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
-.clschips span{background:var(--green-l);color:var(--teal);border-radius:999px;padding:0 6px 0 14px;font-weight:700;display:inline-flex;align-items:center;gap:6px}
-.clschips span button{border:0;background:rgba(0,0,0,.08);border-radius:50%;width:24px;height:24px;cursor:pointer;font-size:14px}
-.warnbar{background:var(--red-l);color:var(--red);border:1px solid #f0b4ab;border-radius:12px;padding:8px 14px;margin:10px 0;font-weight:700}
+@media (max-width:640px){
+  body{font-size:22px} h2{font-size:28px} .topbar h1{font-size:23px}
+  .tree{grid-template-columns:1fr 1fr} .clsrow{grid-template-columns:1fr 1fr} .solo .sq{font-size:27px} .solo .so button{font-size:22px}
+  .pgrid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}
+}
 </style>
 </head>
 <body>
@@ -153,12 +236,44 @@ code.ltr{direction:ltr;display:inline-block;background:#eef3f2;border-radius:6px
     <div class="logo" id="lgIcon">🎒</div>
     <h2 style="margin-bottom:0" id="lgTitle">دخول الطالب</h2>
     <p style="margin-top:0;color:var(--muted)">منصة استعداد</p>
-    <label>اسم المستخدم<input type="text" id="lgUser" autocomplete="username" autocapitalize="off" spellcheck="false"></label>
-    <label>كلمة المرور<input type="password" id="lgPass" autocomplete="current-password" placeholder="••••••"></label>
+    <label><span id="lgUserLbl">اسم المستخدم</span><input type="text" class="ltr" id="lgUser" autocomplete="username" autocapitalize="off" spellcheck="false"></label>
+    <label>كلمة المرور<input type="password" class="ltr" id="lgPass" autocomplete="current-password" placeholder="••••••"></label>
     <div class="login-msg" id="loginMsg"></div>
     <button class="btn big" id="lgBtn" style="width:100%" onclick="doLogin()">دخول</button>
+    <div id="lgTeacherExtra" hidden style="margin-top:10px">
+      <button class="btn alt" style="width:100%" onclick="showSignup()">✨ ليس لديك حساب؟ أنشئ حساب معلم</button>
+      <button class="linkbtn" onclick="forgotPass()">نسيت كلمة المرور؟</button>
+    </div>
     <p style="font-size:19px;color:var(--muted);margin-bottom:0" id="lgHint"></p>
-    <button class="backlink" onclick="showScreen('scrRole')">→ رجوع</button>
+    <button class="linkbtn" onclick="showScreen('scrRole')">→ رجوع</button>
+  </div>
+</section>
+
+<section id="scrSignup" hidden>
+  <div class="login-card">
+    <div class="logo">👨‍🏫</div>
+    <h2 style="margin-bottom:0">إنشاء حساب معلم</h2>
+    <p style="margin-top:0;color:var(--muted)">سيصلك رابط تحقّق على بريدك الإلكتروني</p>
+    <label>الاسم كما يراه طلابك<input type="text" id="suName" placeholder="مثال: أ. عبدالله"></label>
+    <label>البريد الإلكتروني<input type="email" class="ltr" id="suMail" autocomplete="email" autocapitalize="off" spellcheck="false" placeholder="name@gmail.com"></label>
+    <label>كلمة المرور (6 أحرف على الأقل)<input type="password" class="ltr" id="suPass" autocomplete="new-password"></label>
+    <label>تأكيد كلمة المرور<input type="password" class="ltr" id="suPass2" autocomplete="new-password"></label>
+    <div class="login-msg" id="suMsg"></div>
+    <button class="btn big alt" id="suBtn" style="width:100%" onclick="doSignup()">إنشاء الحساب</button>
+    <button class="linkbtn" onclick="chooseRole('teacher')">→ لدي حساب، أريد الدخول</button>
+  </div>
+</section>
+
+<section id="scrVerify" hidden>
+  <div class="login-card">
+    <div class="logo">📧</div>
+    <h2 style="margin-bottom:0">تحقّق من بريدك</h2>
+    <p>أرسلنا رابط التحقّق إلى:<br><b dir="ltr" id="vfMail"></b></p>
+    <p style="font-size:20px;color:var(--muted)">افتح بريدك (وانظر في مجلد الرسائل غير المرغوب فيها Spam أيضًا)، واضغط الرابط، ثم ارجع هنا واضغط الزر.</p>
+    <label id="vfNameBox" hidden>اسمك كما يراه طلابك<input type="text" id="vfName"></label>
+    <div class="login-msg" id="vfMsg"></div>
+    <button class="btn big" id="vfBtn" style="width:100%" onclick="checkVerified()">✅ تحقّقت، ادخل</button>
+    <div class="row" style="justify-content:center;margin-top:8px"><button class="linkbtn" onclick="resendVerify()">🔁 إعادة إرسال الرابط</button><button class="linkbtn" onclick="doLogout()">🚪 خروج</button></div>
   </div>
 </section>
 
@@ -166,15 +281,38 @@ code.ltr{direction:ltr;display:inline-block;background:#eef3f2;border-radius:6px
   <div class="topbar"><div class="wrap"><h1>📖 منصة استعداد</h1><div class="row"><span id="homeWho"></span><button class="hbtn" onclick="doLogout()">🚪 خروج</button></div></div></div>
   <div class="wrap">
     <h2 id="homeHello"></h2>
-    <h3>📚 دروسي</h3>
-    <div id="homeLessons"></div>
+    <div class="subtabs" id="hTabs">
+      <button data-h="lessons" class="on" onclick="hTab('lessons')">📚 دروسي</button>
+      <button data-h="games" onclick="hTab('games')">🎮 الألعاب</button>
+      <button data-h="wall" onclick="hTab('wall')">🧱 جدار الصف</button>
+    </div>
+    <div class="hview" id="hv-lessons"><div id="homeLessons"></div></div>
+    <div class="hview" id="hv-games" hidden><div id="homeGames"></div></div>
+    <div class="hview" id="hv-wall" hidden>
+      <div class="card" id="stWallMod" hidden>
+        <h3 style="margin-top:0">🛡 رسائل تنتظر الموافقة <small style="color:var(--muted)">(صلاحية من معلّمك)</small></h3>
+        <div id="stWallPending"></div>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0">✍️ اكتب على جدار الصف</h3>
+        <textarea id="stWallText" maxlength="300" placeholder="اكتب رسالة طيبة لزملائك… (تظهر بعد موافقة المعلم)"></textarea>
+        <div class="row" style="margin-top:6px"><button class="btn alt" id="stWallBtn" onclick="postWall()">📨 إرسال للمراجعة</button><small id="stWallCount" style="color:var(--muted)">0/300</small><button class="btn sm ghost" onclick="loadStudentWall()">🔄 تحديث</button></div>
+        <div id="stWallMine"></div>
+      </div>
+      <div class="wall-wrap"><div id="stWallList"></div></div>
+    </div>
   </div>
 </section>
 
 <section id="scrPlayer" hidden>
-  <div class="pbar"><button class="hbtn" onclick="leaveLesson()">🏠 رجوع</button><b id="plTitle"></b><span class="prev" id="plPrev" hidden>👁 معاينة المعلم: لا تُحفظ الإجابات</span><span id="plWho"></span></div>
+  <div class="pbar"><button class="hbtn" onclick="leaveLesson()">🏠 رجوع</button><b id="plTitle"></b><span class="prev" id="plPrev" hidden>👁 معاينة: لا تُحفظ الإجابات</span><span id="plWho"></span></div>
   <div class="plload" id="plLoad">⏳ جارٍ تحميل الدرس…</div>
   <iframe id="plFrame" title="الدرس" sandbox="allow-scripts allow-popups allow-forms allow-modals allow-popups-to-escape-sandbox" allow="autoplay; fullscreen; clipboard-write"></iframe>
+</section>
+
+<section id="scrGame" hidden>
+  <div class="gbar"><button class="hbtn" onclick="quitGame()">✕ خروج</button><b id="gTitle"></b><span id="gInfo"></span></div>
+  <div class="gbody" id="gBody"></div>
 </section>
 
 <section id="scrTeacher" hidden>
@@ -183,34 +321,45 @@ code.ltr{direction:ltr;display:inline-block;background:#eef3f2;border-radius:6px
     <div class="warnbar" id="rulesWarn" hidden>⚠️ قواعد الحماية في Firebase قديمة. افتح تبويب «⚙️ الإعداد»، وانسخ القواعد الجديدة، والصقها في Firebase ← Firestore ← Rules، ثم اضغط Publish وحدّث الصفحة.</div>
     <div class="subtabs" id="tTabs">
       <button data-t="teachers" class="adminOnly" onclick="tTab('teachers')" hidden>🏫 المعلمون</button>
+      <button data-t="curriculum" class="adminOnly" onclick="tTab('curriculum')" hidden>🗂️ المنهج</button>
       <button data-t="results" onclick="tTab('results')">📊 النتائج</button>
       <button data-t="lessons" onclick="tTab('lessons')">📚 الدروس</button>
+      <button data-t="games" onclick="tTab('games')">🎮 الألعاب</button>
+      <button data-t="points" onclick="tTab('points')">⭐ النقاط</button>
+      <button data-t="wall" onclick="tTab('wall')">🧱 الجدار<span class="dot" id="wallDot" hidden></span></button>
       <button data-t="students" onclick="tTab('students')">👥 الطلاب والصفوف</button>
-      <button data-t="setup" onclick="tTab('setup')">⚙️ الإعداد والرسائل</button>
+      <button data-t="setup" onclick="tTab('setup')">⚙️ الإعداد</button>
     </div>
     <div class="viewas" id="viewAs" hidden><span id="viewAsTxt"></span><button class="btn sm ghost" onclick="switchView(ME.uid)">↩ العودة إلى صفحتي</button></div>
 
+    <!-- المعلمون (للمدير) -->
     <div class="tview" id="tv-teachers" hidden>
       <div class="card">
-        <h3 style="margin-top:0">➕ إضافة معلم</h3>
-        <div class="row">
-          <input type="text" id="ntName" placeholder="اسم المعلم" style="flex:2 1 220px;width:auto">
-          <input type="text" id="ntUser" placeholder="اسم مستخدم (اختياري، بالإنجليزية)" dir="ltr" style="flex:1 1 200px;width:auto">
-          <button class="btn alt" id="ntBtn" onclick="addTeacher()">إنشاء الحساب</button>
-        </div>
-        <p style="font-size:19px;color:var(--muted);margin-bottom:0">تُنشأ كلمة مرور تلقائيًا، وتنسخ رسالة الدخول وترسلها للمعلم. إن تركت اسم المستخدم فارغًا يُنشأ تلقائيًا (مثل teacher02).</p>
-      </div>
-      <div id="newTeacher"></div>
-      <div class="card">
         <h3 style="margin-top:0">🏫 معلمو المنصة</h3>
-        <div class="tbl-scroll" id="tcTable"></div>
+        <p style="margin-top:0">يسجّل المعلم بنفسه: يفتح المنصة ← «👨‍🏫 أنا معلم» ← «أنشئ حساب معلم»، ثم يتحقّق من بريده. تستطيع هنا إيقاف أي حساب أو فتح صفحته.</p>
+        <button class="btn sm ghost" onclick="copyText(inviteText())">📋 نسخ رسالة دعوة للمعلمين</button>
+        <div class="tbl-scroll" id="tcTable" style="margin-top:8px"></div>
       </div>
     </div>
 
+    <!-- المنهج (للمدير) -->
+    <div class="tview" id="tv-curriculum" hidden>
+      <div class="card">
+        <h3 style="margin-top:0">🗂️ دروس المنهج</h3>
+        <p style="margin-top:0">اختر الصف والفصل والباب، ثم ارفع ملفات الدروس إليه. هذه الدروس تظهر لكل المعلمين، وكل معلم يختار ما يُظهره لطلابه.</p>
+        <div class="tree" id="cuTree"></div>
+        <div class="drop" id="cuDrop" style="margin-top:10px" onclick="$('#cuFile').click()">📄 اضغط لاختيار ملف درس أو أكثر (HTML)، أو اسحبها وأفلتها هنا<br><small>تُرفع إلى الصف والفصل والباب المختارة أعلاه</small>
+          <input type="file" id="cuFile" accept=".html,.htm,text/html" multiple hidden></div>
+        <div id="cuProg"></div>
+        <div id="cuList" style="margin-top:8px"></div>
+      </div>
+    </div>
+
+    <!-- النتائج -->
     <div class="tview" id="tv-results">
       <div class="card">
         <div class="row">
-          <label class="row" style="gap:4px">الدرس: <select id="rLesson" style="width:auto;max-width:340px" onchange="loadResults()"></select></label>
+          <label class="row" style="gap:4px">الدرس: <select id="rLesson" style="width:auto;max-width:380px" onchange="loadResults()"></select></label>
           <label class="row" style="gap:4px">الشعبة: <select id="rClass" style="width:auto" onchange="renderResults()"></select></label>
           <button class="btn" onclick="loadTeacherData()">🔄 تحديث</button>
           <button class="btn blue" onclick="exportResults()">⬇ تصدير Excel</button>
@@ -222,24 +371,81 @@ code.ltr{direction:ltr;display:inline-block;background:#eef3f2;border-radius:6px
       </div>
     </div>
 
+    <!-- الدروس -->
     <div class="tview" id="tv-lessons" hidden>
       <div class="card">
-        <h3 style="margin-top:0">➕ رفع درس جديد أو تحديث درس</h3>
-        <div class="drop" id="drop" onclick="$('#lfFile').click()">📄 اضغط هنا لاختيار ملف الدرس (HTML)، أو اسحبه وأفلته هنا
-          <input type="file" id="lfFile" accept=".html,.htm,text/html" hidden></div>
-        <div id="lfForm"></div>
-      </div>
-      <div class="card">
-        <h3 style="margin-top:0">📚 دروسي</h3>
-        <div class="tbl-scroll" id="lsTable"></div>
-        <p style="font-size:19px;color:var(--muted)">الطالب يرى الدروس <b>الظاهرة</b> المخصّصة لشعبته فقط. «🔗 مشاركة» تضع الدرس في مكتبة الدروس ليستخدمه زملاؤك. حذف الدرس لا يحذف نتائج الطلاب.</p>
-      </div>
-      <div class="card">
-        <div class="row" style="justify-content:space-between"><h3 style="margin:0">📖 مكتبة الدروس المشتركة</h3><button class="btn sm ghost" onclick="loadLibrary()">🔄 تحديث المكتبة</button></div>
-        <div class="tbl-scroll" id="libTable"><p>اضغط «تحديث المكتبة» لعرض الدروس التي شاركها المعلمون.</p></div>
+        <h3 style="margin-top:0">📚 أظهر الدروس لطلابك</h3>
+        <p style="margin-top:0">اختر الصف والفصل والباب، ثم علّم على الشعب التي تريد أن ترى كل درس. التغيير يُحفظ فورًا.</p>
+        <div class="tree" id="lsTree"></div>
+        <div id="lsList" style="margin-top:8px"></div>
       </div>
     </div>
 
+    <!-- الألعاب -->
+    <div class="tview" id="tv-games" hidden>
+      <div class="card">
+        <h3 style="margin-top:0">🎮 لعبة جديدة</h3>
+        <h4 style="margin:4px 0">1) اختر الدرس</h4>
+        <div class="tree" id="gmTree"></div>
+        <div id="gmLessons" style="margin-top:6px"></div>
+        <h4 style="margin:12px 0 4px">2) اختر الأسئلة <small id="gmQCount" style="color:var(--muted)"></small></h4>
+        <div class="row" style="margin-bottom:4px"><button class="btn sm ghost" onclick="gmAll(true)">✔ تحديد الكل</button><button class="btn sm ghost" onclick="gmAll(false)">✖ إلغاء التحديد</button></div>
+        <div class="qpick" id="gmQs"><p style="margin:4px">اختر درسًا أولًا.</p></div>
+        <h4 style="margin:12px 0 4px">3) اختر قالب اللعبة</h4>
+        <div class="tpl" id="gmTpl"></div>
+        <div class="row" style="margin-top:10px">
+          <label class="row" style="gap:4px">المدة: <select id="gmSecs" style="width:auto"><option value="60">دقيقة</option><option value="120">دقيقتان</option><option value="180">3 دقائق</option><option value="300">5 دقائق</option><option value="0">حتى تنتهي الأسئلة</option></select></label>
+          <label style="flex:1 1 240px" class="row">العنوان: <input type="text" id="gmTitle" placeholder="مثال: تحدي التجارة الرابحة" style="flex:1;width:auto"></label>
+        </div>
+        <div class="row" style="margin-top:10px"><button class="btn alt big" onclick="gmPlayNow()">▶ العب الآن على هذا الجهاز</button></div>
+        <div class="card" style="background:#fbfaf5;margin-bottom:0">
+          <b>📤 أو احفظها وأرسلها لطلابك ليلعبوا في البيت:</b>
+          <div id="gmCls" style="margin:6px 0"></div>
+          <button class="btn" onclick="gmSave()">💾 حفظ وإرسال</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="row" style="justify-content:space-between"><h3 style="margin:0">🗃️ ألعابي المحفوظة</h3><button class="btn sm ghost" onclick="loadGameSets()">🔄 تحديث</button></div>
+        <div class="tbl-scroll" id="gmSets"></div>
+      </div>
+    </div>
+
+    <!-- النقاط -->
+    <div class="tview" id="tv-points" hidden>
+      <div class="card pboard" id="pBoard">
+        <div class="row" style="justify-content:space-between">
+          <div class="row">
+            <label class="row" style="gap:4px">الشعبة: <select id="pCls" style="width:auto" onchange="loadPoints()"></select></label>
+            <div class="subtabs" style="margin:0"><button id="pModeS" class="on" onclick="setPMode('s')">👤 طلاب</button><button id="pModeG" onclick="setPMode('g')">👥 مجموعات</button></div>
+          </div>
+          <div class="row">
+            <button class="btn sm ghost" id="pGroupsBtn" onclick="editGroups()" hidden>⚙️ المجموعات</button>
+            <button class="btn sm ghost" onclick="resetPoints()">↺ تصفير</button>
+            <button class="btn sm blue" onclick="togglePFull()">⛶ ملء الشاشة</button>
+          </div>
+        </div>
+        <div class="pgrid" id="pGrid"></div>
+        <p style="font-size:18px;color:var(--muted);margin-bottom:0">اضغط النصف الأخضر <b>+</b> لإضافة نقطة، والرمادي <b>−</b> لإنقاصها. 🎙️ لتسجيل ملاحظة صوتية على الطالب.</p>
+      </div>
+    </div>
+
+    <!-- الجدار -->
+    <div class="tview" id="tv-wall" hidden>
+      <div class="card">
+        <div class="row" style="justify-content:space-between">
+          <label class="row" style="gap:4px">الشعبة: <select id="wCls" style="width:auto" onchange="loadTeacherWall()"></select></label>
+          <button class="btn sm ghost" onclick="loadTeacherWall()">🔄 تحديث</button>
+        </div>
+        <h3>⏳ تنتظر موافقتك</h3>
+        <div id="wPending"></div>
+        <h3>✍️ اكتب للصف</h3>
+        <div class="row"><textarea id="wText" maxlength="300" style="min-height:60px;flex:1" placeholder="رسالة من المعلم تظهر مباشرة على الجدار"></textarea><button class="btn alt" onclick="teacherPost()">📌 نشر</button></div>
+        <h3>🧱 الجدار</h3>
+        <div class="wall-wrap"><div id="wList"></div></div>
+      </div>
+    </div>
+
+    <!-- الطلاب -->
     <div class="tview" id="tv-students" hidden>
       <div class="card">
         <h3 style="margin-top:0">🏫 صفوفي وشعبي</h3>
@@ -270,24 +476,28 @@ code.ltr{direction:ltr;display:inline-block;background:#eef3f2;border-radius:6px
         </div>
         <div class="row" style="margin:6px 0"><button class="btn ghost sm" onclick="copyListCreds()">📋 نسخ بيانات الدخول للقائمة</button><button class="btn ghost sm" onclick="printCards()">🖨 طباعة بطاقات الدخول</button></div>
         <div class="tbl-scroll" id="stTable"></div>
-        <p style="font-size:19px;color:var(--muted)">لا يمكن حذف الحساب نهائيًا أو تغيير كلمة مروره من هنا. إذا احتجت ذلك: أوقف الحساب، ثم أضف الطالب من جديد.</p>
+        <p style="font-size:19px;color:var(--muted)">🎙️ تسجيل ملاحظة صوتية · 📒 ملاحظات الطالب · 🛡 صلاحيات خاصة للطالب. لا يمكن حذف الحساب نهائيًا من هنا؛ أوقفه بدلًا من ذلك.</p>
       </div>
     </div>
 
+    <!-- الإعداد -->
     <div class="tview" id="tv-setup" hidden>
       <div class="card"><h3 style="margin-top:0">✉️ رسائل جاهزة للطلاب</h3><div id="msgList"></div></div>
       <div class="card adminOnly" hidden><h3 style="margin-top:0">🔐 قواعد حماية قاعدة البيانات (للمدير)</h3>
-        <p>تضعها في Firebase ← Firestore Database ← Rules، ثم Publish. تمنع أي معلم من رؤية بيانات زملائه، وأي طالب من رؤية نتائج غيره.</p>
+        <p>تضعها في Firebase ← Firestore Database ← Rules، ثم Publish.</p>
         <pre class="rules" id="rulesNow"></pre><button class="btn sm" onclick="copyText($('#rulesNow').textContent)">📋 نسخ القواعد</button></div>
-      <div class="card"><h3 style="margin-top:0">🧩 كيف أصنع درسًا للمنصة؟</h3>
-        <p>أرسل ملف الدرس من الكتاب (PDF) إلى Claude مع ملف مواصفات «استعداد» (أو ملف درس عباد الرحمن نموذجًا)، واطلب «درسًا تفاعليًا متوافقًا مع منصة استعداد». ارفع الملف الناتج من تبويب «📚 الدروس».</p>
-        <p>يمكنك أيضًا رفع أي صفحة HTML عادية كدرس للعرض فقط، لكن نتائجها لا تظهر في لوحة النتائج.</p></div>
+      <div class="card adminOnly" hidden><h3 style="margin-top:0">🧹 حذف البيانات التجريبية القديمة (للمدير)</h3>
+        <p>يحذف من قاعدة البيانات: كل الطلاب، والدروس المرفوعة بالنظام القديم، ونتائجها، وحسابات المعلمين القديمة (ما عدا حسابك). <b>لا يمكن التراجع.</b></p>
+        <button class="btn red" onclick="wipeOld()">🗑 حذف البيانات القديمة</button><span id="wipeProg" style="margin-inline-start:8px"></span></div>
+      <div class="card adminOnly" hidden><h3 style="margin-top:0">🧩 كيف أصنع درسًا للمنصة؟</h3>
+        <p>أرسل ملف الدرس من الكتاب (PDF) إلى Claude، واطلب «درسًا تفاعليًا متوافقًا مع منصة استعداد». ارفع الملف الناتج من تبويب «🗂️ المنهج»، ثم افتح «🧠 بنك الأسئلة» واضغط «📥 استخراج الأسئلة من ملف الدرس».</p></div>
     </div>
   </div>
 </section>
 
 <div id="printArea"></div>
 <div id="modalRoot"></div>
+<div id="recRoot"></div>
 <div class="toast" id="toast"></div>
 
 <script type="module">
@@ -300,51 +510,38 @@ code.ltr{direction:ltr;display:inline-block;background:#eef3f2;border-radius:6px
     const F = await import(B + 'firebase-firestore.js');
     const app = A.initializeApp(CONFIG.firebase);
     const auth = AU.getAuth(app), db = F.getFirestore(app);
+    auth.languageCode = 'ar';
     let app2 = null;
-    const ms = t => t && t.toMillis ? t.toMillis() : (typeof t === 'number' ? t : Date.now());
-    const me = () => auth.currentUser;
-    const withId = d => Object.assign({id:d.id}, d.data());
-    const withAt = d => Object.assign({id:d.id}, d.data(), {at:ms(d.data().at)});
-    const q = (col, ...w) => F.query(F.collection(db, col), ...w.map(([k, v]) => F.where(k, '==', v)));
-    const getOne = async (col, id) => { const s = await F.getDoc(F.doc(db, col, id)); return s.exists() ? s.data() : null; };
-    const newAuthUser = async (username, password) => {
-      if (!app2) app2 = A.initializeApp(CONFIG.firebase, 'creator');
-      const a2 = AU.getAuth(app2);
-      const c = await AU.createUserWithEmailAndPassword(a2, username + '@' + DOMAIN, password);
-      await AU.signOut(a2); return c.user.uid;
-    };
+    const norm = v => { if (v && typeof v.toMillis === 'function') return v.toMillis(); if (Array.isArray(v)) return v.map(norm); if (v && typeof v === 'object') { const o = {}; for (const k in v) o[k] = norm(v[k]); return o; } return v; };
+    const withId = d => Object.assign({id:d.id}, norm(d.data()));
+    const user = u => u ? {uid:u.uid, email:u.email, emailVerified:!!u.emailVerified} : null;
     window.FBAPI = {
-      onAuth: cb => AU.onAuthStateChanged(auth, u => cb(u ? {uid:u.uid, email:u.email} : null)),
+      /* المصادقة */
+      onAuth: cb => AU.onAuthStateChanged(auth, u => cb(user(u))),
       login: (e, p) => AU.signInWithEmailAndPassword(auth, e, p),
       logout: () => AU.signOut(auth),
-      getTeacher: uid => getOne('teachers', uid),
-      setTeacherDoc: (uid, data) => F.setDoc(F.doc(db, 'teachers', uid), data, {merge:true}),
-      listTeachers: async () => (await F.getDocs(F.collection(db, 'teachers'))).docs.map(d => Object.assign({uid:d.id}, d.data())),
-      createTeacher: async (username, password, data) => { const uid = await newAuthUser(username, password); await F.setDoc(F.doc(db, 'teachers', uid), Object.assign({}, data, {createdAt:F.serverTimestamp()})); return uid; },
-      getStudent: uid => getOne('students', uid),
-      listStudents: async tid => (await F.getDocs(tid ? q('students', ['teacherId', tid]) : F.collection(db, 'students'))).docs.map(d => Object.assign({uid:d.id}, d.data())),
-      createStudent: async (username, password, data) => { const uid = await newAuthUser(username, password); await F.setDoc(F.doc(db, 'students', uid), Object.assign({}, data, {createdAt:F.serverTimestamp()})); return uid; },
-      setStudent: (uid, patch) => F.updateDoc(F.doc(db, 'students', uid), patch),
-      loadProgress: async lid => { const d = await getOne('progress', me().uid + '_' + lid); return d ? JSON.parse(d.s || 'null') : null; },
-      saveProgress: (lid, S) => F.setDoc(F.doc(db, 'progress', me().uid + '_' + lid), {s:JSON.stringify(S), updatedAt:F.serverTimestamp()}),
-      submit: d => F.addDoc(F.collection(db, 'submissions'), Object.assign({}, d, {at:F.serverTimestamp()})),
-      mySubmissions: async () => (await F.getDocs(q('submissions', ['uid', me().uid]))).docs.map(withAt),
-      getGrade: (uid, lid) => getOne('grades', uid + '_' + lid),
-      listSubmissions: async (lid, tid) => (await F.getDocs(q('submissions', ['lessonId', lid], ['teacherId', tid]))).docs.map(withAt),
-      listLessons: async filt => { const w = Object.entries(filt || {}); return (await F.getDocs(w.length ? q('lessons', ...w) : F.collection(db, 'lessons'))).docs.map(d => Object.assign(withId(d), {updatedAt:ms(d.data().updatedAt)})); },
-      getLessonHtml: async id => { const d = await getOne('lessonFiles', id); return d ? d.html : null; },
-      saveLesson: async (id, meta, html) => {
-        if (html != null) await F.setDoc(F.doc(db, 'lessonFiles', id), {html, teacherId:meta.teacherId});
-        await F.setDoc(F.doc(db, 'lessons', id), Object.assign({}, meta, {updatedAt:F.serverTimestamp()}), {merge:true});
+      signup: async (e, p) => { const c = await AU.createUserWithEmailAndPassword(auth, e, p); try { await AU.sendEmailVerification(c.user); } catch (er) { console.error(er); } return user(c.user); },
+      resendVerify: () => AU.sendEmailVerification(auth.currentUser),
+      reloadUser: async () => { const u = auth.currentUser; if (!u) return null; await u.reload(); if (u.emailVerified) await u.getIdToken(true); return user(auth.currentUser); },
+      resetPass: e => AU.sendPasswordResetEmail(auth, e),
+      newAuthUser: async (email, password) => {
+        if (!app2) app2 = A.initializeApp(CONFIG.firebase, 'creator');
+        const a2 = AU.getAuth(app2);
+        const c = await AU.createUserWithEmailAndPassword(a2, email, password);
+        await AU.signOut(a2); return c.user.uid;
       },
-      deleteLesson: async id => { await F.deleteDoc(F.doc(db, 'lessons', id)); await F.deleteDoc(F.doc(db, 'lessonFiles', id)); },
-      listAll: async col => (await F.getDocs(F.collection(db, col))).docs.map(withId),
-      patchDoc: (col, id, patch) => F.setDoc(F.doc(db, col, id), patch, {merge:true})
+      /* قاعدة البيانات (عامة) */
+      get: async (col, id) => { const s = await F.getDoc(F.doc(db, col, id)); return s.exists() ? Object.assign({id:s.id}, norm(s.data())) : null; },
+      set: (col, id, data, merge) => F.setDoc(F.doc(db, col, id), data, merge ? {merge:true} : {}),
+      add: async (col, data) => (await F.addDoc(F.collection(db, col), data)).id,
+      del: (col, id) => F.deleteDoc(F.doc(db, col, id)),
+      where: async (col, filt) => { const w = Object.entries(filt || {}); const ref = w.length ? F.query(F.collection(db, col), ...w.map(([k, v]) => F.where(k, '==', v))) : F.collection(db, col); return (await F.getDocs(ref)).docs.map(withId); }
     };
     window.dispatchEvent(new Event('fb-ready'));
   } catch (e) { console.error(e); window.FBERR = e; window.dispatchEvent(new Event('fb-fail')); }
 })();
 </script>
+
 <script>
 const ORIGINAL_HTML = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
 /*CONFIG-START*/const CONFIG = {"firebase":{"apiKey":"AIzaSyAhLiI0JcQ2bv2O_Sie9S5jmaPNVY6dhTA","authDomain":"iste3dad.firebaseapp.com","projectId":"iste3dad","storageBucket":"iste3dad.firebasestorage.app","messagingSenderId":"554024504423","appId":"1:554024504423:web:641bc771edfa677e74d8c2"},"teacherEmail":"abdullah2006adigm@gmail.com","siteUrl":""};/*CONFIG-END*/
@@ -353,6 +550,7 @@ const ORIGINAL_HTML = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
 const $ = s => document.querySelector(s);
 const $$ = s => [...document.querySelectorAll(s)];
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const A = v => esc(JSON.stringify(v));   // وسيط آمن داخل onclick
 const LS = {
   get(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
   set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch (e) { return false; } },
@@ -366,70 +564,83 @@ function copyText(t) {
 function saveFile(filename, text, type) { const blob = new Blob([text], {type}); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = filename; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 2000); }
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 const fmtDate = t => { try { return new Date(t).toLocaleString('ar', {day:'numeric', month:'numeric', hour:'2-digit', minute:'2-digit'}); } catch (e) { return ''; } };
+const fmtFull = t => { try { return new Date(t).toLocaleString('ar', {weekday:'long', day:'numeric', month:'long', year:'numeric', hour:'2-digit', minute:'2-digit'}); } catch (e) { return ''; } };
 const isPerm = e => String((e && (e.code || e.message)) || '').includes('permission');
 const errMsg = e => { const c = (e && (e.code || e.message)) || ''; return c.includes('permission') ? 'لا تملك صلاحية (قد تكون قواعد الحماية قديمة).' : c.includes('unavailable') || c.includes('network') ? 'لا يوجد اتصال بالإنترنت.' : c; };
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const uidGen = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+function closeModal() { $('#modalRoot').innerHTML = ''; }
+function openModal(html) { $('#modalRoot').innerHTML = `<div class="modal" onclick="if(event.target===this)closeModal()"><div class="box"><button class="btn sm ghost x" onclick="closeModal()">✕</button>${html}</div></div>`; }
 
 /* ================= الإعدادات العامة ================= */
-const DEFAULT_CLASSES = ['تاسع5', 'تاسع6', 'تاسع7', 'تاسع8'];
 const DOMAIN = 'iste3dad-students.com';
 const DEMO = /[?&]demo=1/.test(location.search);
 let API = null, ME = null, ROLE_CHOICE = 'student';
 const adminEmail = () => (DEMO ? 'admin@demo.com' : (CONFIG.teacherEmail || '')).toLowerCase();
-const siteUrl = () => CONFIG.siteUrl || (/^https?:/.test(location.protocol) ? location.origin + location.pathname.replace(/index\.html$/, '') : 'https://iste3dad.netlify.app');
+const siteUrl = () => CONFIG.siteUrl || (/^https?:/.test(location.protocol) ? location.origin + location.pathname.replace(/index\.html$/, '') : 'https://abdullah2006adi.github.io/iste3dad/');
 const levelPct = p => p >= .9 ? ['a','متميز'] : p >= .75 ? ['b','متقدم'] : p >= .6 ? ['c','متمكن'] : ['d','يحتاج دعمًا'];
-const byClsName = (a, b) => (a.cls || '').localeCompare(b.cls || '', 'ar') || (a.username || '').localeCompare(b.username || '');
-const byOrder = (a, b) => (a.order ?? 999) - (b.order ?? 999) || (a.title || '').localeCompare(b.title || '', 'ar');
-const slug = s => String(s || '').toLowerCase().replace(/[^a-z0-9-]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 40);
+const byClsName = (a, b) => (a.cls || '').localeCompare(b.cls || '', 'ar', {numeric:true}) || (a.name || '').localeCompare(b.name || '', 'ar');
+const slug = s => String(s || '').toLowerCase().replace(/[^a-z0-9-]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 50);
+
+/* الصفوف والفصول والأبواب */
+const STAGES = {
+  'ابتدائي':[['الأول','أول'], ['الثاني','ثاني'], ['الثالث','ثالث'], ['الرابع','رابع'], ['الخامس','خامس'], ['السادس','سادس']],
+  'إعدادي':[['السابع','سابع'], ['الثامن','ثامن'], ['التاسع','تاسع']],
+  'ثانوي':[['العاشر','عاشر'], ['الحادي عشر','حادي عشر '], ['الثاني عشر','ثاني عشر ']]
+};
+const GRADES = Object.values(STAGES).flat().map(([full, sh]) => ({full, key:sh.trim()}));
+const gradeOf = c => String(c || '').replace(/\s*\d+\s*$/, '').trim();
+const gradeName = k => 'الصف ' + ((GRADES.find(g => g.key === k) || {}).full || k);
+const ORD = ['', 'الأول', 'الثاني'];
+const termName = t => 'الفصل ' + ORD[t];
+const unitName = u => 'الباب ' + ORD[u];
+const byLessonOrder = (a, b) => (a.term || 1) - (b.term || 1) || (a.unit || 1) - (b.unit || 1) || (a.order ?? 999) - (b.order ?? 999) || (a.title || '').localeCompare(b.title || '', 'ar');
 
 function showScreen(id) {
-  ['scrLoading', 'scrSetup', 'scrRole', 'scrLogin', 'scrHome', 'scrPlayer', 'scrTeacher'].forEach(s => { const e = $('#' + s); if (e) e.hidden = s !== id; });
+  ['scrLoading', 'scrSetup', 'scrRole', 'scrLogin', 'scrSignup', 'scrVerify', 'scrHome', 'scrPlayer', 'scrTeacher', 'scrGame'].forEach(s => { const e = $('#' + s); if (e) e.hidden = s !== id; });
   window.scrollTo(0, 0);
 }
 
+/* محدّد الصف/الفصل/الباب */
+function renderTree(box, key, onChange, gradeList) {
+  const st = LS.get('iste3dad-tree-' + key, null) || {};
+  const G = gradeList && gradeList.length ? gradeList : GRADES.map(g => g.key);
+  const g0 = G.includes(st.g) ? st.g : G[0];
+  $(box).innerHTML = `<label>الصف<select data-k="g">${G.map(g => `<option value="${esc(g)}" ${g === g0 ? 'selected' : ''}>${esc(gradeName(g))}</option>`).join('')}</select></label>
+    <label>الفصل<select data-k="t">${[1, 2].map(t => `<option value="${t}" ${t === (st.t || 1) ? 'selected' : ''}>${termName(t)}</option>`).join('')}</select></label>
+    <label>الباب<select data-k="u">${[1, 2].map(u => `<option value="${u}" ${u === (st.u || 1) ? 'selected' : ''}>${unitName(u)}</option>`).join('')}</select></label>`;
+  $$(box + ' select').forEach(s => s.onchange = () => { LS.set('iste3dad-tree-' + key, treeVal(box)); onChange(treeVal(box)); });
+  return treeVal(box);
+}
+function treeVal(box) { const v = k => $(box + ' select[data-k="' + k + '"]').value; return {g:v('g'), t:+v('t'), u:+v('u')}; }
+
 /* ================= وضع تجريبي ================= */
 function DemoAPI() {
-  const K = 'iste3dad-demo-db3';
-  let db = LS.get(K, null) || {users:{'admin@demo.com':{uid:'A1', pass:'123456'}}, teachers:{}, students:{}, progress:{}, subs:[], grades:{}, lessons:{}, files:{}};
+  const K = 'iste3dad-demo-db5';
+  let db = LS.get(K, null) || {users:{'admin@demo.com':{uid:'A1', pass:'123456', verified:true}}, cols:{}};
   const put = () => { if (!LS.set(K, db)) toast('مساحة التخزين في الوضع التجريبي ممتلئة'); };
-  let cur = LS.get('iste3dad-demo-auth3', null); const cbs = [];
+  let cur = LS.get('iste3dad-demo-auth5', null); const cbs = [];
   const emit = () => cbs.forEach(cb => cb(cur));
-  const delay = v => new Promise(r => setTimeout(() => r(v), 80));
+  const delay = v => new Promise(r => setTimeout(() => r(v), 40));
   const err = c => { const e = new Error(c); e.code = c; return e; };
-  const match = (o, f) => Object.entries(f || {}).every(([k, v]) => o[k] === v);
-  const newUser = (u, p) => { const e = u + '@' + DOMAIN; if (db.users[e]) throw err('auth/email-already-in-use'); const uid = 'U' + Math.random().toString(36).slice(2, 10); db.users[e] = {uid, pass:p}; return uid; };
-  const coll = {teachers:'teachers', students:'students', lessons:'lessons', lessonFiles:'files', grades:'grades'};
+  const C = col => (db.cols[col] = db.cols[col] || {});
+  const clone = v => JSON.parse(JSON.stringify(v));
+  const mkUser = (email, pass, verified) => { if (db.users[email]) throw err('auth/email-already-in-use'); const uid = 'U' + Math.random().toString(36).slice(2, 10); db.users[email] = {uid, pass, verified}; put(); return uid; };
+  const pub = (email) => { const u = db.users[email]; return {uid:u.uid, email, emailVerified:!!u.verified}; };
   return {
     onAuth(cb) { cbs.push(cb); setTimeout(() => cb(cur), 0); },
-    async login(e, p) { await delay(); const u = db.users[e]; if (!u || u.pass !== p) throw err('auth/invalid-credential'); cur = {uid:u.uid, email:e}; LS.set('iste3dad-demo-auth3', cur); emit(); },
-    async logout() { cur = null; LS.del('iste3dad-demo-auth3'); emit(); },
-    async getTeacher(uid) { return delay(db.teachers[uid] || null); },
-    async setTeacherDoc(uid, data) { db.teachers[uid] = Object.assign({}, db.teachers[uid] || {}, data); put(); },
-    async listTeachers() { return delay(Object.entries(db.teachers).map(([uid, t]) => Object.assign({uid}, t))); },
-    async createTeacher(u, p, data) { await delay(); const uid = newUser(u, p); db.teachers[uid] = Object.assign({}, data, {createdAt:Date.now()}); put(); return uid; },
-    async getStudent(uid) { return delay(db.students[uid] || null); },
-    async listStudents(tid) { return delay(Object.entries(db.students).filter(([, s]) => !tid || s.teacherId === tid).map(([uid, s]) => Object.assign({uid}, s))); },
-    async createStudent(u, p, data) { await delay(); const uid = newUser(u, p); db.students[uid] = Object.assign({}, data, {createdAt:Date.now()}); put(); return uid; },
-    async setStudent(uid, patch) { Object.assign(db.students[uid], patch); put(); },
-    async loadProgress(lid) { const v = db.progress[cur.uid + '_' + lid]; return delay(v ? JSON.parse(v) : null); },
-    async saveProgress(lid, S) { db.progress[cur.uid + '_' + lid] = JSON.stringify(S); put(); },
-    async submit(d) { db.subs.push(Object.assign({}, d, {id:'s' + Date.now() + Math.random(), at:Date.now()})); put(); return delay(); },
-    async mySubmissions() { return delay(db.subs.filter(s => s.uid === cur.uid)); },
-    async getGrade(uid, lid) { return delay(db.grades[uid + '_' + lid] || null); },
-    async listSubmissions(lid, tid) { return delay(db.subs.filter(s => s.lessonId === lid && s.teacherId === tid)); },
-    async listLessons(f) { return delay(Object.entries(db.lessons).map(([id, l]) => Object.assign({id}, l)).filter(l => match(l, f))); },
-    async getLessonHtml(id) { return delay(db.files[id] ? db.files[id].html : null); },
-    async saveLesson(id, meta, html) { if (html != null) db.files[id] = {html, teacherId:meta.teacherId}; db.lessons[id] = Object.assign({}, db.lessons[id] || {}, meta, {updatedAt:Date.now()}); put(); return delay(); },
-    async deleteLesson(id) { delete db.lessons[id]; delete db.files[id]; put(); },
-    async listAll(col) { if (col === 'submissions') return delay(db.subs.slice()); const o = db[coll[col]] || {}; return delay(Object.entries(o).map(([id, v]) => Object.assign({id}, v))); },
-    async patchDoc(col, id, patch) { if (col === 'submissions') { const s = db.subs.find(x => x.id === id); if (s) Object.assign(s, patch); } else { const o = db[coll[col]]; o[id] = Object.assign({}, o[id] || {}, patch); } put(); },
-    _seedLegacy(html) { // لاختبار النقل من النسخة السابقة
-      db.users['t5-01@' + DOMAIN] = {uid:'OLD1', pass:'111111'};
-      db.students.OLD1 = {name:'طالب قديم', cls:'تاسع5', username:'t5-01', password:'111111', active:true};
-      db.lessons['ebad-furqan'] = {title:'منهج عباد الرحمن القويم', icon:'🌿', tracked:true, autoMax:38, components:[{key:'quiz', label:'اختبار', max:8}], written:{max:0}, classes:DEFAULT_CLASSES, visible:true, order:1};
-      db.files['ebad-furqan'] = {html};
-      db.subs.push({id:'oldsub', uid:'OLD1', name:'طالب قديم', cls:'تاسع5', lessonId:'ebad-furqan', auto:30, scores:{quiz:8}, attempt:1, at:Date.now() - 86400000});
-      put();
-    }
+    async login(e, p) { await delay(); const u = db.users[e]; if (!u || u.pass !== p) throw err('auth/invalid-credential'); cur = pub(e); LS.set('iste3dad-demo-auth5', cur); emit(); },
+    async logout() { cur = null; LS.del('iste3dad-demo-auth5'); emit(); },
+    async signup(e, p) { await delay(); if (p.length < 6) throw err('auth/weak-password'); mkUser(e, p, false); cur = pub(e); LS.set('iste3dad-demo-auth5', cur); emit(); return cur; },
+    async resendVerify() { return delay(); },
+    async reloadUser() { if (!cur) return null; db.users[cur.email].verified = true; put(); cur = pub(cur.email); LS.set('iste3dad-demo-auth5', cur); return delay(cur); },
+    async resetPass() { return delay(); },
+    async newAuthUser(email, p) { await delay(); return mkUser(email, p, false); },
+    async get(col, id) { const v = C(col)[id]; return delay(v ? Object.assign({id}, clone(v)) : null); },
+    async set(col, id, data, merge) { C(col)[id] = merge ? Object.assign({}, C(col)[id] || {}, clone(data)) : clone(data); put(); return delay(); },
+    async add(col, data) { const id = 'd' + uidGen(); C(col)[id] = clone(data); put(); return delay(id); },
+    async del(col, id) { delete C(col)[id]; put(); return delay(); },
+    async where(col, f) { return delay(Object.entries(C(col)).filter(([, v]) => Object.entries(f || {}).every(([k, x]) => v[k] === x)).map(([id, v]) => Object.assign({id}, clone(v)))); }
   };
 }
 
@@ -453,79 +664,158 @@ async function boot() {
 }
 function chooseRole(r) {
   ROLE_CHOICE = r; LS.set('iste3dad-role', r);
-  $('#lgIcon').textContent = r === 'teacher' ? '👨‍🏫' : '🎒';
-  $('#lgTitle').textContent = r === 'teacher' ? 'دخول المعلم' : 'دخول الطالب';
-  $('#lgUser').placeholder = r === 'teacher' ? 'اسم المستخدم أو البريد' : 't5-01';
-  $('#lgHint').textContent = r === 'teacher' ? 'نسيت بياناتك؟ اطلبها من مدير المنصة.' : 'نسيت كلمة المرور؟ اطلبها من معلّمك.';
+  const T = r === 'teacher';
+  $('#lgIcon').textContent = T ? '👨‍🏫' : '🎒';
+  $('#lgTitle').textContent = T ? 'دخول المعلم' : 'دخول الطالب';
+  $('#lgUserLbl').textContent = T ? 'البريد الإلكتروني' : 'اسم المستخدم';
+  $('#lgUser').placeholder = T ? 'name@gmail.com' : 't5-01';
+  $('#lgTeacherExtra').hidden = !T;
+  $('#lgHint').textContent = T ? '' : 'نسيت كلمة المرور؟ اطلبها من معلّمك.';
   loginMsg(''); showScreen('scrLogin'); setTimeout(() => $('#lgUser').focus(), 50);
 }
-function loginMsg(t) { $('#loginMsg').textContent = t || ''; }
+function loginMsg(t, ok) { const m = $('#loginMsg'); m.textContent = t || ''; m.classList.toggle('ok', !!ok); }
+const isStudentEmail = e => String(e || '').toLowerCase().endsWith('@' + DOMAIN);
 async function onAuthChange(user) {
-  if (!user) { ME = null; showScreen('scrRole'); return; }
+  if (!user) { ME = null; stopTimers(); showScreen('scrRole'); return; }
   const email = (user.email || '').toLowerCase();
   try {
-    if (email && email === adminEmail()) {
-      ME = {role:'admin', uid:user.uid, email, name:'المدير'};
-      await openTeacher(); return;
-    }
-    const t = await API.getTeacher(user.uid).catch(() => null);
-    if (t) {
+    if (email && email === adminEmail()) { ME = {role:'admin', uid:user.uid, email, name:'المدير'}; await openTeacher(); return; }
+    if (!isStudentEmail(email)) {
+      // معلم يسجّل بنفسه
+      if (!user.emailVerified) { showVerify(email); return; }
+      let t = await API.get('teachers', user.uid).catch(e => { if (isPerm(e)) return null; throw e; });
+      if (!t) { const ok = await createTeacherDoc(user); if (!ok) return; t = await API.get('teachers', user.uid); }
       if (t.active === false) { await API.logout(); chooseRole('teacher'); loginMsg('حساب المعلم موقوف. راجع مدير المنصة.'); return; }
       ME = Object.assign({role:'teacher', uid:user.uid, email}, t); await openTeacher(); return;
     }
-    const st = await API.getStudent(user.uid);
+    const t = await API.get('teachers', user.uid).catch(() => null);
+    if (t) { if (t.active === false) { await API.logout(); chooseRole('teacher'); loginMsg('حساب المعلم موقوف.'); return; } ME = Object.assign({role:'teacher', uid:user.uid, email}, t); await openTeacher(); return; }
+    const st = await API.get('students', user.uid);
     if (!st || st.active === false) { await API.logout(); chooseRole(ROLE_CHOICE); loginMsg(!st ? 'هذا الحساب غير مسجّل في المنصة.' : 'هذا الحساب موقوف. راجع معلّمك.'); return; }
-    ME = Object.assign({role:'student', uid:user.uid}, st);
+    ME = Object.assign({role:'student'}, st, {uid:user.uid});
     openHome();
   } catch (e) { console.error(e); chooseRole(ROLE_CHOICE); loginMsg('تعذّر تحميل حسابك: ' + errMsg(e)); }
 }
 async function doLogin() {
   const u = $('#lgUser').value.trim().toLowerCase(), p = $('#lgPass').value.trim();
-  if (!u || !p) { loginMsg('اكتب اسم المستخدم وكلمة المرور'); return; }
+  if (!u || !p) { loginMsg('اكتب ' + (ROLE_CHOICE === 'teacher' ? 'البريد' : 'اسم المستخدم') + ' وكلمة المرور'); return; }
   const email = u.includes('@') ? u : u + '@' + DOMAIN;
   const b = $('#lgBtn'); b.disabled = true; b.textContent = '⏳ جارٍ الدخول…'; loginMsg('');
   try { await API.login(email, p); $('#lgPass').value = ''; }
   catch (e) {
     const c = e && e.code || '';
-    loginMsg(c.includes('too-many') ? 'محاولات كثيرة. انتظر دقيقة ثم حاول مرة أخرى.' : c.includes('network') ? 'لا يوجد اتصال بالإنترنت.' : 'اسم المستخدم أو كلمة المرور غير صحيحة.');
+    loginMsg(c.includes('too-many') ? 'محاولات كثيرة. انتظر دقيقة ثم حاول مرة أخرى.' : c.includes('network') ? 'لا يوجد اتصال بالإنترنت.' : (ROLE_CHOICE === 'teacher' ? 'البريد أو كلمة المرور غير صحيحة.' : 'اسم المستخدم أو كلمة المرور غير صحيحة.'));
   } finally { b.disabled = false; b.textContent = 'دخول'; }
 }
 ['lgUser', 'lgPass'].forEach(id => $('#' + id).addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); }));
-async function doLogout() { await flushProgress(); await API.logout(); }
+async function forgotPass() {
+  const e = $('#lgUser').value.trim().toLowerCase();
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e)) return loginMsg('اكتب بريدك الإلكتروني في الخانة أولًا، ثم اضغط «نسيت كلمة المرور؟»');
+  try { await API.resetPass(e); loginMsg('أرسلنا رابط تغيير كلمة المرور إلى بريدك ✓', true); } catch (er) { loginMsg('تعذّر الإرسال: تأكّد من البريد.'); }
+}
+function showSignup() { $('#suMsg').textContent = ''; showScreen('scrSignup'); setTimeout(() => $('#suName').focus(), 50); }
+async function doSignup() {
+  const name = $('#suName').value.trim(), e = $('#suMail').value.trim().toLowerCase(), p = $('#suPass').value, p2 = $('#suPass2').value;
+  const msg = t => $('#suMsg').textContent = t;
+  if (name.length < 2) return msg('اكتب اسمك');
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e)) return msg('اكتب البريد الإلكتروني بشكل صحيح');
+  if (isStudentEmail(e)) return msg('هذا البريد غير مسموح');
+  if (p.length < 6) return msg('كلمة المرور 6 أحرف على الأقل');
+  if (p !== p2) return msg('كلمتا المرور غير متطابقتين');
+  const b = $('#suBtn'); b.disabled = true; b.textContent = '⏳ جارٍ الإنشاء…'; msg('');
+  LS.set('iste3dad-signup-name', name);
+  try { await API.signup(e, p); }
+  catch (er) {
+    const c = er && er.code || '';
+    msg(c.includes('email-already') ? 'هذا البريد مسجّل من قبل. ادخل به من صفحة الدخول.' : c.includes('weak') ? 'كلمة المرور ضعيفة.' : c.includes('invalid-email') ? 'البريد غير صحيح.' : 'تعذّر إنشاء الحساب: ' + errMsg(er));
+  } finally { b.disabled = false; b.textContent = 'إنشاء الحساب'; }
+}
+function showVerify(email) {
+  $('#vfMail').textContent = email; $('#vfMsg').textContent = ''; $('#vfMsg').classList.remove('ok');
+  $('#vfNameBox').hidden = !!LS.get('iste3dad-signup-name', '');
+  showScreen('scrVerify');
+}
+async function checkVerified() {
+  const b = $('#vfBtn'); b.disabled = true;
+  try {
+    if (!$('#vfNameBox').hidden) { const n = $('#vfName').value.trim(); if (n.length < 2) { $('#vfMsg').textContent = 'اكتب اسمك أولًا'; return; } LS.set('iste3dad-signup-name', n); }
+    const u = await API.reloadUser();
+    if (!u || !u.emailVerified) { $('#vfMsg').textContent = 'لم يتم التحقّق بعد. افتح الرابط في بريدك ثم حاول مرة أخرى.'; return; }
+    await onAuthChange(u);
+  } catch (e) { $('#vfMsg').textContent = 'تعذّر: ' + errMsg(e); }
+  finally { b.disabled = false; }
+}
+async function resendVerify() {
+  try { await API.resendVerify(); $('#vfMsg').textContent = 'أُعيد إرسال الرابط ✓'; $('#vfMsg').classList.add('ok'); }
+  catch (e) { $('#vfMsg').textContent = String(e.code || '').includes('too-many') ? 'انتظر قليلًا قبل إعادة الإرسال.' : 'تعذّر الإرسال: ' + errMsg(e); }
+}
+async function createTeacherDoc(user) {
+  const name = LS.get('iste3dad-signup-name', '') || (user.email || '').split('@')[0];
+  const code = 't' + Math.random().toString(36).slice(2, 6);
+  try {
+    await API.set('teachers', user.uid, {name, email:(user.email || '').toLowerCase(), active:true, classes:[], code, createdAt:Date.now()});
+    LS.del('iste3dad-signup-name'); return true;
+  } catch (e) {
+    console.error(e);
+    showVerify(user.email); $('#vfMsg').textContent = isPerm(e) ? 'تعذّر تفعيل الحساب: قواعد الحماية في Firebase تحتاج تحديثًا (أخبر مدير المنصة).' : 'تعذّر تفعيل الحساب: ' + errMsg(e);
+    return false;
+  }
+}
+async function doLogout() { await flushProgress(); stopTimers(); await API.logout(); }
+const TIMERS = [];
+function stopTimers() { while (TIMERS.length) clearInterval(TIMERS.pop()); }
 
-/* ================= الصفحة الرئيسية للطالب ================= */
-let LESSONS = [];
+/* ================= المنهج (مشترك) ================= */
+let CAT = [];
+async function loadCatalog() { CAT = (await API.where('catalog', {})).sort(byLessonOrder); return CAT; }
+const catById = id => CAT.find(l => l.id === id);
+
+/* ================= صفحة الطالب ================= */
+let LESSONS = [], SHOW = {};
 async function openHome() {
   showScreen('scrHome');
   $('#homeWho').textContent = '👤 ' + ME.name + ' · ' + ME.cls;
   $('#homeHello').textContent = 'مرحبًا يا ' + (ME.name || '').split(' ')[0] + ' 👋';
+  const p = ME.perms || {};
+  hTab(LS.get('iste3dad-htab', 'lessons'));
+  $('#stWallMod').hidden = !p.wall;
+  await loadStudentLessons();
+}
+function hTab(h) {
+  if (!['lessons', 'games', 'wall'].includes(h)) h = 'lessons';
+  LS.set('iste3dad-htab', h);
+  $$('#hTabs button').forEach(b => b.classList.toggle('on', b.dataset.h === h));
+  $$('.hview').forEach(v => v.hidden = v.id !== 'hv-' + h);
+  if (h === 'games') loadStudentGames();
+  if (h === 'wall') loadStudentWall();
+}
+async function loadStudentLessons() {
   $('#homeLessons').innerHTML = '<p>⏳ جارٍ التحميل…</p>';
   let subs = [];
   try {
-    const all = ME.teacherId ? await API.listLessons({teacherId:ME.teacherId}) : [];
-    LESSONS = all.filter(l => l.visible !== false && (!l.classes || !l.classes.length || l.classes.includes(ME.cls))).sort(byOrder);
-    subs = await API.mySubmissions();
+    const [cat, show] = await Promise.all([loadCatalog(), ME.teacherId ? API.get('tshow', ME.teacherId) : null]);
+    SHOW = (show && show.lessons) || {};
+    LESSONS = cat.filter(l => (SHOW[l.id] || []).includes(ME.cls)).sort(byLessonOrder);
+    subs = await API.where('submissions', {uid:ME.uid});
   } catch (e) { console.error(e); $('#homeLessons').innerHTML = '<p>تعذّر تحميل الدروس. حدّث الصفحة.</p>'; return; }
-  if (!LESSONS.length) { $('#homeLessons').innerHTML = '<div class="card">لا توجد دروس متاحة الآن. سيضيف معلّمك الدروس قريبًا 🌿</div>'; return; }
-  const extra = await Promise.all(LESSONS.map(async l => ({
-    p: l.tracked === false ? null : await API.loadProgress(l.id).catch(() => null),
-    g: l.tracked === false || !(l.written && +l.written.max) ? null : await API.getGrade(ME.uid, l.id).catch(() => null)
-  })));
-  $('#homeLessons').innerHTML = LESSONS.map((l, i) => {
-    const my = subs.filter(s => s.lessonId === l.id).sort((a, b) => b.at - a.at);
-    const {p, g} = extra[i];
-    const best = my.length ? Math.max(...my.map(s => +s.auto || 0)) : null;
-    const wMax = (l.written && +l.written.max) || 0, aMax = +l.autoMax || 0;
-    const w = g && g.w !== null && g.w !== undefined && g.w !== '' ? +g.w : null;
+  if (!LESSONS.length) { $('#homeLessons').innerHTML = '<div class="card">لا توجد دروس متاحة الآن. سيُظهر معلّمك الدروس قريبًا 🌿</div>'; return; }
+  const prog = await Promise.all(LESSONS.map(l => l.tracked === false ? null : API.get('progress', ME.uid + '_' + l.id).then(d => d ? JSON.parse(d.s || 'null') : null).catch(() => null)));
+  let html = '', last = '';
+  LESSONS.forEach((l, i) => {
+    const head = termName(l.term || 1) + ' · ' + unitName(l.unit || 1);
+    if (head !== last) { html += `<div class="unit-head">📘 ${head}</div>`; last = head; }
+    const my = subs.filter(s => s.lessonId === l.id), p = prog[i];
+    const best = my.length ? Math.max(...my.map(s => +s.auto || 0)) : null, aMax = +l.autoMax || 0;
     const started = p && (p.page || Object.keys(p).length > 3);
     let chip, btn;
     if (l.tracked === false) { chip = '<span class="chip grey">📖 للاطلاع</span>'; btn = 'افتح الدرس ←'; }
-    else { chip = my.length ? '<span class="chip done">✅ أُرسل</span>' : started ? '<span class="chip wip">⏳ قيد الحل</span>' : '<span class="chip new">🆕 جديد</span>'; btn = my.length ? (p && !p.sent ? 'أكمل المحاولة الجديدة ←' : 'افتح الدرس ←') : started ? 'أكمل الدرس ←' : 'ابدأ الدرس ←'; }
-    const scoreLine = my.length ? `<div style="font-size:21px">🏅 أفضل درجة: <b>${best} / ${aMax}</b>${wMax ? (w !== null ? ` · درجة المعلم: <b>${w} / ${wMax}</b> · المجموع: <b>${best + w} / ${aMax + wMax}</b>` : ' · السؤال المكتوب ينتظر التصحيح') : ''} · المحاولات: <b>${my.length}</b></div>` : '';
-    return `<div class="lesson-card"><div class="ic">${esc(l.icon || '📘')}</div>
+    else { chip = my.length ? '<span class="chip done">✅ أُرسل</span>' : started ? '<span class="chip wip">⏳ قيد الحل</span>' : '<span class="chip new">🆕 جديد</span>'; btn = my.length ? 'افتح الدرس ←' : started ? 'أكمل الدرس ←' : 'ابدأ الدرس ←'; }
+    const scoreLine = my.length ? `<div style="font-size:21px">🏅 أفضل درجة: <b>${best} / ${aMax}</b> · المحاولات: <b>${my.length}</b></div>` : '';
+    html += `<div class="lesson-card"><div class="ic">${esc(l.icon || '📘')}</div>
       <div class="info"><h3 style="margin:0">${esc(l.title)} ${chip}</h3><div style="color:var(--muted)">${esc(l.sub || '')}</div>${scoreLine}</div>
-      <button class="btn alt big" onclick="openLesson('${l.id}','student')">${btn}</button></div>`;
-  }).join('');
+      <button class="btn alt big" onclick="openLesson(${A(l.id)},'student')">${btn}</button></div>`;
+  });
+  $('#homeLessons').innerHTML = html;
 }
 
 /* ================= مشغّل الدرس ================= */
@@ -534,18 +824,17 @@ const HTML_CACHE = {};
 async function getLessonHtml(l) {
   const key = l.id + '@' + (l.updatedAt || 0);
   if (HTML_CACHE[key]) return HTML_CACHE[key];
-  const h = await API.getLessonHtml(l.id); if (h) HTML_CACHE[key] = h; return h;
+  const d = await API.get('catalogFiles', l.id); const h = d && d.html; if (h) HTML_CACHE[key] = h; return h;
 }
 async function openLesson(id, mode) {
-  const pool = mode === 'preview' ? TD.lessons.concat(TD.library) : LESSONS;
-  const l = pool.find(x => x.id === id); if (!l) return;
+  const l = (mode === 'student' ? LESSONS : CAT).find(x => x.id === id); if (!l) return;
   showScreen('scrPlayer'); $('#plLoad').hidden = false;
   $('#plTitle').textContent = (l.icon || '📘') + ' ' + l.title;
   $('#plPrev').hidden = mode !== 'preview';
   $('#plWho').textContent = mode === 'student' ? '👤 ' + ME.name : '';
   const fr = $('#plFrame'); fr.srcdoc = '';
   try {
-    const [html, state] = await Promise.all([getLessonHtml(l), mode === 'student' && l.tracked !== false ? API.loadProgress(id).catch(() => null) : null]);
+    const [html, state] = await Promise.all([getLessonHtml(l), mode === 'student' && l.tracked !== false ? API.get('progress', ME.uid + '_' + id).then(d => d ? JSON.parse(d.s || 'null') : null).catch(() => null) : null]);
     if (!html) { toast('ملف الدرس غير موجود'); leaveLesson(); return; }
     PL = {lesson:l, mode, state, ready:false};
     fr.onload = () => { $('#plLoad').hidden = true; };
@@ -555,14 +844,13 @@ async function openLesson(id, mode) {
 function postToLesson(m) { try { $('#plFrame').contentWindow.postMessage(Object.assign({iste:''}, m), '*'); } catch (e) {} }
 async function flushProgress() {
   if (!PL || !plSaveT) return; clearTimeout(plSaveT); plSaveT = null;
-  if (PL.mode === 'student' && PL.state) { try { await API.saveProgress(PL.lesson.id, PL.state); } catch (e) { console.error(e); } }
+  if (PL.mode === 'student' && PL.state) { try { await API.set('progress', ME.uid + '_' + PL.lesson.id, {s:JSON.stringify(PL.state), updatedAt:Date.now()}); } catch (e) { console.error(e); } }
 }
 async function leaveLesson() {
   await flushProgress();
-  const wasPreview = PL && PL.mode === 'preview';
   PL = null; $('#plFrame').srcdoc = '';
-  if (ME && ME.role !== 'student') { showScreen('scrTeacher'); if (wasPreview) tTab('lessons'); }
-  else if (ME) openHome(); else showScreen('scrRole');
+  if (ME && ME.role !== 'student') showScreen('scrTeacher');
+  else if (ME) { showScreen('scrHome'); loadStudentLessons(); } else showScreen('scrRole');
 }
 const cleanStr = (s, n) => String(s ?? '').slice(0, n || 3000);
 function cleanSubmission(d) {
@@ -586,9 +874,9 @@ window.addEventListener('message', async ev => {
     if (PL.mode === 'preview') { postToLesson({iste:'submitted', ok:true, attempt:0, preview:true}); return; }
     if (PL.lesson.tracked === false) { postToLesson({iste:'submitted', ok:false, error:'هذا الدرس للاطلاع فقط'}); return; }
     try {
-      const lid = PL.lesson.id, mine = (await API.mySubmissions()).filter(s => s.lessonId === lid);
-      const data = Object.assign(cleanSubmission(m.data || {}), {uid:ME.uid, username:ME.username || '', name:ME.name, cls:ME.cls, teacherId:ME.teacherId || '', lessonId:lid, attempt:mine.length + 1});
-      await API.submit(data);
+      const lid = PL.lesson.id, mine = (await API.where('submissions', {uid:ME.uid})).filter(s => s.lessonId === lid);
+      const data = Object.assign(cleanSubmission(m.data || {}), {uid:ME.uid, username:ME.username || '', name:ME.name, cls:ME.cls, teacherId:ME.teacherId || '', lessonId:lid, attempt:mine.length + 1, at:Date.now()});
+      await API.add('submissions', data);
       postToLesson({iste:'submitted', ok:true, attempt:data.attempt});
     } catch (e) { console.error(e); postToLesson({iste:'submitted', ok:false, error:'تعذّر الإرسال. تأكّد من الإنترنت ثم حاول مرة أخرى'}); }
   } else if (m.iste === 'home') leaveLesson();
@@ -597,106 +885,107 @@ window.addEventListener('pagehide', () => { if (plSaveT) flushProgress(); });
 document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden' && plSaveT) flushProgress(); });
 
 /* ================= لوحة المعلم / المدير ================= */
-const TD = {view:'', vt:null, teachers:[], students:[], lessons:[], library:[], subs:[], grades:{}, lid:''};
+const TD = {view:'', vt:null, teachers:[], students:[], subs:[], lid:'', show:{}};
 const isAdmin = () => ME && ME.role === 'admin';
 const myClasses = () => (TD.vt && TD.vt.classes && TD.vt.classes.length ? TD.vt.classes : []);
+const myGrades = () => [...new Set(myClasses().map(gradeOf))];
 async function ensureAdmin() {
-  // حساب المدير معلّم أيضًا، وتنتقل إليه بيانات النسخة السابقة مرة واحدة
   let t = null;
-  try { t = await API.getTeacher(ME.uid); } catch (e) { if (isPerm(e)) { $('#rulesWarn').hidden = false; return null; } throw e; }
+  try { t = await API.get('teachers', ME.uid); } catch (e) { if (isPerm(e)) { $('#rulesWarn').hidden = false; return null; } throw e; }
   if (!t) {
-    t = {name:'المدير', username:ME.email, active:true, isAdmin:true, code:'t', classes:DEFAULT_CLASSES.slice()};
-    try { await API.setTeacherDoc(ME.uid, t); } catch (e) { if (isPerm(e)) { $('#rulesWarn').hidden = false; return t; } throw e; }
-  }
-  if (!t.migratedV3) {
-    try {
-      const uid = ME.uid;
-      const [st, ls, lf, sb] = await Promise.all([API.listAll('students'), API.listAll('lessons'), API.listAll('lessonFiles'), API.listAll('submissions')]);
-      const jobs = [];
-      st.filter(s => !s.teacherId).forEach(s => jobs.push(API.patchDoc('students', s.id, {teacherId:uid})));
-      ls.filter(l => !l.teacherId).forEach(l => jobs.push(API.patchDoc('lessons', l.id, {teacherId:uid, teacherName:t.name, lessonKey:l.id})));
-      lf.filter(f => !f.teacherId).forEach(f => jobs.push(API.patchDoc('lessonFiles', f.id, {teacherId:uid})));
-      sb.filter(s => !s.teacherId).forEach(s => jobs.push(API.patchDoc('submissions', s.id, {teacherId:uid})));
-      await Promise.all(jobs);
-      await API.setTeacherDoc(ME.uid, {migratedV3:true});
-      t.migratedV3 = true;
-      if (jobs.length) toast('نُقلت بياناتك السابقة إلى حسابك ✓');
-    } catch (e) { console.error(e); if (isPerm(e)) $('#rulesWarn').hidden = false; }
+    t = {name:'المدير', email:ME.email, active:true, isAdmin:true, code:'t', classes:[], createdAt:Date.now()};
+    try { await API.set('teachers', ME.uid, t); } catch (e) { if (isPerm(e)) { $('#rulesWarn').hidden = false; return t; } throw e; }
   }
   return t;
 }
 async function openTeacher() {
   showScreen('scrTeacher');
+  ['#newCreds', '#cuProg', '#wipeProg'].forEach(x => $(x).innerHTML = ''); $('#rulesWarn').hidden = true; GM.lessons = new Set(); GM.qs = []; GM.picked = new Set(); $('#gmTitle').value = ''; closeAdd(); $('#clsRows').innerHTML = '';
   $('#tWho').textContent = '👤 ' + (ME.name || '') + (isAdmin() ? ' (المدير)' : '');
   $('#tHead').textContent = isAdmin() ? '📖 استعداد · لوحة المدير' : '📖 استعداد · لوحة المعلم';
   $$('.adminOnly').forEach(e => e.hidden = !isAdmin());
   if (isAdmin()) { const t = await ensureAdmin(); if (t) Object.assign(ME, {tdoc:t, name:t.name || 'المدير'}); }
+  try { await loadCatalog(); } catch (e) { console.error(e); if (isPerm(e)) $('#rulesWarn').hidden = false; }
   await switchView(ME.uid, true);
-  tTab(isAdmin() ? 'teachers' : 'results');
+  tTab(LS.get('iste3dad-ttab', isAdmin() ? 'curriculum' : 'lessons'));
   if (isAdmin()) loadTeachers();
+  TIMERS.push(setInterval(() => { if (!$('#scrTeacher').hidden) refreshWallDot(); }, 60000));
 }
 async function switchView(uid, silent) {
-  TD.view = uid; TD.libLoaded = false; TD.library = [];
-  try { TD.vt = uid === ME.uid && !isAdmin() ? ME : (await API.getTeacher(uid)) || {classes:DEFAULT_CLASSES.slice(), name:ME.name}; }
-  catch (e) { TD.vt = {classes:DEFAULT_CLASSES.slice(), name:ME.name}; }
+  TD.view = uid;
+  try { TD.vt = uid === ME.uid && !isAdmin() ? ME : (await API.get('teachers', uid)) || {classes:[], name:ME.name}; }
+  catch (e) { TD.vt = {classes:[], name:ME.name}; }
   const other = uid !== ME.uid;
   $('#viewAs').hidden = !other;
-  if (other) $('#viewAsTxt').textContent = '👁 تشاهد صفحة المعلم: ' + (TD.vt.name || '') + ' — أي إضافة تتم الآن تكون باسمه';
+  if (other) $('#viewAsTxt').textContent = '👁 تشاهد صفحة المعلم: ' + (TD.vt.name || '') + ' — أي تغيير يتم الآن يكون باسمه';
   fillClassSelects(); renderClassChips();
   await loadTeacherData();
-  if (!silent) { tTab('results'); window.scrollTo({top:0, behavior:'smooth'}); }
+  if (!silent) { tTab('lessons'); window.scrollTo({top:0, behavior:'smooth'}); }
 }
 function fillClassSelects() {
   const C = myClasses(), opts = C.map(c => `<option>${esc(c)}</option>`).join('');
   $('#rClass').innerHTML = '<option value="">كل الشعب</option>' + opts;
   $('#sClsF').innerHTML = '<option value="">كل الشعب</option>' + opts;
+  ['pCls', 'wCls'].forEach(id => { const el = $('#' + id), v = el.value || LS.get('iste3dad-' + id, ''); el.innerHTML = C.length ? opts : '<option value="">— أضف شعبة أولًا —</option>'; if (C.includes(v)) el.value = v; });
   ['bCls', 'oCls'].forEach(id => { const el = $('#' + id), v = el.value; el.innerHTML = '<option value="">— الشعبة —</option>' + opts; el.value = C.includes(v) ? v : ''; });
   if (!$('#bCls').value) { $('#bulkCard').hidden = true; $('#oneCard').hidden = true; }
 }
 async function loadTeacherData() {
   try {
-    const [st, ls] = await Promise.all([API.listStudents(TD.view), API.listLessons({teacherId:TD.view})]);
-    TD.students = st; TD.lessons = ls.sort(byOrder);
+    const [st, show] = await Promise.all([API.where('students', {teacherId:TD.view}), API.get('tshow', TD.view)]);
+    TD.students = st.map(s => Object.assign({uid:s.id}, s)); TD.show = (show && show.lessons) || {};
   } catch (e) { console.error(e); if (isPerm(e)) $('#rulesWarn').hidden = false; toast('تعذّر تحميل البيانات: ' + errMsg(e)); }
-  const tracked = TD.lessons.filter(l => l.tracked !== false);
-  if (!tracked.find(l => l.id === TD.lid)) TD.lid = tracked.length ? tracked[0].id : '';
-  $('#rLesson').innerHTML = tracked.length ? tracked.map(l => `<option value="${l.id}" ${l.id === TD.lid ? 'selected' : ''}>${esc((l.icon || '') + ' ' + l.title)}${l.visible === false ? ' (مخفي)' : ''}</option>`).join('') : '<option value="">— لا توجد دروس —</option>';
-  renderLessons(); renderStudents(); renderSetupTab();
+  fillResultLessons(); renderStudents(); renderSetupTab(); renderShowTab();
+  refreshWallDot();
   await loadResults();
 }
+function tTab(t) {
+  if (!$('#tv-' + t) || ($('#tTabs button[data-t="' + t + '"]') || {}).hidden) t = isAdmin() ? 'curriculum' : 'lessons';
+  LS.set('iste3dad-ttab', t);
+  $$('#tTabs button').forEach(b => b.classList.toggle('on', b.dataset.t === t));
+  $$('.tview').forEach(v => v.hidden = v.id !== 'tv-' + t);
+  if (t === 'curriculum') renderCurriculum();
+  if (t === 'lessons') renderShowTab();
+  if (t === 'games') openGamesTab();
+  if (t === 'points') loadPoints();
+  if (t === 'wall') loadTeacherWall();
+}
+
+/* ---------- النتائج ---------- */
+const shownLessons = () => CAT.filter(l => l.tracked !== false && (TD.show[l.id] || []).length);
+function fillResultLessons() {
+  const L = shownLessons();
+  if (!L.find(l => l.id === TD.lid)) TD.lid = L.length ? L[0].id : '';
+  $('#rLesson').innerHTML = L.length ? L.map(l => `<option value="${esc(l.id)}" ${l.id === TD.lid ? 'selected' : ''}>${esc((l.icon || '') + ' ' + l.title)} — ${esc(gradeName(l.grade))}</option>`).join('') : '<option value="">— لم تُظهر أي درس بعد —</option>';
+}
 async function loadResults() {
-  TD.lid = $('#rLesson').value; TD.subs = []; TD.grades = {};
+  TD.lid = $('#rLesson').value; TD.subs = [];
   if (TD.lid) {
     $('#resTable').innerHTML = '<p>⏳ جارٍ التحميل…</p>';
-    try { TD.subs = await API.listSubmissions(TD.lid, TD.view); } catch (e) { console.error(e); toast('تعذّر تحميل النتائج: ' + errMsg(e)); }
+    try { TD.subs = await API.where('submissions', {lessonId:TD.lid, teacherId:TD.view}); } catch (e) { console.error(e); toast('تعذّر تحميل النتائج: ' + errMsg(e)); }
   }
   renderResults();
 }
-function tTab(t) {
-  $$('#tTabs button').forEach(b => b.classList.toggle('on', b.dataset.t === t));
-  $$('.tview').forEach(v => v.hidden = v.id !== 'tv-' + t);
-  if (t === 'lessons' && !TD.libLoaded) loadLibrary();
-}
-const curLesson = () => TD.lessons.find(l => l.id === TD.lid);
+const curLesson = () => catById(TD.lid);
 function bestOf(uid) {
   const l = TD.subs.filter(s => s.uid === uid); if (!l.length) return null;
   const best = l.reduce((m, s) => ((+s.auto || 0) > (+m.auto || 0) || ((+s.auto || 0) === (+m.auto || 0) && s.at > m.at)) ? s : m);
   return {best, count:l.length, all:l.slice().sort((a, b) => b.at - a.at)};
 }
 function resultRows() {
-  const f = $('#rClass').value, L = curLesson();
-  return TD.students.filter(s => s.active !== false && (!f || s.cls === f) && (!L || !L.classes || !L.classes.length || L.classes.includes(s.cls))).sort(byClsName)
+  const f = $('#rClass').value, L = curLesson(), cls = L ? (TD.show[L.id] || []) : [];
+  return TD.students.filter(s => s.active !== false && (!f || s.cls === f) && cls.includes(s.cls)).sort(byClsName)
     .map(s => { const b = bestOf(s.uid); return {s, b, total:b ? (+b.best.auto || 0) : null}; });
 }
 function renderResults() {
   const L = curLesson();
-  if (!L) { $('#rStats').innerHTML = ''; $('#resTable').innerHTML = '<p>لا توجد دروس بعد. ارفع أول درس من تبويب «📚 الدروس».</p>'; return; }
+  if (!L) { $('#rStats').innerHTML = ''; $('#resTable').innerHTML = '<p>أظهر درسًا لطلابك من تبويب «📚 الدروس» لتظهر نتائجه هنا.</p>'; return; }
   const comps = L.components || [], tMax = +L.autoMax || 1;
   const R = resultRows(), sent = R.filter(r => r.b);
   const avg = sent.length ? (sent.reduce((a, r) => a + r.total, 0) / sent.length).toFixed(1) : '—';
   const weak = sent.filter(r => r.total / tMax < .6).length;
   $('#rStats').innerHTML = `<div class="stat"><b>${R.length}</b>طالبًا</div><div class="stat"><b style="color:var(--green)">${sent.length}</b>أرسلوا</div><div class="stat"><b style="color:var(--orange)">${R.length - sent.length}</b>لم يرسلوا</div><div class="stat"><b>${avg}</b>متوسط الدرجة /${tMax}</div><div class="stat"><b style="color:var(--red)">${weak}</b>يحتاجون دعمًا</div>`;
-  if (!TD.students.length) { $('#resTable').innerHTML = '<p>لا يوجد طلاب بعد. أضف الطلاب من تبويب «👥 الطلاب والصفوف».</p>'; return; }
+  if (!R.length) { $('#resTable').innerHTML = '<p>لا يوجد طلاب في الشعب التي يظهر لها هذا الدرس.</p>'; return; }
   const ncol = 5 + comps.length + 3;
   $('#resTable').innerHTML = `<table><tr><th>#</th><th>الاسم</th><th>الشعبة</th><th>المحاولات</th><th>آخر إرسال</th>${comps.map(c => `<th>${esc(c.label)} /${c.max}</th>`).join('')}<th>المجموع /${tMax}</th><th>المستوى</th><th></th></tr>` +
     R.map((r, i) => {
@@ -704,11 +993,9 @@ function renderResults() {
       const sc = r.b.best.scores || {}, l = levelPct(r.total / tMax);
       return `<tr><td>${i + 1}</td><td><b>${esc(r.s.name)}</b></td><td>${esc(r.s.cls)}</td><td>${r.b.count}</td><td>${fmtDate(r.b.all[0].at)}</td>
         ${comps.map(c => `<td>${esc(sc[c.key] ?? '')}</td>`).join('')}<td><b>${r.total}</b></td><td><span class="lvl ${l[0]}">${l[1]}</span></td>
-        <td><button class="btn sm ghost" onclick="showDetails('${r.s.uid}')">تفاصيل</button></td></tr>`;
+        <td><button class="btn sm ghost" onclick="showDetails(${A(r.s.uid)})">تفاصيل</button></td></tr>`;
     }).join('') + '</table>';
 }
-function closeModal() { $('#modalRoot').innerHTML = ''; }
-function openModal(html) { $('#modalRoot').innerHTML = `<div class="modal" onclick="if(event.target===this)closeModal()"><div class="box"><button class="btn sm ghost x" onclick="closeModal()">✕</button>${html}</div></div>`; }
 function showDetails(uid) {
   const s = TD.students.find(x => x.uid === uid), b = bestOf(uid), L = curLesson(); if (!s || !b || !L) return;
   const comps = L.components || [];
@@ -716,21 +1003,18 @@ function showDetails(uid) {
     const sc = a.scores || {};
     return `<div class="card" style="margin:8px 0"><b>المحاولة ${a.attempt || ''}</b> · ${fmtDate(a.at)} · الدرجة: <b>${a.auto} / ${L.autoMax || ''}</b> ${a === b.best ? '<span class="chip done">الأفضل</span>' : ''}
       <div style="font-size:20px">${comps.map(c => `${esc(c.label)} ${esc(sc[c.key] ?? '—')}/${c.max}`).join(' · ')}</div>
-      ${a.written ? `<div class="note">${esc(a.written)}</div>` : ''}
-      ${Object.keys(a.extra || {}).length ? `<div style="font-size:20px">${Object.entries(a.extra).map(([k, v]) => `${esc(k)}: <b>${esc(v)}</b>`).join(' · ')}</div>` : ''}
-      ${(a.obj || []).length ? `<div style="font-size:20px">الأهداف: ${a.obj.map(o => (o.ok ? '✅ ' : '⚠️ ') + esc(o.label)).join(' · ')}</div>` : ''}</div>`;
+      ${a.written ? `<div class="note">${esc(a.written)}</div>` : ''}</div>`;
   }).join(''));
 }
 function exportResults() {
   const L = curLesson(); if (!L) return;
   const comps = L.components || [], tMax = +L.autoMax || 1;
   const q = v => '"' + String(v ?? '').replace(/"/g, '""') + '"';
-  const extraKeys = [...new Set(TD.subs.flatMap(s => Object.keys(s.extra || {})))];
-  const head = ['الاسم','الشعبة','اسم المستخدم','المحاولات','آخر إرسال'].concat(comps.map(c => c.label + ' /' + c.max), ['المجموع /' + tMax, 'المستوى'], extraKeys);
+  const head = ['الاسم','الشعبة','اسم المستخدم','المحاولات','آخر إرسال'].concat(comps.map(c => c.label + ' /' + c.max), ['المجموع /' + tMax, 'المستوى']);
   const rows = [head.map(q).join(',')].concat(resultRows().map(r => {
     if (!r.b) return [r.s.name, r.s.cls, r.s.username, 0, 'لم يرسل'].map(q).join(',');
     const a = r.b.best, sc = a.scores || {};
-    return [r.s.name, r.s.cls, r.s.username, r.b.count, fmtDate(r.b.all[0].at)].concat(comps.map(c => sc[c.key]), [r.total, levelPct(r.total / tMax)[1]], extraKeys.map(k => (a.extra || {})[k])).map(q).join(',');
+    return [r.s.name, r.s.cls, r.s.username, r.b.count, fmtDate(r.b.all[0].at)].concat(comps.map(c => sc[c.key]), [r.total, levelPct(r.total / tMax)[1]]).map(q).join(',');
   }));
   saveFile('نتائج_' + (L.title || 'درس').replace(/\s+/g, '_') + '.csv', '﻿' + rows.join('\r\n'), 'text/csv;charset=utf-8');
 }
@@ -749,50 +1033,247 @@ function printResults() {
 async function loadTeachers() {
   $('#tcTable').innerHTML = '<p>⏳ جارٍ التحميل…</p>';
   try {
-    const [tc, st, ls] = await Promise.all([API.listTeachers(), API.listStudents(null), API.listLessons(null)]);
-    TD.teachers = tc;
-    const cnt = (arr, uid) => arr.filter(x => x.teacherId === uid).length;
-    const L = tc.slice().sort((a, b) => (b.isAdmin ? 1 : 0) - (a.isAdmin ? 1 : 0) || (a.name || '').localeCompare(b.name || '', 'ar'));
-    $('#tcTable').innerHTML = `<table><tr><th>المعلم</th><th>اسم المستخدم</th><th>كلمة المرور</th><th>الشعب</th><th>الطلاب</th><th>الدروس</th><th>الحالة</th><th></th></tr>` + L.map(t => `<tr>
+    const [tc, st] = await Promise.all([API.where('teachers', {}), API.where('students', {})]);
+    TD.teachers = tc.map(t => Object.assign({uid:t.id}, t));
+    const cnt = uid => st.filter(x => x.teacherId === uid).length;
+    const L = TD.teachers.slice().sort((a, b) => (b.isAdmin ? 1 : 0) - (a.isAdmin ? 1 : 0) || (b.createdAt || 0) - (a.createdAt || 0));
+    $('#tcTable').innerHTML = `<table><tr><th>المعلم</th><th>البريد</th><th>الشعب</th><th>الطلاب</th><th>تاريخ التسجيل</th><th>الحالة</th><th></th></tr>` + L.map(t => `<tr>
       <td><b>${esc(t.name)}</b>${t.isAdmin ? ' <span class="chip done">المدير</span>' : ''}</td>
-      <td><code class="ltr">${esc(t.username)}</code></td><td>${t.isAdmin ? '—' : `<code class="ltr">${esc(t.password || '')}</code>`}</td>
-      <td style="font-size:18px">${(t.classes || []).map(esc).join('، ') || '—'}</td><td>${cnt(st, t.uid)}</td><td>${cnt(ls, t.uid)}</td>
+      <td><code class="ltr">${esc(t.email || t.username || '')}</code></td>
+      <td style="font-size:18px">${(t.classes || []).map(esc).join('، ') || '—'}</td><td>${cnt(t.uid)}</td><td style="font-size:18px">${t.createdAt ? fmtDate(t.createdAt) : ''}</td>
       <td>${t.active === false ? '<span class="chip off">موقوف</span>' : '<span class="chip done">فعّال</span>'}</td>
-      <td><div class="row" style="gap:4px"><button class="btn sm" onclick="switchView('${t.uid}')">📂 فتح صفحته</button>${t.isAdmin ? '' : `<button class="btn sm ghost" onclick="copyTeacherCreds('${t.uid}')">📋 نسخ</button><button class="btn sm ghost" onclick="toggleTeacher('${t.uid}')">${t.active === false ? '✅ تفعيل' : '⛔ إيقاف'}</button>`}</div></td></tr>`).join('') + '</table>';
+      <td><div class="row" style="gap:4px"><button class="btn sm" onclick="switchView(${A(t.uid)})">📂 فتح صفحته</button>${t.isAdmin ? '' : `<button class="btn sm ghost" onclick="toggleTeacher(${A(t.uid)})">${t.active === false ? '✅ تفعيل' : '⛔ إيقاف'}</button>`}</div></td></tr>`).join('') + '</table>';
   } catch (e) { console.error(e); if (isPerm(e)) $('#rulesWarn').hidden = false; $('#tcTable').innerHTML = '<p>تعذّر تحميل المعلمين: ' + esc(errMsg(e)) + '</p>'; }
 }
-const teacherCred = t => `السلام عليكم أ. ${t.name} 🌿\nتم إنشاء حسابك في منصة استعداد.\n🔗 الرابط: ${siteUrl()}\nاختر «👨‍🏫 أنا معلم»، ثم ادخل بـ:\nاسم المستخدم: ${t.username}\nكلمة المرور: ${t.password}\n\nبعد الدخول: أضف صفوفك وشعبك وطلابك من تبويب «👥 الطلاب والصفوف»، وارفع دروسك من «📚 الدروس».`;
-function copyTeacherCreds(uid) { const t = TD.teachers.find(x => x.uid === uid); if (t) copyText(teacherCred(t)); }
+const inviteText = () => `السلام عليكم ورحمة الله 🌿\nندعوكم لاستخدام منصة «استعداد» للتربية الإسلامية: دروس تفاعلية جاهزة، وألعاب صفية، ولوحة نقاط، وجدار للصف.\n🔗 ${siteUrl()}\n\nطريقة التسجيل:\n1. افتح الرابط واختر «👨‍🏫 أنا معلم».\n2. اضغط «أنشئ حساب معلم» وأدخل بريدك وكلمة مرور.\n3. افتح رابط التحقّق الذي يصل إلى بريدك، ثم ادخل.\n4. أضف شعبك وطلابك، ثم أظهر لهم الدروس.`;
 async function toggleTeacher(uid) {
   const t = TD.teachers.find(x => x.uid === uid); if (!t) return;
   const to = t.active === false;
   if (!to && !confirm(`إيقاف حساب المعلم ${t.name}؟ لن يستطيع الدخول، وتبقى بياناته وطلابه كما هي.`)) return;
-  try { await API.setTeacherDoc(uid, {active:to}); toast(to ? 'فُعّل الحساب ✓' : 'أُوقف الحساب'); loadTeachers(); } catch (e) { toast('تعذّر: ' + errMsg(e)); }
+  try { await API.set('teachers', uid, {active:to}, true); toast(to ? 'فُعّل الحساب ✓' : 'أُوقف الحساب'); loadTeachers(); } catch (e) { toast('تعذّر: ' + errMsg(e)); }
 }
-async function addTeacher() {
-  const name = $('#ntName').value.trim(); let username = $('#ntUser').value.trim().toLowerCase();
-  if (!name) return toast('اكتب اسم المعلم');
-  if (username && !/^[a-z0-9][a-z0-9._-]{2,30}$/.test(username)) return toast('اسم المستخدم: حروف إنجليزية صغيرة وأرقام فقط (3 أحرف على الأقل)');
-  const b = $('#ntBtn'); b.disabled = true;
+
+/* ---------- المنهج (للمدير) ---------- */
+const LMAX = 950000;
+function parseManifest(html) {
+  const m = html.match(/<script[^>]*id=["']iste3dad-lesson["'][^>]*>([\s\S]*?)<\/script>/i);
+  if (!m) return null; try { return JSON.parse(m[1]); } catch (e) { return null; }
+}
+function renderCurriculum() {
+  renderTree('#cuTree', 'cu', renderCuList);
+  renderCuList();
+}
+function cuLessons(v) { return CAT.filter(l => l.grade === v.g && (l.term || 1) === v.t && (l.unit || 1) === v.u).sort(byLessonOrder); }
+function renderCuList() {
+  const v = treeVal('#cuTree'), L = cuLessons(v);
+  $('#cuList').innerHTML = `<div class="unit-head">📘 ${esc(gradeName(v.g))} · ${termName(v.t)} · ${unitName(v.u)} <small>(${L.length} درس)</small></div>` +
+    (L.length ? L.map((l, i) => `<div class="lrow"><span class="ic">${esc(l.icon || '📘')}</span>
+      <div class="t"><b>${esc(l.title)}</b><br><small style="color:var(--muted)">${esc(l.sub || '')}${l.tracked === false ? ' · للاطلاع' : ' · ' + (l.autoMax || 0) + ' درجة'} · 🧠 ${l.bankCount || 0} سؤالًا</small></div>
+      <div class="row" style="gap:4px">
+        <button class="btn sm ghost" ${i === 0 ? 'disabled' : ''} onclick="moveCat(${A(l.id)},-1)">▲</button><button class="btn sm ghost" ${i === L.length - 1 ? 'disabled' : ''} onclick="moveCat(${A(l.id)},1)">▼</button>
+        <button class="btn sm" onclick="openLesson(${A(l.id)},'preview')">👁 معاينة</button>
+        <button class="btn sm alt" onclick="openBank(${A(l.id)})">🧠 بنك الأسئلة</button>
+        <button class="btn sm ghost" onclick="editCat(${A(l.id)})">✏️ تعديل</button>
+        <button class="btn sm ghost" onclick="replaceCat(${A(l.id)})">🔄 استبدال الملف</button>
+        <button class="btn sm red" onclick="deleteCat(${A(l.id)})">🗑</button></div></div>`).join('') : '<p>لا توجد دروس في هذا الباب بعد. ارفعها من المربّع أعلاه.</p>');
+}
+function setupCuDrop() {
+  const d = $('#cuDrop'), f = $('#cuFile');
+  f.onchange = () => { if (f.files.length) uploadCatFiles([...f.files], null); f.value = ''; };
+  ['dragenter', 'dragover'].forEach(ev => d.addEventListener(ev, e => { e.preventDefault(); d.classList.add('over'); }));
+  ['dragleave', 'drop'].forEach(ev => d.addEventListener(ev, e => { e.preventDefault(); d.classList.remove('over'); }));
+  d.addEventListener('drop', e => { const fs = [...e.dataTransfer.files]; if (fs.length) uploadCatFiles(fs, null); });
+}
+const readText = file => new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(String(r.result || '')); r.onerror = rej; r.readAsText(file, 'utf-8'); });
+async function uploadCatFiles(files, forceId) {
+  const v = treeVal('#cuTree'), prog = $('#cuProg'); const done = [], bad = [];
+  for (let i = 0; i < files.length; i++) {
+    const file = files[i];
+    prog.innerHTML = `<p>⏳ ${i + 1} من ${files.length}: ${esc(file.name)}</p>`;
+    try {
+      if (!/\.html?$/i.test(file.name)) { bad.push(file.name + ' (ليس HTML)'); continue; }
+      const html = await readText(file), bytes = new Blob([html]).size;
+      if (bytes > LMAX) { bad.push(file.name + ' (أكبر من 900 ك.ب)'); continue; }
+      const man = parseManifest(html);
+      const tTag = (html.match(/<title[^>]*>([^<]*)<\/title>/i) || [])[1];
+      let id = forceId || (man && slug(man.id)) || slug(file.name.replace(/\.html?$/i, '')) || ('lesson-' + uidGen());
+      const ex = catById(id);
+      const meta = {
+        title:(ex && ex.title) || (man && man.title) || (tTag && tTag.split('–')[0].trim()) || file.name, sub:(ex && ex.sub) || (man && man.sub) || '', icon:(ex && ex.icon) || (man && man.icon) || '📘',
+        grade:ex ? ex.grade : v.g, term:ex ? ex.term : v.t, unit:ex ? ex.unit : v.u,
+        order:ex ? ex.order : (cuLessons(v).length ? Math.max(...cuLessons(v).map(l => l.order ?? 0)) + 1 : 1),
+        tracked:!!man, components:man && Array.isArray(man.components) ? man.components.map(c => ({key:String(c.key), label:String(c.label || c.key), max:+c.max || 0})) : [],
+        autoMax:man ? +man.autoMax || 0 : 0, version:(man && man.version) || 1, size:bytes, fileName:file.name, updatedAt:Date.now(), bankCount:(ex && ex.bankCount) || 0
+      };
+      await API.set('catalogFiles', id, {html});
+      await API.set('catalog', id, meta);
+      if (!ex || !ex.bankCount) {   // بنك أسئلة تلقائي من أسئلة الدرس
+        try { const qs = await extractQuestions(html); if (qs.length) { await API.set('banks', id, {questions:qs, updatedAt:Date.now()}); await API.set('catalog', id, {bankCount:qs.length}, true); } } catch (e) { console.error(e); }
+      }
+      done.push((ex ? '🔄 ' : '✅ ') + meta.title);
+    } catch (e) { console.error(e); if (isPerm(e)) $('#rulesWarn').hidden = false; bad.push(file.name + ': ' + errMsg(e)); }
+  }
+  await loadCatalog(); renderCuList();
+  prog.innerHTML = `<div class="note">${done.length ? 'تم: ' + done.map(esc).join('، ') : ''}${bad.length ? '<br>⚠️ تعذّر: ' + bad.map(esc).join('، ') : ''}</div>`;
+}
+async function moveCat(id, dir) {
+  const v = treeVal('#cuTree'), L = cuLessons(v), i = L.findIndex(l => l.id === id), j = i + dir; if (j < 0 || j >= L.length) return;
+  L.forEach((l, k) => l.order = k + 1); [L[i].order, L[j].order] = [L[j].order, L[i].order];
+  try { await Promise.all(L.map(l => API.set('catalog', l.id, {order:l.order}, true))); renderCuList(); } catch (e) { toast('تعذّر الحفظ: ' + errMsg(e)); }
+}
+function editCat(id) {
+  const l = catById(id); if (!l) return;
+  openModal(`<h3 style="margin-top:0">✏️ تعديل بيانات الدرس</h3>
+    <label>العنوان<input type="text" id="ecTitle" value="${esc(l.title)}"></label>
+    <div class="row"><label style="flex:3 1 260px">وصف قصير<input type="text" id="ecSub" value="${esc(l.sub || '')}"></label><label style="flex:1 1 90px">الأيقونة<input type="text" id="ecIcon" value="${esc(l.icon || '📘')}" maxlength="4"></label></div>
+    <p style="margin:10px 0 2px"><b>مكان الدرس:</b></p><div class="tree" id="ecTree"></div>
+    <div class="row" style="margin-top:12px"><button class="btn" onclick="saveCat(${A(id)})">حفظ</button><button class="btn ghost" onclick="closeModal()">إلغاء</button></div>`);
+  LS.set('iste3dad-tree-ec', {g:l.grade, t:l.term || 1, u:l.unit || 1});
+  renderTree('#ecTree', 'ec', () => {});
+}
+async function saveCat(id) {
+  const title = $('#ecTitle').value.trim(); if (!title) return toast('اكتب العنوان');
+  const v = treeVal('#ecTree'), l = catById(id), moved = v.g !== l.grade || v.t !== (l.term || 1) || v.u !== (l.unit || 1);
+  const patch = {title, sub:$('#ecSub').value.trim(), icon:$('#ecIcon').value.trim() || '📘', grade:v.g, term:v.t, unit:v.u};
+  if (moved) patch.order = cuLessons(v).length + 1;
+  try { await API.set('catalog', id, patch, true); closeModal(); await loadCatalog(); renderCuList(); toast('حُفظ ✓'); } catch (e) { toast('تعذّر: ' + errMsg(e)); }
+}
+function replaceCat(id) {
+  const inp = document.createElement('input'); inp.type = 'file'; inp.accept = '.html,.htm,text/html';
+  inp.onchange = () => { if (inp.files[0]) uploadCatFiles([inp.files[0]], id); };
+  inp.click();
+}
+async function deleteCat(id) {
+  const l = catById(id); if (!l) return;
+  if (!confirm(`حذف درس «${l.title}» من المنهج؟\nسيختفي عند كل المعلمين والطلاب، وتبقى النتائج السابقة محفوظة.`)) return;
+  try { await API.del('catalog', id); await API.del('catalogFiles', id); await API.del('banks', id).catch(() => {}); await loadCatalog(); renderCuList(); toast('حُذف الدرس'); } catch (e) { toast('تعذّر الحذف: ' + errMsg(e)); }
+}
+
+/* ---------- بنك الأسئلة (للمدير) ---------- */
+let BANK = null;
+async function openBank(id) {
+  const l = catById(id); if (!l) return;
+  const d = await API.get('banks', id).catch(() => null);
+  BANK = {id, qs:(d && d.questions) || []};
+  openModal(`<h3 style="margin-top:0">🧠 بنك أسئلة: ${esc(l.title)}</h3><div id="bkBody"></div>`);
+  renderBank();
+}
+function renderBank() {
+  const B = BANK;
+  $('#bkBody').innerHTML = `<div class="row"><button class="btn sm alt" onclick="bankExtract()">📥 استخراج الأسئلة من ملف الدرس</button><button class="btn sm ghost" onclick="bankAddForm()">➕ سؤال جديد</button><button class="btn sm ghost" onclick="bankImportForm()">📋 لصق أسئلة كنص</button></div>
+    <div id="bkForm"></div>
+    <p style="margin:8px 0 4px"><b>${B.qs.length}</b> سؤالًا</p>
+    <div class="qpick" style="max-height:52vh">${B.qs.map((q, i) => `<div style="border-bottom:1px dashed #ddd;padding:6px 0"><b>${i + 1}. ${esc(q.q)}</b><br>${q.opts.map((o, k) => `<span class="chip ${k === q.a ? 'done' : 'grey'}" style="margin:2px">${esc(o)}</span>`).join('')}
+      <div class="row" style="gap:4px;margin-top:2px"><button class="btn sm ghost" onclick="bankAddForm(${i})">✏️</button><button class="btn sm red" onclick="bankDel(${i})">🗑</button></div></div>`).join('') || '<p>البنك فارغ.</p>'}</div>`;
+}
+async function saveBank(msg) {
+  try { await API.set('banks', BANK.id, {questions:BANK.qs, updatedAt:Date.now()}); await API.set('catalog', BANK.id, {bankCount:BANK.qs.length}, true); const l = catById(BANK.id); if (l) l.bankCount = BANK.qs.length; renderBank(); if ($('#cuList')) renderCuList(); if (msg) toast(msg); }
+  catch (e) { toast('تعذّر الحفظ: ' + errMsg(e)); }
+}
+function bankAddForm(i) {
+  const q = i != null ? BANK.qs[i] : {q:'', opts:['', '', '', ''], a:0};
+  const o = q.opts.concat(['', '', '', '']).slice(0, 4);
+  $('#bkForm').innerHTML = `<div class="card" style="background:#fbfaf5"><label>السؤال<input type="text" id="bqQ" value="${esc(q.q)}"></label>
+    ${o.map((x, k) => `<div class="row" style="margin-top:4px;flex-wrap:nowrap"><label class="row" style="gap:4px;flex:none"><input type="radio" name="bqA" value="${k}" ${k === q.a ? 'checked' : ''} style="width:20px;height:20px"> ✔</label><input type="text" class="bqO" value="${esc(x)}" placeholder="الخيار ${k + 1}"></div>`).join('')}
+    <small style="color:var(--muted)">علّم ✔ بجانب الإجابة الصحيحة. يكفي خياران على الأقل.</small>
+    <div class="row" style="margin-top:6px"><button class="btn sm" onclick="bankSaveOne(${i == null ? -1 : i})">حفظ السؤال</button><button class="btn sm ghost" onclick="$('#bkForm').innerHTML=''">إلغاء</button></div></div>`;
+}
+function bankSaveOne(i) {
+  const q = $('#bqQ').value.trim(), raw = $$('.bqO').map(x => x.value.trim()), aRaw = +(($$('input[name="bqA"]').find(x => x.checked) || {}).value || 0);
+  if (!q) return toast('اكتب السؤال');
+  if (!raw[aRaw]) return toast('الإجابة الصحيحة فارغة');
+  const opts = [], a = raw.slice(0, aRaw).filter(Boolean).length; raw.forEach(x => { if (x) opts.push(x); });
+  if (opts.length < 2) return toast('اكتب خيارين على الأقل');
+  const item = {id:(i >= 0 && BANK.qs[i].id) || uidGen(), q, opts, a};
+  if (i >= 0) BANK.qs[i] = item; else BANK.qs.push(item);
+  saveBank('حُفظ السؤال ✓');
+}
+function bankDel(i) { if (!confirm('حذف السؤال؟')) return; BANK.qs.splice(i, 1); saveBank('حُذف'); }
+function bankImportForm() {
+  $('#bkForm').innerHTML = `<div class="card" style="background:#fbfaf5"><p style="margin:0 0 4px">اكتب كل سؤال في سطر، وتحته الخيارات؛ ضع <b>*</b> قبل الإجابة الصحيحة و<b>-</b> قبل الخاطئة، واترك سطرًا فارغًا بين الأسئلة:</p>
+    <textarea id="bqText" dir="rtl" style="min-height:180px" placeholder="ما معنى «عدن»؟&#10;* إقامة دائمة&#10;- نهر جارٍ&#10;- بستان صغير&#10;&#10;السؤال التالي…"></textarea>
+    <div class="row" style="margin-top:6px"><button class="btn sm" onclick="bankImport()">➕ إضافة إلى البنك</button><button class="btn sm ghost" onclick="$('#bkForm').innerHTML=''">إلغاء</button></div></div>`;
+}
+function bankImport() {
+  const blocks = $('#bqText').value.split(/\n\s*\n/).map(b => b.split('\n').map(x => x.trim()).filter(Boolean)).filter(b => b.length >= 3);
+  const out = [];
+  blocks.forEach(b => {
+    const q = b[0].replace(/^(س|سؤال)?\s*\d*[:.)-]\s*/, ''), opts = [], marks = [];
+    b.slice(1).forEach(line => { const m = line.match(/^([*\-–•✔✓])\s*(.+)$/); if (m) { opts.push(m[2]); marks.push(/[*✔✓]/.test(m[1])); } });
+    const a = marks.indexOf(true); if (q && opts.length >= 2 && a >= 0) out.push({id:uidGen(), q, opts, a});
+  });
+  if (!out.length) return toast('لم أجد أسئلة بالصيغة المطلوبة');
+  BANK.qs = BANK.qs.concat(out); saveBank(`أُضيف ${out.length} سؤالًا ✓`);
+}
+async function bankExtract() {
+  const l = catById(BANK.id); if (!l) return;
+  toast('⏳ جارٍ الاستخراج…');
   try {
-    const n = TD.teachers.length + 1;
-    const codes = new Set(TD.teachers.map(t => t.code));
-    let code = 'm' + n; let k = n; while (codes.has(code)) code = 'm' + (++k);
-    if (!username) { let i = n; username = 'teacher' + String(i).padStart(2, '0'); while (TD.teachers.some(t => t.username === username)) username = 'teacher' + String(++i).padStart(2, '0'); }
-    const password = String(Math.floor(10000000 + Math.random() * 90000000));
-    const data = {name, username, password, code, active:true, classes:[], createdBy:ME.uid};
-    let uid;
-    try { uid = await API.createTeacher(username, password, data); }
-    catch (e) { if (String(e.code || '').includes('email-already-in-use')) { toast('اسم المستخدم مستخدم من قبل. اختر اسمًا آخر.'); b.disabled = false; return; } throw e; }
-    const rec = Object.assign({uid}, data); TD.teachers.push(rec);
-    $('#ntName').value = ''; $('#ntUser').value = '';
-    window._newT = rec;
-    $('#newTeacher').innerHTML = `<div class="card" style="border-inline-start:6px solid var(--green)"><h3 style="margin-top:0">✅ أُنشئ حساب المعلم ${esc(name)}</h3>
-      <p>اسم المستخدم: <code class="ltr">${esc(username)}</code> · كلمة المرور: <code class="ltr">${esc(password)}</code></p>
-      <div class="row"><button class="btn sm" onclick="copyText(teacherCred(window._newT))">📋 نسخ رسالة الدخول</button><button class="btn sm ghost" onclick="$('#newTeacher').innerHTML=''">إخفاء</button></div></div>`;
-    loadTeachers();
-  } catch (e) { console.error(e); toast('تعذّر إنشاء الحساب: ' + errMsg(e)); }
-  b.disabled = false;
+    const html = await getLessonHtml(l); if (!html) return toast('ملف الدرس غير موجود');
+    const qs = await extractQuestions(html);
+    const have = new Set(BANK.qs.map(q => q.q)); const add = qs.filter(q => !have.has(q.q));
+    if (!add.length) return toast(qs.length ? 'كل أسئلة الدرس موجودة في البنك' : 'لم أجد أسئلة في ملف الدرس');
+    BANK.qs = BANK.qs.concat(add); saveBank(`أُضيف ${add.length} سؤالًا من الدرس ✓`);
+  } catch (e) { console.error(e); toast('تعذّر الاستخراج'); }
+}
+/* يشغّل بيانات الدرس في إطار معزول ويجمع أسئلة الاختيار من متعدد */
+function extractQuestions(html) {
+  return new Promise(resolve => {
+    const scripts = [...html.matchAll(/<script(?![^>]*\bsrc=)(?![^>]*type=["']application\/json)[^>]*>([\s\S]*?)<\/script>/gi)].map(m => m[1]);
+    const code = scripts.find(s => /\bconst\s+L\s*=/.test(s));
+    if (!code) return resolve([]);
+    const collector = `;(function(){var out=[],seen={};function add(q,o,a,e){if(!q||!Array.isArray(o)||typeof a!=='number'||!o[a])return;q=String(q).trim();if(seen[q])return;seen[q]=1;var opts=o.map(String);if(opts.length>4){var c=opts[a];opts=[c].concat(opts.filter(function(x,i){return i!==a}).slice(0,3));a=0;}out.push({q:q,opts:opts,a:a,exp:e?String(e):''});}
+      try{(L.quiz||[]).forEach(function(x){add(x.q,x.opts,x.a,x.exp)});
+      (L.stages||[]).forEach(function(s){var g=s.game||{};['questions','items','cases'].forEach(function(k){(g[k]||[]).forEach(function(x){if(!x)return;if(x.opts)add(x.q||x.t,x.opts,x.a,x.exp);else if(typeof x.s==='string'&&typeof x.a==='boolean')add('صح أم خطأ: '+x.s,['صح','خطأ'],x.a?0:1,x.e)})});
+      (g.scenes||[]).forEach(function(x){if(x&&x.opts)add(x.q,x.opts,x.a)});(g.script||[]).forEach(function(x){if(x&&x.ask)add(x.ask.q,x.ask.opts,x.ask.a)});
+      (g.locks||[]).forEach(function(x){if(x&&x.type==='mcq')add(x.q,x.opts,x.ans)})});}catch(e){}
+      parent.postMessage({iqx:out},'*');})();`;
+    const fr = document.createElement('iframe'); fr.setAttribute('sandbox', 'allow-scripts'); fr.style.display = 'none';
+    const done = v => { window.removeEventListener('message', on); fr.remove(); resolve((v || []).map(q => Object.assign({id:uidGen()}, q))); };
+    const on = ev => { if (ev.source === fr.contentWindow && ev.data && ev.data.iqx) done(ev.data.iqx); };
+    window.addEventListener('message', on);
+    setTimeout(() => done([]), 6000);
+    fr.srcdoc = '<!DOCTYPE html><meta charset="utf-8"><body><script>' + code.replace(/<\/script/gi, '<\\/script') + collector + '<\/script>';
+    document.body.appendChild(fr);
+  });
+}
+
+/* ---------- إظهار الدروس للطلاب ---------- */
+function renderShowTab() {
+  if ($('#tv-lessons').hidden) return;
+  const G = myGrades();
+  renderTree('#lsTree', 'ls', renderShowList, G.length ? G : null);
+  renderShowList();
+}
+function renderShowList() {
+  if (!$('#lsTree select')) return;
+  const v = treeVal('#lsTree'), L = cuLessons(v), C = myClasses().filter(c => gradeOf(c) === v.g);
+  let html = `<div class="unit-head">📘 ${esc(gradeName(v.g))} · ${termName(v.t)} · ${unitName(v.u)}</div>`;
+  if (!C.length) html += `<p class="note">ليس لديك شعب من ${esc(gradeName(v.g))}. أضفها من تبويب «👥 الطلاب والصفوف» لتستطيع إظهار الدروس.</p>`;
+  if (!L.length) html += '<p>لا توجد دروس في هذا الباب بعد.</p>';
+  html += L.map(l => {
+    const on = TD.show[l.id] || [];
+    return `<div class="lrow"><span class="ic">${esc(l.icon || '📘')}</span><div class="t"><b>${esc(l.title)}</b><br><small style="color:var(--muted)">${esc(l.sub || '')}</small></div>
+      <div class="row" style="gap:6px">${C.map(c => `<label class="cls-toggle ${on.includes(c) ? 'on' : ''}"><input type="checkbox" ${on.includes(c) ? 'checked' : ''} onchange="toggleShow(${A(l.id)},${A(c)},this.checked)"> ${esc(c)}</label>`).join('')}
+      ${C.length > 1 ? `<button class="btn sm ghost" onclick="showAll(${A(l.id)},${A(C)})">${C.every(c => on.includes(c)) ? '🙈 إخفاء عن الكل' : '✅ للكل'}</button>` : ''}
+      <button class="btn sm" onclick="openLesson(${A(l.id)},'preview')">👁 معاينة</button></div></div>`;
+  }).join('');
+  $('#lsList').innerHTML = html;
+}
+async function saveShow(msg) {
+  try { await API.set('tshow', TD.view, {lessons:TD.show, teacherId:TD.view, updatedAt:Date.now()}); renderShowList(); fillResultLessons(); if (msg) toast(msg); }
+  catch (e) { console.error(e); if (isPerm(e)) $('#rulesWarn').hidden = false; toast('تعذّر الحفظ: ' + errMsg(e)); }
+}
+function toggleShow(id, c, on) {
+  const s = new Set(TD.show[id] || []); on ? s.add(c) : s.delete(c);
+  if (s.size) TD.show[id] = [...s]; else delete TD.show[id];
+  saveShow(on ? 'ظهر الدرس لـ ' + c + ' ✓' : 'أُخفي الدرس عن ' + c);
+}
+function showAll(id, C) {
+  const on = TD.show[id] || [], all = C.every(c => on.includes(c));
+  const s = new Set(on); C.forEach(c => all ? s.delete(c) : s.add(c));
+  if (s.size) TD.show[id] = [...s]; else delete TD.show[id];
+  saveShow(all ? 'أُخفي الدرس' : 'ظهر الدرس لكل الشعب ✓');
 }
 
 /* ---------- الصفوف والشعب ---------- */
@@ -804,17 +1285,12 @@ function renderClassChips() {
     <button class="btn sm" onclick="openAdd(${i},'one')">👤 إضافة طالب</button><button class="btn sm alt" onclick="openAdd(${i},'bulk')">👥 إضافة دفعة</button><button class="btn sm ghost" title="حذف الشعبة" onclick="removeClass(${i})">✕</button></div>`).join('') + '</div>' : '<p style="margin:0;color:var(--muted)">لا توجد شعب بعد. أضف أول شعبة من القوائم أدناه.</p>';
 }
 async function saveClasses(C) {
-  try { await API.setTeacherDoc(TD.view, {classes:C}); TD.vt.classes = C; if (TD.view === ME.uid && ME.role === 'teacher') ME.classes = C; renderClassChips(); fillClassSelects(); renderStudents(); return true; }
+  try { await API.set('teachers', TD.view, {classes:C}, true); TD.vt.classes = C; if (TD.view === ME.uid && ME.role === 'teacher') ME.classes = C; renderClassChips(); fillClassSelects(); renderStudents(); return true; }
   catch (e) { console.error(e); toast('تعذّر حفظ الشعب: ' + errMsg(e)); return false; }
 }
-const STAGES = {
-  'ابتدائي':[['الأول','أول'], ['الثاني','ثاني'], ['الثالث','ثالث'], ['الرابع','رابع'], ['الخامس','خامس'], ['السادس','سادس']],
-  'إعدادي':[['السابع','سابع'], ['الثامن','ثامن'], ['التاسع','تاسع']],
-  'ثانوي':[['العاشر','عاشر'], ['الحادي عشر','حادي عشر '], ['الثاني عشر','ثاني عشر ']]
-};
 function addClsRow() {
   const box = $('#clsRows'), d = document.createElement('div');
-  d.className = 'clsrow'; d.style.cssText = 'display:grid;grid-template-columns:1fr 1.3fr .8fr auto;gap:8px;margin:6px 0;align-items:end;max-width:760px';
+  d.className = 'clsrow';
   d.innerHTML = `<label>المرحلة<select class="crSt"><option value="">— اختر —</option>${Object.keys(STAGES).map(k => `<option>${k}</option>`).join('')}</select></label>
     <label>المستوى<select class="crLv" disabled><option value="">—</option></select></label>
     <label>الشعبة<select class="crN"><option value="">—</option>${Array.from({length:15}, (_, i) => `<option>${i + 1}</option>`).join('')}</select></label>
@@ -836,9 +1312,9 @@ async function addClass() {
   });
   if (incomplete) return toast('أكمل اختيار المرحلة والمستوى والشعبة في كل صف');
   if (!added.length) return toast(dup.length ? 'هذه الشعب موجودة: ' + dup.join('، ') : 'اختر المرحلة والمستوى والشعبة أولًا');
+  C.sort((a, b) => a.localeCompare(b, 'ar', {numeric:true}));
   if (await saveClasses(C)) { $('#clsRows').innerHTML = ''; addClsRow(); toast('أُضيفت: ' + added.join('، ') + (dup.length ? ' (وكانت موجودة: ' + dup.join('، ') + ')' : '') + ' ✓'); }
 }
-
 function openAdd(i, kind) {
   const c = myClasses()[i]; if (!c) return;
   $('#bCls').value = c; $('#oCls').value = c; $$('.addClsName').forEach(e => e.textContent = c);
@@ -855,158 +1331,8 @@ async function removeClass(i) {
   C.splice(i, 1); saveClasses(C);
 }
 
-/* ---------- الدروس ---------- */
-const LMAX = 950000;
-function parseManifest(html) {
-  const m = html.match(/<script[^>]*id=["']iste3dad-lesson["'][^>]*>([\s\S]*?)<\/script>/i);
-  if (!m) return null; try { return JSON.parse(m[1]); } catch (e) { return null; }
-}
-let PENDING = null;
-function setupDrop() {
-  const d = $('#drop'), f = $('#lfFile');
-  f.onchange = () => { if (f.files[0]) readLessonFile(f.files[0], null); f.value = ''; };
-  ['dragenter', 'dragover'].forEach(ev => d.addEventListener(ev, e => { e.preventDefault(); d.classList.add('over'); }));
-  ['dragleave', 'drop'].forEach(ev => d.addEventListener(ev, e => { e.preventDefault(); d.classList.remove('over'); }));
-  d.addEventListener('drop', e => { const file = e.dataTransfer.files[0]; if (file) readLessonFile(file, null); });
-}
-function findOwnByKey(key) { return key && TD.lessons.find(l => (l.lessonKey || l.id) === key || l.id === key || l.id === TD.view + '__' + key); }
-function readLessonFile(file, forceId) {
-  if (!/\.html?$/i.test(file.name) && file.type !== 'text/html') return toast('اختر ملفًا بصيغة HTML');
-  const r = new FileReader();
-  r.onload = () => {
-    const html = String(r.result || ''), bytes = new Blob([html]).size;
-    if (bytes > LMAX) return toast('حجم الملف كبير جدًا (' + Math.round(bytes / 1024) + ' ك.ب). الحد الأقصى نحو 900 ك.ب.', 5000);
-    const man = parseManifest(html), key = man && slug(man.id);
-    const existing = forceId ? TD.lessons.find(l => l.id === forceId) : findOwnByKey(key);
-    PENDING = {html, bytes, man, key, existing, fileName:file.name};
-    renderUploadForm();
-  };
-  r.onerror = () => toast('تعذّر قراءة الملف');
-  r.readAsText(file, 'utf-8');
-}
-function classChecks(cls, selected) { const C = myClasses(); return C.length ? `<div class="checks">${C.map(c => `<label><input type="checkbox" class="${cls}" value="${esc(c)}" ${!selected || !selected.length || selected.includes(c) ? 'checked' : ''}> ${esc(c)}</label>`).join('')}</div>` : '<p class="note" style="margin:4px 0">لم تُضف شعبًا بعد. أضفها من تبويب «👥 الطلاب والصفوف»؛ وإلى ذلك الحين يظهر الدرس لكل طلابك.</p>'; }
-function renderUploadForm() {
-  const P = PENDING; if (!P) { $('#lfForm').innerHTML = ''; return; }
-  const m = P.man || {}, ex = P.existing || {};
-  const tTag = (P.html.match(/<title[^>]*>([^<]*)<\/title>/i) || [])[1];
-  const title = ex.title || m.title || (tTag && tTag.trim()) || P.fileName.replace(/\.html?$/i, ''), sub = ex.sub || m.sub || '', icon = ex.icon || m.icon || '📘';
-  $('#lfForm').innerHTML = `<div class="card" style="border-inline-start:6px solid ${P.existing ? 'var(--orange)' : 'var(--green)'}">
-    <b>📄 ${esc(P.fileName)}</b> · ${Math.round(P.bytes / 1024)} ك.ب
-    ${P.man ? `<div class="chip done">✅ درس متوافق مع المنصة: ${(m.components || []).length} أنشطة · ${m.autoMax || 0} درجة</div>` : `<div class="note">⚠️ هذا الملف لا يحتوي على بطاقة تعريف «استعداد»، فسيُرفع <b>درسًا للاطلاع فقط</b> ولن تظهر نتائجه.</div>`}
-    ${P.existing ? `<div class="note">🔄 لديك درس بالمعرّف نفسه: <b>${esc(ex.title)}</b>. سيُستبدل ملفه، <b>وتبقى نتائج الطلاب كما هي</b>.</div>` : ''}
-    <div class="row" style="margin-top:8px"><label style="flex:3 1 260px">عنوان الدرس<input type="text" id="lfTitle" value="${esc(title)}"></label><label style="flex:1 1 90px">الأيقونة<input type="text" id="lfIcon" value="${esc(icon)}" maxlength="4"></label></div>
-    <label>وصف قصير<input type="text" id="lfSub" value="${esc(sub)}"></label>
-    <div style="margin-top:8px">يظهر لشعب: ${classChecks('lfCls', ex.classes)}</div>
-    <label class="row" style="gap:6px;margin-top:6px;font-size:21px"><input type="checkbox" id="lfVis" style="width:20px;height:20px" ${ex.visible === false ? '' : 'checked'}> يظهر للطلاب الآن</label>
-    <div class="row" style="margin-top:10px"><button class="btn alt" id="lfBtn" onclick="uploadLesson()">${P.existing ? '🔄 تحديث الدرس' : '⬆ رفع الدرس'}</button><button class="btn ghost" onclick="PENDING=null;renderUploadForm()">إلغاء</button></div></div>`;
-}
-function buildMeta(m, extra) {
-  return Object.assign({tracked:!!m, components:m && Array.isArray(m.components) ? m.components.map(c => ({key:String(c.key), label:String(c.label || c.key), max:+c.max || 0})) : [],
-    autoMax:m ? +m.autoMax || 0 : 0, written:m && m.written ? {max:+m.written.max || 0, label:String(m.written.label || ''), question:String(m.written.question || '')} : {max:0}, version:(m && m.version) || 1}, extra);
-}
-async function uploadLesson() {
-  const P = PENDING; if (!P) return;
-  const title = $('#lfTitle').value.trim(); if (!title) return toast('اكتب عنوان الدرس');
-  const classes = $$('.lfCls').filter(c => c.checked).map(c => c.value);
-  if (myClasses().length && !classes.length) return toast('اختر شعبة واحدة على الأقل');
-  const id = P.existing ? P.existing.id : TD.view + '__' + (P.key || ('lesson-' + Date.now().toString(36)));
-  const meta = buildMeta(P.man, {title, sub:$('#lfSub').value.trim(), icon:$('#lfIcon').value.trim() || '📘', classes, visible:$('#lfVis').checked,
-    teacherId:TD.view, teacherName:(TD.vt && TD.vt.name) || '', lessonKey:P.key || id, size:P.bytes, fileName:P.fileName});
-  if (!P.existing) { meta.order = TD.lessons.length ? Math.max(...TD.lessons.map(l => l.order ?? 0)) + 1 : 1; meta.shared = false; }
-  const b = $('#lfBtn'); b.disabled = true; b.textContent = '⏳ جارٍ الرفع…';
-  try {
-    await API.saveLesson(id, meta, P.html);
-    toast(P.existing ? 'حُدّث الدرس ✓' : 'رُفع الدرس ✓');
-    PENDING = null; renderUploadForm(); await loadTeacherData(); tTab('lessons');
-  } catch (e) { console.error(e); if (isPerm(e)) $('#rulesWarn').hidden = false; toast('تعذّر الرفع: ' + errMsg(e), 6000); b.disabled = false; b.textContent = 'حاول مرة أخرى'; }
-}
-function renderLessons() {
-  const L = TD.lessons;
-  if (!L.length) { $('#lsTable').innerHTML = '<p>لا توجد دروس بعد. ارفع درسًا من الأعلى، أو انسخ درسًا من المكتبة.</p>'; return; }
-  const all = myClasses();
-  $('#lsTable').innerHTML = `<table><tr><th>الترتيب</th><th>الدرس</th><th>الشعب</th><th>الحالة</th><th>آخر تحديث</th><th></th></tr>` + L.map((l, i) => `<tr>
-    <td style="white-space:nowrap"><button class="btn sm ghost" ${i === 0 ? 'disabled' : ''} onclick="moveLesson('${l.id}',-1)">▲</button> <button class="btn sm ghost" ${i === L.length - 1 ? 'disabled' : ''} onclick="moveLesson('${l.id}',1)">▼</button></td>
-    <td><b>${esc(l.icon || '📘')} ${esc(l.title)}</b><br><small style="color:var(--muted)">${esc(l.sub || '')}${l.tracked === false ? ' · للاطلاع' : ''}</small></td>
-    <td style="font-size:18px">${!l.classes || !l.classes.length || (all.length && all.every(c => l.classes.includes(c))) ? 'كل الشعب' : l.classes.map(esc).join('، ')}</td>
-    <td>${l.visible === false ? '<span class="chip off">مخفي</span>' : '<span class="chip done">ظاهر</span>'}${l.shared ? ' <span class="chip new">🔗 مشارك</span>' : ''}</td>
-    <td style="font-size:18px">${l.updatedAt ? fmtDate(l.updatedAt) : ''}</td>
-    <td><div class="row" style="gap:4px">
-      <button class="btn sm" onclick="openLesson('${l.id}','preview')">👁 معاينة</button>
-      <button class="btn sm ghost" onclick="toggleLesson('${l.id}')">${l.visible === false ? '✅ إظهار' : '🙈 إخفاء'}</button>
-      <button class="btn sm ghost" onclick="toggleShare('${l.id}')">${l.shared ? '🔒 إلغاء المشاركة' : '🔗 مشاركة'}</button>
-      <button class="btn sm ghost" onclick="editLesson('${l.id}')">✏️ تعديل</button>
-      <button class="btn sm ghost" onclick="replaceLesson('${l.id}')">🔄 استبدال الملف</button>
-      <button class="btn sm ghost" onclick="downloadLesson('${l.id}')">⬇ تنزيل</button>
-      <button class="btn sm red" onclick="deleteLesson('${l.id}')">🗑 حذف</button></div></td></tr>`).join('') + '</table>';
-}
-async function patchLesson(id, patch, msg) {
-  try { await API.saveLesson(id, Object.assign({teacherId:TD.view}, patch), null); Object.assign(TD.lessons.find(l => l.id === id) || {}, patch); TD.lessons.sort(byOrder); renderLessons(); if (msg) toast(msg); }
-  catch (e) { console.error(e); toast('تعذّر الحفظ: ' + errMsg(e)); }
-}
-function toggleLesson(id) { const l = TD.lessons.find(x => x.id === id); patchLesson(id, {visible:l.visible === false}, l.visible === false ? 'أصبح الدرس ظاهرًا للطلاب ✓' : 'أُخفي الدرس عن الطلاب'); }
-function toggleShare(id) { const l = TD.lessons.find(x => x.id === id); patchLesson(id, {shared:!l.shared, teacherName:(TD.vt && TD.vt.name) || ''}, !l.shared ? 'أصبح الدرس في مكتبة الدروس المشتركة ✓' : 'أُزيل الدرس من المكتبة'); }
-async function moveLesson(id, dir) {
-  const L = TD.lessons, i = L.findIndex(l => l.id === id), j = i + dir; if (j < 0 || j >= L.length) return;
-  L.forEach((l, k) => l.order = k + 1); [L[i].order, L[j].order] = [L[j].order, L[i].order];
-  try { await Promise.all(L.map(l => API.saveLesson(l.id, {order:l.order, teacherId:TD.view}, null))); L.sort(byOrder); renderLessons(); } catch (e) { toast('تعذّر الحفظ: ' + errMsg(e)); }
-}
-function editLesson(id) {
-  const l = TD.lessons.find(x => x.id === id); if (!l) return;
-  openModal(`<h3 style="margin-top:0">✏️ تعديل بيانات الدرس</h3>
-    <label>العنوان<input type="text" id="edTitle" value="${esc(l.title)}"></label>
-    <div class="row"><label style="flex:3 1 260px">وصف قصير<input type="text" id="edSub" value="${esc(l.sub || '')}"></label><label style="flex:1 1 90px">الأيقونة<input type="text" id="edIcon" value="${esc(l.icon || '📘')}" maxlength="4"></label></div>
-    <div style="margin-top:8px">يظهر لشعب: ${classChecks('edCls', l.classes)}</div>
-    <div class="row" style="margin-top:12px"><button class="btn" onclick="saveEdit('${id}')">حفظ</button><button class="btn ghost" onclick="closeModal()">إلغاء</button></div>`);
-}
-function saveEdit(id) {
-  const title = $('#edTitle').value.trim(), classes = $$('.edCls').filter(c => c.checked).map(c => c.value);
-  if (!title) return toast('اكتب العنوان'); if (myClasses().length && !classes.length) return toast('اختر شعبة واحدة على الأقل');
-  closeModal(); patchLesson(id, {title, sub:$('#edSub').value.trim(), icon:$('#edIcon').value.trim() || '📘', classes}, 'حُفظ التعديل ✓');
-}
-function replaceLesson(id) {
-  const inp = document.createElement('input'); inp.type = 'file'; inp.accept = '.html,.htm,text/html';
-  inp.onchange = () => { if (inp.files[0]) { readLessonFile(inp.files[0], id); window.scrollTo({top:0, behavior:'smooth'}); } };
-  inp.click();
-}
-async function downloadLesson(id) {
-  const l = TD.lessons.concat(TD.library).find(x => x.id === id); if (!l) return;
-  try { const h = await getLessonHtml(l); if (h) saveFile((l.fileName || (l.lessonKey || 'lesson') + '.html'), h, 'text/html;charset=utf-8'); } catch (e) { toast('تعذّر التنزيل: ' + errMsg(e)); }
-}
-async function deleteLesson(id) {
-  const l = TD.lessons.find(x => x.id === id); if (!l) return;
-  if (!confirm(`حذف درس «${l.title}»؟\nلن يراه الطلاب بعد الآن، وتبقى نتائجهم السابقة محفوظة.\n(لإخفائه مؤقتًا استخدم «إخفاء».)`)) return;
-  try { await API.deleteLesson(id); toast('حُذف الدرس'); await loadTeacherData(); } catch (e) { console.error(e); toast('تعذّر الحذف: ' + errMsg(e)); }
-}
-async function loadLibrary() {
-  TD.libLoaded = true;
-  $('#libTable').innerHTML = '<p>⏳ جارٍ التحميل…</p>';
-  try {
-    TD.library = (await API.listLessons({shared:true})).filter(l => l.teacherId !== TD.view).sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
-    if (!TD.library.length) { $('#libTable').innerHTML = '<p>لا توجد دروس مشتركة من زملائك بعد.</p>'; return; }
-    $('#libTable').innerHTML = `<table><tr><th>الدرس</th><th>المعلم</th><th>النوع</th><th></th></tr>` + TD.library.map(l => `<tr>
-      <td><b>${esc(l.icon || '📘')} ${esc(l.title)}</b><br><small style="color:var(--muted)">${esc(l.sub || '')}</small></td><td>${esc(l.teacherName || '')}</td>
-      <td style="font-size:18px">${l.tracked === false ? 'للاطلاع' : 'تفاعلي بدرجات'}</td>
-      <td><div class="row" style="gap:4px"><button class="btn sm ghost" onclick="openLesson('${l.id}','preview')">👁 معاينة</button><button class="btn sm alt" onclick="copyFromLibrary('${l.id}')">📥 نسخ إلى دروسي</button></div></td></tr>`).join('') + '</table>';
-  } catch (e) { console.error(e); if (isPerm(e)) $('#rulesWarn').hidden = false; $('#libTable').innerHTML = '<p>تعذّر تحميل المكتبة: ' + esc(errMsg(e)) + '</p>'; }
-}
-async function copyFromLibrary(id) {
-  const l = TD.library.find(x => x.id === id); if (!l) return;
-  const key = l.lessonKey || slug(l.title) || ('lesson-' + Date.now().toString(36));
-  const ex = findOwnByKey(key);
-  if (ex && !confirm(`لديك درس بالمعرّف نفسه («${ex.title}»). استبدال ملفه بنسخة المكتبة؟ تبقى نتائج طلابك كما هي.`)) return;
-  try {
-    const html = await getLessonHtml(l); if (!html) return toast('ملف الدرس غير موجود');
-    const nid = ex ? ex.id : TD.view + '__' + key;
-    const meta = buildMeta(parseManifest(html), {title:ex ? ex.title : l.title, sub:ex ? ex.sub : (l.sub || ''), icon:ex ? ex.icon : (l.icon || '📘'), classes:ex ? ex.classes : myClasses().slice(),
-      visible:ex ? ex.visible !== false : false, teacherId:TD.view, teacherName:(TD.vt && TD.vt.name) || '', lessonKey:key, size:new Blob([html]).size, fileName:l.fileName || '', copiedFrom:l.teacherName || ''});
-    if (!ex) { meta.order = TD.lessons.length ? Math.max(...TD.lessons.map(x => x.order ?? 0)) + 1 : 1; meta.shared = false; }
-    await API.saveLesson(nid, meta, html);
-    toast(ex ? 'حُدّث الدرس من المكتبة ✓' : 'نُسخ الدرس إلى دروسك ✓ (مخفي حتى تُظهره)', 4000);
-    await loadTeacherData();
-  } catch (e) { console.error(e); toast('تعذّر النسخ: ' + errMsg(e)); }
-}
-
 /* ---------- الطلاب والحسابات ---------- */
+const PERMS = {wall:'🛡 يوافق على رسائل الجدار', games:'🏆 يطّلع على نتائج الألعاب'};
 function listStudentsView() {
   const f = $('#sClsF').value, off = $('#sShowOff').checked;
   return TD.students.filter(s => (!f || s.cls === f) && (off || s.active !== false)).sort(byClsName);
@@ -1016,9 +1342,20 @@ function renderStudents() {
   const L = listStudentsView();
   if (!L.length) { $('#stTable').innerHTML = '<p>لا يوجد طلاب في هذه القائمة.</p>'; return; }
   $('#stTable').innerHTML = `<table><tr><th>#</th><th>الاسم</th><th>الشعبة</th><th>اسم المستخدم</th><th>كلمة المرور</th><th>الحالة</th><th></th></tr>` +
-    L.map((s, i) => `<tr><td>${i + 1}</td><td>${esc(s.name)}</td><td>${esc(s.cls)}</td><td><code class="ltr">${esc(s.username)}</code></td><td><code class="ltr">${esc(s.password)}</code></td>
+    L.map((s, i) => `<tr><td>${i + 1}</td><td><div class="row" style="gap:6px;flex-wrap:nowrap">${micBtn(s.uid)}<span>${esc(s.name)}</span></div>${Object.keys(PERMS).filter(k => (s.perms || {})[k]).map(k => `<span class="perm">${PERMS[k]}</span>`).join('')}</td><td>${esc(s.cls)}</td><td><code class="ltr">${esc(s.username)}</code></td><td><code class="ltr">${esc(s.password)}</code></td>
       <td>${s.active === false ? '<span class="chip off">موقوف</span>' : '<span class="chip done">فعّال</span>'}</td>
-      <td><div class="row" style="gap:4px;flex-wrap:nowrap"><button class="btn sm ghost" onclick="copyCreds('${s.uid}')">📋 نسخ</button><button class="btn sm ghost" onclick="toggleActive('${s.uid}')">${s.active === false ? '✅ تفعيل' : '⛔ إيقاف'}</button></div></td></tr>`).join('') + '</table>';
+      <td><div class="row" style="gap:4px;flex-wrap:nowrap"><button class="btn sm ghost" onclick="openNotes(${A(s.uid)})">📒 ملاحظات</button><button class="btn sm ghost" onclick="editPerms(${A(s.uid)})">🛡</button><button class="btn sm ghost" onclick="copyCreds(${A(s.uid)})">📋</button><button class="btn sm ghost" onclick="toggleActive(${A(s.uid)})">${s.active === false ? '✅ تفعيل' : '⛔ إيقاف'}</button></div></td></tr>`).join('') + '</table>';
+}
+function editPerms(uid) {
+  const s = TD.students.find(x => x.uid === uid); if (!s) return; const p = s.perms || {};
+  openModal(`<h3 style="margin-top:0">🛡 صلاحيات ${esc(s.name)}</h3><p style="margin-top:0">مزايا خاصة لهذا الطالب داخل شعبته (${esc(s.cls)}):</p>
+    <div class="checks" style="flex-direction:column;gap:8px">${Object.entries(PERMS).map(([k, t]) => `<label><input type="checkbox" class="pmChk" value="${k}" ${p[k] ? 'checked' : ''}> ${t}</label>`).join('')}</div>
+    <div class="row" style="margin-top:12px"><button class="btn" onclick="savePerms(${A(uid)})">حفظ</button><button class="btn ghost" onclick="closeModal()">إلغاء</button></div>`);
+}
+async function savePerms(uid) {
+  const s = TD.students.find(x => x.uid === uid); const perms = {};
+  $$('.pmChk').forEach(c => perms[c.value] = c.checked);
+  try { await API.set('students', uid, {perms}, true); s.perms = perms; closeModal(); renderStudents(); toast('حُفظت الصلاحيات ✓'); } catch (e) { toast('تعذّر: ' + errMsg(e)); }
 }
 const credText = s => `السلام عليكم يا ${s.name} 🌿\nرابط منصة استعداد: ${siteUrl()}\nاختر «🎒 أنا طالب»، ثم ادخل بـ:\nاسم المستخدم: ${s.username}\nكلمة المرور: ${s.password}`;
 function copyCreds(uid) { const s = TD.students.find(x => x.uid === uid); if (s) copyText(credText(s)); }
@@ -1031,7 +1368,7 @@ async function toggleActive(uid) {
   const s = TD.students.find(x => x.uid === uid); if (!s) return;
   const to = s.active === false;
   if (!to && !confirm(`إيقاف حساب ${s.name}؟ لن يستطيع الدخول، وتبقى نتائجه محفوظة.`)) return;
-  try { await API.setStudent(uid, {active:to}); s.active = to; renderStudents(); renderResults(); toast(to ? 'فُعّل الحساب ✓' : 'أُوقف الحساب'); }
+  try { await API.set('students', uid, {active:to}, true); s.active = to; renderStudents(); renderResults(); toast(to ? 'فُعّل الحساب ✓' : 'أُوقف الحساب'); }
   catch (e) { console.error(e); toast('تعذّر تعديل الحساب: ' + errMsg(e)); }
 }
 const genPass = () => String(Math.floor(100000 + Math.random() * 900000));
@@ -1041,8 +1378,8 @@ async function createOne(name, cls) {
   let n = nextNum(prefix);
   for (let tries = 0; tries < 8; tries++) {
     const username = prefix + String(n).padStart(3, '0'), password = genPass();
-    const data = {name, cls, username, password, active:true, teacherId:TD.view};
-    try { const uid = await API.createStudent(username, password, data); const rec = Object.assign({uid}, data); TD.students.push(rec); return rec; }
+    const data = {name, cls, username, password, active:true, teacherId:TD.view, perms:{}, createdAt:Date.now()};
+    try { const uid = await API.newAuthUser(username + '@' + DOMAIN, password); await API.set('students', uid, data); const rec = Object.assign({uid}, data); TD.students.push(rec); return rec; }
     catch (e) {
       const c = e && e.code || '';
       if (c.includes('email-already-in-use')) { n++; continue; }
@@ -1060,7 +1397,7 @@ function showNewCreds(list) {
     <div class="row" style="margin-top:8px"><button class="btn sm" onclick="copyText(window._newCreds.map(credText).join('\\n\\n'))">📋 نسخ رسائل الدخول</button><button class="btn sm ghost" onclick="printCards(window._newCreds)">🖨 طباعة البطاقات</button><button class="btn sm ghost" onclick="$('#newCreds').innerHTML=''">إخفاء</button></div></div>`;
 }
 async function addBulk() {
-  const cls = $('#bCls').value; if (!cls) return toast(myClasses().length ? 'اختر الشعبة أولًا' : 'أضف شعبة أولًا من «صفوفي وشعبي»');
+  const cls = $('#bCls').value; if (!cls) return toast('اختر الشعبة أولًا');
   let names = $('#bNames').value.split(/\n+/).map(x => x.replace(/^\s*\d+[\.\-\)]\s*/, '').trim()).filter(Boolean);
   if (!names.length) return toast('الصق أسماء الطلاب أولًا');
   const exist = new Set(TD.students.filter(s => s.cls === cls).map(s => s.name));
@@ -1079,7 +1416,7 @@ async function addBulk() {
 }
 async function addOne() {
   const name = $('#oName').value.trim(), cls = $('#oCls').value;
-  if (!name || !cls) return toast(myClasses().length ? 'اكتب الاسم واختر الشعبة' : 'أضف شعبة أولًا من «صفوفي وشعبي»');
+  if (!name || !cls) return toast('اكتب اسم الطالب');
   if (TD.students.some(s => s.cls === cls && s.name === name) && !confirm('يوجد طالب بالاسم نفسه في هذه الشعبة. إضافته مرة أخرى؟')) return;
   const b = $('#oBtn'); b.disabled = true;
   try { const rec = await createOne(name, cls); $('#oName').value = ''; showNewCreds([rec]); renderStudents(); renderResults(); }
@@ -1087,47 +1424,467 @@ async function addOne() {
   b.disabled = false;
 }
 
-/* ---------- الإعداد والرسائل ---------- */
+/* ================= الملاحظات الصوتية ================= */
+const micBtn = uid => `<button class="mic" data-mic="${esc(uid)}" title="تسجيل ملاحظة صوتية" onclick="event.stopPropagation();toggleRec(${A(uid)})">🎙️</button>`;
+const REC = {uid:null, mr:null, chunks:[], t0:0, tick:null, stream:null};
+function pickMime() { const L = ['audio/webm;codecs=opus', 'audio/mp4', 'audio/webm', 'audio/ogg;codecs=opus']; if (!window.MediaRecorder) return null; return L.find(m => MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(m)) || ''; }
+async function toggleRec(uid) {
+  if (REC.mr) { if (REC.uid === uid) stopRec(); else toast('أوقف التسجيل الحالي أولًا'); return; }
+  const mime = pickMime();
+  if (mime === null || !navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) return toast('المتصفح لا يدعم التسجيل الصوتي');
+  try {
+    REC.stream = await navigator.mediaDevices.getUserMedia({audio:true});
+    REC.mr = new MediaRecorder(REC.stream, Object.assign(mime ? {mimeType:mime} : {}, {audioBitsPerSecond:24000}));
+  } catch (e) { console.error(e); REC.mr = null; return toast('لم يُسمح باستخدام المايك. فعّله من إعدادات المتصفح.'); }
+  REC.uid = uid; REC.chunks = []; REC.t0 = Date.now();
+  REC.mr.ondataavailable = e => { if (e.data && e.data.size) REC.chunks.push(e.data); };
+  REC.mr.onstop = () => recDone();
+  REC.mr.start(500);
+  const s = TD.students.find(x => x.uid === uid) || {};
+  $('#recRoot').innerHTML = `<div class="recbar"><b style="color:var(--red)">🔴 تسجيل ملاحظة: ${esc(s.name || '')}</b> <span id="recT">0:00</span><button class="btn sm red" onclick="stopRec()">⏹ إيقاف</button></div>`;
+  $$('[data-mic]').forEach(b => b.classList.toggle('rec', b.dataset.mic === uid));
+  REC.tick = setInterval(() => { const s2 = Math.floor((Date.now() - REC.t0) / 1000); const el = $('#recT'); if (el) el.textContent = Math.floor(s2 / 60) + ':' + String(s2 % 60).padStart(2, '0'); if (s2 >= 60) stopRec(); }, 250);
+}
+function stopRec() { if (REC.mr && REC.mr.state !== 'inactive') REC.mr.stop(); clearInterval(REC.tick); if (REC.stream) REC.stream.getTracks().forEach(t => t.stop()); }
+function recDone() {
+  const blob = new Blob(REC.chunks, {type:(REC.mr && REC.mr.mimeType) || 'audio/webm'}), dur = Math.round((Date.now() - REC.t0) / 1000), uid = REC.uid;
+  REC.mr = null; REC.stream = null; $$('[data-mic]').forEach(b => b.classList.remove('rec'));
+  if (blob.size < 500) { $('#recRoot').innerHTML = ''; return toast('التسجيل قصير جدًا'); }
+  const r = new FileReader();
+  r.onload = () => {
+    REC.pending = {uid, audio:r.result, dur};
+    const s = TD.students.find(x => x.uid === uid) || {};
+    $('#recRoot').innerHTML = `<div class="recbar"><b>ملاحظة على ${esc(s.name || '')} (${dur} ث)</b>
+      <button class="btn" style="background:var(--green)" onclick="saveNote('pos')">👍 إيجابية</button><button class="btn" style="background:var(--red)" onclick="saveNote('neg')">👎 سلبية</button><button class="btn sm ghost" onclick="REC.pending=null;$('#recRoot').innerHTML=''">🗑 إلغاء</button></div>`;
+  };
+  r.readAsDataURL(blob);
+}
+async function saveNote(kind) {
+  const P = REC.pending; if (!P) return;
+  if (P.audio.length > 900000) { toast('التسجيل طويل جدًا'); return; }
+  const s = TD.students.find(x => x.uid === P.uid) || {};
+  try {
+    await API.add('notes', {teacherId:TD.view, uid:P.uid, name:s.name || '', cls:s.cls || '', kind, audio:P.audio, dur:P.dur, at:Date.now()});
+    REC.pending = null; $('#recRoot').innerHTML = ''; toast(kind === 'pos' ? 'حُفظت ملاحظة إيجابية ✓' : 'حُفظت ملاحظة سلبية ✓');
+    if (NOTES.uid === P.uid && $('#ntBody')) openNotes(P.uid, NOTES.f);
+  } catch (e) { console.error(e); if (isPerm(e)) $('#rulesWarn').hidden = false; toast('تعذّر حفظ الملاحظة: ' + errMsg(e)); }
+}
+const NOTES = {uid:null, f:'all', list:[]};
+async function openNotes(uid, f) {
+  const s = TD.students.find(x => x.uid === uid); if (!s) return;
+  NOTES.uid = uid; NOTES.f = f || 'all';
+  if (!$('#ntBody')) openModal(`<h3 style="margin-top:0">📒 ملاحظات ${esc(s.name)} <small style="color:var(--muted)">${esc(s.cls)}</small></h3><div class="row">${micBtn(uid)} <small>اضغط المايك لتسجيل ملاحظة جديدة</small></div><div id="ntBody"><p>⏳ جارٍ التحميل…</p></div>`);
+  try { NOTES.list = (await API.where('notes', {teacherId:TD.view, uid})).sort((a, b) => b.at - a.at); } catch (e) { $('#ntBody').innerHTML = '<p>تعذّر التحميل: ' + esc(errMsg(e)) + '</p>'; return; }
+  renderNotes();
+}
+function renderNotes() {
+  const L = NOTES.list, pos = L.filter(n => n.kind === 'pos').length, neg = L.length - pos;
+  const show = L.filter(n => NOTES.f === 'all' || n.kind === NOTES.f);
+  $('#ntBody').innerHTML = `<div class="subtabs"><button class="${NOTES.f === 'all' ? 'on' : ''}" onclick="NOTES.f='all';renderNotes()">الكل (${L.length})</button><button class="${NOTES.f === 'pos' ? 'on' : ''}" style="border-color:var(--green)" onclick="NOTES.f='pos';renderNotes()">👍 الإيجابية (${pos})</button><button class="${NOTES.f === 'neg' ? 'on' : ''}" style="border-color:var(--red)" onclick="NOTES.f='neg';renderNotes()">👎 السلبية (${neg})</button></div>` +
+    (show.length ? show.map(n => `<div class="nitem ${n.kind}"><div class="row" style="justify-content:space-between"><b>${n.kind === 'pos' ? '👍 إيجابية' : '👎 سلبية'}</b><small>${esc(fmtFull(n.at))} · ${n.dur || ''} ث</small></div>
+      <audio controls preload="none" src="${esc(n.audio)}"></audio><div><button class="btn sm red" onclick="delNote(${A(n.id)})">🗑 حذف</button></div></div>`).join('') : '<p>لا توجد ملاحظات.</p>');
+}
+async function delNote(id) { if (!confirm('حذف الملاحظة؟')) return; try { await API.del('notes', id); NOTES.list = NOTES.list.filter(n => n.id !== id); renderNotes(); } catch (e) { toast('تعذّر: ' + errMsg(e)); } }
+
+/* ================= لوحة النقاط ================= */
+const PTS = {id:'', doc:null, saveT:null};
+const pDocId = c => TD.view + '_' + c;
+async function loadPoints() {
+  const c = $('#pCls').value; LS.set('iste3dad-pCls', c);
+  if (!c) { $('#pGrid').innerHTML = '<p>أضف شعبة وطلابًا أولًا من تبويب «👥 الطلاب والصفوف».</p>'; return; }
+  PTS.id = pDocId(c);
+  $('#pGrid').innerHTML = '<p>⏳</p>';
+  try { PTS.doc = await API.get('points', PTS.id); } catch (e) { console.error(e); if (isPerm(e)) $('#rulesWarn').hidden = false; PTS.doc = null; }
+  PTS.doc = Object.assign({teacherId:TD.view, cls:c, mode:'s', s:{}, g:{n:4, names:[], m:{}, p:[]}}, PTS.doc || {});
+  PTS.doc.g = Object.assign({n:4, names:[], m:{}, p:[]}, PTS.doc.g || {});
+  renderPoints();
+}
+function setPMode(m) { if (!PTS.doc) return; PTS.doc.mode = m; savePoints(); renderPoints(); }
+function clsStudents(c) { return TD.students.filter(s => s.cls === c && s.active !== false).sort(byClsName); }
+const GCOL = ['#e76f51', '#2a9d8f', '#e9c46a', '#8e7dbe', '#f4a261', '#3a86ff', '#ef476f', '#06d6a0'];
+function renderPoints() {
+  const d = PTS.doc; if (!d) return;
+  $('#pModeS').classList.toggle('on', d.mode !== 'g'); $('#pModeG').classList.toggle('on', d.mode === 'g'); $('#pGroupsBtn').hidden = d.mode !== 'g';
+  if (d.mode === 'g') {
+    const n = d.g.n || 4;
+    $('#pGrid').innerHTML = Array.from({length:n}, (_, i) => {
+      const mem = clsStudents(d.cls).filter(s => d.g.m[s.uid] === i).map(s => s.name.split(' ')[0]);
+      return `<div class="ptile" style="border-color:${GCOL[i % 8]};min-height:190px"><div class="pn" style="color:${GCOL[i % 8]}">${esc(d.g.names[i] || 'المجموعة ' + (i + 1))}</div>
+        <div style="font-size:15px;text-align:center;color:var(--muted);padding:0 6px;line-height:1.3">${esc(mem.join('، '))}</div>
+        <div class="pv" dir="ltr">${d.g.p[i] || 0}</div><div class="pb"><button class="minus" onclick="bump('g',${i},-1,this)">−</button><button class="plus" style="background:${GCOL[i % 8]}" onclick="bump('g',${i},1,this)">+</button></div></div>`;
+    }).join('');
+  } else {
+    const S = clsStudents(d.cls);
+    $('#pGrid').innerHTML = S.length ? S.map(s => `<div class="ptile">${micBtn(s.uid)}<div class="pn">${esc(s.name.split(' ').slice(0, 2).join(' '))}</div><div class="pv" dir="ltr">${d.s[s.uid] || 0}</div>
+      <div class="pb"><button class="minus" onclick="bump('s',${A(s.uid)},-1,this)">−</button><button class="plus" onclick="bump('s',${A(s.uid)},1,this)">+</button></div></div>`).join('') : '<p>لا يوجد طلاب في هذه الشعبة.</p>';
+  }
+}
+function bump(kind, key, dv, btn) {
+  const d = PTS.doc; if (!d) return;
+  if (kind === 's') d.s[key] = (d.s[key] || 0) + dv; else { d.g.p[key] = (d.g.p[key] || 0) + dv; }
+  const tile = btn.closest('.ptile'); tile.querySelector('.pv').textContent = kind === 's' ? d.s[key] : d.g.p[key];
+  const f = document.createElement('div'); f.className = 'fly'; f.textContent = dv > 0 ? '+1' : '−1'; f.style.color = dv > 0 ? 'var(--green)' : 'var(--red)'; tile.appendChild(f); setTimeout(() => f.remove(), 900);
+  beep(dv > 0 ? 880 : 300, .08);
+  savePoints();
+}
+function savePoints() {
+  clearTimeout(PTS.saveT);
+  PTS.saveT = setTimeout(async () => { try { await API.set('points', PTS.id, Object.assign({}, PTS.doc, {updatedAt:Date.now()})); } catch (e) { console.error(e); toast('تعذّر حفظ النقاط: ' + errMsg(e)); } }, 700);
+}
+function resetPoints() {
+  const d = PTS.doc; if (!d) return;
+  if (!confirm(d.mode === 'g' ? 'تصفير نقاط المجموعات؟' : 'تصفير نقاط كل الطلاب في هذه الشعبة؟')) return;
+  if (d.mode === 'g') d.g.p = []; else d.s = {};
+  savePoints(); renderPoints();
+}
+function togglePFull() {
+  const b = $('#pBoard'); b.classList.toggle('full');
+  if (b.classList.contains('full') && b.requestFullscreen) b.requestFullscreen().catch(() => {});
+  else if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
+}
+document.addEventListener('fullscreenchange', () => { if (!document.fullscreenElement) $('#pBoard').classList.remove('full'); });
+function editGroups() {
+  const d = PTS.doc; if (!d) return; const S = clsStudents(d.cls), n = d.g.n || 4;
+  openModal(`<h3 style="margin-top:0">⚙️ المجموعات – ${esc(d.cls)}</h3>
+    <label class="row" style="gap:6px">عدد المجموعات: <select id="gN" style="width:auto" onchange="PTS.doc.g.n=+this.value;editGroups()">${[2, 3, 4, 5, 6, 7, 8].map(k => `<option ${k === n ? 'selected' : ''}>${k}</option>`).join('')}</select></label>
+    <div class="row" style="margin-top:6px">${Array.from({length:n}, (_, i) => `<input type="text" class="gName" data-i="${i}" value="${esc(d.g.names[i] || 'المجموعة ' + (i + 1))}" style="flex:1 1 160px;width:auto;border-color:${GCOL[i % 8]}">`).join('')}</div>
+    <div class="row" style="margin:10px 0 4px"><b>توزيع الطلاب:</b><button class="btn sm ghost" onclick="autoGroups()">🎲 توزيع عشوائي</button></div>
+    <div class="tbl-scroll" style="max-height:45vh"><table>${S.map(s => `<tr><td>${esc(s.name)}</td><td><select class="gSel" data-u="${esc(s.uid)}" style="width:auto"><option value="">—</option>${Array.from({length:n}, (_, i) => `<option value="${i}" ${d.g.m[s.uid] === i ? 'selected' : ''}>${esc(d.g.names[i] || 'المجموعة ' + (i + 1))}</option>`).join('')}</select></td></tr>`).join('')}</table></div>
+    <div class="row" style="margin-top:12px"><button class="btn" onclick="saveGroups()">حفظ</button></div>`);
+}
+function autoGroups() { const n = PTS.doc.g.n || 4; const sel = shuffle($$('.gSel')); sel.forEach((s, i) => s.value = String(i % n)); }
+function saveGroups() {
+  const g = PTS.doc.g;
+  $$('.gName').forEach(x => g.names[+x.dataset.i] = x.value.trim());
+  g.names = g.names.slice(0, g.n);
+  g.m = {}; $$('.gSel').forEach(x => { if (x.value !== '') g.m[x.dataset.u] = +x.value; });
+  closeModal(); savePoints(); renderPoints(); toast('حُفظت المجموعات ✓');
+}
+
+/* ================= جدار الصف ================= */
+const wallItem = (w, actions) => `<div class="wmsg ${w.status}"><div class="row" style="justify-content:space-between"><span class="who">${w.byTeacher ? '👨‍🏫 ' : '🧒 '}${esc(w.name)}</span><span class="when">${esc(fmtDate(w.at))}</span></div>${esc(w.text)}${actions ? `<div class="row" style="gap:6px;margin-top:4px">${actions}</div>` : ''}</div>`;
+async function loadTeacherWall() {
+  const c = $('#wCls').value; LS.set('iste3dad-wCls', c);
+  if (!c) { $('#wPending').innerHTML = '<p>أضف شعبة أولًا.</p>'; $('#wList').innerHTML = ''; return; }
+  let L = [];
+  try { L = (await API.where('wall', {teacherId:TD.view, cls:c})).sort((a, b) => b.at - a.at); } catch (e) { console.error(e); if (isPerm(e)) $('#rulesWarn').hidden = false; $('#wPending').innerHTML = '<p>تعذّر التحميل: ' + esc(errMsg(e)) + '</p>'; return; }
+  const P = L.filter(w => w.status === 'pending'), OK = L.filter(w => w.status === 'approved');
+  $('#wPending').innerHTML = P.length ? P.map(w => wallItem(w, `<button class="btn sm" onclick="setWall(${A(w.id)},'approved')">✅ موافقة</button><button class="btn sm red" onclick="setWall(${A(w.id)},'rejected')">❌ رفض</button>`)).join('') : '<p style="color:var(--muted)">لا توجد رسائل تنتظر الموافقة.</p>';
+  $('#wList').innerHTML = OK.length ? OK.map(w => wallItem(w, `<button class="btn sm red" onclick="delWall(${A(w.id)})">🗑 حذف</button>`)).join('') : '<p style="color:var(--muted)">الجدار فارغ.</p>';
+  refreshWallDot();
+}
+async function refreshWallDot() {
+  if (!ME || ME.role === 'student' || !TD.view) return;
+  try { const n = (await API.where('wall', {teacherId:TD.view, status:'pending'})).length; $('#wallDot').hidden = !n; $('#wallDot').textContent = n; } catch (e) {}
+}
+async function setWall(id, status) {
+  try { await API.set('wall', id, {status, reviewedBy:ME.name || '', reviewedAt:Date.now()}, true); ME.role === 'student' ? loadStudentWall() : loadTeacherWall(); toast(status === 'approved' ? 'ظهرت الرسالة على الجدار ✓' : 'رُفضت الرسالة'); }
+  catch (e) { toast('تعذّر: ' + errMsg(e)); }
+}
+async function delWall(id) { if (!confirm('حذف الرسالة من الجدار؟')) return; try { await API.del('wall', id); loadTeacherWall(); } catch (e) { toast('تعذّر: ' + errMsg(e)); } }
+async function teacherPost() {
+  const t = $('#wText').value.trim(), c = $('#wCls').value; if (!t || !c) return toast('اكتب الرسالة');
+  try { await API.add('wall', {teacherId:TD.view, cls:c, uid:ME.uid, name:(TD.vt && TD.vt.name) || ME.name || 'المعلم', text:t.slice(0, 300), status:'approved', byTeacher:true, at:Date.now()}); $('#wText').value = ''; loadTeacherWall(); toast('نُشرت ✓'); }
+  catch (e) { toast('تعذّر: ' + errMsg(e)); }
+}
+async function loadStudentWall() {
+  const T = ME.teacherId, c = ME.cls; if (!T) return;
+  try {
+    const [ok, mine] = await Promise.all([API.where('wall', {teacherId:T, cls:c, status:'approved'}), API.where('wall', {teacherId:T, cls:c, uid:ME.uid})]);
+    $('#stWallList').innerHTML = ok.length ? ok.sort((a, b) => b.at - a.at).map(w => wallItem(w)).join('') : '<p style="color:var(--muted);margin:6px">الجدار فارغ… كن أول من يكتب 🌱</p>';
+    const my = mine.filter(w => w.status !== 'approved').sort((a, b) => b.at - a.at).slice(0, 5);
+    $('#stWallMine').innerHTML = my.map(w => `<div class="wmsg ${w.status}" style="font-size:20px">${w.status === 'pending' ? '⏳ بانتظار الموافقة: ' : '❌ لم تُقبل: '}${esc(w.text)}</div>`).join('');
+    if ((ME.perms || {}).wall) {
+      const all = await API.where('wall', {teacherId:T, cls:c});
+      const P = all.filter(w => w.status === 'pending' && w.uid !== ME.uid).sort((a, b) => a.at - b.at);
+      $('#stWallPending').innerHTML = P.length ? P.map(w => wallItem(w, `<button class="btn sm" onclick="setWall(${A(w.id)},'approved')">✅ موافقة</button><button class="btn sm red" onclick="setWall(${A(w.id)},'rejected')">❌ رفض</button>`)).join('') : '<p style="color:var(--muted)">لا توجد رسائل تنتظر.</p>';
+    }
+  } catch (e) { console.error(e); $('#stWallList').innerHTML = '<p>تعذّر تحميل الجدار.</p>'; }
+}
+$('#stWallText').addEventListener('input', e => $('#stWallCount').textContent = e.target.value.length + '/300');
+async function postWall() {
+  const t = $('#stWallText').value.trim(); if (t.length < 2) return toast('اكتب رسالتك');
+  const b = $('#stWallBtn'); b.disabled = true;
+  try { await API.add('wall', {teacherId:ME.teacherId, cls:ME.cls, uid:ME.uid, name:ME.name, text:t.slice(0, 300), status:'pending', at:Date.now()}); $('#stWallText').value = ''; $('#stWallCount').textContent = '0/300'; toast('أُرسلت رسالتك، وتظهر بعد الموافقة ✓'); loadStudentWall(); }
+  catch (e) { console.error(e); toast('تعذّر الإرسال: ' + errMsg(e)); }
+  b.disabled = false;
+}
+
+/* ================= الألعاب ================= */
+const TEMPLATES = {
+  duel:{icon:'⚔️', name:'مبارزة الشاشة', desc:'2 إلى 4 لاعبين على جهاز واحد؛ لكل لاعب جهة من الشاشة، ومن يضغط الإجابة الصحيحة أولًا يفوز بالسؤال.'},
+  time:{icon:'⏱️', name:'سباق الزمن', desc:'لاعب واحد: أجب عن أكبر عدد من الأسئلة قبل انتهاء الوقت، مع سلسلة 🔥 للإجابات المتتالية.'},
+  ladder:{icon:'🪜', name:'سُلَّم التحدي', desc:'لاعب واحد: اصعد درجة مع كل إجابة صحيحة، ولديك 3 قلوب ❤️ فقط، و20 ثانية لكل سؤال.'}
+};
+const GM = {qs:[], picked:new Set(), lessons:new Set(), sets:[]};
+function openGamesTab() {
+  renderTree('#gmTree', 'gm', renderGmLessons, myGrades().length ? myGrades() : null);
+  renderGmLessons();
+  const cur = LS.get('iste3dad-gmtpl', 'duel');
+  $('#gmTpl').innerHTML = Object.entries(TEMPLATES).map(([k, t]) => `<label><input type="radio" name="gmTpl" value="${k}" ${k === cur ? 'checked' : ''} onchange="LS.set('iste3dad-gmtpl',this.value)"><b>${t.icon} ${t.name}</b><small>${t.desc}</small></label>`).join('');
+  const C = myClasses();
+  $('#gmCls').innerHTML = C.length ? `<div class="checks">${C.map(c => `<label><input type="checkbox" class="gmClsChk" value="${esc(c)}"> ${esc(c)}</label>`).join('')}</div>` : '<small>أضف شعبًا أولًا.</small>';
+  loadGameSets();
+}
+function renderGmLessons() {
+  const v = treeVal('#gmTree'), L = cuLessons(v);
+  $('#gmLessons').innerHTML = L.length ? `<div class="checks">${L.map(l => `<label class="cls-toggle ${GM.lessons.has(l.id) ? 'on' : ''}"><input type="checkbox" ${GM.lessons.has(l.id) ? 'checked' : ''} onchange="gmToggleLesson(${A(l.id)},this.checked)"> ${esc(l.icon || '📘')} ${esc(l.title)} <small>(${l.bankCount || 0})</small></label>`).join('')}</div>` : '<p>لا توجد دروس في هذا الباب.</p>';
+}
+async function gmToggleLesson(id, on) {
+  on ? GM.lessons.add(id) : GM.lessons.delete(id);
+  renderGmLessons();
+  const banks = await Promise.all([...GM.lessons].map(lid => API.get('banks', lid).then(d => ((d && d.questions) || []).map(q => Object.assign({lid}, q))).catch(() => [])));
+  GM.qs = banks.flat(); GM.picked = new Set(GM.qs.map(q => q.id));
+  if (!$('#gmTitle').value && GM.lessons.size === 1) { const l = catById([...GM.lessons][0]); if (l) $('#gmTitle').value = 'تحدي: ' + l.title; }
+  renderGmQs();
+}
+function renderGmQs() {
+  $('#gmQCount').textContent = GM.qs.length ? `(${GM.picked.size} من ${GM.qs.length})` : '';
+  $('#gmQs').innerHTML = GM.qs.length ? GM.qs.map(q => `<label><input type="checkbox" ${GM.picked.has(q.id) ? 'checked' : ''} onchange="this.checked?GM.picked.add(${A(q.id)}):GM.picked.delete(${A(q.id)});$('#gmQCount').textContent='('+GM.picked.size+' من ${GM.qs.length})'"><span>${esc(q.q)} <small style="color:var(--green)">✔ ${esc(q.opts[q.a])}</small></span></label>`).join('') : `<p style="margin:4px">${GM.lessons.size ? 'لا توجد أسئلة في بنك هذا الدرس بعد.' : 'اختر درسًا أولًا.'}</p>`;
+}
+function gmAll(on) { GM.picked = on ? new Set(GM.qs.map(q => q.id)) : new Set(); renderGmQs(); }
+const gmPickedQs = () => GM.qs.filter(q => GM.picked.has(q.id)).map(q => ({q:q.q, opts:q.opts, a:q.a}));
+const gmTpl = () => (($$('input[name="gmTpl"]').find(x => x.checked) || {}).value) || 'duel';
+function gmPlayNow() {
+  const qs = gmPickedQs(); if (qs.length < 2) return toast('اختر سؤالين على الأقل');
+  startGame({title:$('#gmTitle').value.trim() || 'لعبة', qs, tpl:gmTpl(), secs:+$('#gmSecs').value});
+}
+async function gmSave() {
+  const qs = gmPickedQs(); if (qs.length < 2) return toast('اختر سؤالين على الأقل');
+  const classes = $$('.gmClsChk').filter(c => c.checked).map(c => c.value); if (!classes.length) return toast('اختر شعبة واحدة على الأقل');
+  const title = $('#gmTitle').value.trim(); if (!title) return toast('اكتب عنوانًا للعبة');
+  try { await API.add('gamesets', {teacherId:TD.view, title, tpl:gmTpl(), secs:+$('#gmSecs').value, qs, classes, active:true, lessonIds:[...GM.lessons], at:Date.now()}); toast('حُفظت اللعبة وأُرسلت للطلاب ✓'); loadGameSets(); }
+  catch (e) { console.error(e); if (isPerm(e)) $('#rulesWarn').hidden = false; toast('تعذّر الحفظ: ' + errMsg(e)); }
+}
+async function loadGameSets() {
+  try { GM.sets = (await API.where('gamesets', {teacherId:TD.view})).sort((a, b) => b.at - a.at); } catch (e) { $('#gmSets').innerHTML = '<p>تعذّر التحميل: ' + esc(errMsg(e)) + '</p>'; return; }
+  $('#gmSets').innerHTML = GM.sets.length ? `<table><tr><th>اللعبة</th><th>القالب</th><th>الأسئلة</th><th>الشعب</th><th>الحالة</th><th></th></tr>` + GM.sets.map(s => `<tr><td><b>${esc(s.title)}</b><br><small style="color:var(--muted)">${fmtDate(s.at)}</small></td><td>${TEMPLATES[s.tpl] ? TEMPLATES[s.tpl].icon + ' ' + TEMPLATES[s.tpl].name : ''}</td><td>${(s.qs || []).length}</td><td style="font-size:18px">${(s.classes || []).map(esc).join('، ')}</td>
+    <td>${s.active ? '<span class="chip done">ظاهرة للطلاب</span>' : '<span class="chip off">مخفية</span>'}</td>
+    <td><div class="row" style="gap:4px"><button class="btn sm alt" onclick="playSet(${A(s.id)})">▶ تشغيل</button><button class="btn sm" onclick="setResults(${A(s.id)})">🏆 النتائج</button><button class="btn sm ghost" onclick="toggleSet(${A(s.id)})">${s.active ? '🙈 إخفاء' : '✅ إظهار'}</button><button class="btn sm red" onclick="delSet(${A(s.id)})">🗑</button></div></td></tr>`).join('') + '</table>' : '<p>لم تحفظ ألعابًا بعد.</p>';
+}
+function playSet(id) { const s = GM.sets.find(x => x.id === id) || (window._stSets || []).find(x => x.id === id); if (s) startGame({title:s.title, qs:s.qs, tpl:s.tpl, secs:s.secs, setId:ME.role === 'student' ? s.id : null}); }
+async function toggleSet(id) { const s = GM.sets.find(x => x.id === id); try { await API.set('gamesets', id, {active:!s.active}, true); loadGameSets(); } catch (e) { toast('تعذّر: ' + errMsg(e)); } }
+async function delSet(id) { if (!confirm('حذف اللعبة؟ ستختفي عند الطلاب.')) return; try { await API.del('gamesets', id); loadGameSets(); } catch (e) { toast('تعذّر: ' + errMsg(e)); } }
+async function setResults(id, forStudent) {
+  const s = (forStudent ? window._stSets : GM.sets).find(x => x.id === id); if (!s) return;
+  openModal(`<h3 style="margin-top:0">🏆 نتائج: ${esc(s.title)}</h3><div id="srBody">⏳</div>`);
+  try {
+    const R = forStudent ? await API.where('gameResults', {teacherId:ME.teacherId, cls:ME.cls}) : await API.where('gameResults', {teacherId:TD.view});
+    const mine = R.filter(r => r.setId === id), best = {};
+    mine.forEach(r => { if (!best[r.uid] || r.score > best[r.uid].score) best[r.uid] = Object.assign({n:0}, r); });
+    mine.forEach(r => best[r.uid].n = (best[r.uid].n || 0) + 1);
+    const L = Object.values(best).sort((a, b) => b.score - a.score || a.at - b.at);
+    $('#srBody').innerHTML = L.length ? `<div class="tbl-scroll"><table><tr><th>#</th><th>الطالب</th><th>الشعبة</th><th>أفضل نتيجة</th><th>المحاولات</th><th>آخر لعب</th></tr>${L.map((r, i) => `<tr><td>${i < 3 ? ['🥇', '🥈', '🥉'][i] : i + 1}</td><td>${esc(r.name)}</td><td>${esc(r.cls)}</td><td><b>${r.score}</b> <small>(${r.correct}/${r.total} صحيحة)</small></td><td>${mine.filter(x => x.uid === r.uid).length}</td><td style="font-size:18px">${fmtDate(r.at)}</td></tr>`).join('')}</table></div>` : '<p>لم يلعب أحد بعد.</p>';
+  } catch (e) { $('#srBody').innerHTML = '<p>تعذّر التحميل: ' + esc(errMsg(e)) + '</p>'; }
+}
+async function loadStudentGames() {
+  $('#homeGames').innerHTML = '<p>⏳ جارٍ التحميل…</p>';
+  try {
+    const [sets, res] = await Promise.all([API.where('gamesets', {teacherId:ME.teacherId, active:true}), API.where('gameResults', {uid:ME.uid})]);
+    const S = sets.filter(s => (s.classes || []).includes(ME.cls)).sort((a, b) => b.at - a.at); window._stSets = S;
+    if (!S.length) { $('#homeGames').innerHTML = '<div class="card">لا توجد ألعاب الآن. سيرسل معلّمك ألعابًا قريبًا 🎮</div>'; return; }
+    const canSee = (ME.perms || {}).games;
+    $('#homeGames').innerHTML = S.map(s => { const my = res.filter(r => r.setId === s.id); const best = my.length ? Math.max(...my.map(r => r.score)) : null; const t = TEMPLATES[s.tpl] || {};
+      return `<div class="lesson-card" style="border-inline-start-color:var(--orange)"><div class="ic">${t.icon || '🎮'}</div><div class="info"><h3 style="margin:0">${esc(s.title)}</h3><div style="color:var(--muted)">${esc(t.name || '')} · ${(s.qs || []).length} سؤالًا</div>${best !== null ? `<div>🏅 أفضل نتيجة: <b>${best}</b> · المحاولات: ${my.length}</div>` : ''}</div>
+        <div class="row">${canSee ? `<button class="btn ghost" onclick="setResults(${A(s.id)},true)">🏆 نتائج الصف</button>` : ''}<button class="btn alt big" onclick="playSet(${A(s.id)})">▶ العب</button></div></div>`; }).join('');
+  } catch (e) { console.error(e); $('#homeGames').innerHTML = '<p>تعذّر تحميل الألعاب.</p>'; }
+}
+
+/* ---------- محرّك الألعاب ---------- */
+let AC = null;
+function beep(f, d, type) { try { AC = AC || new (window.AudioContext || window.webkitAudioContext)(); const o = AC.createOscillator(), g = AC.createGain(); o.type = type || 'sine'; o.frequency.value = f; g.gain.value = .08; o.connect(g); g.connect(AC.destination); o.start(); g.gain.exponentialRampToValueAtTime(.0001, AC.currentTime + (d || .12)); o.stop(AC.currentTime + (d || .12) + .02); } catch (e) {} }
+const winSound = () => [523, 659, 784, 1046].forEach((f, i) => setTimeout(() => beep(f, .18, 'triangle'), i * 130));
+const G = {cfg:null, timers:[], over:false, prev:''};
+const gT = (fn, ms) => { const t = setTimeout(fn, ms); G.timers.push(t); return t; };
+const gI = (fn, ms) => { const t = setInterval(fn, ms); G.timers.push(t); return t; };
+function clearG() { G.timers.forEach(t => { clearTimeout(t); clearInterval(t); }); G.timers = []; window.onresize = null; }
+function startGame(cfg) {
+  G.cfg = cfg; G.prev = ME.role === 'student' ? 'scrHome' : 'scrTeacher';
+  if (cfg.tpl === 'duel') return duelSetup();
+  runGame();
+}
+function quitGame() { clearG(); G.over = true; showScreen(G.prev); if (G.prev === 'scrHome') loadStudentGames(); }
+function runGame() {
+  clearG(); G.over = false; showScreen('scrGame');
+  $('#gTitle').textContent = (TEMPLATES[G.cfg.tpl] || {}).icon + ' ' + G.cfg.title;
+  if (G.cfg.tpl === 'duel') duelRun(); else soloRun();
+}
+function duelSetup() {
+  const n = LS.get('iste3dad-duel-n', 2), names = LS.get('iste3dad-duel-names', []);
+  openModal(`<h3 style="margin-top:0">⚔️ مبارزة الشاشة</h3><p style="margin-top:0">ضع الجهاز على الطاولة، وليجلس كل لاعب عند جهة من الشاشة.</p>
+    <label class="row" style="gap:6px">عدد اللاعبين: <select id="dN" style="width:auto" onchange="LS.set('iste3dad-duel-n',+this.value);duelSetup()">${[2, 3, 4].map(k => `<option ${k === n ? 'selected' : ''}>${k}</option>`).join('')}</select></label>
+    <div class="row" style="margin-top:8px">${Array.from({length:n}, (_, i) => `<label style="flex:1 1 160px"><span style="color:${DUEL_COL[i]};font-weight:800">● ${DUEL_POS[n][i]}</span><input type="text" class="dName" value="${esc(names[i] || DUEL_DEF[i])}"></label>`).join('')}</div>
+    <div class="row" style="margin-top:12px"><button class="btn alt big" onclick="duelGo()">▶ ابدأ المبارزة</button></div>`);
+}
+const DUEL_COL = ['#ef476f', '#118ab2', '#06a77d', '#f4a20b'];
+const DUEL_DEF = ['الأحمر', 'الأزرق', 'الأخضر', 'الذهبي'];
+const DUEL_POS = {2:['أسفل الشاشة', 'أعلى الشاشة'], 3:['أسفل الشاشة', 'أعلى الشاشة', 'يمين الشاشة'], 4:['أسفل الشاشة', 'أعلى الشاشة', 'يمين الشاشة', 'يسار الشاشة']};
+function duelGo() { const names = $$('.dName').map((x, i) => x.value.trim() || DUEL_DEF[i]); LS.set('iste3dad-duel-names', names); G.cfg.players = names; closeModal(); runGame(); }
+function duelRun() {
+  const P = G.cfg.players || ['الأحمر', 'الأزرق'], n = P.length, secs = G.cfg.secs || 0;
+  const st = {sc:P.map(() => 0), deck:shuffle(G.cfg.qs), qi:-1, cur:null, locked:new Set(), busy:false, left:secs, answered:0};
+  // الترتيب في الشبكة: z0 أسفل، z1 أعلى (مقلوب)، z2 يسار الشاشة في RTL؟ نستخدم أسماء المناطق مباشرة
+  const rot = ['', 'rot180', 'rot90', 'rotm90'];
+  $('#gBody').innerHTML = `<div class="arena p${n}">${P.map((name, i) => `<div class="zone ${rot[i]}" id="z${i}" style="grid-area:z${i};background:${DUEL_COL[i]}"><div class="zi"><div class="zh"><span>${esc(name)}</span><span class="zs">0</span></div><div class="zq"></div><div class="zo"></div></div></div>`).join('')}
+    <div class="gcenter"><div class="tm" id="dTm">${secs ? fmtSec(secs) : '∞'}</div><div class="sc" id="dSc"></div><div id="dQn" style="font-size:18px;opacity:.8"></div></div></div>`;
+  // في RTL تكون z2 على اليمين و z3 على اليسار؛ نضبط الدوران ليقابل كل لاعب
+  const fit = () => {
+    P.forEach((_, i) => {
+      const z = $('#z' + i), zi = z.querySelector('.zi'); const side = i >= 2;
+      if (side) { zi.style.width = z.clientHeight + 'px'; zi.style.height = z.clientWidth + 'px'; zi.style.transform = `translate(-50%,-50%) rotate(${i === 2 ? -90 : 90}deg)`; }
+      const w = side ? z.clientHeight : z.clientWidth, h = side ? z.clientWidth : z.clientHeight;
+      const fs = Math.max(15, Math.min(32, Math.min(w / 17, h / 6.8)));
+      zi.style.fontSize = fs + 'px'; zi.querySelectorAll('.zo button').forEach(b => b.style.fontSize = fs * .95 + 'px');
+    });
+  };
+  const score = () => { $('#dSc').innerHTML = P.map((p, i) => `<span style="background:${DUEL_COL[i]}">${st.sc[i]}</span>`).join(''); P.forEach((_, i) => $('#z' + i + ' .zs').textContent = st.sc[i]); };
+  const next = () => {
+    if (G.over) return;
+    st.qi++;
+    if (st.qi >= st.deck.length) { if (secs) { st.deck = shuffle(G.cfg.qs); st.qi = 0; } else return end(); }
+    st.cur = st.deck[st.qi]; st.locked = new Set(); st.busy = false;
+    $('#dQn').textContent = 'السؤال ' + (st.answered + 1);
+    P.forEach((_, i) => {
+      const z = $('#z' + i); z.classList.remove('locked', 'win'); const lk = z.querySelector('.zlock'); if (lk) lk.remove();
+      z.querySelector('.zq').textContent = st.cur.q;
+      const order = shuffle(st.cur.opts.map((o, k) => k));
+      z.querySelector('.zo').innerHTML = order.map(k => `<button data-k="${k}">${esc(st.cur.opts[k])}</button>`).join('');
+      z.querySelectorAll('.zo button').forEach(b => b.addEventListener('pointerdown', e => { e.preventDefault(); pick(i, +b.dataset.k, b); }));
+    });
+    fit();
+  };
+  const reveal = () => P.forEach((_, i) => { const b = $('#z' + i + ' .zo button[data-k="' + st.cur.a + '"]'); if (b) b.classList.add('ok'); });
+  const pick = (i, k, btn) => {
+    if (st.busy || G.over || st.locked.has(i)) return;
+    if (k === st.cur.a) {
+      st.busy = true; st.sc[i]++; st.answered++; btn.classList.add('ok'); $('#z' + i).classList.add('win'); beep(880, .15, 'triangle'); score(); reveal();
+      P.forEach((_, j) => { if (j !== i) $('#z' + j).classList.add('locked'); });
+      gT(next, 1200);
+    } else {
+      st.locked.add(i); btn.classList.add('bad'); const z = $('#z' + i); z.classList.add('locked', 'shake'); setTimeout(() => z.classList.remove('shake'), 400);
+      z.insertAdjacentHTML('beforeend', '<div class="zlock">❌</div>'); beep(200, .2, 'square');
+      if (st.locked.size >= n) { st.busy = true; st.answered++; reveal(); gT(next, 1400); }
+    }
+  };
+  const end = () => {
+    G.over = true; clearG();
+    const max = Math.max(...st.sc), winners = P.filter((_, i) => st.sc[i] === max);
+    const rank = P.map((p, i) => ({p, s:st.sc[i], c:DUEL_COL[i]})).sort((a, b) => b.s - a.s);
+    $('#gBody').innerHTML = `<div class="gend"><div style="font-size:70px">🏆</div><h2 style="color:#ffd166;margin:0">${max === 0 ? 'تعادل!' : winners.length > 1 ? 'تعادل بين: ' + winners.map(esc).join(' و') : 'الفائز: ' + esc(winners[0])}</h2>
+      <div class="rk">${rank.map((r, i) => `<div style="background:${r.c}">${['🥇', '🥈', '🥉', '4️⃣'][i]} ${esc(r.p)}<br><span style="font-size:36px">${r.s}</span></div>`).join('')}</div>
+      <div class="row"><button class="btn alt big" onclick="runGame()">🔁 مباراة جديدة</button><button class="btn ghost big" onclick="quitGame()">🏠 خروج</button></div></div>`;
+    winSound(); confetti();
+  };
+  window.onresize = fit;
+  score(); next();
+  if (secs) gI(() => { st.left--; $('#dTm').textContent = fmtSec(Math.max(0, st.left)); if (st.left <= 10 && st.left > 0) beep(600, .05); if (st.left <= 0) end(); }, 1000);
+}
+const fmtSec = s => Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0');
+function confetti() { const box = $('#gBody'); for (let i = 0; i < 40; i++) { const c = document.createElement('div'); c.className = 'confetti'; c.textContent = ['🎉', '⭐', '✨', '🎊', '🌟'][i % 5]; c.style.left = Math.random() * 100 + '%'; c.style.animationDuration = 2 + Math.random() * 2.5 + 's'; c.style.animationDelay = Math.random() * 1.5 + 's'; box.appendChild(c); gT(() => c.remove(), 6000); } }
+function soloRun() {
+  const ladder = G.cfg.tpl === 'ladder', secs = ladder ? 0 : (G.cfg.secs || 60);
+  const st = {deck:shuffle(G.cfg.qs), qi:-1, score:0, correct:0, total:0, streak:0, best:0, lives:3, left:secs, qLeft:20, busy:false};
+  $('#gBody').innerHTML = `<div class="solo"><div class="hud" id="sHud"></div><div class="tbar"><i id="sBar" style="width:100%"></i></div><div class="sq" id="sQ"></div><div class="so" id="sO"></div><div id="sMsg" style="font-size:24px;min-height:36px"></div></div>`;
+  const hud = () => { $('#sHud').innerHTML = ladder ? `<span>🪜 الدرجة ${st.correct}</span><span>${'❤️'.repeat(st.lives)}${'🤍'.repeat(3 - st.lives)}</span><span>⏳ ${st.qLeft}</span>` : `<span>⭐ ${st.score}</span><span>🔥 ${st.streak}</span><span>⏱️ ${fmtSec(Math.max(0, st.left))}</span>`; };
+  const next = () => {
+    if (G.over) return;
+    st.qi++;
+    if (st.qi >= st.deck.length) { if (!ladder && st.left > 0) { st.deck = shuffle(G.cfg.qs); st.qi = 0; } else return end(); }
+    const q = st.deck[st.qi]; st.busy = false; st.qLeft = 20; $('#sMsg').textContent = '';
+    $('#sQ').textContent = q.q;
+    const order = shuffle(q.opts.map((o, k) => k));
+    $('#sO').innerHTML = order.map(k => `<button data-k="${k}">${esc(q.opts[k])}</button>`).join('');
+    $$('#sO button').forEach(b => b.onclick = () => answer(+b.dataset.k, b));
+    if (ladder) $('#sBar').style.width = '100%';
+    hud();
+  };
+  const answer = (k, btn) => {
+    if (st.busy || G.over) return; st.busy = true; st.total++;
+    const q = st.deck[st.qi];
+    if (k === q.a) { st.correct++; st.streak++; st.best = Math.max(st.best, st.streak); st.score += ladder ? 1 : 1 + (st.streak >= 3 ? 1 : 0); btn.classList.add('ok'); beep(880, .12, 'triangle'); $('#sMsg').textContent = st.streak >= 3 && !ladder ? '🔥 سلسلة رائعة! +2' : '✅ أحسنت'; }
+    else { st.streak = 0; if (btn) btn.classList.add('bad'); const ok = $('#sO button[data-k="' + q.a + '"]'); if (ok) ok.classList.add('ok'); beep(200, .2, 'square'); if (ladder) st.lives--; $('#sMsg').textContent = btn ? '❌ الإجابة: ' + q.opts[q.a] : '⌛ انتهى الوقت! الإجابة: ' + q.opts[q.a]; }
+    hud();
+    if (ladder && st.lives <= 0) return gT(end, 1200);
+    gT(next, k === q.a ? 650 : 1400);
+  };
+  const end = async () => {
+    if (G.over) return; G.over = true; clearG();
+    const pct = st.total ? Math.round(st.correct / st.total * 100) : 0;
+    $('#gBody').innerHTML = `<div class="gend"><div style="font-size:70px">${pct >= 80 ? '🏆' : pct >= 50 ? '🌟' : '💪'}</div><h2 style="color:#ffd166;margin:0">${ladder ? 'وصلت إلى الدرجة ' + st.correct : 'نتيجتك: ' + st.score + ' نقطة'}</h2>
+      <p style="font-size:24px;margin:0">إجابات صحيحة: ${st.correct} من ${st.total}${!ladder ? ' · أطول سلسلة: 🔥 ' + st.best : ''}</p><p id="sSave" style="font-size:20px;opacity:.85"></p>
+      <div class="row"><button class="btn alt big" onclick="runGame()">🔁 العب مرة أخرى</button><button class="btn ghost big" onclick="quitGame()">🏠 خروج</button></div></div>`;
+    if (pct >= 50) { winSound(); confetti(); }
+    if (G.cfg.setId && ME.role === 'student') {
+      try { await API.add('gameResults', {setId:G.cfg.setId, teacherId:ME.teacherId, uid:ME.uid, name:ME.name, cls:ME.cls, tpl:G.cfg.tpl, score:ladder ? st.correct : st.score, correct:st.correct, total:st.total, at:Date.now()}); $('#sSave').textContent = '✅ حُفظت نتيجتك وأُرسلت إلى المعلم'; }
+      catch (e) { console.error(e); $('#sSave').textContent = '⚠️ تعذّر حفظ النتيجة'; }
+    }
+  };
+  next();
+  gI(() => {
+    if (G.over) return;
+    if (ladder) { if (st.busy) return; st.qLeft--; $('#sBar').style.width = (st.qLeft / 20 * 100) + '%'; hud(); if (st.qLeft <= 0) answer(-1, null); }
+    else { st.left--; $('#sBar').style.width = (st.left / secs * 100) + '%'; hud(); if (st.left <= 0) end(); }
+  }, 1000);
+}
+
+/* ================= الإعداد والرسائل ================= */
 function messages() {
   return [
-    ['1) رسالة إطلاق المنصة (للطلاب)', `السلام عليكم يا أبطال 🌿\nأطلقنا منصة «استعداد» للتربية الإسلامية 📖\nفيها دروس تفاعلية: قصص وألعاب وتحدّيات.\n\n🔗 رابط المنصة: ${siteUrl()}\n🔑 سيصلك اسم المستخدم وكلمة المرور في رسالة خاصة.\n\n📌 الخطوات:\n1. افتح الرابط واختر «🎒 أنا طالب».\n2. ادخل ببياناتك.\n3. اختر الدرس من «دروسي» واضغط «ابدأ الدرس».\n4. في نهاية الدرس اضغط «📤 إرسال النتيجة إلى المعلم».\n5. تستطيع إعادة الدرس لتحسين درجتك.`],
-    ['2) رسالة درس جديد', `درس جديد على منصة استعداد 🎉\n📚 الدرس: ……………\n🔗 ${siteUrl()}\n⏰ آخر موعد: ……………\nلا تنسَ الضغط على «📤 إرسال النتيجة إلى المعلم» في نهاية الدرس.`],
-    ['3) تذكير', `تذكير 🔔 آخر موعد لدرس «……………» على منصة استعداد: ……………\n🔗 ${siteUrl()}`]
+    ['1) رسالة إطلاق المنصة (للطلاب)', `السلام عليكم يا أبطال 🌿\nأطلقنا منصة «استعداد» للتربية الإسلامية 📖\nفيها دروس تفاعلية وألعاب وجدار للصف.\n\n🔗 رابط المنصة: ${siteUrl()}\n🔑 سيصلك اسم المستخدم وكلمة المرور في رسالة خاصة.\n\n📌 الخطوات:\n1. افتح الرابط واختر «🎒 أنا طالب».\n2. ادخل ببياناتك.\n3. اختر الدرس من «دروسي» واضغط «ابدأ الدرس».\n4. في نهاية الاختبار اضغط «أرسل نتيجتي إلى المعلم».`],
+    ['2) رسالة درس جديد', `درس جديد على منصة استعداد 🎉\n📚 الدرس: ……………\n🔗 ${siteUrl()}\n⏰ آخر موعد: ……………`],
+    ['3) لعبة جديدة', `🎮 لعبة جديدة بانتظارك على منصة استعداد!\nادخل إلى تبويب «🎮 الألعاب» وحاول أن تتصدّر صفك 🏆\n🔗 ${siteUrl()}`]
   ];
 }
 function renderSetupTab() {
   $('#msgList').innerHTML = messages().map((m, i) => `<div class="msg"><h4>${m[0]}</h4>${esc(m[1])}<div class="row" style="margin-top:6px"><button class="btn sm" onclick="copyText(messages()[${i}][1])">📋 نسخ الرسالة</button></div></div>`).join('') +
-    `<p class="note">رسالة الدخول الخاصة بكل طالب تنسخها من تبويب «👥 الطلاب والصفوف» (زر «📋 نسخ» بجانب اسمه).</p>`;
+    `<p class="note">رسالة الدخول الخاصة بكل طالب تنسخها من تبويب «👥 الطلاب والصفوف» (زر 📋 بجانب اسمه).</p>`;
   $('#rulesNow').textContent = rulesText(adminEmail());
+}
+async function wipeOld() {
+  if (!confirm('سيُحذف كل الطلاب والدروس القديمة ونتائجها وحسابات المعلمين القديمة من قاعدة البيانات. متابعة؟')) return;
+  if (prompt('للتأكيد اكتب: حذف') !== 'حذف') return toast('أُلغي الحذف');
+  const P = $('#wipeProg'); let n = 0;
+  try {
+    for (const col of ['students', 'lessons', 'lessonFiles', 'progress', 'submissions', 'grades']) {
+      const L = await API.where(col, {}).catch(() => []);
+      for (const d of L) { await API.del(col, d.id).catch(e => console.error(col, e)); n++; P.textContent = '⏳ حُذف ' + n; }
+    }
+    const T = await API.where('teachers', {});
+    for (const t of T) if (t.id !== ME.uid && !t.email) { await API.del('teachers', t.id).catch(() => {}); n++; }
+    await API.set('teachers', ME.uid, {classes:[]}, true); TD.vt.classes = [];
+    P.textContent = '✅ تم حذف ' + n + ' عنصرًا'; await switchView(ME.uid, true);
+  } catch (e) { console.error(e); P.textContent = '⚠️ ' + errMsg(e); }
 }
 function rulesText(email) {
   return `rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
     function signedIn() { return request.auth != null; }
-    function isAdmin() {
-      return signedIn() && request.auth.token.email == '${email || 'ADMIN_EMAIL'}';
-    }
+    function isAdmin() { return signedIn() && request.auth.token.email == '${email || 'ADMIN_EMAIL'}'; }
     function isTeacher() {
       return isAdmin() || (signedIn()
         && exists(/databases/$(database)/documents/teachers/$(request.auth.uid))
         && get(/databases/$(database)/documents/teachers/$(request.auth.uid)).data.active == true);
     }
+    function sdoc() { return get(/databases/$(database)/documents/students/$(request.auth.uid)).data; }
     function isActiveStudent() {
-      return signedIn()
-        && exists(/databases/$(database)/documents/students/$(request.auth.uid))
-        && get(/databases/$(database)/documents/students/$(request.auth.uid)).data.active == true;
+      return signedIn() && exists(/databases/$(database)/documents/students/$(request.auth.uid)) && sdoc().active == true;
     }
-    function myStudentTeacher() {
-      return get(/databases/$(database)/documents/students/$(request.auth.uid)).data.teacherId;
-    }
+    function myT() { return sdoc().teacherId; }
+    function myCls() { return sdoc().cls; }
+    function hasPerm(p) { return isActiveStudent() && sdoc().get('perms', {}).get(p, false) == true; }
     function owns(d) { return isTeacher() && d.teacherId == request.auth.uid; }
+    function ownsId(id) { return isTeacher() && id.matches(request.auth.uid + '_.*'); }
 
     match /teachers/{uid} {
       allow read: if isAdmin() || (signedIn() && request.auth.uid == uid);
-      allow create, delete: if isAdmin();
+      allow create: if isAdmin() || (signedIn() && request.auth.uid == uid
+        && request.auth.token.email_verified == true
+        && request.resource.data.active == true
+        && request.resource.data.keys().hasOnly(['name', 'email', 'active', 'classes', 'code', 'createdAt']));
       allow update: if isAdmin() || (isTeacher() && request.auth.uid == uid
-        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['classes']));
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['classes', 'name']));
+      allow delete: if isAdmin();
     }
     match /students/{uid} {
       allow read: if isAdmin() || (signedIn() && request.auth.uid == uid) || owns(resource.data);
@@ -1135,17 +1892,12 @@ service cloud.firestore {
       allow update: if isAdmin() || (owns(resource.data) && owns(request.resource.data));
       allow delete: if isAdmin();
     }
-    match /lessons/{id} {
+    match /catalog/{id} { allow read: if signedIn(); allow write: if isAdmin(); }
+    match /catalogFiles/{id} { allow read: if signedIn(); allow write: if isAdmin(); }
+    match /banks/{id} { allow read: if signedIn(); allow write: if isAdmin(); }
+    match /tshow/{tid} {
       allow read: if signedIn();
-      allow create: if isAdmin() || owns(request.resource.data);
-      allow update: if isAdmin() || (owns(resource.data) && owns(request.resource.data));
-      allow delete: if isAdmin() || owns(resource.data);
-    }
-    match /lessonFiles/{id} {
-      allow read: if signedIn();
-      allow create: if isAdmin() || owns(request.resource.data);
-      allow update: if isAdmin() || (owns(resource.data) && owns(request.resource.data));
-      allow delete: if isAdmin() || owns(resource.data);
+      allow write: if isAdmin() || (isTeacher() && request.auth.uid == tid);
     }
     match /progress/{id} {
       allow read, write: if isAdmin() || (isActiveStudent() && id.matches(request.auth.uid + '_.*'));
@@ -1153,13 +1905,44 @@ service cloud.firestore {
     match /submissions/{id} {
       allow read: if isAdmin() || (signedIn() && resource.data.uid == request.auth.uid) || owns(resource.data);
       allow create: if isActiveStudent() && request.resource.data.uid == request.auth.uid
-        && request.resource.data.teacherId == myStudentTeacher();
+        && request.resource.data.teacherId == myT();
       allow update, delete: if isAdmin();
     }
-    match /grades/{id} {
-      allow read: if isAdmin() || (signedIn() && id.matches(request.auth.uid + '_.*')) || owns(resource.data);
-      allow write: if isAdmin() || owns(request.resource.data);
+    match /wall/{id} {
+      allow read: if isAdmin() || owns(resource.data)
+        || (isActiveStudent() && resource.data.teacherId == myT() && resource.data.cls == myCls()
+            && (resource.data.status == 'approved' || resource.data.uid == request.auth.uid || hasPerm('wall')));
+      allow create: if isAdmin() || owns(request.resource.data)
+        || (isActiveStudent() && request.resource.data.uid == request.auth.uid
+            && request.resource.data.teacherId == myT() && request.resource.data.cls == myCls()
+            && request.resource.data.status == 'pending'
+            && request.resource.data.text is string && request.resource.data.text.size() <= 300);
+      allow update: if isAdmin() || owns(resource.data)
+        || (hasPerm('wall') && resource.data.teacherId == myT() && resource.data.cls == myCls()
+            && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'reviewedBy', 'reviewedAt']));
+      allow delete: if isAdmin() || owns(resource.data);
     }
+    match /points/{id} { allow read, write: if isAdmin() || ownsId(id); }
+    match /notes/{id} {
+      allow read, update, delete: if isAdmin() || owns(resource.data);
+      allow create: if isAdmin() || owns(request.resource.data);
+    }
+    match /gamesets/{id} {
+      allow read: if signedIn();
+      allow create: if isAdmin() || owns(request.resource.data);
+      allow update: if isAdmin() || (owns(resource.data) && owns(request.resource.data));
+      allow delete: if isAdmin() || owns(resource.data);
+    }
+    match /gameResults/{id} {
+      allow read: if isAdmin() || owns(resource.data) || (signedIn() && resource.data.uid == request.auth.uid)
+        || (hasPerm('games') && resource.data.teacherId == myT() && resource.data.cls == myCls());
+      allow create: if isActiveStudent() && request.resource.data.uid == request.auth.uid
+        && request.resource.data.teacherId == myT() && request.resource.data.cls == myCls();
+      allow update, delete: if isAdmin();
+    }
+    match /lessons/{id} { allow read, write: if isAdmin(); }
+    match /lessonFiles/{id} { allow read, write: if isAdmin(); }
+    match /grades/{id} { allow read, write: if isAdmin(); }
   }
 }`;
 }
@@ -1178,7 +1961,7 @@ function renderSetup() {
       <h4>قواعد الحماية</h4><pre class="rules" id="suRules">${esc(rulesText(''))}</pre>
       <button class="btn sm" onclick="copyText($('#suRules').textContent)">📋 نسخ القواعد</button>
       <label style="margin-top:12px;display:block">إعدادات Firebase<textarea id="suCfg" dir="ltr" style="min-height:160px;font-family:Consolas,monospace;font-size:16px" placeholder="const firebaseConfig = {…};"></textarea></label>
-      <label>رابط موقعك<input type="text" id="suUrl" dir="ltr" value="https://iste3dad.netlify.app"></label>
+      <label>رابط موقعك<input type="text" id="suUrl" dir="ltr" value=""></label>
       <div class="row" style="margin-top:10px"><button class="btn alt big" onclick="buildConfigured()">⬇ تنزيل ملف المنصة الجاهز</button><a class="btn ghost" href="?demo=1">🧪 الوضع التجريبي</a></div>
     </div>`;
 }
@@ -1191,7 +1974,7 @@ function buildConfigured() {
 }
 
 /* ================= التشغيل ================= */
-setupDrop();
+setupCuDrop();
 boot();
 </script>
 </body>
