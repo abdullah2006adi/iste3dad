@@ -281,26 +281,8 @@ code.ltr{direction:ltr;display:inline-block;background:#eef3f2;border-radius:6px
   <div class="topbar"><div class="wrap"><h1>📖 منصة استعداد</h1><div class="row"><span id="homeWho"></span><button class="hbtn" onclick="doLogout()">🚪 خروج</button></div></div></div>
   <div class="wrap">
     <h2 id="homeHello"></h2>
-    <div class="subtabs" id="hTabs">
-      <button data-h="lessons" class="on" onclick="hTab('lessons')">📚 دروسي</button>
-      <button data-h="games" onclick="hTab('games')">🎮 الألعاب</button>
-      <button data-h="wall" onclick="hTab('wall')">🧱 جدار الصف</button>
-    </div>
-    <div class="hview" id="hv-lessons"><div id="homeLessons"></div></div>
-    <div class="hview" id="hv-games" hidden><div id="homeGames"></div></div>
-    <div class="hview" id="hv-wall" hidden>
-      <div class="card" id="stWallMod" hidden>
-        <h3 style="margin-top:0">🛡 رسائل تنتظر الموافقة <small style="color:var(--muted)">(صلاحية من معلّمك)</small></h3>
-        <div id="stWallPending"></div>
-      </div>
-      <div class="card">
-        <h3 style="margin-top:0">✍️ اكتب على جدار الصف</h3>
-        <textarea id="stWallText" maxlength="300" placeholder="اكتب رسالة طيبة لزملائك… (تظهر بعد موافقة المعلم)"></textarea>
-        <div class="row" style="margin-top:6px"><button class="btn alt" id="stWallBtn" onclick="postWall()">📨 إرسال للمراجعة</button><small id="stWallCount" style="color:var(--muted)">0/300</small><button class="btn sm ghost" onclick="loadStudentWall()">🔄 تحديث</button></div>
-        <div id="stWallMine"></div>
-      </div>
-      <div class="wall-wrap"><div id="stWallList"></div></div>
-    </div>
+    <h3>📚 دروسي</h3>
+    <div id="homeLessons"></div>
   </div>
 </section>
 
@@ -308,11 +290,6 @@ code.ltr{direction:ltr;display:inline-block;background:#eef3f2;border-radius:6px
   <div class="pbar"><button class="hbtn" onclick="leaveLesson()">🏠 رجوع</button><b id="plTitle"></b><span class="prev" id="plPrev" hidden>👁 معاينة: لا تُحفظ الإجابات</span><span id="plWho"></span></div>
   <div class="plload" id="plLoad">⏳ جارٍ تحميل الدرس…</div>
   <iframe id="plFrame" title="الدرس" sandbox="allow-scripts allow-popups allow-forms allow-modals allow-popups-to-escape-sandbox" allow="autoplay; fullscreen; clipboard-write"></iframe>
-</section>
-
-<section id="scrGame" hidden>
-  <div class="gbar"><button class="hbtn" onclick="quitGame()">✕ خروج</button><b id="gTitle"></b><span id="gInfo"></span></div>
-  <div class="gbody" id="gBody"></div>
 </section>
 
 <section id="scrTeacher" hidden>
@@ -324,9 +301,6 @@ code.ltr{direction:ltr;display:inline-block;background:#eef3f2;border-radius:6px
       <button data-t="curriculum" class="adminOnly" onclick="tTab('curriculum')" hidden>🗂️ المنهج</button>
       <button data-t="results" onclick="tTab('results')">📊 النتائج</button>
       <button data-t="lessons" onclick="tTab('lessons')">📚 الدروس</button>
-      <button data-t="games" onclick="tTab('games')">🎮 الألعاب</button>
-      <button data-t="points" onclick="tTab('points')">⭐ النقاط</button>
-      <button data-t="wall" onclick="tTab('wall')">🧱 الجدار<span class="dot" id="wallDot" hidden></span></button>
       <button data-t="students" onclick="tTab('students')">👥 الطلاب والصفوف</button>
       <button data-t="setup" onclick="tTab('setup')">⚙️ الإعداد</button>
     </div>
@@ -381,70 +355,6 @@ code.ltr{direction:ltr;display:inline-block;background:#eef3f2;border-radius:6px
       </div>
     </div>
 
-    <!-- الألعاب -->
-    <div class="tview" id="tv-games" hidden>
-      <div class="card">
-        <h3 style="margin-top:0">🎮 لعبة جديدة</h3>
-        <h4 style="margin:4px 0">1) اختر الدرس</h4>
-        <div class="tree" id="gmTree"></div>
-        <div id="gmLessons" style="margin-top:6px"></div>
-        <h4 style="margin:12px 0 4px">2) اختر الأسئلة <small id="gmQCount" style="color:var(--muted)"></small></h4>
-        <div class="row" style="margin-bottom:4px"><button class="btn sm ghost" onclick="gmAll(true)">✔ تحديد الكل</button><button class="btn sm ghost" onclick="gmAll(false)">✖ إلغاء التحديد</button></div>
-        <div class="qpick" id="gmQs"><p style="margin:4px">اختر درسًا أولًا.</p></div>
-        <h4 style="margin:12px 0 4px">3) اختر قالب اللعبة</h4>
-        <div class="tpl" id="gmTpl"></div>
-        <div class="row" style="margin-top:10px">
-          <label class="row" style="gap:4px">المدة: <select id="gmSecs" style="width:auto"><option value="60">دقيقة</option><option value="120">دقيقتان</option><option value="180">3 دقائق</option><option value="300">5 دقائق</option><option value="0">حتى تنتهي الأسئلة</option></select></label>
-          <label style="flex:1 1 240px" class="row">العنوان: <input type="text" id="gmTitle" placeholder="مثال: تحدي التجارة الرابحة" style="flex:1;width:auto"></label>
-        </div>
-        <div class="row" style="margin-top:10px"><button class="btn alt big" onclick="gmPlayNow()">▶ العب الآن على هذا الجهاز</button></div>
-        <div class="card" style="background:#fbfaf5;margin-bottom:0">
-          <b>📤 أو احفظها وأرسلها لطلابك ليلعبوا في البيت:</b>
-          <div id="gmCls" style="margin:6px 0"></div>
-          <button class="btn" onclick="gmSave()">💾 حفظ وإرسال</button>
-        </div>
-      </div>
-      <div class="card">
-        <div class="row" style="justify-content:space-between"><h3 style="margin:0">🗃️ ألعابي المحفوظة</h3><button class="btn sm ghost" onclick="loadGameSets()">🔄 تحديث</button></div>
-        <div class="tbl-scroll" id="gmSets"></div>
-      </div>
-    </div>
-
-    <!-- النقاط -->
-    <div class="tview" id="tv-points" hidden>
-      <div class="card pboard" id="pBoard">
-        <div class="row" style="justify-content:space-between">
-          <div class="row">
-            <label class="row" style="gap:4px">الشعبة: <select id="pCls" style="width:auto" onchange="loadPoints()"></select></label>
-            <div class="subtabs" style="margin:0"><button id="pModeS" class="on" onclick="setPMode('s')">👤 طلاب</button><button id="pModeG" onclick="setPMode('g')">👥 مجموعات</button></div>
-          </div>
-          <div class="row">
-            <button class="btn sm ghost" id="pGroupsBtn" onclick="editGroups()" hidden>⚙️ المجموعات</button>
-            <button class="btn sm ghost" onclick="resetPoints()">↺ تصفير</button>
-            <button class="btn sm blue" onclick="togglePFull()">⛶ ملء الشاشة</button>
-          </div>
-        </div>
-        <div class="pgrid" id="pGrid"></div>
-        <p style="font-size:18px;color:var(--muted);margin-bottom:0">اضغط النصف الأخضر <b>+</b> لإضافة نقطة، والرمادي <b>−</b> لإنقاصها. 🎙️ لتسجيل ملاحظة صوتية على الطالب.</p>
-      </div>
-    </div>
-
-    <!-- الجدار -->
-    <div class="tview" id="tv-wall" hidden>
-      <div class="card">
-        <div class="row" style="justify-content:space-between">
-          <label class="row" style="gap:4px">الشعبة: <select id="wCls" style="width:auto" onchange="loadTeacherWall()"></select></label>
-          <button class="btn sm ghost" onclick="loadTeacherWall()">🔄 تحديث</button>
-        </div>
-        <h3>⏳ تنتظر موافقتك</h3>
-        <div id="wPending"></div>
-        <h3>✍️ اكتب للصف</h3>
-        <div class="row"><textarea id="wText" maxlength="300" style="min-height:60px;flex:1" placeholder="رسالة من المعلم تظهر مباشرة على الجدار"></textarea><button class="btn alt" onclick="teacherPost()">📌 نشر</button></div>
-        <h3>🧱 الجدار</h3>
-        <div class="wall-wrap"><div id="wList"></div></div>
-      </div>
-    </div>
-
     <!-- الطلاب -->
     <div class="tview" id="tv-students" hidden>
       <div class="card">
@@ -476,7 +386,7 @@ code.ltr{direction:ltr;display:inline-block;background:#eef3f2;border-radius:6px
         </div>
         <div class="row" style="margin:6px 0"><button class="btn ghost sm" onclick="copyListCreds()">📋 نسخ بيانات الدخول للقائمة</button><button class="btn ghost sm" onclick="printCards()">🖨 طباعة بطاقات الدخول</button></div>
         <div class="tbl-scroll" id="stTable"></div>
-        <p style="font-size:19px;color:var(--muted)">🎙️ تسجيل ملاحظة صوتية · 📒 ملاحظات الطالب · 🛡 صلاحيات خاصة للطالب. لا يمكن حذف الحساب نهائيًا من هنا؛ أوقفه بدلًا من ذلك.</p>
+        <p style="font-size:19px;color:var(--muted)">🎙️ تسجيل ملاحظة صوتية · 📒 ملاحظات الطالب. لا يمكن حذف الحساب نهائيًا من هنا؛ أوقفه بدلًا من ذلك.</p>
       </div>
     </div>
 
@@ -490,7 +400,7 @@ code.ltr{direction:ltr;display:inline-block;background:#eef3f2;border-radius:6px
         <p>يحذف من قاعدة البيانات: كل الطلاب، والدروس المرفوعة بالنظام القديم، ونتائجها، وحسابات المعلمين القديمة (ما عدا حسابك). <b>لا يمكن التراجع.</b></p>
         <button class="btn red" onclick="wipeOld()">🗑 حذف البيانات القديمة</button><span id="wipeProg" style="margin-inline-start:8px"></span></div>
       <div class="card adminOnly" hidden><h3 style="margin-top:0">🧩 كيف أصنع درسًا للمنصة؟</h3>
-        <p>أرسل ملف الدرس من الكتاب (PDF) إلى Claude، واطلب «درسًا تفاعليًا متوافقًا مع منصة استعداد». ارفع الملف الناتج من تبويب «🗂️ المنهج»، ثم افتح «🧠 بنك الأسئلة» واضغط «📥 استخراج الأسئلة من ملف الدرس».</p></div>
+        <p>أرسل ملف الدرس من الكتاب (PDF) إلى Claude، واطلب «درسًا تفاعليًا متوافقًا مع منصة استعداد». ارفع الملف الناتج من تبويب «🗂️ المنهج».</p></div>
     </div>
   </div>
 </section>
@@ -776,18 +686,7 @@ async function openHome() {
   showScreen('scrHome');
   $('#homeWho').textContent = '👤 ' + ME.name + ' · ' + ME.cls;
   $('#homeHello').textContent = 'مرحبًا يا ' + (ME.name || '').split(' ')[0] + ' 👋';
-  const p = ME.perms || {};
-  hTab(LS.get('iste3dad-htab', 'lessons'));
-  $('#stWallMod').hidden = !p.wall;
   await loadStudentLessons();
-}
-function hTab(h) {
-  if (!['lessons', 'games', 'wall'].includes(h)) h = 'lessons';
-  LS.set('iste3dad-htab', h);
-  $$('#hTabs button').forEach(b => b.classList.toggle('on', b.dataset.h === h));
-  $$('.hview').forEach(v => v.hidden = v.id !== 'hv-' + h);
-  if (h === 'games') loadStudentGames();
-  if (h === 'wall') loadStudentWall();
 }
 async function loadStudentLessons() {
   $('#homeLessons').innerHTML = '<p>⏳ جارٍ التحميل…</p>';
@@ -900,7 +799,7 @@ async function ensureAdmin() {
 }
 async function openTeacher() {
   showScreen('scrTeacher');
-  ['#newCreds', '#cuProg', '#wipeProg'].forEach(x => $(x).innerHTML = ''); $('#rulesWarn').hidden = true; GM.lessons = new Set(); GM.qs = []; GM.picked = new Set(); $('#gmTitle').value = ''; closeAdd(); $('#clsRows').innerHTML = '';
+  ['#newCreds', '#cuProg', '#wipeProg'].forEach(x => $(x).innerHTML = ''); $('#rulesWarn').hidden = true; closeAdd(); $('#clsRows').innerHTML = '';
   $('#tWho').textContent = '👤 ' + (ME.name || '') + (isAdmin() ? ' (المدير)' : '');
   $('#tHead').textContent = isAdmin() ? '📖 استعداد · لوحة المدير' : '📖 استعداد · لوحة المعلم';
   $$('.adminOnly').forEach(e => e.hidden = !isAdmin());
@@ -909,7 +808,6 @@ async function openTeacher() {
   await switchView(ME.uid, true);
   tTab(LS.get('iste3dad-ttab', isAdmin() ? 'curriculum' : 'lessons'));
   if (isAdmin()) loadTeachers();
-  TIMERS.push(setInterval(() => { if (!$('#scrTeacher').hidden) refreshWallDot(); }, 60000));
 }
 async function switchView(uid, silent) {
   TD.view = uid;
@@ -926,7 +824,6 @@ function fillClassSelects() {
   const C = myClasses(), opts = C.map(c => `<option>${esc(c)}</option>`).join('');
   $('#rClass').innerHTML = '<option value="">كل الشعب</option>' + opts;
   $('#sClsF').innerHTML = '<option value="">كل الشعب</option>' + opts;
-  ['pCls', 'wCls'].forEach(id => { const el = $('#' + id), v = el.value || LS.get('iste3dad-' + id, ''); el.innerHTML = C.length ? opts : '<option value="">— أضف شعبة أولًا —</option>'; if (C.includes(v)) el.value = v; });
   ['bCls', 'oCls'].forEach(id => { const el = $('#' + id), v = el.value; el.innerHTML = '<option value="">— الشعبة —</option>' + opts; el.value = C.includes(v) ? v : ''; });
   if (!$('#bCls').value) { $('#bulkCard').hidden = true; $('#oneCard').hidden = true; }
 }
@@ -936,7 +833,6 @@ async function loadTeacherData() {
     TD.students = st.map(s => Object.assign({uid:s.id}, s)); TD.show = (show && show.lessons) || {};
   } catch (e) { console.error(e); if (isPerm(e)) $('#rulesWarn').hidden = false; toast('تعذّر تحميل البيانات: ' + errMsg(e)); }
   fillResultLessons(); renderStudents(); renderSetupTab(); renderShowTab();
-  refreshWallDot();
   await loadResults();
 }
 function tTab(t) {
@@ -946,9 +842,6 @@ function tTab(t) {
   $$('.tview').forEach(v => v.hidden = v.id !== 'tv-' + t);
   if (t === 'curriculum') renderCurriculum();
   if (t === 'lessons') renderShowTab();
-  if (t === 'games') openGamesTab();
-  if (t === 'points') loadPoints();
-  if (t === 'wall') loadTeacherWall();
 }
 
 /* ---------- النتائج ---------- */
@@ -1045,7 +938,7 @@ async function loadTeachers() {
       <td><div class="row" style="gap:4px"><button class="btn sm" onclick="switchView(${A(t.uid)})">📂 فتح صفحته</button>${t.isAdmin ? '' : `<button class="btn sm ghost" onclick="toggleTeacher(${A(t.uid)})">${t.active === false ? '✅ تفعيل' : '⛔ إيقاف'}</button>`}</div></td></tr>`).join('') + '</table>';
   } catch (e) { console.error(e); if (isPerm(e)) $('#rulesWarn').hidden = false; $('#tcTable').innerHTML = '<p>تعذّر تحميل المعلمين: ' + esc(errMsg(e)) + '</p>'; }
 }
-const inviteText = () => `السلام عليكم ورحمة الله 🌿\nندعوكم لاستخدام منصة «استعداد» للتربية الإسلامية: دروس تفاعلية جاهزة، وألعاب صفية، ولوحة نقاط، وجدار للصف.\n🔗 ${siteUrl()}\n\nطريقة التسجيل:\n1. افتح الرابط واختر «👨‍🏫 أنا معلم».\n2. اضغط «أنشئ حساب معلم» وأدخل بريدك وكلمة مرور.\n3. افتح رابط التحقّق الذي يصل إلى بريدك، ثم ادخل.\n4. أضف شعبك وطلابك، ثم أظهر لهم الدروس.`;
+const inviteText = () => `السلام عليكم ورحمة الله 🌿\nندعوكم لاستخدام منصة «استعداد» للتربية الإسلامية: دروس تفاعلية جاهزة يستعدّ بها الطلاب قبل الحصة، وتصلكم نتائجهم أولًا بأول.\n🔗 ${siteUrl()}\n\nطريقة التسجيل:\n1. افتح الرابط واختر «👨‍🏫 أنا معلم».\n2. اضغط «أنشئ حساب معلم» وأدخل بريدك وكلمة مرور.\n3. افتح رابط التحقّق الذي يصل إلى بريدك، ثم ادخل.\n4. أضف شعبك وطلابك، ثم أظهر لهم الدروس.`;
 async function toggleTeacher(uid) {
   const t = TD.teachers.find(x => x.uid === uid); if (!t) return;
   const to = t.active === false;
@@ -1332,7 +1225,6 @@ async function removeClass(i) {
 }
 
 /* ---------- الطلاب والحسابات ---------- */
-const PERMS = {wall:'🛡 يوافق على رسائل الجدار', games:'🏆 يطّلع على نتائج الألعاب'};
 function listStudentsView() {
   const f = $('#sClsF').value, off = $('#sShowOff').checked;
   return TD.students.filter(s => (!f || s.cls === f) && (off || s.active !== false)).sort(byClsName);
@@ -1342,20 +1234,9 @@ function renderStudents() {
   const L = listStudentsView();
   if (!L.length) { $('#stTable').innerHTML = '<p>لا يوجد طلاب في هذه القائمة.</p>'; return; }
   $('#stTable').innerHTML = `<table><tr><th>#</th><th>الاسم</th><th>الشعبة</th><th>اسم المستخدم</th><th>كلمة المرور</th><th>الحالة</th><th></th></tr>` +
-    L.map((s, i) => `<tr><td>${i + 1}</td><td><div class="row" style="gap:6px;flex-wrap:nowrap">${micBtn(s.uid)}<span>${esc(s.name)}</span></div>${Object.keys(PERMS).filter(k => (s.perms || {})[k]).map(k => `<span class="perm">${PERMS[k]}</span>`).join('')}</td><td>${esc(s.cls)}</td><td><code class="ltr">${esc(s.username)}</code></td><td><code class="ltr">${esc(s.password)}</code></td>
+    L.map((s, i) => `<tr><td>${i + 1}</td><td><div class="row" style="gap:6px;flex-wrap:nowrap">${micBtn(s.uid)}<span>${esc(s.name)}</span></div></td><td>${esc(s.cls)}</td><td><code class="ltr">${esc(s.username)}</code></td><td><code class="ltr">${esc(s.password)}</code></td>
       <td>${s.active === false ? '<span class="chip off">موقوف</span>' : '<span class="chip done">فعّال</span>'}</td>
-      <td><div class="row" style="gap:4px;flex-wrap:nowrap"><button class="btn sm ghost" onclick="openNotes(${A(s.uid)})">📒 ملاحظات</button><button class="btn sm ghost" onclick="editPerms(${A(s.uid)})">🛡</button><button class="btn sm ghost" onclick="copyCreds(${A(s.uid)})">📋</button><button class="btn sm ghost" onclick="toggleActive(${A(s.uid)})">${s.active === false ? '✅ تفعيل' : '⛔ إيقاف'}</button></div></td></tr>`).join('') + '</table>';
-}
-function editPerms(uid) {
-  const s = TD.students.find(x => x.uid === uid); if (!s) return; const p = s.perms || {};
-  openModal(`<h3 style="margin-top:0">🛡 صلاحيات ${esc(s.name)}</h3><p style="margin-top:0">مزايا خاصة لهذا الطالب داخل شعبته (${esc(s.cls)}):</p>
-    <div class="checks" style="flex-direction:column;gap:8px">${Object.entries(PERMS).map(([k, t]) => `<label><input type="checkbox" class="pmChk" value="${k}" ${p[k] ? 'checked' : ''}> ${t}</label>`).join('')}</div>
-    <div class="row" style="margin-top:12px"><button class="btn" onclick="savePerms(${A(uid)})">حفظ</button><button class="btn ghost" onclick="closeModal()">إلغاء</button></div>`);
-}
-async function savePerms(uid) {
-  const s = TD.students.find(x => x.uid === uid); const perms = {};
-  $$('.pmChk').forEach(c => perms[c.value] = c.checked);
-  try { await API.set('students', uid, {perms}, true); s.perms = perms; closeModal(); renderStudents(); toast('حُفظت الصلاحيات ✓'); } catch (e) { toast('تعذّر: ' + errMsg(e)); }
+      <td><div class="row" style="gap:4px;flex-wrap:nowrap"><button class="btn sm ghost" onclick="openNotes(${A(s.uid)})">📒 ملاحظات</button><button class="btn sm ghost" onclick="copyCreds(${A(s.uid)})">📋</button><button class="btn sm ghost" onclick="toggleActive(${A(s.uid)})">${s.active === false ? '✅ تفعيل' : '⛔ إيقاف'}</button></div></td></tr>`).join('') + '</table>';
 }
 const credText = s => `السلام عليكم يا ${s.name} 🌿\nرابط منصة استعداد: ${siteUrl()}\nاختر «🎒 أنا طالب»، ثم ادخل بـ:\nاسم المستخدم: ${s.username}\nكلمة المرور: ${s.password}`;
 function copyCreds(uid) { const s = TD.students.find(x => x.uid === uid); if (s) copyText(credText(s)); }
@@ -1486,353 +1367,11 @@ function renderNotes() {
 }
 async function delNote(id) { if (!confirm('حذف الملاحظة؟')) return; try { await API.del('notes', id); NOTES.list = NOTES.list.filter(n => n.id !== id); renderNotes(); } catch (e) { toast('تعذّر: ' + errMsg(e)); } }
 
-/* ================= لوحة النقاط ================= */
-const PTS = {id:'', doc:null, saveT:null};
-const pDocId = c => TD.view + '_' + c;
-async function loadPoints() {
-  const c = $('#pCls').value; LS.set('iste3dad-pCls', c);
-  if (!c) { $('#pGrid').innerHTML = '<p>أضف شعبة وطلابًا أولًا من تبويب «👥 الطلاب والصفوف».</p>'; return; }
-  PTS.id = pDocId(c);
-  $('#pGrid').innerHTML = '<p>⏳</p>';
-  try { PTS.doc = await API.get('points', PTS.id); } catch (e) { console.error(e); if (isPerm(e)) $('#rulesWarn').hidden = false; PTS.doc = null; }
-  PTS.doc = Object.assign({teacherId:TD.view, cls:c, mode:'s', s:{}, g:{n:4, names:[], m:{}, p:[]}}, PTS.doc || {});
-  PTS.doc.g = Object.assign({n:4, names:[], m:{}, p:[]}, PTS.doc.g || {});
-  renderPoints();
-}
-function setPMode(m) { if (!PTS.doc) return; PTS.doc.mode = m; savePoints(); renderPoints(); }
-function clsStudents(c) { return TD.students.filter(s => s.cls === c && s.active !== false).sort(byClsName); }
-const GCOL = ['#e76f51', '#2a9d8f', '#e9c46a', '#8e7dbe', '#f4a261', '#3a86ff', '#ef476f', '#06d6a0'];
-function renderPoints() {
-  const d = PTS.doc; if (!d) return;
-  $('#pModeS').classList.toggle('on', d.mode !== 'g'); $('#pModeG').classList.toggle('on', d.mode === 'g'); $('#pGroupsBtn').hidden = d.mode !== 'g';
-  if (d.mode === 'g') {
-    const n = d.g.n || 4;
-    $('#pGrid').innerHTML = Array.from({length:n}, (_, i) => {
-      const mem = clsStudents(d.cls).filter(s => d.g.m[s.uid] === i).map(s => s.name.split(' ')[0]);
-      return `<div class="ptile" style="border-color:${GCOL[i % 8]};min-height:190px"><div class="pn" style="color:${GCOL[i % 8]}">${esc(d.g.names[i] || 'المجموعة ' + (i + 1))}</div>
-        <div style="font-size:15px;text-align:center;color:var(--muted);padding:0 6px;line-height:1.3">${esc(mem.join('، '))}</div>
-        <div class="pv" dir="ltr">${d.g.p[i] || 0}</div><div class="pb"><button class="minus" onclick="bump('g',${i},-1,this)">−</button><button class="plus" style="background:${GCOL[i % 8]}" onclick="bump('g',${i},1,this)">+</button></div></div>`;
-    }).join('');
-  } else {
-    const S = clsStudents(d.cls);
-    $('#pGrid').innerHTML = S.length ? S.map(s => `<div class="ptile">${micBtn(s.uid)}<div class="pn">${esc(s.name.split(' ').slice(0, 2).join(' '))}</div><div class="pv" dir="ltr">${d.s[s.uid] || 0}</div>
-      <div class="pb"><button class="minus" onclick="bump('s',${A(s.uid)},-1,this)">−</button><button class="plus" onclick="bump('s',${A(s.uid)},1,this)">+</button></div></div>`).join('') : '<p>لا يوجد طلاب في هذه الشعبة.</p>';
-  }
-}
-function bump(kind, key, dv, btn) {
-  const d = PTS.doc; if (!d) return;
-  if (kind === 's') d.s[key] = (d.s[key] || 0) + dv; else { d.g.p[key] = (d.g.p[key] || 0) + dv; }
-  const tile = btn.closest('.ptile'); tile.querySelector('.pv').textContent = kind === 's' ? d.s[key] : d.g.p[key];
-  const f = document.createElement('div'); f.className = 'fly'; f.textContent = dv > 0 ? '+1' : '−1'; f.style.color = dv > 0 ? 'var(--green)' : 'var(--red)'; tile.appendChild(f); setTimeout(() => f.remove(), 900);
-  beep(dv > 0 ? 880 : 300, .08);
-  savePoints();
-}
-function savePoints() {
-  clearTimeout(PTS.saveT);
-  PTS.saveT = setTimeout(async () => { try { await API.set('points', PTS.id, Object.assign({}, PTS.doc, {updatedAt:Date.now()})); } catch (e) { console.error(e); toast('تعذّر حفظ النقاط: ' + errMsg(e)); } }, 700);
-}
-function resetPoints() {
-  const d = PTS.doc; if (!d) return;
-  if (!confirm(d.mode === 'g' ? 'تصفير نقاط المجموعات؟' : 'تصفير نقاط كل الطلاب في هذه الشعبة؟')) return;
-  if (d.mode === 'g') d.g.p = []; else d.s = {};
-  savePoints(); renderPoints();
-}
-function togglePFull() {
-  const b = $('#pBoard'); b.classList.toggle('full');
-  if (b.classList.contains('full') && b.requestFullscreen) b.requestFullscreen().catch(() => {});
-  else if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
-}
-document.addEventListener('fullscreenchange', () => { if (!document.fullscreenElement) $('#pBoard').classList.remove('full'); });
-function editGroups() {
-  const d = PTS.doc; if (!d) return; const S = clsStudents(d.cls), n = d.g.n || 4;
-  openModal(`<h3 style="margin-top:0">⚙️ المجموعات – ${esc(d.cls)}</h3>
-    <label class="row" style="gap:6px">عدد المجموعات: <select id="gN" style="width:auto" onchange="PTS.doc.g.n=+this.value;editGroups()">${[2, 3, 4, 5, 6, 7, 8].map(k => `<option ${k === n ? 'selected' : ''}>${k}</option>`).join('')}</select></label>
-    <div class="row" style="margin-top:6px">${Array.from({length:n}, (_, i) => `<input type="text" class="gName" data-i="${i}" value="${esc(d.g.names[i] || 'المجموعة ' + (i + 1))}" style="flex:1 1 160px;width:auto;border-color:${GCOL[i % 8]}">`).join('')}</div>
-    <div class="row" style="margin:10px 0 4px"><b>توزيع الطلاب:</b><button class="btn sm ghost" onclick="autoGroups()">🎲 توزيع عشوائي</button></div>
-    <div class="tbl-scroll" style="max-height:45vh"><table>${S.map(s => `<tr><td>${esc(s.name)}</td><td><select class="gSel" data-u="${esc(s.uid)}" style="width:auto"><option value="">—</option>${Array.from({length:n}, (_, i) => `<option value="${i}" ${d.g.m[s.uid] === i ? 'selected' : ''}>${esc(d.g.names[i] || 'المجموعة ' + (i + 1))}</option>`).join('')}</select></td></tr>`).join('')}</table></div>
-    <div class="row" style="margin-top:12px"><button class="btn" onclick="saveGroups()">حفظ</button></div>`);
-}
-function autoGroups() { const n = PTS.doc.g.n || 4; const sel = shuffle($$('.gSel')); sel.forEach((s, i) => s.value = String(i % n)); }
-function saveGroups() {
-  const g = PTS.doc.g;
-  $$('.gName').forEach(x => g.names[+x.dataset.i] = x.value.trim());
-  g.names = g.names.slice(0, g.n);
-  g.m = {}; $$('.gSel').forEach(x => { if (x.value !== '') g.m[x.dataset.u] = +x.value; });
-  closeModal(); savePoints(); renderPoints(); toast('حُفظت المجموعات ✓');
-}
-
-/* ================= جدار الصف ================= */
-const wallItem = (w, actions) => `<div class="wmsg ${w.status}"><div class="row" style="justify-content:space-between"><span class="who">${w.byTeacher ? '👨‍🏫 ' : '🧒 '}${esc(w.name)}</span><span class="when">${esc(fmtDate(w.at))}</span></div>${esc(w.text)}${actions ? `<div class="row" style="gap:6px;margin-top:4px">${actions}</div>` : ''}</div>`;
-async function loadTeacherWall() {
-  const c = $('#wCls').value; LS.set('iste3dad-wCls', c);
-  if (!c) { $('#wPending').innerHTML = '<p>أضف شعبة أولًا.</p>'; $('#wList').innerHTML = ''; return; }
-  let L = [];
-  try { L = (await API.where('wall', {teacherId:TD.view, cls:c})).sort((a, b) => b.at - a.at); } catch (e) { console.error(e); if (isPerm(e)) $('#rulesWarn').hidden = false; $('#wPending').innerHTML = '<p>تعذّر التحميل: ' + esc(errMsg(e)) + '</p>'; return; }
-  const P = L.filter(w => w.status === 'pending'), OK = L.filter(w => w.status === 'approved');
-  $('#wPending').innerHTML = P.length ? P.map(w => wallItem(w, `<button class="btn sm" onclick="setWall(${A(w.id)},'approved')">✅ موافقة</button><button class="btn sm red" onclick="setWall(${A(w.id)},'rejected')">❌ رفض</button>`)).join('') : '<p style="color:var(--muted)">لا توجد رسائل تنتظر الموافقة.</p>';
-  $('#wList').innerHTML = OK.length ? OK.map(w => wallItem(w, `<button class="btn sm red" onclick="delWall(${A(w.id)})">🗑 حذف</button>`)).join('') : '<p style="color:var(--muted)">الجدار فارغ.</p>';
-  refreshWallDot();
-}
-async function refreshWallDot() {
-  if (!ME || ME.role === 'student' || !TD.view) return;
-  try { const n = (await API.where('wall', {teacherId:TD.view, status:'pending'})).length; $('#wallDot').hidden = !n; $('#wallDot').textContent = n; } catch (e) {}
-}
-async function setWall(id, status) {
-  try { await API.set('wall', id, {status, reviewedBy:ME.name || '', reviewedAt:Date.now()}, true); ME.role === 'student' ? loadStudentWall() : loadTeacherWall(); toast(status === 'approved' ? 'ظهرت الرسالة على الجدار ✓' : 'رُفضت الرسالة'); }
-  catch (e) { toast('تعذّر: ' + errMsg(e)); }
-}
-async function delWall(id) { if (!confirm('حذف الرسالة من الجدار؟')) return; try { await API.del('wall', id); loadTeacherWall(); } catch (e) { toast('تعذّر: ' + errMsg(e)); } }
-async function teacherPost() {
-  const t = $('#wText').value.trim(), c = $('#wCls').value; if (!t || !c) return toast('اكتب الرسالة');
-  try { await API.add('wall', {teacherId:TD.view, cls:c, uid:ME.uid, name:(TD.vt && TD.vt.name) || ME.name || 'المعلم', text:t.slice(0, 300), status:'approved', byTeacher:true, at:Date.now()}); $('#wText').value = ''; loadTeacherWall(); toast('نُشرت ✓'); }
-  catch (e) { toast('تعذّر: ' + errMsg(e)); }
-}
-async function loadStudentWall() {
-  const T = ME.teacherId, c = ME.cls; if (!T) return;
-  try {
-    const [ok, mine] = await Promise.all([API.where('wall', {teacherId:T, cls:c, status:'approved'}), API.where('wall', {teacherId:T, cls:c, uid:ME.uid})]);
-    $('#stWallList').innerHTML = ok.length ? ok.sort((a, b) => b.at - a.at).map(w => wallItem(w)).join('') : '<p style="color:var(--muted);margin:6px">الجدار فارغ… كن أول من يكتب 🌱</p>';
-    const my = mine.filter(w => w.status !== 'approved').sort((a, b) => b.at - a.at).slice(0, 5);
-    $('#stWallMine').innerHTML = my.map(w => `<div class="wmsg ${w.status}" style="font-size:20px">${w.status === 'pending' ? '⏳ بانتظار الموافقة: ' : '❌ لم تُقبل: '}${esc(w.text)}</div>`).join('');
-    if ((ME.perms || {}).wall) {
-      const all = await API.where('wall', {teacherId:T, cls:c});
-      const P = all.filter(w => w.status === 'pending' && w.uid !== ME.uid).sort((a, b) => a.at - b.at);
-      $('#stWallPending').innerHTML = P.length ? P.map(w => wallItem(w, `<button class="btn sm" onclick="setWall(${A(w.id)},'approved')">✅ موافقة</button><button class="btn sm red" onclick="setWall(${A(w.id)},'rejected')">❌ رفض</button>`)).join('') : '<p style="color:var(--muted)">لا توجد رسائل تنتظر.</p>';
-    }
-  } catch (e) { console.error(e); $('#stWallList').innerHTML = '<p>تعذّر تحميل الجدار.</p>'; }
-}
-$('#stWallText').addEventListener('input', e => $('#stWallCount').textContent = e.target.value.length + '/300');
-async function postWall() {
-  const t = $('#stWallText').value.trim(); if (t.length < 2) return toast('اكتب رسالتك');
-  const b = $('#stWallBtn'); b.disabled = true;
-  try { await API.add('wall', {teacherId:ME.teacherId, cls:ME.cls, uid:ME.uid, name:ME.name, text:t.slice(0, 300), status:'pending', at:Date.now()}); $('#stWallText').value = ''; $('#stWallCount').textContent = '0/300'; toast('أُرسلت رسالتك، وتظهر بعد الموافقة ✓'); loadStudentWall(); }
-  catch (e) { console.error(e); toast('تعذّر الإرسال: ' + errMsg(e)); }
-  b.disabled = false;
-}
-
-/* ================= الألعاب ================= */
-const TEMPLATES = {
-  duel:{icon:'⚔️', name:'مبارزة الشاشة', desc:'2 إلى 4 لاعبين على جهاز واحد؛ لكل لاعب جهة من الشاشة، ومن يضغط الإجابة الصحيحة أولًا يفوز بالسؤال.'},
-  time:{icon:'⏱️', name:'سباق الزمن', desc:'لاعب واحد: أجب عن أكبر عدد من الأسئلة قبل انتهاء الوقت، مع سلسلة 🔥 للإجابات المتتالية.'},
-  ladder:{icon:'🪜', name:'سُلَّم التحدي', desc:'لاعب واحد: اصعد درجة مع كل إجابة صحيحة، ولديك 3 قلوب ❤️ فقط، و20 ثانية لكل سؤال.'}
-};
-const GM = {qs:[], picked:new Set(), lessons:new Set(), sets:[]};
-function openGamesTab() {
-  renderTree('#gmTree', 'gm', renderGmLessons, myGrades().length ? myGrades() : null);
-  renderGmLessons();
-  const cur = LS.get('iste3dad-gmtpl', 'duel');
-  $('#gmTpl').innerHTML = Object.entries(TEMPLATES).map(([k, t]) => `<label><input type="radio" name="gmTpl" value="${k}" ${k === cur ? 'checked' : ''} onchange="LS.set('iste3dad-gmtpl',this.value)"><b>${t.icon} ${t.name}</b><small>${t.desc}</small></label>`).join('');
-  const C = myClasses();
-  $('#gmCls').innerHTML = C.length ? `<div class="checks">${C.map(c => `<label><input type="checkbox" class="gmClsChk" value="${esc(c)}"> ${esc(c)}</label>`).join('')}</div>` : '<small>أضف شعبًا أولًا.</small>';
-  loadGameSets();
-}
-function renderGmLessons() {
-  const v = treeVal('#gmTree'), L = cuLessons(v);
-  $('#gmLessons').innerHTML = L.length ? `<div class="checks">${L.map(l => `<label class="cls-toggle ${GM.lessons.has(l.id) ? 'on' : ''}"><input type="checkbox" ${GM.lessons.has(l.id) ? 'checked' : ''} onchange="gmToggleLesson(${A(l.id)},this.checked)"> ${esc(l.icon || '📘')} ${esc(l.title)} <small>(${l.bankCount || 0})</small></label>`).join('')}</div>` : '<p>لا توجد دروس في هذا الباب.</p>';
-}
-async function gmToggleLesson(id, on) {
-  on ? GM.lessons.add(id) : GM.lessons.delete(id);
-  renderGmLessons();
-  const banks = await Promise.all([...GM.lessons].map(lid => API.get('banks', lid).then(d => ((d && d.questions) || []).map(q => Object.assign({lid}, q))).catch(() => [])));
-  GM.qs = banks.flat(); GM.picked = new Set(GM.qs.map(q => q.id));
-  if (!$('#gmTitle').value && GM.lessons.size === 1) { const l = catById([...GM.lessons][0]); if (l) $('#gmTitle').value = 'تحدي: ' + l.title; }
-  renderGmQs();
-}
-function renderGmQs() {
-  $('#gmQCount').textContent = GM.qs.length ? `(${GM.picked.size} من ${GM.qs.length})` : '';
-  $('#gmQs').innerHTML = GM.qs.length ? GM.qs.map(q => `<label><input type="checkbox" ${GM.picked.has(q.id) ? 'checked' : ''} onchange="this.checked?GM.picked.add(${A(q.id)}):GM.picked.delete(${A(q.id)});$('#gmQCount').textContent='('+GM.picked.size+' من ${GM.qs.length})'"><span>${esc(q.q)} <small style="color:var(--green)">✔ ${esc(q.opts[q.a])}</small></span></label>`).join('') : `<p style="margin:4px">${GM.lessons.size ? 'لا توجد أسئلة في بنك هذا الدرس بعد.' : 'اختر درسًا أولًا.'}</p>`;
-}
-function gmAll(on) { GM.picked = on ? new Set(GM.qs.map(q => q.id)) : new Set(); renderGmQs(); }
-const gmPickedQs = () => GM.qs.filter(q => GM.picked.has(q.id)).map(q => ({q:q.q, opts:q.opts, a:q.a}));
-const gmTpl = () => (($$('input[name="gmTpl"]').find(x => x.checked) || {}).value) || 'duel';
-function gmPlayNow() {
-  const qs = gmPickedQs(); if (qs.length < 2) return toast('اختر سؤالين على الأقل');
-  startGame({title:$('#gmTitle').value.trim() || 'لعبة', qs, tpl:gmTpl(), secs:+$('#gmSecs').value});
-}
-async function gmSave() {
-  const qs = gmPickedQs(); if (qs.length < 2) return toast('اختر سؤالين على الأقل');
-  const classes = $$('.gmClsChk').filter(c => c.checked).map(c => c.value); if (!classes.length) return toast('اختر شعبة واحدة على الأقل');
-  const title = $('#gmTitle').value.trim(); if (!title) return toast('اكتب عنوانًا للعبة');
-  try { await API.add('gamesets', {teacherId:TD.view, title, tpl:gmTpl(), secs:+$('#gmSecs').value, qs, classes, active:true, lessonIds:[...GM.lessons], at:Date.now()}); toast('حُفظت اللعبة وأُرسلت للطلاب ✓'); loadGameSets(); }
-  catch (e) { console.error(e); if (isPerm(e)) $('#rulesWarn').hidden = false; toast('تعذّر الحفظ: ' + errMsg(e)); }
-}
-async function loadGameSets() {
-  try { GM.sets = (await API.where('gamesets', {teacherId:TD.view})).sort((a, b) => b.at - a.at); } catch (e) { $('#gmSets').innerHTML = '<p>تعذّر التحميل: ' + esc(errMsg(e)) + '</p>'; return; }
-  $('#gmSets').innerHTML = GM.sets.length ? `<table><tr><th>اللعبة</th><th>القالب</th><th>الأسئلة</th><th>الشعب</th><th>الحالة</th><th></th></tr>` + GM.sets.map(s => `<tr><td><b>${esc(s.title)}</b><br><small style="color:var(--muted)">${fmtDate(s.at)}</small></td><td>${TEMPLATES[s.tpl] ? TEMPLATES[s.tpl].icon + ' ' + TEMPLATES[s.tpl].name : ''}</td><td>${(s.qs || []).length}</td><td style="font-size:18px">${(s.classes || []).map(esc).join('، ')}</td>
-    <td>${s.active ? '<span class="chip done">ظاهرة للطلاب</span>' : '<span class="chip off">مخفية</span>'}</td>
-    <td><div class="row" style="gap:4px"><button class="btn sm alt" onclick="playSet(${A(s.id)})">▶ تشغيل</button><button class="btn sm" onclick="setResults(${A(s.id)})">🏆 النتائج</button><button class="btn sm ghost" onclick="toggleSet(${A(s.id)})">${s.active ? '🙈 إخفاء' : '✅ إظهار'}</button><button class="btn sm red" onclick="delSet(${A(s.id)})">🗑</button></div></td></tr>`).join('') + '</table>' : '<p>لم تحفظ ألعابًا بعد.</p>';
-}
-function playSet(id) { const s = GM.sets.find(x => x.id === id) || (window._stSets || []).find(x => x.id === id); if (s) startGame({title:s.title, qs:s.qs, tpl:s.tpl, secs:s.secs, setId:ME.role === 'student' ? s.id : null}); }
-async function toggleSet(id) { const s = GM.sets.find(x => x.id === id); try { await API.set('gamesets', id, {active:!s.active}, true); loadGameSets(); } catch (e) { toast('تعذّر: ' + errMsg(e)); } }
-async function delSet(id) { if (!confirm('حذف اللعبة؟ ستختفي عند الطلاب.')) return; try { await API.del('gamesets', id); loadGameSets(); } catch (e) { toast('تعذّر: ' + errMsg(e)); } }
-async function setResults(id, forStudent) {
-  const s = (forStudent ? window._stSets : GM.sets).find(x => x.id === id); if (!s) return;
-  openModal(`<h3 style="margin-top:0">🏆 نتائج: ${esc(s.title)}</h3><div id="srBody">⏳</div>`);
-  try {
-    const R = forStudent ? await API.where('gameResults', {teacherId:ME.teacherId, cls:ME.cls}) : await API.where('gameResults', {teacherId:TD.view});
-    const mine = R.filter(r => r.setId === id), best = {};
-    mine.forEach(r => { if (!best[r.uid] || r.score > best[r.uid].score) best[r.uid] = Object.assign({n:0}, r); });
-    mine.forEach(r => best[r.uid].n = (best[r.uid].n || 0) + 1);
-    const L = Object.values(best).sort((a, b) => b.score - a.score || a.at - b.at);
-    $('#srBody').innerHTML = L.length ? `<div class="tbl-scroll"><table><tr><th>#</th><th>الطالب</th><th>الشعبة</th><th>أفضل نتيجة</th><th>المحاولات</th><th>آخر لعب</th></tr>${L.map((r, i) => `<tr><td>${i < 3 ? ['🥇', '🥈', '🥉'][i] : i + 1}</td><td>${esc(r.name)}</td><td>${esc(r.cls)}</td><td><b>${r.score}</b> <small>(${r.correct}/${r.total} صحيحة)</small></td><td>${mine.filter(x => x.uid === r.uid).length}</td><td style="font-size:18px">${fmtDate(r.at)}</td></tr>`).join('')}</table></div>` : '<p>لم يلعب أحد بعد.</p>';
-  } catch (e) { $('#srBody').innerHTML = '<p>تعذّر التحميل: ' + esc(errMsg(e)) + '</p>'; }
-}
-async function loadStudentGames() {
-  $('#homeGames').innerHTML = '<p>⏳ جارٍ التحميل…</p>';
-  try {
-    const [sets, res] = await Promise.all([API.where('gamesets', {teacherId:ME.teacherId, active:true}), API.where('gameResults', {uid:ME.uid})]);
-    const S = sets.filter(s => (s.classes || []).includes(ME.cls)).sort((a, b) => b.at - a.at); window._stSets = S;
-    if (!S.length) { $('#homeGames').innerHTML = '<div class="card">لا توجد ألعاب الآن. سيرسل معلّمك ألعابًا قريبًا 🎮</div>'; return; }
-    const canSee = (ME.perms || {}).games;
-    $('#homeGames').innerHTML = S.map(s => { const my = res.filter(r => r.setId === s.id); const best = my.length ? Math.max(...my.map(r => r.score)) : null; const t = TEMPLATES[s.tpl] || {};
-      return `<div class="lesson-card" style="border-inline-start-color:var(--orange)"><div class="ic">${t.icon || '🎮'}</div><div class="info"><h3 style="margin:0">${esc(s.title)}</h3><div style="color:var(--muted)">${esc(t.name || '')} · ${(s.qs || []).length} سؤالًا</div>${best !== null ? `<div>🏅 أفضل نتيجة: <b>${best}</b> · المحاولات: ${my.length}</div>` : ''}</div>
-        <div class="row">${canSee ? `<button class="btn ghost" onclick="setResults(${A(s.id)},true)">🏆 نتائج الصف</button>` : ''}<button class="btn alt big" onclick="playSet(${A(s.id)})">▶ العب</button></div></div>`; }).join('');
-  } catch (e) { console.error(e); $('#homeGames').innerHTML = '<p>تعذّر تحميل الألعاب.</p>'; }
-}
-
-/* ---------- محرّك الألعاب ---------- */
-let AC = null;
-function beep(f, d, type) { try { AC = AC || new (window.AudioContext || window.webkitAudioContext)(); const o = AC.createOscillator(), g = AC.createGain(); o.type = type || 'sine'; o.frequency.value = f; g.gain.value = .08; o.connect(g); g.connect(AC.destination); o.start(); g.gain.exponentialRampToValueAtTime(.0001, AC.currentTime + (d || .12)); o.stop(AC.currentTime + (d || .12) + .02); } catch (e) {} }
-const winSound = () => [523, 659, 784, 1046].forEach((f, i) => setTimeout(() => beep(f, .18, 'triangle'), i * 130));
-const G = {cfg:null, timers:[], over:false, prev:''};
-const gT = (fn, ms) => { const t = setTimeout(fn, ms); G.timers.push(t); return t; };
-const gI = (fn, ms) => { const t = setInterval(fn, ms); G.timers.push(t); return t; };
-function clearG() { G.timers.forEach(t => { clearTimeout(t); clearInterval(t); }); G.timers = []; window.onresize = null; }
-function startGame(cfg) {
-  G.cfg = cfg; G.prev = ME.role === 'student' ? 'scrHome' : 'scrTeacher';
-  if (cfg.tpl === 'duel') return duelSetup();
-  runGame();
-}
-function quitGame() { clearG(); G.over = true; showScreen(G.prev); if (G.prev === 'scrHome') loadStudentGames(); }
-function runGame() {
-  clearG(); G.over = false; showScreen('scrGame');
-  $('#gTitle').textContent = (TEMPLATES[G.cfg.tpl] || {}).icon + ' ' + G.cfg.title;
-  if (G.cfg.tpl === 'duel') duelRun(); else soloRun();
-}
-function duelSetup() {
-  const n = LS.get('iste3dad-duel-n', 2), names = LS.get('iste3dad-duel-names', []);
-  openModal(`<h3 style="margin-top:0">⚔️ مبارزة الشاشة</h3><p style="margin-top:0">ضع الجهاز على الطاولة، وليجلس كل لاعب عند جهة من الشاشة.</p>
-    <label class="row" style="gap:6px">عدد اللاعبين: <select id="dN" style="width:auto" onchange="LS.set('iste3dad-duel-n',+this.value);duelSetup()">${[2, 3, 4].map(k => `<option ${k === n ? 'selected' : ''}>${k}</option>`).join('')}</select></label>
-    <div class="row" style="margin-top:8px">${Array.from({length:n}, (_, i) => `<label style="flex:1 1 160px"><span style="color:${DUEL_COL[i]};font-weight:800">● ${DUEL_POS[n][i]}</span><input type="text" class="dName" value="${esc(names[i] || DUEL_DEF[i])}"></label>`).join('')}</div>
-    <div class="row" style="margin-top:12px"><button class="btn alt big" onclick="duelGo()">▶ ابدأ المبارزة</button></div>`);
-}
-const DUEL_COL = ['#ef476f', '#118ab2', '#06a77d', '#f4a20b'];
-const DUEL_DEF = ['الأحمر', 'الأزرق', 'الأخضر', 'الذهبي'];
-const DUEL_POS = {2:['أسفل الشاشة', 'أعلى الشاشة'], 3:['أسفل الشاشة', 'أعلى الشاشة', 'يمين الشاشة'], 4:['أسفل الشاشة', 'أعلى الشاشة', 'يمين الشاشة', 'يسار الشاشة']};
-function duelGo() { const names = $$('.dName').map((x, i) => x.value.trim() || DUEL_DEF[i]); LS.set('iste3dad-duel-names', names); G.cfg.players = names; closeModal(); runGame(); }
-function duelRun() {
-  const P = G.cfg.players || ['الأحمر', 'الأزرق'], n = P.length, secs = G.cfg.secs || 0;
-  const st = {sc:P.map(() => 0), deck:shuffle(G.cfg.qs), qi:-1, cur:null, locked:new Set(), busy:false, left:secs, answered:0};
-  // الترتيب في الشبكة: z0 أسفل، z1 أعلى (مقلوب)، z2 يسار الشاشة في RTL؟ نستخدم أسماء المناطق مباشرة
-  const rot = ['', 'rot180', 'rot90', 'rotm90'];
-  $('#gBody').innerHTML = `<div class="arena p${n}">${P.map((name, i) => `<div class="zone ${rot[i]}" id="z${i}" style="grid-area:z${i};background:${DUEL_COL[i]}"><div class="zi"><div class="zh"><span>${esc(name)}</span><span class="zs">0</span></div><div class="zq"></div><div class="zo"></div></div></div>`).join('')}
-    <div class="gcenter"><div class="tm" id="dTm">${secs ? fmtSec(secs) : '∞'}</div><div class="sc" id="dSc"></div><div id="dQn" style="font-size:18px;opacity:.8"></div></div></div>`;
-  // في RTL تكون z2 على اليمين و z3 على اليسار؛ نضبط الدوران ليقابل كل لاعب
-  const fit = () => {
-    P.forEach((_, i) => {
-      const z = $('#z' + i), zi = z.querySelector('.zi'); const side = i >= 2;
-      if (side) { zi.style.width = z.clientHeight + 'px'; zi.style.height = z.clientWidth + 'px'; zi.style.transform = `translate(-50%,-50%) rotate(${i === 2 ? -90 : 90}deg)`; }
-      const w = side ? z.clientHeight : z.clientWidth, h = side ? z.clientWidth : z.clientHeight;
-      const fs = Math.max(15, Math.min(32, Math.min(w / 17, h / 6.8)));
-      zi.style.fontSize = fs + 'px'; zi.querySelectorAll('.zo button').forEach(b => b.style.fontSize = fs * .95 + 'px');
-    });
-  };
-  const score = () => { $('#dSc').innerHTML = P.map((p, i) => `<span style="background:${DUEL_COL[i]}">${st.sc[i]}</span>`).join(''); P.forEach((_, i) => $('#z' + i + ' .zs').textContent = st.sc[i]); };
-  const next = () => {
-    if (G.over) return;
-    st.qi++;
-    if (st.qi >= st.deck.length) { if (secs) { st.deck = shuffle(G.cfg.qs); st.qi = 0; } else return end(); }
-    st.cur = st.deck[st.qi]; st.locked = new Set(); st.busy = false;
-    $('#dQn').textContent = 'السؤال ' + (st.answered + 1);
-    P.forEach((_, i) => {
-      const z = $('#z' + i); z.classList.remove('locked', 'win'); const lk = z.querySelector('.zlock'); if (lk) lk.remove();
-      z.querySelector('.zq').textContent = st.cur.q;
-      const order = shuffle(st.cur.opts.map((o, k) => k));
-      z.querySelector('.zo').innerHTML = order.map(k => `<button data-k="${k}">${esc(st.cur.opts[k])}</button>`).join('');
-      z.querySelectorAll('.zo button').forEach(b => b.addEventListener('pointerdown', e => { e.preventDefault(); pick(i, +b.dataset.k, b); }));
-    });
-    fit();
-  };
-  const reveal = () => P.forEach((_, i) => { const b = $('#z' + i + ' .zo button[data-k="' + st.cur.a + '"]'); if (b) b.classList.add('ok'); });
-  const pick = (i, k, btn) => {
-    if (st.busy || G.over || st.locked.has(i)) return;
-    if (k === st.cur.a) {
-      st.busy = true; st.sc[i]++; st.answered++; btn.classList.add('ok'); $('#z' + i).classList.add('win'); beep(880, .15, 'triangle'); score(); reveal();
-      P.forEach((_, j) => { if (j !== i) $('#z' + j).classList.add('locked'); });
-      gT(next, 1200);
-    } else {
-      st.locked.add(i); btn.classList.add('bad'); const z = $('#z' + i); z.classList.add('locked', 'shake'); setTimeout(() => z.classList.remove('shake'), 400);
-      z.insertAdjacentHTML('beforeend', '<div class="zlock">❌</div>'); beep(200, .2, 'square');
-      if (st.locked.size >= n) { st.busy = true; st.answered++; reveal(); gT(next, 1400); }
-    }
-  };
-  const end = () => {
-    G.over = true; clearG();
-    const max = Math.max(...st.sc), winners = P.filter((_, i) => st.sc[i] === max);
-    const rank = P.map((p, i) => ({p, s:st.sc[i], c:DUEL_COL[i]})).sort((a, b) => b.s - a.s);
-    $('#gBody').innerHTML = `<div class="gend"><div style="font-size:70px">🏆</div><h2 style="color:#ffd166;margin:0">${max === 0 ? 'تعادل!' : winners.length > 1 ? 'تعادل بين: ' + winners.map(esc).join(' و') : 'الفائز: ' + esc(winners[0])}</h2>
-      <div class="rk">${rank.map((r, i) => `<div style="background:${r.c}">${['🥇', '🥈', '🥉', '4️⃣'][i]} ${esc(r.p)}<br><span style="font-size:36px">${r.s}</span></div>`).join('')}</div>
-      <div class="row"><button class="btn alt big" onclick="runGame()">🔁 مباراة جديدة</button><button class="btn ghost big" onclick="quitGame()">🏠 خروج</button></div></div>`;
-    winSound(); confetti();
-  };
-  window.onresize = fit;
-  score(); next();
-  if (secs) gI(() => { st.left--; $('#dTm').textContent = fmtSec(Math.max(0, st.left)); if (st.left <= 10 && st.left > 0) beep(600, .05); if (st.left <= 0) end(); }, 1000);
-}
-const fmtSec = s => Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0');
-function confetti() { const box = $('#gBody'); for (let i = 0; i < 40; i++) { const c = document.createElement('div'); c.className = 'confetti'; c.textContent = ['🎉', '⭐', '✨', '🎊', '🌟'][i % 5]; c.style.left = Math.random() * 100 + '%'; c.style.animationDuration = 2 + Math.random() * 2.5 + 's'; c.style.animationDelay = Math.random() * 1.5 + 's'; box.appendChild(c); gT(() => c.remove(), 6000); } }
-function soloRun() {
-  const ladder = G.cfg.tpl === 'ladder', secs = ladder ? 0 : (G.cfg.secs || 60);
-  const st = {deck:shuffle(G.cfg.qs), qi:-1, score:0, correct:0, total:0, streak:0, best:0, lives:3, left:secs, qLeft:20, busy:false};
-  $('#gBody').innerHTML = `<div class="solo"><div class="hud" id="sHud"></div><div class="tbar"><i id="sBar" style="width:100%"></i></div><div class="sq" id="sQ"></div><div class="so" id="sO"></div><div id="sMsg" style="font-size:24px;min-height:36px"></div></div>`;
-  const hud = () => { $('#sHud').innerHTML = ladder ? `<span>🪜 الدرجة ${st.correct}</span><span>${'❤️'.repeat(st.lives)}${'🤍'.repeat(3 - st.lives)}</span><span>⏳ ${st.qLeft}</span>` : `<span>⭐ ${st.score}</span><span>🔥 ${st.streak}</span><span>⏱️ ${fmtSec(Math.max(0, st.left))}</span>`; };
-  const next = () => {
-    if (G.over) return;
-    st.qi++;
-    if (st.qi >= st.deck.length) { if (!ladder && st.left > 0) { st.deck = shuffle(G.cfg.qs); st.qi = 0; } else return end(); }
-    const q = st.deck[st.qi]; st.busy = false; st.qLeft = 20; $('#sMsg').textContent = '';
-    $('#sQ').textContent = q.q;
-    const order = shuffle(q.opts.map((o, k) => k));
-    $('#sO').innerHTML = order.map(k => `<button data-k="${k}">${esc(q.opts[k])}</button>`).join('');
-    $$('#sO button').forEach(b => b.onclick = () => answer(+b.dataset.k, b));
-    if (ladder) $('#sBar').style.width = '100%';
-    hud();
-  };
-  const answer = (k, btn) => {
-    if (st.busy || G.over) return; st.busy = true; st.total++;
-    const q = st.deck[st.qi];
-    if (k === q.a) { st.correct++; st.streak++; st.best = Math.max(st.best, st.streak); st.score += ladder ? 1 : 1 + (st.streak >= 3 ? 1 : 0); btn.classList.add('ok'); beep(880, .12, 'triangle'); $('#sMsg').textContent = st.streak >= 3 && !ladder ? '🔥 سلسلة رائعة! +2' : '✅ أحسنت'; }
-    else { st.streak = 0; if (btn) btn.classList.add('bad'); const ok = $('#sO button[data-k="' + q.a + '"]'); if (ok) ok.classList.add('ok'); beep(200, .2, 'square'); if (ladder) st.lives--; $('#sMsg').textContent = btn ? '❌ الإجابة: ' + q.opts[q.a] : '⌛ انتهى الوقت! الإجابة: ' + q.opts[q.a]; }
-    hud();
-    if (ladder && st.lives <= 0) return gT(end, 1200);
-    gT(next, k === q.a ? 650 : 1400);
-  };
-  const end = async () => {
-    if (G.over) return; G.over = true; clearG();
-    const pct = st.total ? Math.round(st.correct / st.total * 100) : 0;
-    $('#gBody').innerHTML = `<div class="gend"><div style="font-size:70px">${pct >= 80 ? '🏆' : pct >= 50 ? '🌟' : '💪'}</div><h2 style="color:#ffd166;margin:0">${ladder ? 'وصلت إلى الدرجة ' + st.correct : 'نتيجتك: ' + st.score + ' نقطة'}</h2>
-      <p style="font-size:24px;margin:0">إجابات صحيحة: ${st.correct} من ${st.total}${!ladder ? ' · أطول سلسلة: 🔥 ' + st.best : ''}</p><p id="sSave" style="font-size:20px;opacity:.85"></p>
-      <div class="row"><button class="btn alt big" onclick="runGame()">🔁 العب مرة أخرى</button><button class="btn ghost big" onclick="quitGame()">🏠 خروج</button></div></div>`;
-    if (pct >= 50) { winSound(); confetti(); }
-    if (G.cfg.setId && ME.role === 'student') {
-      try { await API.add('gameResults', {setId:G.cfg.setId, teacherId:ME.teacherId, uid:ME.uid, name:ME.name, cls:ME.cls, tpl:G.cfg.tpl, score:ladder ? st.correct : st.score, correct:st.correct, total:st.total, at:Date.now()}); $('#sSave').textContent = '✅ حُفظت نتيجتك وأُرسلت إلى المعلم'; }
-      catch (e) { console.error(e); $('#sSave').textContent = '⚠️ تعذّر حفظ النتيجة'; }
-    }
-  };
-  next();
-  gI(() => {
-    if (G.over) return;
-    if (ladder) { if (st.busy) return; st.qLeft--; $('#sBar').style.width = (st.qLeft / 20 * 100) + '%'; hud(); if (st.qLeft <= 0) answer(-1, null); }
-    else { st.left--; $('#sBar').style.width = (st.left / secs * 100) + '%'; hud(); if (st.left <= 0) end(); }
-  }, 1000);
-}
-
 /* ================= الإعداد والرسائل ================= */
 function messages() {
   return [
-    ['1) رسالة إطلاق المنصة (للطلاب)', `السلام عليكم يا أبطال 🌿\nأطلقنا منصة «استعداد» للتربية الإسلامية 📖\nفيها دروس تفاعلية وألعاب وجدار للصف.\n\n🔗 رابط المنصة: ${siteUrl()}\n🔑 سيصلك اسم المستخدم وكلمة المرور في رسالة خاصة.\n\n📌 الخطوات:\n1. افتح الرابط واختر «🎒 أنا طالب».\n2. ادخل ببياناتك.\n3. اختر الدرس من «دروسي» واضغط «ابدأ الدرس».\n4. في نهاية الاختبار اضغط «أرسل نتيجتي إلى المعلم».`],
-    ['2) رسالة درس جديد', `درس جديد على منصة استعداد 🎉\n📚 الدرس: ……………\n🔗 ${siteUrl()}\n⏰ آخر موعد: ……………`],
-    ['3) لعبة جديدة', `🎮 لعبة جديدة بانتظارك على منصة استعداد!\nادخل إلى تبويب «🎮 الألعاب» وحاول أن تتصدّر صفك 🏆\n🔗 ${siteUrl()}`]
+    ['1) رسالة إطلاق المنصة (للطلاب)', `السلام عليكم يا أبطال 🌿\nأطلقنا منصة «استعداد» للتربية الإسلامية 📖\nفيها دروس تفاعلية تستعدّ بها لكل حصة.\n\n🔗 رابط المنصة: ${siteUrl()}\n🔑 سيصلك اسم المستخدم وكلمة المرور في رسالة خاصة.\n\n📌 الخطوات:\n1. افتح الرابط واختر «🎒 أنا طالب».\n2. ادخل ببياناتك.\n3. اختر الدرس من «دروسي» واضغط «ابدأ الدرس».\n4. في نهاية الاختبار اضغط «أرسل نتيجتي إلى المعلم».`],
+    ['2) رسالة درس جديد', `درس جديد على منصة استعداد 🎉\n📚 الدرس: ……………\n🔗 ${siteUrl()}\n⏰ آخر موعد: ……………`]
   ];
 }
 function renderSetupTab() {
