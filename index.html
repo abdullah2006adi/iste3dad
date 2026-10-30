@@ -101,6 +101,9 @@ code.ltr{direction:ltr;display:inline-block;background:#eef3f2;border-radius:6px
 .lrow{display:flex;gap:10px;align-items:center;flex-wrap:wrap;border:1px solid var(--line);border-radius:14px;padding:8px 12px;margin:8px 0;background:#fff}
 .lrow .t{flex:1 1 240px}
 .lrow .ic{font-size:36px;line-height:1}
+.lrow .grip{font-size:26px;line-height:1;color:var(--muted);cursor:grab;touch-action:none;user-select:none;padding:4px 2px}
+.lrow.drag{opacity:.85;box-shadow:0 10px 24px rgba(0,0,0,.18);border-color:var(--brand,#1f7a5c);position:relative;z-index:5}
+body.sorting,body.sorting *{cursor:grabbing!important;user-select:none}
 .cls-toggle{display:inline-flex;align-items:center;gap:4px;border:1.5px solid var(--line);border-radius:999px;padding:0 10px;cursor:pointer;font-size:20px;user-select:none;background:#fff}
 .cls-toggle input{width:18px;height:18px}
 .cls-toggle.on{background:var(--green-l);border-color:var(--green);color:var(--teal);font-weight:700}
@@ -1057,7 +1060,8 @@ function cuLessons(v) { return CAT.filter(l => l.grade === v.g && (l.term || 1) 
 function renderCuList() {
   const v = treeVal('#cuTree'), L = cuLessons(v);
   $('#cuList').innerHTML = `<div class="unit-head">📘 ${esc(gradeName(v.g))} · ${termName(v.t)} · ${unitName(v.u)} <small>(${L.length} درس)</small></div>` +
-    (L.length ? L.map((l, i) => `<div class="lrow"><span class="ic">${esc(l.icon || '📘')}</span>
+    (L.length > 1 ? `<div class="row" style="gap:6px;margin:6px 0"><small style="color:var(--muted);flex:1 1 200px">⠿ اسحب الدرس من المقبض لتغيير ترتيبه</small><button class="btn sm ghost" onclick="sortCuByFile()">🔤 رتّب حسب اسم الملف</button></div>` : '') +
+    (L.length ? L.map((l, i) => `<div class="lrow cu" data-id="${esc(l.id)}"><span class="grip" title="اسحب لتغيير الترتيب">⠿</span><span class="ic">${esc(l.icon || '📘')}</span>
       <div class="t"><b>${esc(l.title)}</b><br><small style="color:var(--muted)">${esc(l.sub || '')}${l.tracked === false ? ' · للاطلاع' : ' · ' + (l.autoMax || 0) + ' درجة'} · 🧠 ${l.bankCount || 0} سؤالًا</small></div>
       <div class="row" style="gap:4px">
         <button class="btn sm ghost" ${i === 0 ? 'disabled' : ''} onclick="moveCat(${A(l.id)},-1)">▲</button><button class="btn sm ghost" ${i === L.length - 1 ? 'disabled' : ''} onclick="moveCat(${A(l.id)},1)">▼</button>
@@ -1066,6 +1070,39 @@ function renderCuList() {
         <button class="btn sm ghost" onclick="editCat(${A(l.id)})">✏️ تعديل</button>
         <button class="btn sm ghost" onclick="replaceCat(${A(l.id)})">🔄 استبدال الملف</button>
         <button class="btn sm red" onclick="deleteCat(${A(l.id)})">🗑</button></div></div>`).join('') : '<p>لا توجد دروس في هذا الباب بعد. ارفعها من المربّع أعلاه.</p>');
+  setupCuSort();
+}
+/* ترتيب الدروس بالسحب والإفلات (بالفأرة واللمس) */
+function setupCuSort() {
+  const box = $('#cuList');
+  box.querySelectorAll('.lrow.cu .grip').forEach(g => g.onpointerdown = e => {
+    e.preventDefault(); const row = g.closest('.lrow'); const before = [...box.querySelectorAll('.lrow.cu')].map(r => r.dataset.id);
+    row.classList.add('drag'); document.body.classList.add('sorting');     const move = ev => {
+      const rows = [...box.querySelectorAll('.lrow.cu')].filter(r => r !== row);
+      const after = rows.find(r => { const b = r.getBoundingClientRect(); return ev.clientY < b.top + b.height / 2; });
+      if (after) box.insertBefore(row, after); else rows.length && rows[rows.length - 1].after(row);
+      if (ev.clientY < 60) scrollBy(0, -14); else if (ev.clientY > innerHeight - 60) scrollBy(0, 14);
+    };
+    const up = () => {
+      removeEventListener('pointermove', move); removeEventListener('pointerup', up); removeEventListener('pointercancel', up);
+      row.classList.remove('drag'); document.body.classList.remove('sorting');
+      const ids = [...box.querySelectorAll('.lrow.cu')].map(r => r.dataset.id);
+      if (ids.join('|') !== before.join('|')) saveCuOrder(ids); else renderCuList();
+    };
+    addEventListener('pointermove', move); addEventListener('pointerup', up); addEventListener('pointercancel', up);
+  });
+}
+async function saveCuOrder(ids) {
+  const ch = ids.map((id, k) => ({l:catById(id), o:k + 1})).filter(x => x.l && x.l.order !== x.o);
+  try { await Promise.all(ch.map(x => API.set('catalog', x.l.id, {order:x.o}, true))); ch.forEach(x => x.l.order = x.o); toast('حُفظ الترتيب ✓'); }
+  catch (e) { toast('تعذّر حفظ الترتيب: ' + errMsg(e)); await loadCatalog(); }
+  renderCuList();
+}
+function sortCuByFile() {
+  const L = cuLessons(treeVal('#cuTree')), key = l => String(l.fileName || l.id || '');
+  const ids = L.slice().sort((a, b) => key(a).localeCompare(key(b), 'en', {numeric:true})).map(l => l.id);
+  if (ids.join('|') === L.map(l => l.id).join('|')) return toast('الدروس مرتّبة حسب اسم الملف أصلًا');
+  saveCuOrder(ids);
 }
 function setupCuDrop() {
   const d = $('#cuDrop'), f = $('#cuFile');
