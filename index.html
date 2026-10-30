@@ -727,7 +727,13 @@ const HTML_CACHE = {};
 async function getLessonHtml(l) {
   const key = l.id + '@' + (l.updatedAt || 0);
   if (HTML_CACHE[key]) return HTML_CACHE[key];
-  const d = await API.get('catalogFiles', l.id); const h = d && d.html; if (h) HTML_CACHE[key] = h; return h;
+  const d = await API.get('catalogFiles', l.id); let h = d && d.html;
+  if (h && d.parts > 1) {   // الدروس الكبيرة (بالأصوات) محفوظة على أجزاء
+    const rest = await Promise.all(Array.from({length:d.parts - 1}, (_, i) => API.get('catalogFiles', l.id + '__p' + (i + 2))));
+    if (rest.some(x => !x || typeof x.html !== 'string')) throw new Error('ملف الدرس ناقص، أعد رفعه');
+    h += rest.map(x => x.html).join('');
+  }
+  if (h) HTML_CACHE[key] = h; return h;
 }
 async function openLesson(id, mode) {
   const l = (mode === 'student' ? LESSONS : CAT).find(x => x.id === id); if (!l) return;
@@ -1024,7 +1030,21 @@ async function toggleTeacher(uid) {
 }
 
 /* ---------- المنهج (للمدير) ---------- */
-const LMAX = 950000;
+const LMAX = 30000000, PART = 900000;   // Firestore: حدّ الوثيقة 1 م.ب، فالدرس الكبير يُقسَّم على أجزاء
+const u8len = s => new Blob([s]).size;
+function splitHtml(html) {
+  const out = []; let cur = '', curB = 0;
+  for (let i = 0; i < html.length; i += 50000) {
+    let piece = html.slice(i, i + 50000);
+    const c = piece.charCodeAt(piece.length - 1); if (c >= 0xD800 && c <= 0xDBFF && i + 50000 < html.length) { piece = piece.slice(0, -1); i--; }
+    const b = u8len(piece);
+    if (curB + b > PART && cur) { out.push(cur); cur = ''; curB = 0; }
+    cur += piece; curB += b;
+  }
+  if (cur || !out.length) out.push(cur);
+  return out;
+}
+async function delCatParts(id, from) { for (let k = from; k < 60; k++) { const d = await API.get('catalogFiles', id + '__p' + k).catch(() => null); if (!d) break; await API.del('catalogFiles', id + '__p' + k).catch(() => {}); } }
 function parseManifest(html) {
   const m = html.match(/<script[^>]*id=["']iste3dad-lesson["'][^>]*>([\s\S]*?)<\/script>/i);
   if (!m) return null; try { return JSON.parse(m[1]); } catch (e) { return null; }
@@ -1063,7 +1083,7 @@ async function uploadCatFiles(files, forceId) {
     try {
       if (!/\.html?$/i.test(file.name)) { bad.push(file.name + ' (ليس HTML)'); continue; }
       const html = await readText(file), bytes = new Blob([html]).size;
-      if (bytes > LMAX) { bad.push(file.name + ' (أكبر من 900 ك.ب)'); continue; }
+      if (bytes > LMAX) { bad.push(file.name + ' (أكبر من 30 م.ب)'); continue; }
       const man = parseManifest(html);
       const tTag = (html.match(/<title[^>]*>([^<]*)<\/title>/i) || [])[1];
       let id = forceId || (man && slug(man.id)) || slug(file.name.replace(/\.html?$/i, '')) || ('lesson-' + uidGen());
@@ -1075,7 +1095,10 @@ async function uploadCatFiles(files, forceId) {
         tracked:!!man, components:man && Array.isArray(man.components) ? man.components.map(c => ({key:String(c.key), label:String(c.label || c.key), max:+c.max || 0})) : [],
         autoMax:man ? +man.autoMax || 0 : 0, version:(man && man.version) || 1, size:bytes, fileName:file.name, updatedAt:Date.now(), bankCount:(ex && ex.bankCount) || 0
       };
-      await API.set('catalogFiles', id, {html});
+      const parts = splitHtml(html);
+      for (let k = 1; k < parts.length; k++) { prog.innerHTML = `<p>⏳ ${i + 1} من ${files.length}: ${esc(file.name)} — الجزء ${k + 1} من ${parts.length}</p>`; await API.set('catalogFiles', id + '__p' + (k + 1), {html:parts[k]}); }
+      await API.set('catalogFiles', id, {html:parts[0], parts:parts.length});
+      await delCatParts(id, parts.length + 1);
       await API.set('catalog', id, meta);
       if (!ex || !ex.bankCount) {   // بنك أسئلة تلقائي من أسئلة الدرس
         try { const qs = await extractQuestions(html); if (qs.length) { await API.set('banks', id, {questions:qs, updatedAt:Date.now()}); await API.set('catalog', id, {bankCount:qs.length}, true); } } catch (e) { console.error(e); }
@@ -1116,7 +1139,7 @@ function replaceCat(id) {
 async function deleteCat(id) {
   const l = catById(id); if (!l) return;
   if (!confirm(`حذف درس «${l.title}» من المنهج؟\nسيختفي عند كل المعلمين والطلاب، وتبقى النتائج السابقة محفوظة.`)) return;
-  try { await API.del('catalog', id); await API.del('catalogFiles', id); await API.del('banks', id).catch(() => {}); await loadCatalog(); renderCuList(); toast('حُذف الدرس'); } catch (e) { toast('تعذّر الحذف: ' + errMsg(e)); }
+  try { await API.del('catalog', id); await API.del('catalogFiles', id); await delCatParts(id, 2); await API.del('banks', id).catch(() => {}); await loadCatalog(); renderCuList(); toast('حُذف الدرس'); } catch (e) { toast('تعذّر الحذف: ' + errMsg(e)); }
 }
 
 /* ---------- بنك الأسئلة (للمدير) ---------- */
