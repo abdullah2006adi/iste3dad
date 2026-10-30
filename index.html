@@ -83,6 +83,13 @@ code.ltr{direction:ltr;display:inline-block;background:#eef3f2;border-radius:6px
 .drop{border:3px dashed var(--teal);border-radius:16px;padding:18px;text-align:center;background:#f3faf6;cursor:pointer}
 .drop.over{background:var(--green-l)}
 .role-btns{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}
+.space-btns{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin:16px 0}
+.space-btns button{font:inherit;cursor:pointer;border:0;border-radius:24px;padding:22px 18px;color:#fff;text-align:center;box-shadow:0 8px 20px rgba(0,0,0,.12)}
+.space-btns button span{display:block;font-size:56px;line-height:1.1}.space-btns button b{display:block;font-size:30px}.space-btns button small{display:block;font-size:19px;opacity:.92}
+.space-btns .sp-cls{background:linear-gradient(135deg,#0f766e,#14b8a6)}.space-btns .sp-priv{background:linear-gradient(135deg,#7c3aed,#c026d3)}
+.sw{display:inline-flex;align-items:center;gap:8px;cursor:pointer;font-size:20px}.sw input{width:22px;height:22px}
+.acts{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:8px 0}
+.ok-mark{cursor:help}
 .role-btns button{border:2px solid var(--line);background:#fff;border-radius:20px;padding:18px 8px;cursor:pointer;font-size:26px;font-weight:700;color:var(--teal);transition:.2s}
 .role-btns button span{display:block;font-size:56px;line-height:1.2}
 .role-btns button:hover{border-color:var(--green);background:#f3faf6;transform:translateY(-2px)}
@@ -229,8 +236,22 @@ body.sorting,body.sorting *{cursor:grabbing!important;user-select:none}
     <p style="margin-top:0;color:var(--muted)">التربية الإسلامية</p>
     <div class="role-btns">
       <button onclick="chooseRole('teacher')"><span>👨‍🏫</span>أنا معلم</button>
-      <button onclick="chooseRole('student')"><span>🎒</span>أنا طالب</button>
+      <button onclick="showScreen('scrStuChoice')"><span>🎒</span>أنا طالب</button>
     </div>
+  </div>
+</section>
+
+<section id="scrStuChoice" hidden>
+  <div class="login-card">
+    <div class="logo">🎒</div>
+    <h2 style="margin-bottom:0">دخول الطالب</h2>
+    <p style="margin-top:0;color:var(--muted)">كيف تريد الدخول؟</p>
+    <div class="role-btns">
+      <button onclick="chooseRole('student')"><span>🔑</span>لدي رمز من المعلم</button>
+      <button onclick="chooseRole('pstudent')"><span>🌟</span>حساب خاص</button>
+    </div>
+    <p style="font-size:19px;color:var(--muted)">«الحساب الخاص» لمن لا يستخدم معلّمه المنصة: تدرس فيه أي درس تريده، وتنضم إلى صف معلمك لاحقًا إن أردت.</p>
+    <button class="linkbtn" onclick="showScreen('scrRole')">→ رجوع</button>
   </div>
 </section>
 
@@ -247,8 +268,12 @@ body.sorting,body.sorting *{cursor:grabbing!important;user-select:none}
       <button class="btn alt" style="width:100%" onclick="showSignup()">✨ ليس لديك حساب؟ أنشئ حساب معلم</button>
       <button class="linkbtn" onclick="forgotPass()">نسيت كلمة المرور؟</button>
     </div>
+    <div id="lgPrivExtra" hidden style="margin-top:10px">
+      <button class="btn alt" style="width:100%" onclick="showPSignup()">✨ ليس لديك حساب؟ أنشئ حسابًا خاصًا</button>
+      <button class="linkbtn" onclick="forgotPass()">نسيت كلمة المرور؟</button>
+    </div>
     <p style="font-size:19px;color:var(--muted);margin-bottom:0" id="lgHint"></p>
-    <button class="linkbtn" onclick="showScreen('scrRole')">→ رجوع</button>
+    <button class="linkbtn" onclick="loginBack()">→ رجوع</button>
   </div>
 </section>
 
@@ -267,6 +292,22 @@ body.sorting,body.sorting *{cursor:grabbing!important;user-select:none}
   </div>
 </section>
 
+<section id="scrPSignup" hidden>
+  <div class="login-card">
+    <div class="logo">🌟</div>
+    <h2 style="margin-bottom:0">إنشاء حساب خاص</h2>
+    <p style="margin-top:0;color:var(--muted)">للطالب الذي يدرس وحده</p>
+    <label>اسم الطالب<input type="text" id="psName" placeholder="مثال: محمد أحمد"></label>
+    <label>الصف<select id="psGrade"></select></label>
+    <label>البريد الإلكتروني (لصغار الصفوف: بريد وليّ الأمر)<input type="email" class="ltr" id="psMail" autocomplete="email" autocapitalize="off" spellcheck="false" placeholder="name@gmail.com"></label>
+    <label>كلمة المرور (6 أحرف على الأقل)<input type="password" class="ltr" id="psPass" autocomplete="new-password"></label>
+    <label>تأكيد كلمة المرور<input type="password" class="ltr" id="psPass2" autocomplete="new-password"></label>
+    <div class="login-msg" id="psMsg"></div>
+    <button class="btn big alt" id="psBtn" style="width:100%" onclick="doPSignup()">إنشاء الحساب</button>
+    <button class="linkbtn" onclick="chooseRole('pstudent')">→ لدي حساب، أريد الدخول</button>
+  </div>
+</section>
+
 <section id="scrVerify" hidden>
   <div class="login-card">
     <div class="logo">📧</div>
@@ -280,12 +321,35 @@ body.sorting,body.sorting *{cursor:grabbing!important;user-select:none}
   </div>
 </section>
 
+<section id="scrHub" hidden>
+  <div class="topbar"><div class="wrap"><h1>📖 منصة استعداد</h1><div class="row"><span id="hubWho"></span><button class="hbtn" onclick="doLogout()">🚪 خروج</button></div></div></div>
+  <div class="wrap">
+    <h2 id="hubHello"></h2>
+    <div class="space-btns">
+      <button class="sp-cls" onclick="openHome()"><span>🏫</span><b>صفّي</b><small id="hubClsTxt">دروس معلمك ونتائجك عنده</small></button>
+      <button class="sp-priv" onclick="openPrivate()"><span>🌟</span><b>مساحتي الخاصة</b><small>كل الدروس متاحة لك، ونتائجك فيها خاصة بك</small></button>
+    </div>
+    <div class="acts" id="hubActs"></div>
+  </div>
+</section>
+
 <section id="scrHome" hidden>
-  <div class="topbar"><div class="wrap"><h1>📖 منصة استعداد</h1><div class="row"><span id="homeWho"></span><button class="hbtn" onclick="doLogout()">🚪 خروج</button></div></div></div>
+  <div class="topbar"><div class="wrap"><h1>🏫 صفّي</h1><div class="row"><span id="homeWho"></span><button class="hbtn" onclick="showHub()">🏠 الرئيسية</button><button class="hbtn" onclick="doLogout()">🚪 خروج</button></div></div></div>
   <div class="wrap">
     <h2 id="homeHello"></h2>
     <h3>📚 دروسي</h3>
     <div id="homeLessons"></div>
+  </div>
+</section>
+
+<section id="scrPriv" hidden>
+  <div class="topbar"><div class="wrap"><h1>🌟 مساحتي الخاصة</h1><div class="row"><span id="pvWho"></span><button class="hbtn" id="pvHub" onclick="showHub()">🏠 الرئيسية</button><button class="hbtn" onclick="doLogout()">🚪 خروج</button></div></div></div>
+  <div class="wrap">
+    <h2 id="pvHello"></h2>
+    <div class="warnbar" id="pvWarn" hidden></div>
+    <div class="acts" id="pvActs"></div>
+    <div class="subtabs" id="pvTabs"></div>
+    <div id="pvBody"></div>
   </div>
 </section>
 
@@ -303,6 +367,7 @@ body.sorting,body.sorting *{cursor:grabbing!important;user-select:none}
       <button data-t="teachers" class="adminOnly" onclick="tTab('teachers')" hidden>🏫 المعلمون</button>
       <button data-t="curriculum" class="adminOnly" onclick="tTab('curriculum')" hidden>🗂️ المنهج</button>
       <button data-t="results" onclick="tTab('results')">📊 النتائج</button>
+      <button data-t="private" onclick="tTab('private')">🔐 النتائج الخاصة<span class="dot" id="pvDot" hidden></span></button>
       <button data-t="lessons" onclick="tTab('lessons')">📚 الدروس</button>
       <button data-t="students" onclick="tTab('students')">👥 الطلاب والصفوف</button>
       <button data-t="setup" onclick="tTab('setup')">⚙️ الإعداد</button>
@@ -316,6 +381,17 @@ body.sorting,body.sorting *{cursor:grabbing!important;user-select:none}
         <p style="margin-top:0">يسجّل المعلم بنفسه: يفتح المنصة ← «👨‍🏫 أنا معلم» ← «أنشئ حساب معلم»، ثم يتحقّق من بريده. تستطيع هنا إيقاف أي حساب أو فتح صفحته.</p>
         <button class="btn sm ghost" onclick="copyText(inviteText())">📋 نسخ رسالة دعوة للمعلمين</button>
         <div class="tbl-scroll" id="tcTable" style="margin-top:8px"></div>
+      </div>
+    </div>
+
+    <!-- النتائج الخاصة -->
+    <div class="tview" id="tv-private" hidden>
+      <div class="card">
+        <h3 style="margin-top:0">🔐 النتائج الخاصة</h3>
+        <p style="margin-top:0">هنا نتائج الطلاب من «مساحتهم الخاصة»، لمن اختار منهم مشاركتها معك فقط. نتائج دروس صفّه تستطيع اعتمادها، فتُضاف إلى قائمة النتائج بعلامة 🆗، وتُحتسب الدرجة الأعلى بينها وبين محاولاته في الصف. ولا تظهر في القائمة إلا بعد إظهار الدرس لشعبته.</p>
+        <label class="sw"><input type="checkbox" id="apAll" onchange="setAutoAll(this.checked)"> اعتماد النتائج الخاصة تلقائيًا لجميع الطلاب</label>
+        <div class="row" style="margin-top:8px"><label style="flex:1 1 220px">الشعبة<select id="pvCls" onchange="renderPrivTab()"></select></label></div>
+        <div id="pvList" style="margin-top:8px"></div>
       </div>
     </div>
 
@@ -428,10 +504,17 @@ body.sorting,body.sorting *{cursor:grabbing!important;user-select:none}
     const app = A.initializeApp(CONFIG.firebase);
     const auth = AU.getAuth(app), db = F.getFirestore(app);
     auth.languageCode = 'ar';
-    let app2 = null;
+    let app2 = null, clsApp = null, clsAuth = null;
     const norm = v => { if (v && typeof v.toMillis === 'function') return v.toMillis(); if (Array.isArray(v)) return v.map(norm); if (v && typeof v === 'object') { const o = {}; for (const k in v) o[k] = norm(v[k]); return o; } return v; };
     const withId = d => Object.assign({id:d.id}, norm(d.data()));
     const user = u => u ? {uid:u.uid, email:u.email, emailVerified:!!u.emailVerified} : null;
+    const mkDb = db => ({
+      get: async (col, id) => { const s = await F.getDoc(F.doc(db, col, id)); return s.exists() ? Object.assign({id:s.id}, norm(s.data())) : null; },
+      set: (col, id, data, merge) => F.setDoc(F.doc(db, col, id), data, merge ? {merge:true} : {}),
+      add: async (col, data) => (await F.addDoc(F.collection(db, col), data)).id,
+      del: (col, id) => F.deleteDoc(F.doc(db, col, id)),
+      where: async (col, filt) => { const w = Object.entries(filt || {}); const ref = w.length ? F.query(F.collection(db, col), ...w.map(([k, v]) => F.where(k, '==', v))) : F.collection(db, col); return (await F.getDocs(ref)).docs.map(withId); }
+    });
     window.FBAPI = {
       /* المصادقة */
       onAuth: cb => AU.onAuthStateChanged(auth, u => cb(user(u))),
@@ -447,12 +530,14 @@ body.sorting,body.sorting *{cursor:grabbing!important;user-select:none}
         const c = await AU.createUserWithEmailAndPassword(a2, email, password);
         await AU.signOut(a2); return c.user.uid;
       },
-      /* قاعدة البيانات (عامة) */
-      get: async (col, id) => { const s = await F.getDoc(F.doc(db, col, id)); return s.exists() ? Object.assign({id:s.id}, norm(s.data())) : null; },
-      set: (col, id, data, merge) => F.setDoc(F.doc(db, col, id), data, merge ? {merge:true} : {}),
-      add: async (col, data) => (await F.addDoc(F.collection(db, col), data)).id,
-      del: (col, id) => F.deleteDoc(F.doc(db, col, id)),
-      where: async (col, filt) => { const w = Object.entries(filt || {}); const ref = w.length ? F.query(F.collection(db, col), ...w.map(([k, v]) => F.where(k, '==', v))) : F.collection(db, col); return (await F.getDocs(ref)).docs.map(withId); }
+      addEmail: e => AU.verifyBeforeUpdateEmail(auth.currentUser, e),
+      /* جلسة ثانية بحساب الصف (للطالب صاحب الحساب الخاص بعد انضمامه إلى صف معلمه) */
+      session: async (email, password) => {
+        if (!clsApp) { clsApp = A.initializeApp(CONFIG.firebase, 'cls'); clsAuth = AU.initializeAuth(clsApp, {persistence:AU.inMemoryPersistence}); }
+        const c = await AU.signInWithEmailAndPassword(clsAuth, email, password);
+        return Object.assign(mkDb(F.getFirestore(clsApp)), {uid:c.user.uid});
+      },
+      ...mkDb(db)
     };
     window.dispatchEvent(new Event('fb-ready'));
   } catch (e) { console.error(e); window.FBERR = e; window.dispatchEvent(new Event('fb-fail')); }
@@ -492,7 +577,7 @@ function openModal(html) { $('#modalRoot').innerHTML = `<div class="modal" oncli
 /* ================= الإعدادات العامة ================= */
 const DOMAIN = 'iste3dad-students.com';
 const DEMO = /[?&]demo=1/.test(location.search);
-let API = null, ME = null, ROLE_CHOICE = 'student';
+let API = null, ME = null, ROLE_CHOICE = LS.get('iste3dad-role', 'student');
 const adminEmail = () => (DEMO ? 'admin@demo.com' : (CONFIG.teacherEmail || '')).toLowerCase();
 const siteUrl = () => CONFIG.siteUrl || (/^https?:/.test(location.protocol) ? location.origin + location.pathname.replace(/index\.html$/, '') : 'https://abdullah2006adi.github.io/iste3dad/');
 const levelPct = p => p >= .9 ? ['a','متميز'] : p >= .75 ? ['b','متقدم'] : p >= .6 ? ['c','متمكن'] : ['d','يحتاج دعمًا'];
@@ -514,7 +599,7 @@ const unitName = u => 'الباب ' + ORD[u];
 const byLessonOrder = (a, b) => (a.term || 1) - (b.term || 1) || (a.unit || 1) - (b.unit || 1) || (a.order ?? 999) - (b.order ?? 999) || (a.title || '').localeCompare(b.title || '', 'ar');
 
 function showScreen(id) {
-  ['scrLoading', 'scrSetup', 'scrRole', 'scrLogin', 'scrSignup', 'scrVerify', 'scrHome', 'scrPlayer', 'scrTeacher', 'scrGame'].forEach(s => { const e = $('#' + s); if (e) e.hidden = s !== id; });
+  ['scrLoading', 'scrSetup', 'scrRole', 'scrStuChoice', 'scrLogin', 'scrSignup', 'scrPSignup', 'scrVerify', 'scrHub', 'scrHome', 'scrPriv', 'scrPlayer', 'scrTeacher', 'scrGame'].forEach(s => { const e = $('#' + s); if (e) e.hidden = s !== id; });
   window.scrollTo(0, 0);
 }
 
@@ -553,6 +638,8 @@ function DemoAPI() {
     async reloadUser() { if (!cur) return null; db.users[cur.email].verified = true; put(); cur = pub(cur.email); LS.set('iste3dad-demo-auth5', cur); return delay(cur); },
     async resetPass() { return delay(); },
     async newAuthUser(email, p) { await delay(); return mkUser(email, p, false); },
+    async session(e, p) { await delay(); const u = db.users[e]; if (!u || u.pass !== p) throw err('auth/invalid-credential'); return Object.assign({}, this, {uid:u.uid}); },
+    async addEmail(e) { await delay(); if (db.users[e]) throw err('auth/email-already-in-use'); db.users[e] = db.users[cur.email]; delete db.users[cur.email]; cur = pub(e); LS.set('iste3dad-demo-auth5', cur); put(); },
     async get(col, id) { const v = C(col)[id]; return delay(v ? Object.assign({id}, clone(v)) : null); },
     async set(col, id, data, merge) { C(col)[id] = merge ? Object.assign({}, C(col)[id] || {}, clone(data)) : clone(data); put(); return delay(); },
     async add(col, data) { const id = 'd' + uidGen(); C(col)[id] = clone(data); put(); return delay(id); },
@@ -581,13 +668,13 @@ async function boot() {
 }
 function chooseRole(r) {
   ROLE_CHOICE = r; LS.set('iste3dad-role', r);
-  const T = r === 'teacher';
-  $('#lgIcon').textContent = T ? '👨‍🏫' : '🎒';
-  $('#lgTitle').textContent = T ? 'دخول المعلم' : 'دخول الطالب';
-  $('#lgUserLbl').textContent = T ? 'البريد الإلكتروني' : 'اسم المستخدم';
-  $('#lgUser').placeholder = T ? 'name@gmail.com' : 't5-01';
-  $('#lgTeacherExtra').hidden = !T;
-  $('#lgHint').textContent = T ? '' : 'نسيت كلمة المرور؟ اطلبها من معلّمك.';
+  const T = r === 'teacher', P = r === 'pstudent';
+  $('#lgIcon').textContent = T ? '👨‍🏫' : P ? '🌟' : '🔑';
+  $('#lgTitle').textContent = T ? 'دخول المعلم' : P ? 'الحساب الخاص' : 'الدخول برمز المعلم';
+  $('#lgUserLbl').textContent = T || P ? 'البريد الإلكتروني' : 'اسم المستخدم (أو بريدك إن أضفته)';
+  $('#lgUser').placeholder = T || P ? 'name@gmail.com' : 't5-01';
+  $('#lgTeacherExtra').hidden = !T; $('#lgPrivExtra').hidden = !P;
+  $('#lgHint').textContent = T || P ? '' : 'نسيت كلمة المرور؟ اطلبها من معلّمك.';
   loginMsg(''); showScreen('scrLogin'); setTimeout(() => $('#lgUser').focus(), 50);
 }
 function loginMsg(t, ok) { const m = $('#loginMsg'); m.textContent = t || ''; m.classList.toggle('ok', !!ok); }
@@ -597,31 +684,41 @@ async function onAuthChange(user) {
   const email = (user.email || '').toLowerCase();
   try {
     if (email && email === adminEmail()) { ME = {role:'admin', uid:user.uid, email, name:'المدير'}; await openTeacher(); return; }
-    if (!isStudentEmail(email)) {
-      // معلم يسجّل بنفسه
-      if (!user.emailVerified) { showVerify(email); return; }
-      let t = await API.get('teachers', user.uid).catch(e => { if (isPerm(e)) return null; throw e; });
-      if (!t) { const ok = await createTeacherDoc(user); if (!ok) return; t = await API.get('teachers', user.uid); }
+    const kind = LS.get('iste3dad-signup-kind', '');
+    let t = await API.get('teachers', user.uid).catch(e => { if (isPerm(e)) return null; throw e; });
+    if (t) {
+      if (!isStudentEmail(email) && !user.emailVerified) { showVerify(email); return; }
       if (t.active === false) { await API.logout(); chooseRole('teacher'); loginMsg('حساب المعلم موقوف. راجع مدير المنصة.'); return; }
       ME = Object.assign({role:'teacher', uid:user.uid, email}, t); await openTeacher(); return;
     }
-    const t = await API.get('teachers', user.uid).catch(() => null);
-    if (t) { if (t.active === false) { await API.logout(); chooseRole('teacher'); loginMsg('حساب المعلم موقوف.'); return; } ME = Object.assign({role:'teacher', uid:user.uid, email}, t); await openTeacher(); return; }
-    const st = await API.get('students', user.uid);
-    if (!st || st.active === false) { await API.logout(); chooseRole(ROLE_CHOICE); loginMsg(!st ? 'هذا الحساب غير مسجّل في المنصة.' : 'هذا الحساب موقوف. راجع معلّمك.'); return; }
-    ME = Object.assign({role:'student'}, st, {uid:user.uid});
-    openHome();
+    const st = await API.get('students', user.uid).catch(() => null);
+    if (st) {
+      if (st.active === false) { await API.logout(); chooseRole('student'); loginMsg('هذا الحساب موقوف. راجع معلّمك.'); return; }
+      await openStudent(user, st, null); return;
+    }
+    let ac = await API.get('accounts', user.uid).catch(() => null);
+    if (ac || kind === 'pstudent' || (kind !== 'teacher' && ROLE_CHOICE === 'pstudent' && !isStudentEmail(email))) {
+      if (!ac) { ac = await createAccountDoc(user); if (!ac) return; }
+      await openStudent(user, null, ac); return;
+    }
+    if (isStudentEmail(email)) { await API.logout(); chooseRole('student'); loginMsg('هذا الحساب غير مسجّل في المنصة.'); return; }
+    // معلم يسجّل بنفسه
+    if (!user.emailVerified) { showVerify(email); return; }
+    const ok = await createTeacherDoc(user); if (!ok) return;
+    t = await API.get('teachers', user.uid);
+    ME = Object.assign({role:'teacher', uid:user.uid, email}, t); await openTeacher();
   } catch (e) { console.error(e); chooseRole(ROLE_CHOICE); loginMsg('تعذّر تحميل حسابك: ' + errMsg(e)); }
 }
+function loginBack() { showScreen(ROLE_CHOICE === 'teacher' ? 'scrRole' : 'scrStuChoice'); }
 async function doLogin() {
   const u = $('#lgUser').value.trim().toLowerCase(), p = $('#lgPass').value.trim();
-  if (!u || !p) { loginMsg('اكتب ' + (ROLE_CHOICE === 'teacher' ? 'البريد' : 'اسم المستخدم') + ' وكلمة المرور'); return; }
+  if (!u || !p) { loginMsg('اكتب ' + (ROLE_CHOICE !== 'student' ? 'البريد' : 'اسم المستخدم') + ' وكلمة المرور'); return; }
   const email = u.includes('@') ? u : u + '@' + DOMAIN;
   const b = $('#lgBtn'); b.disabled = true; b.textContent = '⏳ جارٍ الدخول…'; loginMsg('');
   try { await API.login(email, p); $('#lgPass').value = ''; }
   catch (e) {
     const c = e && e.code || '';
-    loginMsg(c.includes('too-many') ? 'محاولات كثيرة. انتظر دقيقة ثم حاول مرة أخرى.' : c.includes('network') ? 'لا يوجد اتصال بالإنترنت.' : (ROLE_CHOICE === 'teacher' ? 'البريد أو كلمة المرور غير صحيحة.' : 'اسم المستخدم أو كلمة المرور غير صحيحة.'));
+    loginMsg(c.includes('too-many') ? 'محاولات كثيرة. انتظر دقيقة ثم حاول مرة أخرى.' : c.includes('network') ? 'لا يوجد اتصال بالإنترنت.' : (ROLE_CHOICE !== 'student' ? 'البريد أو كلمة المرور غير صحيحة.' : 'اسم المستخدم أو كلمة المرور غير صحيحة.'));
   } finally { b.disabled = false; b.textContent = 'دخول'; }
 }
 ['lgUser', 'lgPass'].forEach(id => $('#' + id).addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); }));
@@ -640,7 +737,7 @@ async function doSignup() {
   if (p.length < 6) return msg('كلمة المرور 6 أحرف على الأقل');
   if (p !== p2) return msg('كلمتا المرور غير متطابقتين');
   const b = $('#suBtn'); b.disabled = true; b.textContent = '⏳ جارٍ الإنشاء…'; msg('');
-  LS.set('iste3dad-signup-name', name);
+  LS.set('iste3dad-signup-name', name); LS.set('iste3dad-signup-kind', 'teacher');
   try { await API.signup(e, p); }
   catch (er) {
     const c = er && er.code || '';
@@ -671,7 +768,7 @@ async function createTeacherDoc(user) {
   const code = 't' + Math.random().toString(36).slice(2, 6);
   try {
     await API.set('teachers', user.uid, {name, email:(user.email || '').toLowerCase(), active:true, classes:[], code, createdAt:Date.now()});
-    LS.del('iste3dad-signup-name'); return true;
+    LS.del('iste3dad-signup-name'); LS.del('iste3dad-signup-kind'); return true;
   } catch (e) {
     console.error(e);
     showVerify(user.email); $('#vfMsg').textContent = isPerm(e) ? 'تعذّر تفعيل الحساب: قواعد الحماية في Firebase تحتاج تحديثًا (أخبر مدير المنصة).' : 'تعذّر تفعيل الحساب: ' + errMsg(e);
@@ -687,25 +784,137 @@ let CAT = [];
 async function loadCatalog() { CAT = (await API.where('catalog', {})).sort(byLessonOrder); return CAT; }
 const catById = id => CAT.find(l => l.id === id);
 
-/* ================= صفحة الطالب ================= */
-let LESSONS = [], SHOW = {};
+/* ================= حساب الطالب: الدخول والمساحتان ================= */
+const isSynth = () => isStudentEmail(ME && ME.email);
+function showPSignup() {
+  $('#psGrade').innerHTML = '<option value="">— اختر الصف —</option>' + GRADES.map(g => `<option value="${esc(g.key)}">${esc(gradeName(g.key))}</option>`).join('');
+  $('#psMsg').textContent = ''; showScreen('scrPSignup'); setTimeout(() => $('#psName').focus(), 50);
+}
+async function doPSignup() {
+  const name = $('#psName').value.trim(), grade = $('#psGrade').value, e = $('#psMail').value.trim().toLowerCase(), p = $('#psPass').value, p2 = $('#psPass2').value;
+  const msg = t => $('#psMsg').textContent = t;
+  if (name.length < 2) return msg('اكتب اسم الطالب');
+  if (!grade) return msg('اختر الصف');
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e)) return msg('اكتب البريد الإلكتروني بشكل صحيح');
+  if (isStudentEmail(e) || e === adminEmail()) return msg('هذا البريد غير مسموح');
+  if (p.length < 6) return msg('كلمة المرور 6 أحرف على الأقل');
+  if (p !== p2) return msg('كلمتا المرور غير متطابقتين');
+  const b = $('#psBtn'); b.disabled = true; b.textContent = '⏳ جارٍ الإنشاء…'; msg('');
+  LS.set('iste3dad-psignup', {name, grade}); LS.set('iste3dad-signup-kind', 'pstudent'); ROLE_CHOICE = 'pstudent'; LS.set('iste3dad-role', 'pstudent');
+  try { await API.signup(e, p); }
+  catch (er) {
+    const c = er && er.code || '';
+    msg(c.includes('email-already') ? 'هذا البريد مسجّل من قبل. ادخل به من صفحة الدخول.' : c.includes('weak') ? 'كلمة المرور ضعيفة.' : c.includes('invalid-email') ? 'البريد غير صحيح.' : 'تعذّر إنشاء الحساب: ' + errMsg(er));
+  } finally { b.disabled = false; b.textContent = 'إنشاء الحساب'; }
+}
+async function createAccountDoc(user) {
+  const d = LS.get('iste3dad-psignup', null) || {};
+  const ac = {name:d.name || (user.email || '').split('@')[0], grade:d.grade || '', email:(user.email || '').toLowerCase(), share:false, createdAt:Date.now()};
+  try { await API.set('accounts', user.uid, ac); LS.del('iste3dad-psignup'); LS.del('iste3dad-signup-kind'); return Object.assign({id:user.uid}, ac); }
+  catch (e) { console.error(e); chooseRole('pstudent'); loginMsg(isPerm(e) ? 'تعذّر إنشاء الحساب: قواعد الحماية في Firebase تحتاج تحديثًا (أخبر مدير المنصة).' : 'تعذّر إنشاء الحساب: ' + errMsg(e)); await API.logout().catch(() => {}); return null; }
+}
+async function openStudent(user, st, ac) {
+  ME = {role:'student', uid:user.uid, email:(user.email || '').toLowerCase(), acct:ac || null, capi:null, cuid:null, linkErr:''};
+  if (st) {
+    Object.assign(ME, {kind:'class', name:st.name, cname:st.name, cls:st.cls, teacherId:st.teacherId, username:st.username, cuid:user.uid, capi:API});
+    if (!ME.acct) ME.acct = await API.get('accounts', user.uid).catch(() => null);
+  } else {
+    Object.assign(ME, {kind:'private', name:ac.name});
+    if (ac.classUid && ac.cemail && ac.cpass) {
+      try {
+        const sx = await API.session(ac.cemail, ac.cpass), cst = await sx.get('students', sx.uid);
+        if (cst && cst.active !== false) Object.assign(ME, {capi:sx, cuid:sx.uid, cname:cst.name, cls:cst.cls, teacherId:cst.teacherId, username:cst.username});
+        else ME.linkErr = cst ? 'أوقف معلمك حساب صفّك، فلا يمكن فتح «صفّي» الآن.' : 'لم يعد حساب صفّك موجودًا. انضم مرة أخرى برمز معلمك.';
+      } catch (e) { console.error(e); ME.linkErr = 'تعذّر فتح «صفّي»: ربما تغيّرت كلمة مرور حساب الصف. انضم مرة أخرى برمز معلمك وكلمة المرور الجديدة.'; }
+    }
+  }
+  ME.grade = ME.cls ? gradeOf(ME.cls) : (ME.acct && ME.acct.grade) || '';
+  if (ME.cuid) showHub(); else openPrivate();
+}
+function showHub() {
+  if (!ME || ME.role !== 'student') return;
+  if (!ME.cuid) return openPrivate();
+  showScreen('scrHub');
+  $('#hubWho').textContent = '👤 ' + ME.name;
+  $('#hubHello').textContent = 'مرحبًا يا ' + (ME.name || '').split(' ')[0] + ' 👋';
+  $('#hubClsTxt').textContent = 'الشعبة ' + (ME.cls || '') + ' · دروس معلمك ونتائجك عنده';
+  $('#hubActs').innerHTML = isSynth() ? `<button class="btn sm ghost" onclick="openAddEmail()">📧 أضف بريدك</button><small style="color:var(--muted)">اختياري: لتدخل ببريدك، وتستعيد كلمة المرور بنفسك إن نسيتها.</small>` : '';
+}
+function openAddEmail() {
+  openModal(`<h3 style="margin-top:0">📧 أضف بريدك</h3>
+    <p>بعد إضافته تدخل بـ<b>بريدك</b> وكلمة المرور نفسها بدل اسم المستخدم، وتستطيع استعادة كلمة المرور بنفسك إن نسيتها. يبقى كل شيء في حسابك كما هو.</p>
+    <label>البريد الإلكتروني (أو بريد وليّ الأمر)<input type="email" class="ltr" id="aeMail" placeholder="name@gmail.com"></label>
+    <div class="login-msg" id="aeMsg"></div>
+    <div class="row" style="margin-top:10px"><button class="btn" id="aeBtn" onclick="doAddEmail()">إرسال رابط التأكيد</button><button class="btn ghost" onclick="closeModal()">إلغاء</button></div>`);
+}
+async function doAddEmail() {
+  const e = $('#aeMail').value.trim().toLowerCase(), m = $('#aeMsg');
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e) || isStudentEmail(e)) { m.textContent = 'اكتب البريد بشكل صحيح'; return; }
+  $('#aeBtn').disabled = true;
+  try {
+    await API.addEmail(e);
+    if (DEMO) { ME.email = e; closeModal(); showHub(); toast('أُضيف البريد ✓ (وضع تجريبي)'); return; }
+    m.classList.add('ok'); m.textContent = 'أرسلنا رابط تأكيد إلى ' + e + '. افتحه، ثم ادخل في المرة القادمة ببريدك وكلمة المرور نفسها (من «🔑 لدي رمز من المعلم»).';
+  } catch (er) {
+    const c = er && er.code || '';
+    m.textContent = c.includes('email-already') ? 'هذا البريد مستعمل في حساب آخر.' : c.includes('requires-recent-login') ? 'لأمانك: اخرج ثم ادخل مرة أخرى، ثم أعد المحاولة.' : c.includes('invalid-email') ? 'البريد غير صحيح.' : 'تعذّر: ' + errMsg(er);
+  } finally { const b = $('#aeBtn'); if (b) b.disabled = false; }
+}
+/* الانضمام إلى صف المعلم (للحساب الخاص) */
+function openJoin() {
+  openModal(`<h3 style="margin-top:0">🤝 انضم إلى صف معلمك</h3>
+    <p>اكتب الرمز (اسم المستخدم) وكلمة المرور اللذين أعطاك إياهما معلمك. بعدها تدخل ببريدك كالمعتاد، وتجد «صفّي» و«مساحتي الخاصة» معًا، وتبقى نتائجك الخاصة كما هي.</p>
+    <label>الرمز (اسم المستخدم)<input type="text" class="ltr" id="jnUser" autocapitalize="off" spellcheck="false" placeholder="t5-01"></label>
+    <label>كلمة المرور<input type="password" class="ltr" id="jnPass"></label>
+    <div class="login-msg" id="jnMsg"></div>
+    <div class="row" style="margin-top:10px"><button class="btn" id="jnBtn" onclick="doJoin()">انضم</button><button class="btn ghost" onclick="closeModal()">إلغاء</button></div>`);
+}
+async function doJoin() {
+  const u = $('#jnUser').value.trim().toLowerCase(), p = $('#jnPass').value.trim(), m = $('#jnMsg');
+  if (!u || !p) { m.textContent = 'اكتب الرمز وكلمة المرور'; return; }
+  const email = u.includes('@') ? u : u + '@' + DOMAIN;
+  $('#jnBtn').disabled = true; m.textContent = '⏳ جارٍ التحقّق…';
+  try {
+    const sx = await API.session(email, p);
+    const st = await sx.get('students', sx.uid);
+    if (!st) { m.textContent = 'هذا الرمز ليس لحساب طالب.'; return; }
+    if (st.active === false) { m.textContent = 'هذا الحساب موقوف. راجع معلمك.'; return; }
+    if (st.ownerUid && st.ownerUid !== ME.uid) { m.textContent = 'هذا الرمز مرتبط بحساب خاص آخر. راجع معلمك.'; return; }
+    await sx.set('students', sx.uid, {ownerUid:ME.uid}, true);
+    await API.set('accounts', ME.uid, {classUid:sx.uid, cemail:email, cpass:p, joinedAt:Date.now()}, true);
+    Object.assign(ME.acct, {classUid:sx.uid, cemail:email, cpass:p});
+    Object.assign(ME, {capi:sx, cuid:sx.uid, cname:st.name, cls:st.cls, teacherId:st.teacherId, username:st.username, linkErr:''});
+    ME.grade = gradeOf(st.cls);
+    closeModal(); toast('انضممت إلى صف معلمك ✓'); showHub();
+  } catch (e) {
+    console.error(e); const c = e && e.code || '';
+    m.textContent = c.includes('invalid-credential') || c.includes('wrong-password') || c.includes('user-not-found') ? 'الرمز أو كلمة المرور غير صحيحة.' : c.includes('too-many') ? 'محاولات كثيرة. انتظر دقيقة.' : 'تعذّر الانضمام: ' + errMsg(e);
+  } finally { const b = $('#jnBtn'); if (b) b.disabled = false; }
+}
+function showAttempts(title, max, list) {
+  const L = list.slice().sort((a, b) => b.at - a.at), best = L.reduce((m, s) => !m || (+s.auto || 0) > (+m.auto || 0) ? s : m, null);
+  openModal(`<h3 style="margin-top:0">📜 محاولاتي في: ${esc(title)}</h3>` + (L.length ? L.map(a => `<div style="border-top:1px dashed var(--line);padding:6px 0"><b>المحاولة ${esc(a.attempt || '')}</b> · ${fmtDate(a.at)} · الدرجة: <b>${+a.auto || 0} / ${max || ''}</b> ${a === best ? '<span class="chip done">الأفضل</span>' : ''}</div>`).join('') : '<p>لا توجد محاولات.</p>'));
+}
+
+/* ================= صفّي (دروس المعلم) ================= */
+let LESSONS = [], SHOW = {}, MYSUBS = [];
 async function openHome() {
   showScreen('scrHome');
-  $('#homeWho').textContent = '👤 ' + ME.name + ' · ' + ME.cls;
-  $('#homeHello').textContent = 'مرحبًا يا ' + (ME.name || '').split(' ')[0] + ' 👋';
+  $('#homeWho').textContent = '👤 ' + (ME.cname || ME.name) + ' · ' + ME.cls;
+  $('#homeHello').textContent = 'مرحبًا يا ' + (ME.cname || ME.name || '').split(' ')[0] + ' 👋';
   await loadStudentLessons();
 }
 async function loadStudentLessons() {
   $('#homeLessons').innerHTML = '<p>⏳ جارٍ التحميل…</p>';
   let subs = [];
   try {
-    const [cat, show] = await Promise.all([loadCatalog(), ME.teacherId ? API.get('tshow', ME.teacherId) : null]);
+    const [cat, show] = await Promise.all([loadCatalog(), ME.teacherId ? ME.capi.get('tshow', ME.teacherId) : null]);
     SHOW = (show && show.lessons) || {};
     LESSONS = cat.filter(l => (SHOW[l.id] || []).includes(ME.cls)).sort(byLessonOrder);
-    subs = await API.where('submissions', {uid:ME.uid});
+    subs = MYSUBS = await ME.capi.where('submissions', {uid:ME.cuid});
   } catch (e) { console.error(e); $('#homeLessons').innerHTML = '<p>تعذّر تحميل الدروس. حدّث الصفحة.</p>'; return; }
-  if (!LESSONS.length) { $('#homeLessons').innerHTML = '<div class="card">لا توجد دروس متاحة الآن. سيُظهر معلّمك الدروس قريبًا 🌿</div>'; return; }
-  const prog = await Promise.all(LESSONS.map(l => l.tracked === false ? null : API.get('progress', ME.uid + '_' + l.id).then(d => d ? JSON.parse(d.s || 'null') : null).catch(() => null)));
+  if (!LESSONS.length) { $('#homeLessons').innerHTML = '<div class="card">لا توجد دروس متاحة الآن. سيُظهر معلّمك الدروس قريبًا 🌿 وتستطيع أن تدرس ما تشاء في «🌟 مساحتي الخاصة».</div>'; return; }
+  const prog = await Promise.all(LESSONS.map(l => l.tracked === false ? null : ME.capi.get('progress', ME.cuid + '_' + l.id).then(d => d ? JSON.parse(d.s || 'null') : null).catch(() => null)));
   let html = '', last = '';
   LESSONS.forEach((l, i) => {
     const head = termName(l.term || 1) + ' · ' + unitName(l.unit || 1);
@@ -716,12 +925,97 @@ async function loadStudentLessons() {
     let chip, btn;
     if (l.tracked === false) { chip = '<span class="chip grey">📖 للاطلاع</span>'; btn = 'افتح الدرس ←'; }
     else { chip = my.length ? '<span class="chip done">✅ أُرسل</span>' : started ? '<span class="chip wip">⏳ قيد الحل</span>' : '<span class="chip new">🆕 جديد</span>'; btn = my.length ? 'افتح الدرس ←' : started ? 'أكمل الدرس ←' : 'ابدأ الدرس ←'; }
-    const scoreLine = my.length ? `<div style="font-size:21px">🏅 أفضل درجة: <b>${best} / ${aMax}</b> · المحاولات: <b>${my.length}</b></div>` : '';
+    const scoreLine = my.length ? `<div style="font-size:21px">🏅 أفضل درجة: <b>${best} / ${aMax}</b> · المحاولات: <b>${my.length}</b> <button class="btn sm ghost" onclick="showAttempts(${A(l.title)},${aMax},MYSUBS.filter(s=>s.lessonId===${A(l.id)}))">📜 المحاولات</button></div>` : '';
     html += `<div class="lesson-card"><div class="ic">${esc(l.icon || '📘')}</div>
       <div class="info"><h3 style="margin:0">${esc(l.title)} ${chip}</h3><div style="color:var(--muted)">${esc(l.sub || '')}</div>${scoreLine}</div>
       <button class="btn alt big" onclick="openLesson(${A(l.id)},'student')">${btn}</button></div>`;
   });
   $('#homeLessons').innerHTML = html;
+}
+
+/* ================= مساحتي الخاصة ================= */
+const PV = {tab:'lessons', g:'', rtab:'mine', subs:[]};
+async function openPrivate() {
+  showScreen('scrPriv');
+  $('#pvWho').textContent = '👤 ' + ME.name; $('#pvHub').hidden = !ME.cuid;
+  $('#pvHello').textContent = 'مرحبًا يا ' + (ME.name || '').split(' ')[0] + ' 👋';
+  $('#pvWarn').hidden = !ME.linkErr; $('#pvWarn').textContent = ME.linkErr ? '⚠️ ' + ME.linkErr : '';
+  if (!ME.acct) { try { const ac = {name:ME.name, grade:ME.grade || '', email:ME.email, share:false, createdAt:Date.now()}; await API.set('accounts', ME.uid, ac); ME.acct = ac; } catch (e) { console.error(e); } }
+  PV.g = PV.g || ME.grade || '';
+  $('#pvBody').innerHTML = '<p>⏳ جارٍ التحميل…</p>';
+  try { await loadCatalog(); PV.subs = await API.where('psubs', {uid:ME.uid}); }
+  catch (e) { console.error(e); $('#pvBody').innerHTML = '<p>تعذّر التحميل: ' + esc(errMsg(e)) + '</p>'; return; }
+  if (!PV.g) PV.g = (CAT[0] && CAT[0].grade) || GRADES[0].key;
+  renderPrivate();
+}
+function pvGradesWithLessons() { const has = new Set(CAT.map(l => l.grade)); return GRADES.map(g => g.key).filter(k => has.has(k)); }
+function renderPrivate() {
+  const share = !!(ME.acct && ME.acct.share);
+  $('#pvActs').innerHTML = (ME.cuid
+      ? `<label class="sw"><input type="checkbox" ${share ? 'checked' : ''} onchange="setShare(this.checked)"> 🤝 شارك نتائجك الخاصة مع معلمك</label>`
+      : `<button class="btn sm" onclick="openJoin()">🤝 انضم إلى صف معلمك</button>`) +
+    (ME.kind === 'private' && !ME.cls ? `<button class="btn sm ghost" onclick="pickMyGrade()">🎓 صفّي الدراسي: ${esc(ME.grade ? gradeName(ME.grade) : 'لم يُحدَّد')} ✏️</button>` : '');
+  const mine = PV.subs.filter(s => s.grade === ME.grade), others = PV.subs.filter(s => s.grade !== ME.grade);
+  const nl = list => new Set(list.map(s => s.lessonId)).size;
+  $('#pvTabs').innerHTML = `<button class="${PV.tab === 'lessons' ? 'on' : ''}" onclick="PV.tab='lessons';renderPrivate()">📚 الدروس</button><button class="${PV.tab === 'results' ? 'on' : ''}" onclick="PV.tab='results';renderPrivate()">🏅 نتائجي الخاصة (${nl(PV.subs)})</button>`;
+  if (PV.tab === 'results') return renderPvResults(mine, others, nl);
+  const G = pvGradesWithLessons();
+  if (!G.length) { $('#pvBody').innerHTML = '<div class="card">لا توجد دروس في المنصة بعد.</div>'; return; }
+  if (!G.includes(PV.g)) PV.g = G.includes(ME.grade) ? ME.grade : G[0];
+  const L = CAT.filter(l => l.grade === PV.g).sort(byLessonOrder);
+  let html = `<label style="display:block;max-width:360px">اعرض دروس:<select onchange="PV.g=this.value;renderPrivate()">${G.map(k => `<option value="${esc(k)}" ${k === PV.g ? 'selected' : ''}>${esc(gradeName(k))}${k === ME.grade ? ' ⭐ صفّي' : ''}</option>`).join('')}</select></label>`, last = '';
+  L.forEach(l => {
+    const head = termName(l.term || 1) + ' · ' + unitName(l.unit || 1);
+    if (head !== last) { html += `<div class="unit-head">📘 ${head}</div>`; last = head; }
+    const my = PV.subs.filter(s => s.lessonId === l.id), aMax = +l.autoMax || 0, best = my.length ? Math.max(...my.map(s => +s.auto || 0)) : null;
+    const chip = l.tracked === false ? '<span class="chip grey">📖 للاطلاع</span>' : my.length ? '<span class="chip done">✅ أنجزته</span>' : '<span class="chip new">🆕</span>';
+    const scoreLine = my.length ? `<div style="font-size:21px">🏅 أفضل درجة: <b>${best} / ${aMax}</b> · المحاولات: <b>${my.length}</b> <button class="btn sm ghost" onclick="showAttempts(${A(l.title)},${aMax},PV.subs.filter(s=>s.lessonId===${A(l.id)}))">📜 المحاولات</button></div>` : '';
+    html += `<div class="lesson-card" style="border-inline-start-color:#7c3aed"><div class="ic">${esc(l.icon || '📘')}</div>
+      <div class="info"><h3 style="margin:0">${esc(l.title)} ${chip}</h3><div style="color:var(--muted)">${esc(l.sub || '')}</div>${scoreLine}</div>
+      <button class="btn alt big" onclick="openLesson(${A(l.id)},'private')">${my.length ? 'افتح الدرس ←' : 'ابدأ الدرس ←'}</button></div>`;
+  });
+  $('#pvBody').innerHTML = html + (L.length ? '' : '<p>لا توجد دروس لهذا الصف بعد.</p>');
+}
+function renderPvResults(mine, others, nl) {
+  const list = PV.rtab === 'mine' ? mine : others;
+  let html = `<div class="subtabs"><button class="${PV.rtab === 'mine' ? 'on' : ''}" onclick="PV.rtab='mine';renderPrivate()">دروس الصف (${nl(mine)})</button><button class="${PV.rtab === 'other' ? 'on' : ''}" onclick="PV.rtab='other';renderPrivate()">دروس الصفوف الأخرى (${nl(others)})</button></div>`;
+  const by = {}; list.forEach(s => (by[s.lessonId] = by[s.lessonId] || []).push(s));
+  const rows = Object.entries(by).map(([lid, L]) => ({l:catById(lid) || {id:lid, title:'درس محذوف', grade:L[0].grade}, L})).sort((a, b) => byLessonOrder(a.l, b.l));
+  if (!rows.length) { $('#pvBody').innerHTML = html + `<p>${PV.rtab === 'mine' ? (ME.grade ? 'لم تؤدِّ أي درس من دروس صفّك في مساحتك الخاصة بعد.' : 'حدّد صفّك الدراسي أولًا من الزر أعلاه.') : 'لم تؤدِّ دروسًا من صفوف أخرى.'}</p>`; return; }
+  html += `<div class="tbl-scroll"><table><tr><th>الدرس</th>${PV.rtab === 'other' ? '<th>الصف</th>' : ''}<th>أفضل درجة</th><th>المحاولات</th><th>آخر محاولة</th><th></th></tr>` + rows.map(({l, L}) => {
+    const best = Math.max(...L.map(s => +s.auto || 0)), lastAt = Math.max(...L.map(s => s.at || 0));
+    return `<tr><td><b>${esc((l.icon || '') + ' ' + l.title)}</b></td>${PV.rtab === 'other' ? `<td>${esc(gradeName(l.grade))}</td>` : ''}<td><b>${best} / ${+l.autoMax || ''}</b></td><td>${L.length}</td><td>${fmtDate(lastAt)}</td>
+      <td><button class="btn sm ghost" onclick="showAttempts(${A(l.title)},${+l.autoMax || 0},PV.subs.filter(s=>s.lessonId===${A(l.id)}))">📜 المحاولات</button></td></tr>`;
+  }).join('') + '</table></div>';
+  if (ME.cuid) html += `<p class="note">${ME.acct && ME.acct.share ? '🤝 نتائجك الخاصة مشتركة مع معلمك: يراها ويستطيع اعتماد دروس صفّك منها.' : '🔒 نتائجك الخاصة لا يراها أحد غيرك. فعّل «شارك نتائجك الخاصة مع معلمك» إن أردت أن يراها.'}</p>`;
+  $('#pvBody').innerHTML = html;
+}
+function pickMyGrade() {
+  openModal(`<h3 style="margin-top:0">🎓 صفّي الدراسي</h3><label>اختر صفّك<select id="mgSel">${GRADES.map(g => `<option value="${esc(g.key)}" ${g.key === ME.grade ? 'selected' : ''}>${esc(gradeName(g.key))}</option>`).join('')}</select></label>
+    <div class="row" style="margin-top:10px"><button class="btn" onclick="saveMyGrade()">حفظ</button><button class="btn ghost" onclick="closeModal()">إلغاء</button></div>`);
+}
+async function saveMyGrade() {
+  const g = $('#mgSel').value;
+  try { await API.set('accounts', ME.uid, {grade:g}, true); ME.grade = g; ME.acct.grade = g; PV.g = g; closeModal(); renderPrivate(); toast('حُفظ ✓'); } catch (e) { toast('تعذّر: ' + errMsg(e)); }
+}
+async function setShare(on) {
+  try {
+    await API.set('accounts', ME.uid, {share:on}, true); ME.acct.share = on;
+    if (on) await syncPShare(); else await API.del('pshare', ME.uid).catch(() => {});
+    toast(on ? 'صار معلمك يرى نتائجك الخاصة ✓' : 'أُوقفت المشاركة: نتائجك الخاصة لا يراها أحد');
+  } catch (e) { console.error(e); toast('تعذّر: ' + errMsg(e)); }
+  renderPrivate();
+}
+async function syncPShare() {
+  if (!ME.cuid || !(ME.acct && ME.acct.share)) return;
+  const res = {};
+  PV.subs.forEach(s => {
+    const r = res[s.lessonId] = res[s.lessonId] || {auto:-1, n:0, att:[]};
+    r.n++; r.att.push({auto:+s.auto || 0, at:s.at, attempt:s.attempt || r.n});
+    if ((+s.auto || 0) > r.auto || ((+s.auto || 0) === r.auto && s.at > r.at)) Object.assign(r, {auto:+s.auto || 0, at:s.at, scores:s.scores || {}, grade:s.grade || ''});
+  });
+  Object.values(res).forEach(r => { r.att = r.att.sort((a, b) => b.at - a.at).slice(0, 30); });
+  await API.set('pshare', ME.uid, {teacherId:ME.teacherId, cuid:ME.cuid, cls:ME.cls, name:ME.cname || ME.name, grade:gradeOf(ME.cls), updatedAt:Date.now(), res});
 }
 
 /* ================= مشغّل الدرس ================= */
@@ -740,13 +1034,15 @@ async function getLessonHtml(l) {
 }
 async function openLesson(id, mode) {
   const l = (mode === 'student' ? LESSONS : CAT).find(x => x.id === id); if (!l) return;
+  const learner = mode === 'student' || mode === 'private';
   showScreen('scrPlayer'); $('#plLoad').hidden = false;
   $('#plTitle').textContent = (l.icon || '📘') + ' ' + l.title;
   $('#plPrev').hidden = mode !== 'preview';
-  $('#plWho').textContent = mode === 'student' ? '👤 ' + ME.name : '';
+  $('#plWho').textContent = mode === 'student' ? '👤 ' + (ME.cname || ME.name) : mode === 'private' ? '🌟 ' + ME.name + ' · مساحتي الخاصة' : '';
   const fr = $('#plFrame'); fr.srcdoc = '';
   try {
-    const [html, state] = await Promise.all([getLessonHtml(l), mode === 'student' && l.tracked !== false ? API.get('progress', ME.uid + '_' + id).then(d => d ? JSON.parse(d.s || 'null') : null).catch(() => null) : null]);
+    const pget = !learner || l.tracked === false ? null : (mode === 'student' ? ME.capi.get('progress', ME.cuid + '_' + id) : API.get('pprogress', ME.uid + '_' + id)).then(d => d ? JSON.parse(d.s || 'null') : null).catch(() => null);
+    const [html, state] = await Promise.all([getLessonHtml(l), pget]);
     if (!html) { toast('ملف الدرس غير موجود'); leaveLesson(); return; }
     PL = {lesson:l, mode, state, ready:false};
     fr.onload = () => { $('#plLoad').hidden = true; };
@@ -756,12 +1052,14 @@ async function openLesson(id, mode) {
 function postToLesson(m) { try { $('#plFrame').contentWindow.postMessage(Object.assign({iste:''}, m), '*'); } catch (e) {} }
 async function flushProgress() {
   if (!PL || !plSaveT) return; clearTimeout(plSaveT); plSaveT = null;
-  if (PL.mode === 'student' && PL.state) { try { await API.set('progress', ME.uid + '_' + PL.lesson.id, {s:JSON.stringify(PL.state), updatedAt:Date.now()}); } catch (e) { console.error(e); } }
+  if (PL.mode === 'student' && PL.state) { try { await ME.capi.set('progress', ME.cuid + '_' + PL.lesson.id, {s:JSON.stringify(PL.state), updatedAt:Date.now()}); } catch (e) { console.error(e); } }
+  if (PL.mode === 'private' && PL.state) { try { await API.set('pprogress', ME.uid + '_' + PL.lesson.id, {s:JSON.stringify(PL.state), updatedAt:Date.now()}); } catch (e) { console.error(e); } }
 }
 async function leaveLesson() {
   await flushProgress();
-  PL = null; $('#plFrame').srcdoc = '';
+  const m = PL && PL.mode; PL = null; $('#plFrame').srcdoc = '';
   if (ME && ME.role !== 'student') showScreen('scrTeacher');
+  else if (ME && m === 'private') openPrivate();
   else if (ME) { showScreen('scrHome'); loadStudentLessons(); } else showScreen('scrRole');
 }
 const cleanStr = (s, n) => String(s ?? '').slice(0, n || 3000);
@@ -777,18 +1075,27 @@ window.addEventListener('message', async ev => {
   const m = ev.data || {}; if (!m || typeof m.iste !== 'string') return;
   if (m.iste === 'ready') {
     PL.ready = true; $('#plLoad').hidden = true;
-    postToLesson({iste:'init', mode:PL.mode, platform:'iste3dad', state:PL.state || null, user:ME && ME.role === 'student' ? {name:ME.name, cls:ME.cls} : {name:ME ? ME.name : '', cls:''}});
+    postToLesson({iste:'init', mode:PL.mode === 'private' ? 'student' : PL.mode, platform:'iste3dad', state:PL.state || null, user:ME && ME.role === 'student' ? {name:PL.mode === 'private' ? ME.name : (ME.cname || ME.name), cls:PL.mode === 'private' ? '' : ME.cls} : {name:ME ? ME.name : '', cls:''}});
   } else if (m.iste === 'save') {
-    if (PL.mode !== 'student' || PL.lesson.tracked === false) return;
+    if ((PL.mode !== 'student' && PL.mode !== 'private') || PL.lesson.tracked === false) return;
     PL.state = m.state; clearTimeout(plSaveT);
     plSaveT = setTimeout(() => flushProgress(), m.now ? 0 : 1500);
   } else if (m.iste === 'submit') {
     if (PL.mode === 'preview') { postToLesson({iste:'submitted', ok:true, attempt:0, preview:true}); return; }
     if (PL.lesson.tracked === false) { postToLesson({iste:'submitted', ok:false, error:'هذا الدرس للاطلاع فقط'}); return; }
     try {
-      const lid = PL.lesson.id, mine = (await API.where('submissions', {uid:ME.uid})).filter(s => s.lessonId === lid);
-      const data = Object.assign(cleanSubmission(m.data || {}), {uid:ME.uid, username:ME.username || '', name:ME.name, cls:ME.cls, teacherId:ME.teacherId || '', lessonId:lid, attempt:mine.length + 1, at:Date.now()});
-      await API.add('submissions', data);
+      const lid = PL.lesson.id;
+      if (PL.mode === 'private') {
+        const mine = (await API.where('psubs', {uid:ME.uid})).filter(s => s.lessonId === lid);
+        const data = Object.assign(cleanSubmission(m.data || {}), {uid:ME.uid, name:ME.name, lessonId:lid, grade:PL.lesson.grade || '', attempt:mine.length + 1, at:Date.now()});
+        const nid = await API.add('psubs', data);
+        PV.subs = PV.subs.filter(s => s.id !== nid).concat([Object.assign({id:nid}, data)]);
+        if (ME.acct && ME.acct.share && ME.cuid) syncPShare().catch(e => console.error(e));
+        postToLesson({iste:'submitted', ok:true, attempt:data.attempt}); return;
+      }
+      const mine = (await ME.capi.where('submissions', {uid:ME.cuid})).filter(s => s.lessonId === lid);
+      const data = Object.assign(cleanSubmission(m.data || {}), {uid:ME.cuid, username:ME.username || '', name:ME.cname || ME.name, cls:ME.cls, teacherId:ME.teacherId || '', lessonId:lid, attempt:mine.length + 1, at:Date.now()});
+      await ME.capi.add('submissions', data);
       postToLesson({iste:'submitted', ok:true, attempt:data.attempt});
     } catch (e) { console.error(e); postToLesson({iste:'submitted', ok:false, error:'تعذّر الإرسال. تأكّد من الإنترنت ثم حاول مرة أخرى'}); }
   } else if (m.iste === 'home') leaveLesson();
@@ -797,7 +1104,7 @@ window.addEventListener('pagehide', () => { if (plSaveT) flushProgress(); });
 document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden' && plSaveT) flushProgress(); });
 
 /* ================= لوحة المعلم / المدير ================= */
-const TD = {view:'', vt:null, teachers:[], students:[], subs:[], lid:'', show:{}};
+const TD = {view:'', vt:null, teachers:[], students:[], subs:[], lid:'', show:{}, pshare:[], ap:{auto:false, mode:{}, ok:{}}, pvTab:{}};
 const isAdmin = () => ME && ME.role === 'admin';
 const myClasses = () => (TD.vt && TD.vt.classes && TD.vt.classes.length ? TD.vt.classes : []);
 const myGrades = () => [...new Set(myClasses().map(gradeOf))];
@@ -845,6 +1152,11 @@ async function loadTeacherData() {
     const [st, show] = await Promise.all([API.where('students', {teacherId:TD.view}), API.get('tshow', TD.view)]);
     TD.students = st.map(s => Object.assign({uid:s.id}, s)); TD.show = (show && show.lessons) || {};
   } catch (e) { console.error(e); if (isPerm(e)) $('#rulesWarn').hidden = false; toast('تعذّر تحميل البيانات: ' + errMsg(e)); }
+  try {
+    const [ps, ap] = await Promise.all([API.where('pshare', {teacherId:TD.view}), API.get('tapprove', TD.view)]);
+    TD.pshare = ps; TD.ap = Object.assign({auto:false, mode:{}, ok:{}}, ap || {});
+  } catch (e) { console.error(e); TD.pshare = []; TD.ap = {auto:false, mode:{}, ok:{}}; if (isPerm(e)) $('#rulesWarn').hidden = false; }
+  renderPrivTab();
   fillResultLessons(); renderStudents(); renderSetupTab(); renderShowTab();
   await loadResults();
 }
@@ -855,6 +1167,7 @@ function tTab(t) {
   $$('.tview').forEach(v => v.hidden = v.id !== 'tv-' + t);
   if (t === 'curriculum') renderCurriculum();
   if (t === 'lessons') renderShowTab();
+  if (t === 'private') renderPrivTab();
 }
 
 /* ---------- النتائج ---------- */
@@ -900,10 +1213,26 @@ async function loadResults() {
 const curLessons = () => TD.lids.map(catById).filter(Boolean);
 const curLesson = () => (TD.lids.length === 1 ? catById(TD.lids[0]) : null);
 function bestOf(uid, lid) {
-  const l = TD.subs.filter(s => s.uid === uid && (!lid || s.lessonId === lid)); if (!l.length) return null;
-  const best = l.reduce((m, s) => ((+s.auto || 0) > (+m.auto || 0) || ((+s.auto || 0) === (+m.auto || 0) && s.at > m.at)) ? s : m);
-  return {best, count:l.length, all:l.slice().sort((a, b) => b.at - a.at)};
+  const l = TD.subs.filter(s => s.uid === uid && (!lid || s.lessonId === lid)), pc = lid ? privCand(uid, lid) : null;
+  if (!l.length && !pc) return null;
+  let best = l.length ? l.reduce((m, s) => ((+s.auto || 0) > (+m.auto || 0) || ((+s.auto || 0) === (+m.auto || 0) && s.at > m.at)) ? s : m) : null;
+  if (pc && (!best || (+pc.auto || 0) > (+best.auto || 0))) best = pc;
+  return {best, count:l.length, all:l.slice().sort((a, b) => b.at - a.at), pc};
 }
+/* النتائج الخاصة المعتمدة */
+const apMode = cuid => (TD.ap.mode || {})[cuid] || 'def';
+const isAutoAp = cuid => apMode(cuid) === 'auto' || (apMode(cuid) !== 'manual' && !!TD.ap.auto);
+const pshareOf = cuid => TD.pshare.find(p => p.cuid === cuid);
+function privCand(cuid, lid) {
+  const s = TD.students.find(x => x.uid === cuid), l = catById(lid);
+  if (!s || !l || l.grade !== gradeOf(s.cls)) return null;
+  const man = ((TD.ap.ok || {})[cuid] || {})[lid];
+  if (man) return Object.assign({}, man, {priv:true, how:'manual', attempt:'🆗'});
+  const ps = pshareOf(cuid), live = ps && ps.res && ps.res[lid];
+  if (live && isAutoAp(cuid)) return {auto:+live.auto || 0, scores:live.scores || {}, at:live.at, priv:true, how:'auto', attempt:'🆗'};
+  return null;
+}
+const okMark = b => b && b.priv ? ` <span class="ok-mark" title="معتمدة من النتائج الخاصة${b.how === 'auto' ? ' (تلقائيًا)' : ''}">🆗</span>` : '';
 function allRows() {
   const f = $('#rClass').value, LL = curLessons();
   return TD.students.filter(s => s.active !== false && (!f || s.cls === f) && LL.some(l => (TD.show[l.id] || []).includes(s.cls))).sort(byClsName).map(s => {
@@ -933,14 +1262,14 @@ function renderResults() {
       R.map((r, i) => {
         if (!r.b) return `<tr class="nosub" data-u="${esc(r.s.uid)}"><td>${i + 1}</td><td>${esc(r.s.name)}</td><td>${esc(r.s.cls)}</td><td colspan="${ncol - 3}">لم يرسل بعد</td></tr>`;
         const sc = r.b.best.scores || {};
-        return `<tr data-u="${esc(r.s.uid)}"><td>${i + 1}</td><td><b>${esc(r.s.name)}</b></td><td>${esc(r.s.cls)}</td><td>${r.b.count}</td><td>${fmtDate(r.b.all[0].at)}</td>
-          ${comps.map(c => `<td>${esc(sc[c.key] ?? '')}</td>`).join('')}<td><b>${r.total}</b></td><td>${lvTd(r)}</td>
+        return `<tr data-u="${esc(r.s.uid)}"><td>${i + 1}</td><td><b>${esc(r.s.name)}</b></td><td>${esc(r.s.cls)}</td><td>${r.b.count}${r.b.pc ? ' + 🆗' : ''}</td><td>${fmtDate((r.b.all[0] || r.b.best).at)}</td>
+          ${comps.map(c => `<td>${esc(sc[c.key] ?? '')}</td>`).join('')}<td><b>${r.total}</b>${okMark(r.b.best)}</td><td>${lvTd(r)}</td>
           <td><button class="btn sm ghost" onclick="showDetails(${A(r.s.uid)})">تفاصيل</button></td></tr>`;
       }).join('') + '</table>';
   } else {
     $('#resTable').innerHTML = `<table><tr><th>#</th><th>الاسم</th><th>الشعبة</th>${LL.map(l => `<th style="font-size:17px;min-width:90px">${esc((l.icon || '') + ' ' + l.title)} /${+l.autoMax || 0}</th>`).join('')}<th>المجموع</th><th>النسبة</th><th>المستوى</th><th>أرسل</th><th></th></tr>` +
       R.map((r, i) => `<tr data-u="${esc(r.s.uid)}" class="${r.sent ? '' : 'nosub'}"><td>${i + 1}</td><td><b>${esc(r.s.name)}</b></td><td>${esc(r.s.cls)}</td>
-        ${LL.map(l => { const p = r.per.find(x => x.l.id === l.id); return `<td>${!p ? '<small style="color:var(--muted)">لا يظهر لشعبته</small>' : p.b ? (+p.b.best.auto || 0) : '<span style="color:var(--orange)">—</span>'}</td>`; }).join('')}
+        ${LL.map(l => { const p = r.per.find(x => x.l.id === l.id); return `<td>${!p ? '<small style="color:var(--muted)">لا يظهر لشعبته</small>' : p.b ? (+p.b.best.auto || 0) + okMark(p.b.best) : '<span style="color:var(--orange)">—</span>'}</td>`; }).join('')}
         <td style="white-space:nowrap"><b>${r.total} / ${r.max}</b></td><td>${Math.round(r.pct * 100)}%</td><td>${lvTd(r)}</td><td style="white-space:nowrap">${r.sent} من ${r.n}</td>
         <td><button class="btn sm ghost" onclick="showDetails(${A(r.s.uid)})">تفاصيل</button></td></tr>`).join('') + '</table>';
   }
@@ -951,13 +1280,75 @@ function showDetails(uid) {
   openModal(`<h3 style="margin-top:0">${esc(s.name)} – ${esc(s.cls)}</h3>` + LL.map(L => {
     const b = bestOf(uid, L.id), comps = L.components || [];
     if (!b) return `<div class="card" style="margin:8px 0"><b>${esc((L.icon || '') + ' ' + L.title)}</b> · <span style="color:var(--orange)">لم يرسل بعد</span></div>`;
-    return `<div class="card" style="margin:8px 0"><b>${esc((L.icon || '') + ' ' + L.title)}</b>` + b.all.map(a => {
+    const pcLine = b.pc ? `<div style="border-top:1px dashed var(--line);margin-top:6px;padding-top:4px"><b>🆗 نتيجة خاصة معتمدة${b.pc.how === 'auto' ? ' (تلقائيًا)' : ''}</b> · ${fmtDate(b.pc.at)} · الدرجة: <b>${b.pc.auto} / ${L.autoMax || ''}</b> ${b.pc === b.best ? '<span class="chip done">الأفضل</span>' : ''}</div>` : '';
+    return `<div class="card" style="margin:8px 0"><b>${esc((L.icon || '') + ' ' + L.title)}</b>` + pcLine + b.all.map(a => {
       const sc = a.scores || {};
       return `<div style="border-top:1px dashed var(--line);margin-top:6px;padding-top:4px"><b>المحاولة ${a.attempt || ''}</b> · ${fmtDate(a.at)} · الدرجة: <b>${a.auto} / ${L.autoMax || ''}</b> ${a === b.best ? '<span class="chip done">الأفضل</span>' : ''}
         <div style="font-size:19px">${comps.map(c => `${esc(c.label)} ${esc(sc[c.key] ?? '—')}/${c.max}`).join(' · ')}</div>${a.written ? `<div class="note">${esc(a.written)}</div>` : ''}</div>`;
     }).join('') + '</div>';
   }).join(''));
 }
+/* ---------- تبويب النتائج الخاصة ---------- */
+function renderPrivTab() {
+  if (!$('#pvList')) return;
+  $('#apAll').checked = !!TD.ap.auto;
+  const C = myClasses(), cf = $('#pvCls').value;
+  $('#pvCls').innerHTML = '<option value="">كل الشعب</option>' + C.map(c => `<option ${c === cf ? 'selected' : ''}>${esc(c)}</option>`).join('');
+  const rows = TD.pshare.map(p => ({p, s:TD.students.find(x => x.uid === p.cuid)})).filter(x => x.s && x.s.active !== false).sort((a, b) => byClsName(a.s, b.s));
+  let pending = 0;
+  rows.forEach(({p, s}) => { if (isAutoAp(s.uid)) return; Object.entries(p.res || {}).forEach(([lid, r]) => { const l = catById(lid), man = ((TD.ap.ok || {})[s.uid] || {})[lid]; if (l && l.grade === gradeOf(s.cls) && (!man || (+r.auto || 0) > (+man.auto || 0))) pending++; }); });
+  $('#pvDot').hidden = !pending; $('#pvDot').textContent = pending;
+  const R = rows.filter(x => !cf || x.s.cls === cf);
+  if (!R.length) { $('#pvList').innerHTML = `<p>${rows.length ? 'لا يوجد في هذه الشعبة طالب شارك نتائجه الخاصة.' : 'لم يشارك أي طالب نتائجه الخاصة بعد. يشاركها الطالب من «🌟 مساحتي الخاصة» إن أراد.'}</p>`; return; }
+  $('#pvList').innerHTML = R.map(({p, s}) => {
+    const g = gradeOf(s.cls), res = Object.entries(p.res || {}).map(([lid, r]) => ({lid, r, l:catById(lid)})).filter(x => x.l).sort((a, b) => byLessonOrder(a.l, b.l));
+    const mine = res.filter(x => x.l.grade === g), other = res.filter(x => x.l.grade !== g), tab = TD.pvTab[s.uid] || 'mine', list = tab === 'mine' ? mine : other;
+    const auto = isAutoAp(s.uid);
+    const body = list.length ? `<div class="tbl-scroll"><table><tr><th>الدرس</th>${tab === 'other' ? '<th>الصف</th>' : ''}<th>أفضل درجة</th><th>المحاولات</th><th>آخر محاولة</th>${tab === 'mine' ? '<th>الاعتماد</th>' : ''}</tr>` + list.map(({lid, r, l}) => {
+      let st = '';
+      if (tab === 'mine') {
+        const man = ((TD.ap.ok || {})[s.uid] || {})[lid], shown = (TD.show[lid] || []).includes(s.cls);
+        if (man) st = `<span class="chip done">🆗 معتمدة: ${+man.auto || 0}</span> <button class="btn sm ghost" onclick="unapprove(${A(s.uid)},${A(lid)})">إلغاء الاعتماد</button>` + ((+r.auto || 0) > (+man.auto || 0) ? ` <button class="btn sm" onclick="approve(${A(s.uid)},${A(lid)})">✅ اعتماد الدرجة الأحدث (${+r.auto || 0})</button>` : '');
+        else if (auto) st = '<span class="chip done">🆗 معتمدة تلقائيًا</span>';
+        else st = `<button class="btn sm" onclick="approve(${A(s.uid)},${A(lid)})">✅ اعتماد النتيجة</button>`;
+        if (!shown && (man || auto)) st += '<br><small style="color:var(--muted)">ستظهر في النتائج عند إظهار الدرس لشعبته</small>';
+      }
+      return `<tr><td><b>${esc((l.icon || '') + ' ' + l.title)}</b></td>${tab === 'other' ? `<td>${esc(gradeName(l.grade))}</td>` : ''}<td><b>${+r.auto || 0} / ${+l.autoMax || ''}</b></td>
+        <td>${r.n || 1} <button class="btn sm ghost" onclick="showPAttempts(${A(s.uid)},${A(lid)})">📜</button></td><td>${fmtDate(r.at)}</td>${tab === 'mine' ? `<td>${st}</td>` : ''}</tr>`;
+    }).join('') + '</table></div>' : `<p>${tab === 'mine' ? 'لا توجد نتائج خاصة في دروس صفّه.' : 'لا توجد نتائج في دروس صفوف أخرى.'}</p>`;
+    return `<div class="card" style="margin:10px 0;border-inline-start:6px solid #7c3aed">
+      <div class="row" style="justify-content:space-between"><h3 style="margin:0">${esc(s.name)} <small style="color:var(--muted)">${esc(s.cls)}</small></h3>
+        <label style="font-size:19px">الاعتماد: <select onchange="setApMode(${A(s.uid)},this.value)" style="width:auto">
+          <option value="def" ${apMode(s.uid) === 'def' ? 'selected' : ''}>حسب الإعداد العام (${TD.ap.auto ? 'تلقائي' : 'يدوي'})</option>
+          <option value="auto" ${apMode(s.uid) === 'auto' ? 'selected' : ''}>تلقائي دائمًا</option>
+          <option value="manual" ${apMode(s.uid) === 'manual' ? 'selected' : ''}>يدوي دائمًا</option></select></label></div>
+      <div class="subtabs"><button class="${tab === 'mine' ? 'on' : ''}" onclick="TD.pvTab[${A(s.uid)}]='mine';renderPrivTab()">دروس الصف (${mine.length})</button><button class="${tab === 'other' ? 'on' : ''}" onclick="TD.pvTab[${A(s.uid)}]='other';renderPrivTab()">دروس الصفوف الأخرى (${other.length})</button></div>${body}</div>`;
+  }).join('');
+}
+function showPAttempts(cuid, lid) {
+  const p = pshareOf(cuid), r = p && p.res && p.res[lid], l = catById(lid), s = TD.students.find(x => x.uid === cuid); if (!r || !l) return;
+  const L = (r.att || []).slice().sort((a, b) => b.at - a.at);
+  openModal(`<h3 style="margin-top:0">📜 ${esc(s ? s.name : '')} – ${esc(l.title)} <small style="color:var(--muted)">(مساحته الخاصة)</small></h3>` + L.map(a => `<div style="border-top:1px dashed var(--line);padding:6px 0"><b>المحاولة ${esc(a.attempt || '')}</b> · ${fmtDate(a.at)} · الدرجة: <b>${a.auto} / ${l.autoMax || ''}</b> ${a.at === r.at && a.auto === r.auto ? '<span class="chip done">الأفضل</span>' : ''}</div>`).join(''));
+}
+async function saveAp() {
+  try { await API.set('tapprove', TD.view, {auto:!!TD.ap.auto, mode:TD.ap.mode || {}, ok:TD.ap.ok || {}, updatedAt:Date.now()}); }
+  catch (e) { console.error(e); if (isPerm(e)) $('#rulesWarn').hidden = false; toast('تعذّر الحفظ: ' + errMsg(e)); }
+  renderPrivTab(); renderResults();
+}
+function approve(cuid, lid) {
+  const p = pshareOf(cuid), r = p && p.res && p.res[lid]; if (!r) return;
+  TD.ap.ok = TD.ap.ok || {}; TD.ap.ok[cuid] = TD.ap.ok[cuid] || {};
+  TD.ap.ok[cuid][lid] = {auto:+r.auto || 0, scores:r.scores || {}, at:r.at, appAt:Date.now()};
+  saveAp(); toast('اعتُمدت النتيجة 🆗');
+}
+function unapprove(cuid, lid) {
+  if (!confirm('إلغاء اعتماد هذه النتيجة؟')) return;
+  if (TD.ap.ok && TD.ap.ok[cuid]) { delete TD.ap.ok[cuid][lid]; if (!Object.keys(TD.ap.ok[cuid]).length) delete TD.ap.ok[cuid]; }
+  saveAp();
+}
+function setAutoAll(v) { TD.ap.auto = !!v; saveAp(); toast(v ? 'صارت النتائج الخاصة المشتركة تُعتمد تلقائيًا ✓' : 'أُوقف الاعتماد التلقائي العام'); }
+function setApMode(cuid, v) { TD.ap.mode = TD.ap.mode || {}; if (v === 'def') delete TD.ap.mode[cuid]; else TD.ap.mode[cuid] = v; saveAp(); }
+
 /* اختيار عشوائي من الطلاب المعروضين */
 function randomPick() {
   const R = TD.lastRows || []; if (!R.length) return toast('لا يوجد طلاب معروضون');
@@ -988,7 +1379,7 @@ function exportResults() {
   if (single) {
     const comps = single.components || [], tMax = +single.autoMax || 1;
     head = ['الاسم', 'الشعبة', 'اسم المستخدم', 'المحاولات', 'آخر إرسال'].concat(comps.map(c => c.label + ' /' + c.max), ['المجموع /' + tMax, 'المستوى']);
-    rows = R.map(r => { if (!r.b) return [r.s.name, r.s.cls, r.s.username, 0, 'لم يرسل']; const sc = r.b.best.scores || {}; return [r.s.name, r.s.cls, r.s.username, r.b.count, fmtDate(r.b.all[0].at)].concat(comps.map(c => sc[c.key]), [r.total, lvlName(r.lvl)]); });
+    rows = R.map(r => { if (!r.b) return [r.s.name, r.s.cls, r.s.username, 0, 'لم يرسل']; const sc = r.b.best.scores || {}; return [r.s.name, r.s.cls, r.s.username, r.b.count + (r.b.pc ? ' + خاصة معتمدة' : ''), fmtDate((r.b.all[0] || r.b.best).at)].concat(comps.map(c => sc[c.key]), [r.total + (r.b.best.priv ? ' (خاصة)' : ''), lvlName(r.lvl)]); });
   } else {
     head = ['الاسم', 'الشعبة', 'اسم المستخدم'].concat(LL.map(l => l.title + ' /' + (+l.autoMax || 0)), ['المجموع', 'من', 'النسبة', 'المستوى', 'الدروس المرسلة']);
     rows = R.map(r => [r.s.name, r.s.cls, r.s.username].concat(LL.map(l => { const p = r.per.find(x => x.l.id === l.id); return !p ? '' : p.b ? (+p.b.best.auto || 0) : 'لم يرسل'; }), [r.total, r.max, Math.round(r.pct * 100) + '%', lvlName(r.lvl), r.sent + ' من ' + r.n]));
@@ -1371,16 +1762,16 @@ function renderStudents() {
   const L = listStudentsView();
   if (!L.length) { $('#stTable').innerHTML = '<p>لا يوجد طلاب في هذه القائمة.</p>'; return; }
   $('#stTable').innerHTML = `<table><tr><th>#</th><th>الاسم</th><th>الشعبة</th><th>اسم المستخدم</th><th>كلمة المرور</th><th>الحالة</th><th></th></tr>` +
-    L.map((s, i) => `<tr><td>${i + 1}</td><td><div class="row" style="gap:6px;flex-wrap:nowrap">${micBtn(s.uid)}<span>${esc(s.name)}</span></div></td><td>${esc(s.cls)}</td><td><code class="ltr">${esc(s.username)}</code></td><td><code class="ltr">${esc(s.password)}</code></td>
+    L.map((s, i) => `<tr><td>${i + 1}</td><td><div class="row" style="gap:6px;flex-wrap:nowrap">${micBtn(s.uid)}<span>${esc(s.name)}</span></div></td><td>${esc(s.cls)}</td><td><code class="ltr">${esc(s.username)}</code>${s.ownerUid ? ' <span title="انضم إلى صفّك من حسابه الخاص">🔗</span>' : ''}</td><td><code class="ltr">${esc(s.password)}</code></td>
       <td>${s.active === false ? '<span class="chip off">موقوف</span>' : '<span class="chip done">فعّال</span>'}</td>
       <td><div class="row" style="gap:4px;flex-wrap:nowrap"><button class="btn sm ghost" onclick="openNotes(${A(s.uid)})">📒 ملاحظات</button><button class="btn sm ghost" onclick="copyCreds(${A(s.uid)})">📋</button><button class="btn sm ghost" onclick="toggleActive(${A(s.uid)})">${s.active === false ? '✅ تفعيل' : '⛔ إيقاف'}</button></div></td></tr>`).join('') + '</table>';
 }
-const credText = s => `السلام عليكم يا ${s.name} 🌿\nرابط منصة استعداد: ${siteUrl()}\nاختر «🎒 أنا طالب»، ثم ادخل بـ:\nاسم المستخدم: ${s.username}\nكلمة المرور: ${s.password}`;
+const credText = s => `السلام عليكم يا ${s.name} 🌿\nرابط منصة استعداد: ${siteUrl()}\nاختر «🎒 أنا طالب» ثم «🔑 لدي رمز من المعلم»، وادخل بـ:\nاسم المستخدم: ${s.username}\nكلمة المرور: ${s.password}`;
 function copyCreds(uid) { const s = TD.students.find(x => x.uid === uid); if (s) copyText(credText(s)); }
-function copyListCreds() { const L = listStudentsView().filter(s => s.active !== false); if (!L.length) return toast('القائمة فارغة'); copyText(L.map(s => `${s.name} (${s.cls})\nاسم المستخدم: ${s.username} · كلمة المرور: ${s.password}`).join('\n\n') + `\n\nرابط منصة استعداد: ${siteUrl()} ← اختر «🎒 أنا طالب»`); }
+function copyListCreds() { const L = listStudentsView().filter(s => s.active !== false); if (!L.length) return toast('القائمة فارغة'); copyText(L.map(s => `${s.name} (${s.cls})\nاسم المستخدم: ${s.username} · كلمة المرور: ${s.password}`).join('\n\n') + `\n\nرابط منصة استعداد: ${siteUrl()} ← اختر «🎒 أنا طالب» ثم «🔑 لدي رمز من المعلم»`); }
 function printCards(list) {
   const L = list || listStudentsView().filter(s => s.active !== false); if (!L.length) return toast('القائمة فارغة');
-  printHtml(`<div class="pcards">${L.map(s => `<div class="pcard">📖 <b style="font-family:inherit">منصة استعداد</b> ← «أنا طالب»<br>الاسم: ${esc(s.name)} – ${esc(s.cls)}<br>الرابط: <b>${esc(siteUrl())}</b><br>اسم المستخدم: <b>${esc(s.username)}</b><br>كلمة المرور: <b>${esc(s.password)}</b></div>`).join('')}</div>`);
+  printHtml(`<div class="pcards">${L.map(s => `<div class="pcard">📖 <b style="font-family:inherit">منصة استعداد</b> ← «أنا طالب» ← «لدي رمز من المعلم»<br>الاسم: ${esc(s.name)} – ${esc(s.cls)}<br>الرابط: <b>${esc(siteUrl())}</b><br>اسم المستخدم: <b>${esc(s.username)}</b><br>كلمة المرور: <b>${esc(s.password)}</b></div>`).join('')}</div>`);
 }
 async function toggleActive(uid) {
   const s = TD.students.find(x => x.uid === uid); if (!s) return;
@@ -1507,7 +1898,7 @@ async function delNote(id) { if (!confirm('حذف الملاحظة؟')) return; 
 /* ================= الإعداد والرسائل ================= */
 function messages() {
   return [
-    ['1) رسالة إطلاق المنصة (للطلاب)', `السلام عليكم يا أبطال 🌿\nأطلقنا منصة «استعداد» للتربية الإسلامية 📖\nفيها دروس تفاعلية تستعدّ بها لكل حصة.\n\n🔗 رابط المنصة: ${siteUrl()}\n🔑 سيصلك اسم المستخدم وكلمة المرور في رسالة خاصة.\n\n📌 الخطوات:\n1. افتح الرابط واختر «🎒 أنا طالب».\n2. ادخل ببياناتك.\n3. اختر الدرس من «دروسي» واضغط «ابدأ الدرس».\n4. في نهاية الاختبار اضغط «أرسل نتيجتي إلى المعلم».`],
+    ['1) رسالة إطلاق المنصة (للطلاب)', `السلام عليكم يا أبطال 🌿\nأطلقنا منصة «استعداد» للتربية الإسلامية 📖\nفيها دروس تفاعلية تستعدّ بها لكل حصة.\n\n🔗 رابط المنصة: ${siteUrl()}\n🔑 سيصلك اسم المستخدم وكلمة المرور في رسالة خاصة.\n\n📌 الخطوات:\n1. افتح الرابط واختر «🎒 أنا طالب» ثم «🔑 لدي رمز من المعلم».\n2. ادخل ببياناتك.\n3. اختر الدرس من «دروسي» واضغط «ابدأ الدرس».\n4. في نهاية الاختبار اضغط «أرسل نتيجتي إلى المعلم».`],
     ['2) رسالة درس جديد', `درس جديد على منصة استعداد 🎉\n📚 الدرس: ……………\n🔗 ${siteUrl()}\n⏰ آخر موعد: ……………`]
   ];
 }
@@ -1521,7 +1912,7 @@ async function wipeOld() {
   if (prompt('للتأكيد اكتب: حذف') !== 'حذف') return toast('أُلغي الحذف');
   const P = $('#wipeProg'); let n = 0;
   try {
-    for (const col of ['students', 'lessons', 'lessonFiles', 'progress', 'submissions', 'grades']) {
+    for (const col of ['students', 'lessons', 'lessonFiles', 'progress', 'submissions', 'grades', 'accounts', 'pprogress', 'psubs', 'pshare', 'tapprove']) {
       const L = await API.where(col, {}).catch(() => []);
       for (const d of L) { await API.del(col, d.id).catch(e => console.error(col, e)); n++; P.textContent = '⏳ حُذف ' + n; }
     }
@@ -1565,9 +1956,27 @@ service cloud.firestore {
     match /students/{uid} {
       allow read: if isAdmin() || (signedIn() && request.auth.uid == uid) || owns(resource.data);
       allow create: if isAdmin() || owns(request.resource.data);
-      allow update: if isAdmin() || (owns(resource.data) && owns(request.resource.data));
+      allow update: if isAdmin() || (owns(resource.data) && owns(request.resource.data))
+        || (signedIn() && request.auth.uid == uid && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['ownerUid']));
       allow delete: if isAdmin();
     }
+    match /accounts/{uid} { allow read, write: if isAdmin() || (signedIn() && request.auth.uid == uid); }
+    match /pprogress/{id} { allow read, write: if isAdmin() || (signedIn() && id.matches(request.auth.uid + '_.*')); }
+    match /psubs/{id} {
+      allow read: if isAdmin() || (signedIn() && resource.data.uid == request.auth.uid);
+      allow create: if signedIn() && request.resource.data.uid == request.auth.uid;
+      allow update, delete: if isAdmin();
+    }
+    match /pshare/{uid} {
+      allow read: if isAdmin() || (signedIn() && request.auth.uid == uid) || owns(resource.data);
+      allow create, update: if signedIn() && request.auth.uid == uid
+        && exists(/databases/$(database)/documents/students/$(request.resource.data.cuid))
+        && get(/databases/$(database)/documents/students/$(request.resource.data.cuid)).data.teacherId == request.resource.data.teacherId
+        && (request.resource.data.cuid == request.auth.uid
+            || get(/databases/$(database)/documents/students/$(request.resource.data.cuid)).data.get('ownerUid', '') == request.auth.uid);
+      allow delete: if isAdmin() || (signedIn() && request.auth.uid == uid);
+    }
+    match /tapprove/{tid} { allow read, write: if isAdmin() || (isTeacher() && request.auth.uid == tid); }
     match /catalog/{id} { allow read: if signedIn(); allow write: if isAdmin(); }
     match /catalogFiles/{id} { allow read: if signedIn(); allow write: if isAdmin(); }
     match /banks/{id} { allow read: if signedIn(); allow write: if isAdmin(); }
