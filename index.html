@@ -116,13 +116,7 @@ body.sorting,body.sorting *{cursor:grabbing!important;user-select:none}
 .cls-toggle.on{background:var(--green-l);border-color:var(--green);color:var(--teal);font-weight:700}
 .perm{display:inline-block;background:var(--blue-l);color:var(--blue);border-radius:999px;padding:0 8px;font-size:16px;margin:1px}
 /* المايك والملاحظات */
-.mic{border:1.5px solid var(--teal);background:#fff;color:var(--teal);border-radius:999px;cursor:pointer;font-size:19px;padding:0 10px;line-height:1.6;white-space:nowrap}
-.mic.rec{background:var(--red);border-color:var(--red);color:#fff;animation:pulse 1s infinite}
 @keyframes pulse{50%{box-shadow:0 0 0 6px rgba(192,57,43,.25)}}
-.nitem{border-radius:12px;padding:8px 12px;margin:8px 0;border-inline-start:6px solid}
-.nitem.pos{background:#e8f6ee;border-color:var(--green)} .nitem.neg{background:#fbe7e4;border-color:var(--red)}
-.nitem audio{width:100%;max-width:420px;height:40px;margin-top:4px}
-.recbar{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);background:#fff;border:2px solid var(--red);border-radius:18px;padding:8px 14px;z-index:95;box-shadow:0 8px 30px rgba(0,0,0,.2);display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:center;max-width:94vw}
 /* لوحة النقاط */
 .pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px;margin-top:10px}
 .ptile{position:relative;border-radius:20px;overflow:hidden;background:#fff;border:2px solid var(--line);box-shadow:0 4px 12px rgba(0,0,0,.06);min-height:150px;display:flex;flex-direction:column;user-select:none;-webkit-user-select:none;touch-action:manipulation}
@@ -469,7 +463,7 @@ body.sorting,body.sorting *{cursor:grabbing!important;user-select:none}
         </div>
         <div class="row" style="margin:6px 0"><button class="btn ghost sm" onclick="copyListCreds()">📋 نسخ بيانات الدخول للقائمة</button><button class="btn ghost sm" onclick="printCards()">🖨 طباعة بطاقات الدخول</button></div>
         <div class="tbl-scroll" id="stTable"></div>
-        <p style="font-size:19px;color:var(--muted)">🎙️ تسجيل ملاحظة صوتية · 📒 ملاحظات الطالب. لا يمكن حذف الحساب نهائيًا من هنا؛ أوقفه بدلًا من ذلك.</p>
+        <p style="font-size:19px;color:var(--muted)">لا يمكن حذف حساب الطالب نهائيًا من هنا؛ أوقفه بدلًا من ذلك.</p>
       </div>
     </div>
 
@@ -490,7 +484,6 @@ body.sorting,body.sorting *{cursor:grabbing!important;user-select:none}
 
 <div id="printArea"></div>
 <div id="modalRoot"></div>
-<div id="recRoot"></div>
 <div class="toast" id="toast"></div>
 
 <script type="module">
@@ -1762,9 +1755,9 @@ function renderStudents() {
   const L = listStudentsView();
   if (!L.length) { $('#stTable').innerHTML = '<p>لا يوجد طلاب في هذه القائمة.</p>'; return; }
   $('#stTable').innerHTML = `<table><tr><th>#</th><th>الاسم</th><th>الشعبة</th><th>اسم المستخدم</th><th>كلمة المرور</th><th>الحالة</th><th></th></tr>` +
-    L.map((s, i) => `<tr><td>${i + 1}</td><td><div class="row" style="gap:6px;flex-wrap:nowrap">${micBtn(s.uid)}<span>${esc(s.name)}</span></div></td><td>${esc(s.cls)}</td><td><code class="ltr">${esc(s.username)}</code>${s.ownerUid ? ' <span title="انضم إلى صفّك من حسابه الخاص">🔗</span>' : ''}</td><td><code class="ltr">${esc(s.password)}</code></td>
+    L.map((s, i) => `<tr><td>${i + 1}</td><td>${esc(s.name)}</td><td>${esc(s.cls)}</td><td><code class="ltr">${esc(s.username)}</code>${s.ownerUid ? ' <span title="انضم إلى صفّك من حسابه الخاص">🔗</span>' : ''}</td><td><code class="ltr">${esc(s.password)}</code></td>
       <td>${s.active === false ? '<span class="chip off">موقوف</span>' : '<span class="chip done">فعّال</span>'}</td>
-      <td><div class="row" style="gap:4px;flex-wrap:nowrap"><button class="btn sm ghost" onclick="openNotes(${A(s.uid)})">📒 ملاحظات</button><button class="btn sm ghost" onclick="copyCreds(${A(s.uid)})">📋</button><button class="btn sm ghost" onclick="toggleActive(${A(s.uid)})">${s.active === false ? '✅ تفعيل' : '⛔ إيقاف'}</button></div></td></tr>`).join('') + '</table>';
+      <td><div class="row" style="gap:4px;flex-wrap:nowrap"><button class="btn sm ghost" onclick="copyCreds(${A(s.uid)})">📋</button><button class="btn sm ghost" onclick="toggleActive(${A(s.uid)})">${s.active === false ? '✅ تفعيل' : '⛔ إيقاف'}</button></div></td></tr>`).join('') + '</table>';
 }
 const credText = s => `السلام عليكم يا ${s.name} 🌿\nرابط منصة استعداد: ${siteUrl()}\nاختر «🎒 أنا طالب» ثم «🔑 لدي رمز من المعلم»، وادخل بـ:\nاسم المستخدم: ${s.username}\nكلمة المرور: ${s.password}`;
 function copyCreds(uid) { const s = TD.students.find(x => x.uid === uid); if (s) copyText(credText(s)); }
@@ -1832,68 +1825,6 @@ async function addOne() {
   catch (e) { console.error(e); toast('تعذّر إنشاء الحساب: ' + errMsg(e)); }
   b.disabled = false;
 }
-
-/* ================= الملاحظات الصوتية ================= */
-const micBtn = uid => `<button class="mic" data-mic="${esc(uid)}" title="تسجيل ملاحظة صوتية" onclick="event.stopPropagation();toggleRec(${A(uid)})">🎙️</button>`;
-const REC = {uid:null, mr:null, chunks:[], t0:0, tick:null, stream:null};
-function pickMime() { const L = ['audio/webm;codecs=opus', 'audio/mp4', 'audio/webm', 'audio/ogg;codecs=opus']; if (!window.MediaRecorder) return null; return L.find(m => MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(m)) || ''; }
-async function toggleRec(uid) {
-  if (REC.mr) { if (REC.uid === uid) stopRec(); else toast('أوقف التسجيل الحالي أولًا'); return; }
-  const mime = pickMime();
-  if (mime === null || !navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) return toast('المتصفح لا يدعم التسجيل الصوتي');
-  try {
-    REC.stream = await navigator.mediaDevices.getUserMedia({audio:true});
-    REC.mr = new MediaRecorder(REC.stream, Object.assign(mime ? {mimeType:mime} : {}, {audioBitsPerSecond:24000}));
-  } catch (e) { console.error(e); REC.mr = null; return toast('لم يُسمح باستخدام المايك. فعّله من إعدادات المتصفح.'); }
-  REC.uid = uid; REC.chunks = []; REC.t0 = Date.now();
-  REC.mr.ondataavailable = e => { if (e.data && e.data.size) REC.chunks.push(e.data); };
-  REC.mr.onstop = () => recDone();
-  REC.mr.start(500);
-  const s = TD.students.find(x => x.uid === uid) || {};
-  $('#recRoot').innerHTML = `<div class="recbar"><b style="color:var(--red)">🔴 تسجيل ملاحظة: ${esc(s.name || '')}</b> <span id="recT">0:00</span><button class="btn sm red" onclick="stopRec()">⏹ إيقاف</button></div>`;
-  $$('[data-mic]').forEach(b => b.classList.toggle('rec', b.dataset.mic === uid));
-  REC.tick = setInterval(() => { const s2 = Math.floor((Date.now() - REC.t0) / 1000); const el = $('#recT'); if (el) el.textContent = Math.floor(s2 / 60) + ':' + String(s2 % 60).padStart(2, '0'); if (s2 >= 60) stopRec(); }, 250);
-}
-function stopRec() { if (REC.mr && REC.mr.state !== 'inactive') REC.mr.stop(); clearInterval(REC.tick); if (REC.stream) REC.stream.getTracks().forEach(t => t.stop()); }
-function recDone() {
-  const blob = new Blob(REC.chunks, {type:(REC.mr && REC.mr.mimeType) || 'audio/webm'}), dur = Math.round((Date.now() - REC.t0) / 1000), uid = REC.uid;
-  REC.mr = null; REC.stream = null; $$('[data-mic]').forEach(b => b.classList.remove('rec'));
-  if (blob.size < 500) { $('#recRoot').innerHTML = ''; return toast('التسجيل قصير جدًا'); }
-  const r = new FileReader();
-  r.onload = () => {
-    REC.pending = {uid, audio:r.result, dur};
-    const s = TD.students.find(x => x.uid === uid) || {};
-    $('#recRoot').innerHTML = `<div class="recbar"><b>ملاحظة على ${esc(s.name || '')} (${dur} ث)</b>
-      <button class="btn" style="background:var(--green)" onclick="saveNote('pos')">👍 إيجابية</button><button class="btn" style="background:var(--red)" onclick="saveNote('neg')">👎 سلبية</button><button class="btn sm ghost" onclick="REC.pending=null;$('#recRoot').innerHTML=''">🗑 إلغاء</button></div>`;
-  };
-  r.readAsDataURL(blob);
-}
-async function saveNote(kind) {
-  const P = REC.pending; if (!P) return;
-  if (P.audio.length > 900000) { toast('التسجيل طويل جدًا'); return; }
-  const s = TD.students.find(x => x.uid === P.uid) || {};
-  try {
-    await API.add('notes', {teacherId:TD.view, uid:P.uid, name:s.name || '', cls:s.cls || '', kind, audio:P.audio, dur:P.dur, at:Date.now()});
-    REC.pending = null; $('#recRoot').innerHTML = ''; toast(kind === 'pos' ? 'حُفظت ملاحظة إيجابية ✓' : 'حُفظت ملاحظة سلبية ✓');
-    if (NOTES.uid === P.uid && $('#ntBody')) openNotes(P.uid, NOTES.f);
-  } catch (e) { console.error(e); if (isPerm(e)) $('#rulesWarn').hidden = false; toast('تعذّر حفظ الملاحظة: ' + errMsg(e)); }
-}
-const NOTES = {uid:null, f:'all', list:[]};
-async function openNotes(uid, f) {
-  const s = TD.students.find(x => x.uid === uid); if (!s) return;
-  NOTES.uid = uid; NOTES.f = f || 'all';
-  if (!$('#ntBody')) openModal(`<h3 style="margin-top:0">📒 ملاحظات ${esc(s.name)} <small style="color:var(--muted)">${esc(s.cls)}</small></h3><div class="row">${micBtn(uid)} <small>اضغط المايك لتسجيل ملاحظة جديدة</small></div><div id="ntBody"><p>⏳ جارٍ التحميل…</p></div>`);
-  try { NOTES.list = (await API.where('notes', {teacherId:TD.view, uid})).sort((a, b) => b.at - a.at); } catch (e) { $('#ntBody').innerHTML = '<p>تعذّر التحميل: ' + esc(errMsg(e)) + '</p>'; return; }
-  renderNotes();
-}
-function renderNotes() {
-  const L = NOTES.list, pos = L.filter(n => n.kind === 'pos').length, neg = L.length - pos;
-  const show = L.filter(n => NOTES.f === 'all' || n.kind === NOTES.f);
-  $('#ntBody').innerHTML = `<div class="subtabs"><button class="${NOTES.f === 'all' ? 'on' : ''}" onclick="NOTES.f='all';renderNotes()">الكل (${L.length})</button><button class="${NOTES.f === 'pos' ? 'on' : ''}" style="border-color:var(--green)" onclick="NOTES.f='pos';renderNotes()">👍 الإيجابية (${pos})</button><button class="${NOTES.f === 'neg' ? 'on' : ''}" style="border-color:var(--red)" onclick="NOTES.f='neg';renderNotes()">👎 السلبية (${neg})</button></div>` +
-    (show.length ? show.map(n => `<div class="nitem ${n.kind}"><div class="row" style="justify-content:space-between"><b>${n.kind === 'pos' ? '👍 إيجابية' : '👎 سلبية'}</b><small>${esc(fmtFull(n.at))} · ${n.dur || ''} ث</small></div>
-      <audio controls preload="none" src="${esc(n.audio)}"></audio><div><button class="btn sm red" onclick="delNote(${A(n.id)})">🗑 حذف</button></div></div>`).join('') : '<p>لا توجد ملاحظات.</p>');
-}
-async function delNote(id) { if (!confirm('حذف الملاحظة؟')) return; try { await API.del('notes', id); NOTES.list = NOTES.list.filter(n => n.id !== id); renderNotes(); } catch (e) { toast('تعذّر: ' + errMsg(e)); } }
 
 /* ================= الإعداد والرسائل ================= */
 function messages() {
@@ -2008,10 +1939,6 @@ service cloud.firestore {
       allow delete: if isAdmin() || owns(resource.data);
     }
     match /points/{id} { allow read, write: if isAdmin() || ownsId(id); }
-    match /notes/{id} {
-      allow read, update, delete: if isAdmin() || owns(resource.data);
-      allow create: if isAdmin() || owns(request.resource.data);
-    }
     match /gamesets/{id} {
       allow read: if signedIn();
       allow create: if isAdmin() || owns(request.resource.data);
