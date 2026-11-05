@@ -4,6 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>منصة استعداد</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="استعداد">
+<meta name="theme-color" content="#1b4f65">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
 <style>
@@ -195,6 +202,8 @@ body.sorting,body.sorting *{cursor:grabbing!important;user-select:none}
 .pbar b{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .pbar .prev{background:var(--gold);color:#222;border-radius:999px;padding:0 10px;font-weight:700;font-size:18px}
 #plFrame{flex:1;border:0;width:100%;background:var(--bg)}
+#plFrame.fsx{position:fixed;inset:0;width:100vw;height:100vh;height:100dvh;z-index:2147483000;background:#000}
+body.fsx-on{overflow:hidden}
 .plload{position:absolute;inset:44px 0 0 0;display:flex;align-items:center;justify-content:center;font-size:26px;color:var(--teal);pointer-events:none}
 #printArea{display:none}
 .pcards{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
@@ -350,7 +359,7 @@ body.sorting,body.sorting *{cursor:grabbing!important;user-select:none}
 <section id="scrPlayer" hidden>
   <div class="pbar"><button class="hbtn" onclick="leaveLesson()">🏠 رجوع</button><b id="plTitle"></b><span class="prev" id="plPrev" hidden>👁 معاينة: لا تُحفظ الإجابات</span><span id="plWho"></span></div>
   <div class="plload" id="plLoad">⏳ جارٍ تحميل الدرس…</div>
-  <iframe id="plFrame" title="الدرس" sandbox="allow-scripts allow-popups allow-forms allow-modals allow-popups-to-escape-sandbox" allow="autoplay; fullscreen; clipboard-write"></iframe>
+  <iframe id="plFrame" title="الدرس" sandbox="allow-scripts allow-popups allow-forms allow-modals allow-popups-to-escape-sandbox allow-orientation-lock" allow="autoplay; fullscreen; clipboard-write; screen-wake-lock"></iframe>
 </section>
 
 <section id="scrTeacher" hidden>
@@ -1050,7 +1059,7 @@ async function flushProgress() {
 }
 async function leaveLesson() {
   await flushProgress();
-  const m = PL && PL.mode; PL = null; $('#plFrame').srcdoc = '';
+  const m = PL && PL.mode; PL = null; $('#plFrame').srcdoc = ''; $('#plFrame').classList.remove('fsx'); document.body.classList.remove('fsx-on');
   if (ME && ME.role !== 'student') showScreen('scrTeacher');
   else if (ME && m === 'private') openPrivate();
   else if (ME) { showScreen('scrHome'); loadStudentLessons(); } else showScreen('scrRole');
@@ -1092,6 +1101,7 @@ window.addEventListener('message', async ev => {
       postToLesson({iste:'submitted', ok:true, attempt:data.attempt});
     } catch (e) { console.error(e); postToLesson({iste:'submitted', ok:false, error:'تعذّر الإرسال. تأكّد من الإنترنت ثم حاول مرة أخرى'}); }
   } else if (m.iste === 'home') leaveLesson();
+  else if (m.iste === 'fs') { $('#plFrame').classList.toggle('fsx', !!m.on); document.body.classList.toggle('fsx-on', !!m.on); plFull(!!m.on); }
 });
 window.addEventListener('pagehide', () => { if (plSaveT) flushProgress(); });
 document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden' && plSaveT) flushProgress(); });
@@ -1988,6 +1998,19 @@ function buildConfigured() {
 /* ================= التشغيل ================= */
 setupCuDrop();
 boot();
+</script>
+<script>
+/* ملء الشاشة للألعاب: المنصة تملأ الشاشة بإطار الدرس، وعلى الآيفون (لا يسمح المتصفح بإخفاء شريطه) تظهر طريقة فتح المنصة من الشاشة الرئيسية */
+function plFull(on) {
+  const fr = document.getElementById('plFrame'), fsEl = document.fullscreenElement || document.webkitFullscreenElement;
+  try { if (on && !fsEl) { const rq = fr.requestFullscreen || fr.webkitRequestFullscreen; if (rq) { const p = rq.call(fr, {navigationUI:'hide'}); if (p && p.catch) p.catch(() => {}); } }
+    else if (!on && fsEl) { (document.exitFullscreen || document.webkitExitFullscreen).call(document); } } catch (e) {}
+  const iPhone = /iPhone|iPod/.test(navigator.userAgent), app = navigator.standalone || (window.matchMedia && matchMedia('(display-mode: standalone), (display-mode: fullscreen)').matches);
+  if (on && iPhone && !app) { let seen = false; try { seen = sessionStorage.getItem('plFsTip') === '1'; sessionStorage.setItem('plFsTip', '1'); } catch (e) {} if (seen) return;
+    const t = document.createElement('div'); t.id = 'plFsTip'; t.innerHTML = '<b>لملء الشاشة كاملة على الآيفون</b><br>متصفح الآيفون لا يسمح بإخفاء شريطه، فافتح المنصة من أيقونتها: اضغط زر المشاركة <span style="font-size:1.2em">⎋</span> ثم «إضافة إلى الشاشة الرئيسية»، وافتحها من الأيقونة؛ فتعمل الألعاب بملء الشاشة دائمًا.<button>حسنًا</button>';
+    t.style.cssText = 'position:fixed;z-index:2147483646;left:50%;bottom:16px;transform:translateX(-50%);width:min(92vw,420px);background:#1e1b4b;color:#fff;border:2px solid #fde047;border-radius:16px;padding:12px 14px;font:15px/1.7 system-ui,Tahoma,sans-serif;text-align:right;direction:rtl;box-shadow:0 8px 24px #0008';
+    const b = t.querySelector('button'); b.style.cssText = 'display:block;margin:8px auto 0;padding:6px 22px;border:0;border-radius:10px;background:#fde047;color:#1e1b4b;font:700 15px system-ui,Tahoma,sans-serif'; b.onclick = () => t.remove(); document.body.appendChild(t); setTimeout(() => t.remove(), 14000); }
+}
 </script>
 </body>
 </html>
