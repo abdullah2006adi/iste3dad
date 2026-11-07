@@ -205,6 +205,25 @@ body.sorting,body.sorting *{cursor:grabbing!important;user-select:none}
 #plFrame.fsx{position:fixed;inset:0;width:100vw;height:100vh;height:100dvh;z-index:2147483000;background:#000}
 body.fsx-on{overflow:hidden}
 .plload{position:absolute;inset:44px 0 0 0;display:flex;align-items:center;justify-content:center;font-size:26px;color:var(--teal);pointer-events:none}
+/* واتساب وأرقام أولياء الأمور */
+.btn.wa{background:#25d366;color:#fff;white-space:nowrap}
+.btn.wa.nophone{background:#fff;color:#128c4b;border:1.5px solid #25d366}
+input.phone{direction:ltr;text-align:left;width:185px;font-size:19px;padding:2px 8px;font-family:Consolas,monospace}
+input.phone.saved{border-color:var(--green);background:#f3faf6}
+/* تحديد الدروس */
+.cu-sel{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin:6px 0;padding:6px 10px;border-radius:12px;background:#f3faf6;border:1px dashed var(--teal)}
+.lrow .selbox{width:24px;height:24px;flex:none;cursor:pointer}
+.lrow.picked{background:var(--orange-l);border-color:var(--orange)}
+/* الملاحظات */
+.fb-choices{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0}
+.fb-choices button{font:inherit;cursor:pointer;border:2px solid var(--line);background:#fff;border-radius:18px;padding:16px 8px;font-size:25px;font-weight:700;color:var(--teal)}
+.fb-choices button span{display:block;font-size:46px;line-height:1.2}
+.fb-choices button:hover{border-color:var(--green);background:#f3faf6}
+.fb-choices button.on{border-color:var(--orange);background:var(--orange-l)}
+.fbitem{border:1px solid var(--line);border-radius:14px;padding:8px 12px;margin:8px 0;background:#fff;border-inline-start:6px solid var(--orange)}
+.fbitem.done{border-inline-start-color:var(--green);opacity:.75}
+.fbitem .txt{white-space:pre-wrap;word-break:break-word;margin:4px 0;font-size:22px}
+.fbitem .meta{color:var(--muted);font-size:18px}
 #printArea{display:none}
 .pcards{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
 .pcard{border:2px dashed #888;border-radius:12px;padding:8px 12px;font-size:17px;line-height:1.7;break-inside:avoid}
@@ -325,7 +344,7 @@ body.fsx-on{overflow:hidden}
 </section>
 
 <section id="scrHub" hidden>
-  <div class="topbar"><div class="wrap"><h1>📖 منصة استعداد</h1><div class="row"><span id="hubWho"></span><button class="hbtn" onclick="doLogout()">🚪 خروج</button></div></div></div>
+  <div class="topbar"><div class="wrap"><h1>📖 منصة استعداد</h1><div class="row"><span id="hubWho"></span><button class="hbtn fbbtn" onclick="openFeedback()">💬 أرسل ملاحظة</button><button class="hbtn" onclick="doLogout()">🚪 خروج</button></div></div></div>
   <div class="wrap">
     <h2 id="hubHello"></h2>
     <div class="space-btns">
@@ -337,7 +356,7 @@ body.fsx-on{overflow:hidden}
 </section>
 
 <section id="scrHome" hidden>
-  <div class="topbar"><div class="wrap"><h1>🏫 صفّي</h1><div class="row"><span id="homeWho"></span><button class="hbtn" onclick="showHub()">🏠 الرئيسية</button><button class="hbtn" onclick="doLogout()">🚪 خروج</button></div></div></div>
+  <div class="topbar"><div class="wrap"><h1>🏫 صفّي</h1><div class="row"><span id="homeWho"></span><button class="hbtn fbbtn" onclick="openFeedback()">💬 أرسل ملاحظة</button><button class="hbtn" onclick="showHub()">🏠 الرئيسية</button><button class="hbtn" onclick="doLogout()">🚪 خروج</button></div></div></div>
   <div class="wrap">
     <h2 id="homeHello"></h2>
     <h3>📚 دروسي</h3>
@@ -346,7 +365,7 @@ body.fsx-on{overflow:hidden}
 </section>
 
 <section id="scrPriv" hidden>
-  <div class="topbar"><div class="wrap"><h1>🌟 مساحتي الخاصة</h1><div class="row"><span id="pvWho"></span><button class="hbtn" id="pvHub" onclick="showHub()">🏠 الرئيسية</button><button class="hbtn" onclick="doLogout()">🚪 خروج</button></div></div></div>
+  <div class="topbar"><div class="wrap"><h1>🌟 مساحتي الخاصة</h1><div class="row"><span id="pvWho"></span><button class="hbtn fbbtn" onclick="openFeedback()">💬 أرسل ملاحظة</button><button class="hbtn" id="pvHub" onclick="showHub()">🏠 الرئيسية</button><button class="hbtn" onclick="doLogout()">🚪 خروج</button></div></div></div>
   <div class="wrap">
     <h2 id="pvHello"></h2>
     <div class="warnbar" id="pvWarn" hidden></div>
@@ -363,12 +382,13 @@ body.fsx-on{overflow:hidden}
 </section>
 
 <section id="scrTeacher" hidden>
-  <div class="topbar"><div class="wrap"><h1 id="tHead">📖 استعداد · لوحة المعلم</h1><div class="row"><span id="tWho"></span><button class="hbtn" onclick="doLogout()">🚪 خروج</button></div></div></div>
+  <div class="topbar"><div class="wrap"><h1 id="tHead">📖 استعداد · لوحة المعلم</h1><div class="row"><span id="tWho"></span><button class="hbtn fbbtn" onclick="openFeedback()">💬 أرسل ملاحظة</button><button class="hbtn" onclick="doLogout()">🚪 خروج</button></div></div></div>
   <div class="wrap">
     <div class="warnbar" id="rulesWarn" hidden>⚠️ قواعد الحماية في Firebase قديمة. افتح تبويب «⚙️ الإعداد»، وانسخ القواعد الجديدة، والصقها في Firebase ← Firestore ← Rules، ثم اضغط Publish وحدّث الصفحة.</div>
     <div class="subtabs" id="tTabs">
       <button data-t="teachers" class="adminOnly" onclick="tTab('teachers')" hidden>🏫 المعلمون</button>
       <button data-t="curriculum" class="adminOnly" onclick="tTab('curriculum')" hidden>🗂️ المنهج</button>
+      <button data-t="feedback" class="adminOnly" onclick="tTab('feedback')" hidden>📨 ملاحظات المستخدمين<span class="dot" id="fbDot" hidden></span></button>
       <button data-t="results" onclick="tTab('results')">📊 النتائج</button>
       <button data-t="private" onclick="tTab('private')">🔐 النتائج الخاصة<span class="dot" id="pvDot" hidden></span></button>
       <button data-t="lessons" onclick="tTab('lessons')">📚 الدروس</button>
@@ -384,6 +404,17 @@ body.fsx-on{overflow:hidden}
         <p style="margin-top:0">يسجّل المعلم بنفسه: يفتح المنصة ← «👨‍🏫 أنا معلم» ← «أنشئ حساب معلم»، ثم يتحقّق من بريده. تستطيع هنا إيقاف أي حساب أو فتح صفحته.</p>
         <button class="btn sm ghost" onclick="copyText(inviteText())">📋 نسخ رسالة دعوة للمعلمين</button>
         <div class="tbl-scroll" id="tcTable" style="margin-top:8px"></div>
+      </div>
+    </div>
+
+    <!-- ملاحظات المستخدمين (للمدير) -->
+    <div class="tview" id="tv-feedback" hidden>
+      <div class="card">
+        <div class="row" style="justify-content:space-between"><h3 style="margin:0">📨 ملاحظات المستخدمين</h3><button class="btn sm" onclick="loadFeedback()">🔄 تحديث</button></div>
+        <p style="margin:4px 0 0">ما يرسله الطلاب والمعلمون من زر «💬 أرسل ملاحظة»، مصنّفًا حسب نوعه.</p>
+        <div class="subtabs" id="fbTabs"></div>
+        <label class="row" style="gap:4px;font-size:19px"><input type="checkbox" id="fbShowDone" onchange="renderFeedback()"> إظهار ما تمت معالجته</label>
+        <div id="fbList"></div>
       </div>
     </div>
 
@@ -471,8 +502,9 @@ body.fsx-on{overflow:hidden}
           </div>
         </div>
         <div class="row" style="margin:6px 0"><button class="btn ghost sm" onclick="copyListCreds()">📋 نسخ بيانات الدخول للقائمة</button><button class="btn ghost sm" onclick="printCards()">🖨 طباعة بطاقات الدخول</button></div>
+        <div class="row" style="margin:6px 0"><button class="btn sm wa" onclick="openPhoneImport()">📞 أرقام أولياء الأمور دفعة واحدة (إكسل)</button><button class="btn ghost sm" onclick="phoneTemplate()">⬇ تنزيل قائمة الطلاب لإضافة الأرقام</button></div>
         <div class="tbl-scroll" id="stTable"></div>
-        <p style="font-size:19px;color:var(--muted)">لا يمكن حذف حساب الطالب نهائيًا من هنا؛ أوقفه بدلًا من ذلك.</p>
+        <p style="font-size:19px;color:var(--muted)">اكتب رقم وليّ الأمر في خانته بجانب الاسم، ويُحفظ تلقائيًا عند الخروج من الخانة. لا يمكن حذف حساب الطالب نهائيًا من هنا؛ أوقفه بدلًا من ذلك.</p>
       </div>
     </div>
 
@@ -1128,9 +1160,10 @@ async function openTeacher() {
   $$('.adminOnly').forEach(e => e.hidden = !isAdmin());
   if (isAdmin()) { const t = await ensureAdmin(); if (t) Object.assign(ME, {tdoc:t, name:t.name || 'المدير'}); }
   try { await loadCatalog(); } catch (e) { console.error(e); if (isPerm(e)) $('#rulesWarn').hidden = false; }
+  await loadSettings();
   await switchView(ME.uid, true);
   tTab(LS.get('iste3dad-ttab', isAdmin() ? 'curriculum' : 'lessons'));
-  if (isAdmin()) loadTeachers();
+  if (isAdmin()) { loadTeachers(); loadFeedback(); }
 }
 async function switchView(uid, silent) {
   TD.view = uid;
@@ -1171,6 +1204,7 @@ function tTab(t) {
   if (t === 'curriculum') renderCurriculum();
   if (t === 'lessons') renderShowTab();
   if (t === 'private') renderPrivTab();
+  if (t === 'feedback') loadFeedback();
 }
 
 /* ---------- النتائج ---------- */
@@ -1267,14 +1301,14 @@ function renderResults() {
         const sc = r.b.best.scores || {};
         return `<tr data-u="${esc(r.s.uid)}"><td>${i + 1}</td><td><b>${esc(r.s.name)}</b></td><td>${esc(r.s.cls)}</td><td>${r.b.count}${r.b.pc ? ' + 🆗' : ''}</td><td>${fmtDate((r.b.all[0] || r.b.best).at)}</td>
           ${comps.map(c => `<td>${esc(sc[c.key] ?? '')}</td>`).join('')}<td><b>${r.total}</b>${okMark(r.b.best)}</td><td>${lvTd(r)}</td>
-          <td><button class="btn sm ghost" onclick="showDetails(${A(r.s.uid)})">تفاصيل</button></td></tr>`;
+          <td><div class="row" style="gap:4px;flex-wrap:nowrap">${waBtn(r.s)}<button class="btn sm ghost" onclick="showDetails(${A(r.s.uid)})">تفاصيل</button></div></td></tr>`;
       }).join('') + '</table>';
   } else {
     $('#resTable').innerHTML = `<table><tr><th>#</th><th>الاسم</th><th>الشعبة</th>${LL.map(l => `<th style="font-size:17px;min-width:90px">${esc((l.icon || '') + ' ' + l.title)} /${+l.autoMax || 0}</th>`).join('')}<th>المجموع</th><th>النسبة</th><th>المستوى</th><th>أرسل</th><th></th></tr>` +
       R.map((r, i) => `<tr data-u="${esc(r.s.uid)}" class="${r.sent ? '' : 'nosub'}"><td>${i + 1}</td><td><b>${esc(r.s.name)}</b></td><td>${esc(r.s.cls)}</td>
         ${LL.map(l => { const p = r.per.find(x => x.l.id === l.id); return `<td>${!p ? '<small style="color:var(--muted)">لا يظهر لشعبته</small>' : p.b ? (+p.b.best.auto || 0) + okMark(p.b.best) : '<span style="color:var(--orange)">—</span>'}</td>`; }).join('')}
         <td style="white-space:nowrap"><b>${r.total} / ${r.max}</b></td><td>${Math.round(r.pct * 100)}%</td><td>${lvTd(r)}</td><td style="white-space:nowrap">${r.sent} من ${r.n}</td>
-        <td><button class="btn sm ghost" onclick="showDetails(${A(r.s.uid)})">تفاصيل</button></td></tr>`).join('') + '</table>';
+        <td><div class="row" style="gap:4px;flex-wrap:nowrap">${r.sent ? waBtn(r.s) : ''}<button class="btn sm ghost" onclick="showDetails(${A(r.s.uid)})">تفاصيل</button></div></td></tr>`).join('') + '</table>';
   }
 }
 function showDetails(uid) {
@@ -1446,16 +1480,25 @@ function parseManifest(html) {
   const m = html.match(/<script[^>]*id=["']iste3dad-lesson["'][^>]*>([\s\S]*?)<\/script>/i);
   if (!m) return null; try { return JSON.parse(m[1]); } catch (e) { return null; }
 }
+const CUSEL = {on:false, ids:new Set()};
+function cuSelReset() { CUSEL.on = false; CUSEL.ids = new Set(); }
 function renderCurriculum() {
-  renderTree('#cuTree', 'cu', renderCuList);
+  cuSelReset();
+  renderTree('#cuTree', 'cu', () => { cuSelReset(); renderCuList(); });
   renderCuList();
 }
 function cuLessons(v) { return CAT.filter(l => l.grade === v.g && (l.term || 1) === v.t && (l.unit || 1) === v.u).sort(byLessonOrder); }
 function renderCuList() {
-  const v = treeVal('#cuTree'), L = cuLessons(v);
-  $('#cuList').innerHTML = `<div class="unit-head">📘 ${esc(gradeName(v.g))} · ${termName(v.t)} · ${unitName(v.u)} <small>(${L.length} درس)</small></div>` +
+  const v = treeVal('#cuTree'), L = cuLessons(v), ids = L.map(l => l.id);
+  [...CUSEL.ids].forEach(id => { if (!ids.includes(id)) CUSEL.ids.delete(id); });
+  if (!L.length) cuSelReset();
+  const n = CUSEL.ids.size, allOn = L.length && n === L.length;
+  const selBar = !L.length ? '' : !CUSEL.on
+    ? `<div class="row" style="gap:6px;margin:6px 0"><button class="btn sm ghost" onclick="cuSelStart(false)">☑️ تحديد</button><button class="btn sm ghost" onclick="cuSelStart(true)">✅ تحديد الكل</button></div>`
+    : `<div class="cu-sel"><b>المحدد: ${n} من ${L.length}</b><button class="btn sm ghost" onclick="cuSelAll(${allOn ? 'false' : 'true'})">${allOn ? '✖ إلغاء تحديد الكل' : '✅ تحديد الكل'}</button><button class="btn sm red" ${n ? '' : 'disabled'} onclick="deleteSelected()">🗑 حذف المحدد (${n})</button><button class="btn sm ghost" onclick="cuSelReset();renderCuList()">إنهاء التحديد</button></div>`;
+  $('#cuList').innerHTML = `<div class="unit-head">📘 ${esc(gradeName(v.g))} · ${termName(v.t)} · ${unitName(v.u)} <small>(${L.length} درس)</small></div>` + selBar +
     (L.length > 1 ? `<div class="row" style="gap:6px;margin:6px 0"><small style="color:var(--muted);flex:1 1 200px">⠿ اسحب الدرس من المقبض لتغيير ترتيبه</small><button class="btn sm ghost" onclick="sortCuByFile()">🔤 رتّب حسب اسم الملف</button></div>` : '') +
-    (L.length ? L.map((l, i) => `<div class="lrow cu" data-id="${esc(l.id)}"><span class="grip" title="اسحب لتغيير الترتيب">⠿</span><span class="ic">${esc(l.icon || '📘')}</span>
+    (L.length ? L.map((l, i) => `<div class="lrow cu${CUSEL.ids.has(l.id) ? ' picked' : ''}" data-id="${esc(l.id)}">${CUSEL.on ? `<input type="checkbox" class="selbox" ${CUSEL.ids.has(l.id) ? 'checked' : ''} onchange="cuSelOne(${A(l.id)},this.checked)">` : ''}<span class="grip" title="اسحب لتغيير الترتيب">⠿</span><span class="ic">${esc(l.icon || '📘')}</span>
       <div class="t"><b>${esc(l.title)}</b><br><small style="color:var(--muted)">${esc(l.sub || '')}${l.tracked === false ? ' · للاطلاع' : ' · ' + (l.autoMax || 0) + ' درجة'} · 🧠 ${l.bankCount || 0} سؤالًا</small></div>
       <div class="row" style="gap:4px">
         <button class="btn sm ghost" ${i === 0 ? 'disabled' : ''} onclick="moveCat(${A(l.id)},-1)">▲</button><button class="btn sm ghost" ${i === L.length - 1 ? 'disabled' : ''} onclick="moveCat(${A(l.id)},1)">▼</button>
@@ -1524,7 +1567,7 @@ async function uploadCatFiles(files, forceId) {
         grade:ex ? ex.grade : v.g, term:ex ? ex.term : v.t, unit:ex ? ex.unit : v.u,
         order:ex ? ex.order : (cuLessons(v).length ? Math.max(...cuLessons(v).map(l => l.order ?? 0)) + 1 : 1),
         tracked:!!man, components:man && Array.isArray(man.components) ? man.components.map(c => ({key:String(c.key), label:String(c.label || c.key), max:+c.max || 0})) : [],
-        autoMax:man ? +man.autoMax || 0 : 0, version:(man && man.version) || 1, size:bytes, fileName:file.name, updatedAt:Date.now(), bankCount:(ex && ex.bankCount) || 0
+        autoMax:man ? +man.autoMax || 0 : 0, partWord:detectPartWord(html), version:(man && man.version) || 1, size:bytes, fileName:file.name, updatedAt:Date.now(), bankCount:(ex && ex.bankCount) || 0
       };
       const parts = splitHtml(html);
       for (let k = 1; k < parts.length; k++) { prog.innerHTML = `<p>⏳ ${i + 1} من ${files.length}: ${esc(file.name)} — الجزء ${k + 1} من ${parts.length}</p>`; await API.set('catalogFiles', id + '__p' + (k + 1), {html:parts[k]}); }
@@ -1566,6 +1609,21 @@ function replaceCat(id) {
   const inp = document.createElement('input'); inp.type = 'file'; inp.accept = '.html,.htm,text/html';
   inp.onchange = () => { if (inp.files[0]) uploadCatFiles([inp.files[0]], id); };
   inp.click();
+}
+function cuSelStart(all) { CUSEL.on = true; CUSEL.ids = new Set(all ? cuLessons(treeVal('#cuTree')).map(l => l.id) : []); renderCuList(); }
+function cuSelAll(on) { CUSEL.ids = new Set(on ? cuLessons(treeVal('#cuTree')).map(l => l.id) : []); renderCuList(); }
+function cuSelOne(id, on) { on ? CUSEL.ids.add(id) : CUSEL.ids.delete(id); renderCuList(); }
+async function deleteSelected() {
+  const L = [...CUSEL.ids].map(catById).filter(Boolean); if (!L.length) return toast('حدّد درسًا واحدًا على الأقل');
+  if (!confirm(`حذف ${L.length} ${L.length > 2 ? 'دروس' : 'درس'} من المنهج؟\n\n${L.map(l => '• ' + l.title).join('\n')}\n\nستختفي عند كل المعلمين والطلاب، وتبقى النتائج السابقة محفوظة.`)) return;
+  const prog = $('#cuProg'), bad = []; let k = 0;
+  for (const l of L) {
+    prog.innerHTML = `<p>⏳ جارٍ الحذف ${++k} من ${L.length}: ${esc(l.title)}</p>`;
+    try { await API.del('catalog', l.id); await API.del('catalogFiles', l.id); await delCatParts(l.id, 2); await API.del('banks', l.id).catch(() => {}); }
+    catch (e) { console.error(e); bad.push(l.title + ': ' + errMsg(e)); }
+  }
+  cuSelReset(); await loadCatalog(); renderCuList();
+  prog.innerHTML = `<div class="note">${bad.length ? '⚠️ تعذّر حذف: ' + bad.map(esc).join('، ') : '🗑 حُذف ' + L.length + ' ' + (L.length > 2 ? 'دروس' : 'درس')}</div>`;
 }
 async function deleteCat(id) {
   const l = catById(id); if (!l) return;
@@ -1764,8 +1822,8 @@ function renderStudents() {
   try { renderClassChips(); } catch (e) {}
   const L = listStudentsView();
   if (!L.length) { $('#stTable').innerHTML = '<p>لا يوجد طلاب في هذه القائمة.</p>'; return; }
-  $('#stTable').innerHTML = `<table><tr><th>#</th><th>الاسم</th><th>الشعبة</th><th>اسم المستخدم</th><th>كلمة المرور</th><th>الحالة</th><th></th></tr>` +
-    L.map((s, i) => `<tr><td>${i + 1}</td><td>${esc(s.name)}</td><td>${esc(s.cls)}</td><td><code class="ltr">${esc(s.username)}</code>${s.ownerUid ? ' <span title="انضم إلى صفّك من حسابه الخاص">🔗</span>' : ''}</td><td><code class="ltr">${esc(s.password)}</code></td>
+  $('#stTable').innerHTML = `<table><tr><th>#</th><th>الاسم</th><th>📞 رقم وليّ الأمر</th><th>الشعبة</th><th>اسم المستخدم</th><th>كلمة المرور</th><th>الحالة</th><th></th></tr>` +
+    L.map((s, i) => `<tr><td>${i + 1}</td><td>${esc(s.name)}</td><td><input type="tel" class="phone" value="${esc(showPhone(s.parentPhone))}" placeholder="—" onchange="savePhone(${A(s.uid)},this)"></td><td>${esc(s.cls)}</td><td><code class="ltr">${esc(s.username)}</code>${s.ownerUid ? ' <span title="انضم إلى صفّك من حسابه الخاص">🔗</span>' : ''}</td><td><code class="ltr">${esc(s.password)}</code></td>
       <td>${s.active === false ? '<span class="chip off">موقوف</span>' : '<span class="chip done">فعّال</span>'}</td>
       <td><div class="row" style="gap:4px;flex-wrap:nowrap"><button class="btn sm ghost" onclick="copyCreds(${A(s.uid)})">📋</button><button class="btn sm ghost" onclick="toggleActive(${A(s.uid)})">${s.active === false ? '✅ تفعيل' : '⛔ إيقاف'}</button></div></td></tr>`).join('') + '</table>';
 }
@@ -1837,14 +1895,8 @@ async function addOne() {
 }
 
 /* ================= الإعداد والرسائل ================= */
-function messages() {
-  return [
-    ['1) رسالة إطلاق المنصة (للطلاب)', `السلام عليكم يا أبطال 🌿\nأطلقنا منصة «استعداد» للتربية الإسلامية 📖\nفيها دروس تفاعلية تستعدّ بها لكل حصة.\n\n🔗 رابط المنصة: ${siteUrl()}\n🔑 سيصلك اسم المستخدم وكلمة المرور في رسالة خاصة.\n\n📌 الخطوات:\n1. افتح الرابط واختر «🎒 أنا طالب» ثم «🔑 لدي رمز من المعلم».\n2. ادخل ببياناتك.\n3. اختر الدرس من «دروسي» واضغط «ابدأ الدرس».\n4. في نهاية الاختبار اضغط «أرسل نتيجتي إلى المعلم».`],
-    ['2) رسالة درس جديد', `درس جديد على منصة استعداد 🎉\n📚 الدرس: ……………\n🔗 ${siteUrl()}\n⏰ آخر موعد: ……………`]
-  ];
-}
 function renderSetupTab() {
-  $('#msgList').innerHTML = messages().map((m, i) => `<div class="msg"><h4>${m[0]}</h4>${esc(m[1])}<div class="row" style="margin-top:6px"><button class="btn sm" onclick="copyText(messages()[${i}][1])">📋 نسخ الرسالة</button></div></div>`).join('') +
+  $('#msgList').innerHTML = MSG_DEFS.map((m, i) => `<div class="msg"><h4>${i + 1}) ${esc(m.title)}${SETTINGS.msgs[m.key] ? ' <small class="chip grey">معدّلة</small>' : ''}</h4>${esc(m.key === 'result' ? msgText(m.key) : msgFilled(m.key))}<div class="row" style="margin-top:6px">${m.key === 'result' ? '<small style="color:var(--muted)">تُرسل من زر «🟢 واتساب» بجانب كل نتيجة في تبويب «📊 النتائج»، وتُستبدل الكلمات بين القوسين تلقائيًا.</small>' : `<button class="btn sm" onclick="copyText(msgFilled(${A(m.key)}))">📋 نسخ الرسالة</button>`}${isAdmin() ? `<button class="btn sm ghost" onclick="editMsg(${A(m.key)})">✏️ تعديل</button>` : ''}</div></div>`).join('') +
     `<p class="note">رسالة الدخول الخاصة بكل طالب تنسخها من تبويب «👥 الطلاب والصفوف» (زر 📋 بجانب اسمه).</p>`;
   $('#rulesNow').textContent = rulesText(adminEmail());
 }
@@ -1962,6 +2014,13 @@ service cloud.firestore {
         && request.resource.data.teacherId == myT() && request.resource.data.cls == myCls();
       allow update, delete: if isAdmin();
     }
+    match /settings/{id} { allow read: if signedIn(); allow write: if isAdmin(); }
+    match /feedback/{id} {
+      allow create: if signedIn() && request.resource.data.uid == request.auth.uid
+        && request.resource.data.status == 'new'
+        && request.resource.data.text is string && request.resource.data.text.size() <= 2000;
+      allow read, update, delete: if isAdmin();
+    }
     match /lessons/{id} { allow read, write: if isAdmin(); }
     match /lessonFiles/{id} { allow read, write: if isAdmin(); }
     match /grades/{id} { allow read, write: if isAdmin(); }
@@ -1993,6 +2052,330 @@ function buildConfigured() {
   if (!cfg) return toast('لم أجد apiKey و projectId و appId في الإعدادات.');
   const c = {firebase:cfg, teacherEmail:email, siteUrl:$('#suUrl').value.trim()};
   saveFile('index.html', ORIGINAL_HTML.replace(/\/\*CONFIG-START\*\/[\s\S]*?\/\*CONFIG-END\*\//, () => '/*CONFIG-START*/const CONFIG = ' + JSON.stringify(c) + ';/*CONFIG-END*/'), 'text/html;charset=utf-8');
+}
+
+/* ================= أرقام أولياء الأمور ================= */
+const AR_DIG = s => String(s ?? '').replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d));
+function normPhone(v) {
+  let s = AR_DIG(v).trim(); if (!s) return '';
+  if (/e\+?\d+$/i.test(s) && !isNaN(+s)) s = (+s).toFixed(0);   // رقم حوّله إكسل إلى صيغة علمية
+  s = s.replace(/\D+/g, '');
+  if (s.startsWith('00')) s = s.slice(2);
+  if (s.length === 8) s = '974' + s;   // رقم قطري بلا مفتاح الدولة
+  return s.length >= 8 && s.length <= 15 ? s : '';
+}
+const showPhone = p => p ? '+' + p : '';
+async function savePhone(uid, el) {
+  const s = TD.students.find(x => x.uid === uid); if (!s) return;
+  const raw = el.value.trim(), p = normPhone(raw);
+  if (raw && !p) { el.style.borderColor = 'var(--red)'; return toast('الرقم غير صحيح. اكتبه هكذا: 55123456 أو 97455123456'); }
+  el.style.borderColor = '';
+  if (p === (s.parentPhone || '')) { el.value = showPhone(p); return; }
+  try { await API.set('students', uid, {parentPhone:p}, true); s.parentPhone = p; el.value = showPhone(p); el.classList.add('saved'); toast(p ? 'حُفظ رقم وليّ أمر ' + s.name + ' ✓' : 'حُذف الرقم'); }
+  catch (e) { console.error(e); if (isPerm(e)) $('#rulesWarn').hidden = false; toast('تعذّر حفظ الرقم: ' + errMsg(e)); }
+}
+/* قراءة ملف إكسل (xlsx) أو CSV دون مكتبات خارجية */
+async function unzipEntries(buf) {
+  const dv = new DataView(buf), u8 = new Uint8Array(buf), out = {};
+  let eocd = -1; for (let i = u8.length - 22; i >= Math.max(0, u8.length - 70000); i--) if (dv.getUint32(i, true) === 0x06054b50) { eocd = i; break; }
+  if (eocd < 0) throw new Error('notzip');
+  let p = dv.getUint32(eocd + 16, true); const n = dv.getUint16(eocd + 10, true), dec = new TextDecoder();
+  for (let k = 0; k < n; k++) {
+    if (dv.getUint32(p, true) !== 0x02014b50) break;
+    const method = dv.getUint16(p + 10, true), csize = dv.getUint32(p + 20, true), nl = dv.getUint16(p + 28, true), xl = dv.getUint16(p + 30, true), cl = dv.getUint16(p + 32, true), off = dv.getUint32(p + 42, true);
+    const name = dec.decode(u8.subarray(p + 46, p + 46 + nl));
+    out[name] = {method, csize, off};
+    p += 46 + nl + xl + cl;
+  }
+  out.read = async name => {
+    const e = out[name]; if (!e || typeof e === 'function') return null;
+    const st = e.off + 30 + dv.getUint16(e.off + 26, true) + dv.getUint16(e.off + 28, true), data = u8.subarray(st, st + e.csize);
+    if (e.method === 0) return dec.decode(data);
+    const ds = new Blob([data]).stream().pipeThrough(new DecompressionStream('deflate-raw'));
+    return dec.decode(await new Response(ds).arrayBuffer());
+  };
+  return out;
+}
+async function readXlsxRows(buf) {
+  const z = await unzipEntries(buf), xml = t => new DOMParser().parseFromString(t || '', 'application/xml');
+  const tx = el => [...el.getElementsByTagName('t')].map(t => t.textContent).join('');
+  const ss = [...xml(await z.read('xl/sharedStrings.xml')).getElementsByTagName('si')].map(tx);
+  let sheet = 'xl/worksheets/sheet1.xml';
+  try {
+    const wb = xml(await z.read('xl/workbook.xml')), first = wb.getElementsByTagName('sheet')[0];
+    const rid = first && (first.getAttribute('r:id') || first.getAttributeNS('http://schemas.openxmlformats.org/officeDocument/2006/relationships', 'id'));
+    const rel = [...xml(await z.read('xl/_rels/workbook.xml.rels')).getElementsByTagName('Relationship')].find(r => r.getAttribute('Id') === rid);
+    if (rel) { const t = rel.getAttribute('Target').replace(/^\//, ''); sheet = t.startsWith('xl/') ? t : 'xl/' + t; }
+  } catch (e) {}
+  const doc = xml(await z.read(sheet) || await z.read(Object.keys(z).find(k => /^xl\/worksheets\/[^/]+\.xml$/.test(k))));
+  const col = r => { let n = 0; for (const ch of String(r).replace(/\d+/g, '')) n = n * 26 + ch.charCodeAt(0) - 64; return n - 1; };
+  return [...doc.getElementsByTagName('row')].map(row => {
+    const a = [];
+    [...row.getElementsByTagName('c')].forEach((c, i) => {
+      const t = c.getAttribute('t'), v = c.getElementsByTagName('v')[0], idx = c.getAttribute('r') ? col(c.getAttribute('r')) : i;
+      a[idx] = t === 's' ? (ss[+(v && v.textContent)] || '') : t === 'inlineStr' ? tx(c) : v ? v.textContent : '';
+    });
+    return Array.from(a, x => x ?? '');
+  });
+}
+function readCsvRows(text) {
+  const lines = text.replace(/^﻿/, '').split(/\r?\n/).filter(l => l.trim());
+  const d = ['\t', ';', ','].map(x => [x, (lines[0] || '').split(x).length]).sort((a, b) => b[1] - a[1])[0][0];
+  return lines.map(l => { const out = []; let cur = '', q = false; for (let i = 0; i < l.length; i++) { const ch = l[i]; if (q) { if (ch === '"' && l[i + 1] === '"') { cur += '"'; i++; } else if (ch === '"') q = false; else cur += ch; } else if (ch === '"') q = true; else if (ch === d) { out.push(cur); cur = ''; } else cur += ch; } out.push(cur); return out; });
+}
+async function readSheetFile(file) {
+  const buf = await file.arrayBuffer(), head = new Uint8Array(buf.slice(0, 4));
+  if (head[0] === 0x50 && head[1] === 0x4b) return readXlsxRows(buf);
+  if (head[0] === 0xD0 && head[1] === 0xCF) throw new Error('xls');
+  let t = new TextDecoder('utf-8').decode(buf);
+  if (t.includes('�')) t = new TextDecoder('windows-1256').decode(buf);   // CSV محفوظ بترميز عربي قديم
+  return readCsvRows(t);
+}
+/* إنشاء ملف إكسل بسيط (قائمة الطلاب لإضافة الأرقام) */
+const CRC_T = (() => { const t = new Uint32Array(256); for (let n = 0; n < 256; n++) { let c = n; for (let k = 0; k < 8; k++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1; t[n] = c >>> 0; } return t; })();
+const crc32 = u => { let c = 0xFFFFFFFF; for (let i = 0; i < u.length; i++) c = CRC_T[(c ^ u[i]) & 255] ^ (c >>> 8); return (c ^ 0xFFFFFFFF) >>> 0; };
+function zipStore(files) {
+  const enc = new TextEncoder(), parts = [], cen = []; let off = 0;
+  files.forEach(([name, text]) => {
+    const nb = enc.encode(name), db = enc.encode(text), crc = crc32(db), lh = new DataView(new ArrayBuffer(30));
+    lh.setUint32(0, 0x04034b50, true); lh.setUint16(4, 20, true); lh.setUint16(8, 0, true); lh.setUint32(14, crc, true); lh.setUint32(18, db.length, true); lh.setUint32(22, db.length, true); lh.setUint16(26, nb.length, true);
+    parts.push(new Uint8Array(lh.buffer), nb, db);
+    const ch = new DataView(new ArrayBuffer(46));
+    ch.setUint32(0, 0x02014b50, true); ch.setUint16(4, 20, true); ch.setUint16(6, 20, true); ch.setUint32(16, crc, true); ch.setUint32(20, db.length, true); ch.setUint32(24, db.length, true); ch.setUint16(28, nb.length, true); ch.setUint32(42, off, true);
+    cen.push(new Uint8Array(ch.buffer), nb); off += 30 + nb.length + db.length;
+  });
+  const csize = cen.reduce((a, b) => a + b.length, 0), end = new DataView(new ArrayBuffer(22));
+  end.setUint32(0, 0x06054b50, true); end.setUint16(8, files.length, true); end.setUint16(10, files.length, true); end.setUint32(12, csize, true); end.setUint32(16, off, true);
+  return new Blob([...parts, ...cen, new Uint8Array(end.buffer)], {type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+}
+function makeXlsx(rows, widths) {
+  const x = v => String(v ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;'}[c]));
+  const cl = i => String.fromCharCode(65 + i);
+  const sheet = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><sheetViews><sheetView rightToLeft="1" workbookViewId="0"/></sheetViews><cols>${widths.map((w, i) => `<col min="${i + 1}" max="${i + 1}" width="${w}" customWidth="1"/>`).join('')}</cols><sheetData>` +
+    rows.map((r, ri) => `<row r="${ri + 1}">${r.map((v, ci) => `<c r="${cl(ci)}${ri + 1}" t="inlineStr"${ri === 0 ? ' s="1"' : ''}><is><t>${x(v)}</t></is></c>`).join('')}</row>`).join('') + '</sheetData></worksheet>';
+  return zipStore([
+    ['[Content_Types].xml', '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/></Types>'],
+    ['_rels/.rels', '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>'],
+    ['xl/workbook.xml', '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets><sheet name="الطلاب" sheetId="1" r:id="rId1"/></sheets></workbook>'],
+    ['xl/_rels/workbook.xml.rels', '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/><Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>'],
+    ['xl/styles.xml', '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><fonts count="2"><font><sz val="12"/><name val="Arial"/></font><font><b/><sz val="12"/><name val="Arial"/></font></fonts><fills count="2"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill></fills><borders count="1"><border/></borders><cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="2"><xf numFmtId="49" fontId="0" fillId="0" borderId="0" xfId="0" applyNumberFormat="1"/><xf numFmtId="49" fontId="1" fillId="0" borderId="0" xfId="0" applyFont="1" applyNumberFormat="1"/></cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>'],
+    ['xl/worksheets/sheet1.xml', sheet]
+  ]);
+}
+function phoneTemplate() {
+  const L = listStudentsView().filter(s => s.active !== false); if (!L.length) return toast('القائمة فارغة');
+  const blob = makeXlsx([['الاسم', 'الشعبة', 'اسم المستخدم', 'رقم وليّ الأمر']].concat(L.map(s => [s.name, s.cls, s.username, s.parentPhone || ''])), [32, 12, 16, 20]);
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'أرقام_أولياء_الأمور' + ($('#sClsF').value ? '_' + $('#sClsF').value : '') + '.xlsx'; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 3000);
+  toast('نُزّل ملف إكسل بأسماء الطلاب. اكتب الأرقام في العمود الأخير، ثم احفظه وارفعه.', 6000);
+}
+function openPhoneImport() {
+  if (!TD.students.length) return toast('أضف الطلاب أولًا');
+  openModal(`<h3 style="margin-top:0">📞 أرقام أولياء الأمور دفعة واحدة</h3>
+    <p style="margin:4px 0">الطريقة الأسهل:</p>
+    <ol style="margin:0 0 6px;font-size:21px"><li>اضغط «⬇ تنزيل قائمة الطلاب» لتحصل على ملف إكسل فيه أسماء طلابك.</li><li>افتحه، واكتب رقم وليّ الأمر في العمود الأخير أمام كل طالب، ثم احفظه.</li><li>ارفعه من الزر أدناه.</li></ol>
+    <div class="row"><button class="btn sm ghost" onclick="phoneTemplate()">⬇ تنزيل قائمة الطلاب</button></div>
+    <div class="drop" style="margin-top:10px" onclick="$('#phFile').click()">📄 اضغط لاختيار ملف إكسل (xlsx) أو CSV<br><small>يكفي أن يكون فيه عمود للاسم (أو اسم المستخدم) وعمود للرقم</small><input type="file" id="phFile" accept=".xlsx,.csv,.txt" hidden onchange="phoneFile(this)"></div>
+    <p style="margin:10px 0 2px">أو انسخ عمودَي الاسم والرقم من إكسل والصقهما هنا:</p>
+    <textarea id="phPaste" placeholder="محمد أحمد علي	55123456&#10;خالد سعيد حسن	66123456" style="min-height:110px" dir="rtl"></textarea>
+    <div class="row" style="margin-top:6px"><button class="btn" onclick="phonePasted()">متابعة</button><button class="btn ghost" onclick="closeModal()">إلغاء</button></div>
+    <div id="phMsg" class="login-msg"></div>`);
+}
+async function phoneFile(inp) {
+  const f = inp.files[0]; if (!f) return;
+  try { phoneMatch(await readSheetFile(f)); }
+  catch (e) { console.error(e); $('#phMsg').textContent = String(e && e.message) === 'xls' ? 'هذا ملف إكسل قديم (xls). افتحه في إكسل واحفظه بصيغة «Excel Workbook (.xlsx)» ثم ارفعه.' : 'تعذّرت قراءة الملف. تأكّد أنه ملف إكسل (xlsx) أو CSV.'; }
+}
+function phonePasted() { const t = $('#phPaste').value; if (!t.trim()) return toast('الصق الأسماء والأرقام أولًا'); phoneMatch(readCsvRows(t.includes('\t') ? t : t.replace(/[ ]{2,}|\s+(?=[+\d٠-٩][\d٠-٩ ]{6,}$)/gm, '\t'))); }
+const normName = s => String(s || '').replace(/[ً-ْـ]/g, '').replace(/[أإآ]/g, 'ا').replace(/ة/g, 'ه').replace(/ى/g, 'ي').replace(/\s+/g, ' ').trim();
+function phoneMatch(rows) {
+  const S = TD.students, byU = {}, byN = {};
+  S.forEach(s => { if (s.username) byU[s.username.toLowerCase()] = s; const k = normName(s.name); (byN[k] = byN[k] || []).push(s); });
+  const found = new Map(), miss = [];
+  rows.forEach(r => {
+    const cells = r.map(c => String(c ?? '').trim()).filter(Boolean); if (!cells.length) return;
+    const phCell = cells.slice().reverse().find(c => normPhone(c) && !/[؀-ۿ]/.test(c.replace(/[٠-٩]/g, '')));
+    if (!phCell) return;   // صف العناوين أو صف بلا رقم
+    const p = normPhone(phCell);
+    let s = null; const un = cells.find(c => byU[c.toLowerCase()]); if (un) s = byU[un.toLowerCase()];
+    if (!s) {
+      const nm = cells.find(c => /[؀-ۿ]/.test(c) && byN[normName(c)]);
+      const cand = nm ? byN[normName(nm)] : [];
+      if (cand.length === 1) s = cand[0];
+      else if (cand.length > 1) s = cand.find(x => cells.includes(x.cls)) || null;
+    }
+    if (s) found.set(s.uid, {s, p}); else miss.push(cells.join(' · '));
+  });
+  const ch = [...found.values()].filter(x => x.p !== (x.s.parentPhone || ''));
+  window._phSave = ch;
+  if (!found.size) { $('#phMsg').textContent = 'لم أجد في الملف أسماء طلاب مطابقة مع أرقام. تأكّد أن الأسماء مكتوبة كما في المنصة.'; return; }
+  openModal(`<h3 style="margin-top:0">📞 راجع الأرقام قبل الحفظ</h3>
+    <p style="margin:4px 0">وُجد ${found.size} طالبًا في الملف${ch.length < found.size ? '، منهم ' + (found.size - ch.length) + ' رقمه محفوظ نفسه من قبل' : ''}. ${ch.length ? 'سيُحفظ <b>' + ch.length + '</b> رقمًا:' : 'لا يوجد رقم جديد.'}</p>
+    ${ch.length ? `<div class="tbl-scroll" style="max-height:45vh;overflow:auto"><table><tr><th>الاسم</th><th>الشعبة</th><th>الرقم الحالي</th><th>الرقم الجديد</th></tr>${ch.map(x => `<tr><td>${esc(x.s.name)}</td><td>${esc(x.s.cls)}</td><td dir="ltr">${esc(showPhone(x.s.parentPhone) || '—')}</td><td dir="ltr"><b>${esc(showPhone(x.p))}</b></td></tr>`).join('')}</table></div>` : ''}
+    ${miss.length ? `<div class="note">⚠️ لم أتعرّف على ${miss.length} ${miss.length > 2 ? 'أسطر' : 'سطر'} (الاسم غير موجود في طلابك):<br><small>${miss.slice(0, 15).map(esc).join('<br>')}${miss.length > 15 ? '<br>…' : ''}</small></div>` : ''}
+    <div class="row" style="margin-top:10px">${ch.length ? `<button class="btn" id="phSaveBtn" onclick="phoneSaveAll()">💾 حفظ ${ch.length} رقمًا</button>` : ''}<button class="btn ghost" onclick="closeModal()">${ch.length ? 'إلغاء' : 'إغلاق'}</button><span id="phProg"></span></div>`);
+}
+async function phoneSaveAll() {
+  const L = window._phSave || [], bad = []; $('#phSaveBtn').disabled = true;
+  for (let i = 0; i < L.length; i++) {
+    $('#phProg').textContent = `⏳ ${i + 1} من ${L.length}`;
+    try { await API.set('students', L[i].s.uid, {parentPhone:L[i].p}, true); L[i].s.parentPhone = L[i].p; } catch (e) { console.error(e); bad.push(L[i].s.name); if (isPerm(e)) { $('#rulesWarn').hidden = false; break; } }
+  }
+  closeModal(); renderStudents(); renderResults();
+  toast(bad.length ? 'تعذّر حفظ بعض الأرقام: ' + bad.join('، ') : 'حُفظت الأرقام ✓', 5000);
+}
+
+/* ================= الرسائل الجاهزة (يعدّلها المدير) ================= */
+const MSG_DEFS = [
+  {key:'launch', title:'رسالة إطلاق المنصة (للطلاب)', vars:['{الرابط}'], text:`السلام عليكم يا أبطال 🌿\nأطلقنا منصة «استعداد» للتربية الإسلامية 📖\nفيها دروس تفاعلية تستعدّ بها لكل حصة.\n\n🔗 رابط المنصة: {الرابط}\n🔑 سيصلك اسم المستخدم وكلمة المرور في رسالة خاصة.\n\n📌 الخطوات:\n1. افتح الرابط واختر «🎒 أنا طالب» ثم «🔑 لدي رمز من المعلم».\n2. ادخل ببياناتك.\n3. اختر الدرس من «دروسي» واضغط «ابدأ الدرس».\n4. في نهاية الاختبار اضغط «أرسل نتيجتي إلى المعلم».`},
+  {key:'newLesson', title:'رسالة درس جديد', vars:['{الرابط}'], text:`درس جديد على منصة استعداد 🎉\n📚 الدرس: ……………\n🔗 {الرابط}\n⏰ آخر موعد: ……………`},
+  {key:'result', title:'رسالة نتيجة أداء الدرس (لوليّ الأمر عبر واتساب)', vars:['{الطالب}', '{الدرس}', '{الدرجة}', '{الشعبة}', '{المعلم}', '{الرابط}'], text:`السلام عليكم ورحمة الله وبركاته 🌿\nوليّ أمر الطالب: {الطالب} المحترم،\nنشكر لكم حسن متابعتكم واهتمامكم، ويسعدنا أن نهنئكم بأن ابنكم المتميز {الطالب} حقّق نتيجة عالية في أداء الدرس الإلكتروني: «{الدرس}» على منصة استعداد.\nبارك الله فيه، وزاده علمًا وتوفيقًا 🌹\n\n{المعلم}`}
+];
+let SETTINGS = {msgs:{}};
+async function loadSettings() { try { const d = await API.get('settings', 'messages'); SETTINGS.msgs = (d && d.msgs) || {}; } catch (e) { SETTINGS.msgs = {}; } }
+const msgDef = k => MSG_DEFS.find(m => m.key === k);
+const msgText = k => (SETTINGS.msgs[k] && SETTINGS.msgs[k].text) || msgDef(k).text;
+const fillMsg = (t, v) => t.replace(/\{([^{}]+)\}/g, (m, k) => (v && v[k] != null) ? v[k] : m);
+const msgFilled = (k, v) => fillMsg(msgText(k), Object.assign({'الرابط':siteUrl()}, v || {}));
+function messages() { return MSG_DEFS.map(m => [m.title, msgFilled(m.key)]); }
+function editMsg(k) {
+  const m = msgDef(k); if (!m) return;
+  openModal(`<h3 style="margin-top:0">✏️ تعديل: ${esc(m.title)}</h3>
+    <p style="margin:4px 0;font-size:20px">تستطيع استعمال هذه الكلمات بين القوسين، وتُستبدل تلقائيًا عند الإرسال: ${m.vars.map(x => `<code class="ltr" style="direction:rtl;cursor:pointer" title="اضغط لإضافتها" onclick="insVar(${A(x)})">${esc(x)}</code>`).join(' ')}</p>
+    <textarea id="emText" style="min-height:260px">${esc(msgText(k))}</textarea>
+    <div class="row" style="margin-top:10px"><button class="btn" onclick="saveMsg(${A(k)})">💾 حفظ</button><button class="btn ghost" onclick="$('#emText').value=msgDef(${A(k)}).text">↺ النص الأصلي</button><button class="btn ghost" onclick="closeModal()">إلغاء</button></div>`);
+}
+function insVar(v) { const t = $('#emText'), a = t.selectionStart ?? t.value.length; t.value = t.value.slice(0, a) + v + t.value.slice(t.selectionEnd ?? a); t.focus(); t.selectionStart = t.selectionEnd = a + v.length; }
+async function saveMsg(k) {
+  const text = $('#emText').value.trim(); if (!text) return toast('الرسالة فارغة');
+  const msgs = Object.assign({}, SETTINGS.msgs);
+  if (text === msgDef(k).text) delete msgs[k]; else msgs[k] = {text, at:Date.now()};
+  try { await API.set('settings', 'messages', {msgs, updatedAt:Date.now()}); SETTINGS.msgs = msgs; closeModal(); renderSetupTab(); toast('حُفظت الرسالة ✓'); }
+  catch (e) { console.error(e); if (isPerm(e)) $('#rulesWarn').hidden = false; toast('تعذّر الحفظ: ' + errMsg(e)); }
+}
+/* واتساب */
+function sendWa(uid) {
+  const s = TD.students.find(x => x.uid === uid); if (!s) return;
+  const LL = curLessons().filter(l => (TD.show[l.id] || []).includes(s.cls)), done = LL.map(l => ({l, b:bestOf(uid, l.id)})).filter(x => x.b);
+  if (!done.length) return toast('لم يرسل هذا الطالب نتيجة بعد');
+  const tot = done.reduce((a, x) => a + (+x.b.best.auto || 0), 0), max = done.reduce((a, x) => a + (+x.l.autoMax || 0), 0);
+  const text = msgFilled('result', {'الطالب':s.name, 'الدرس':done.map(x => x.l.title).join('»، «'), 'الدرجة':tot + ' من ' + max, 'الشعبة':s.cls, 'المعلم':(TD.vt && TD.vt.name) || ''});
+  const p = normPhone(s.parentPhone);
+  if (!p) toast('لا يوجد رقم مسجّل لوليّ أمر ' + s.name + ': اختر المحادثة من قائمة جهات الاتصال في واتساب', 6000);
+  window.open('https://wa.me/' + (p || '') + '?text=' + encodeURIComponent(text), '_blank');
+}
+const waBtn = (s) => `<button class="btn sm wa${s.parentPhone ? '' : ' nophone'}" title="${s.parentPhone ? 'محادثة وليّ الأمر: ' + esc(showPhone(s.parentPhone)) : 'لا يوجد رقم: ستختار المحادثة من واتساب'}" onclick="sendWa(${A(s.uid)})">🟢 واتساب</button>`;
+
+/* ================= أرسل ملاحظة (للطالب والمعلم) ================= */
+let FBK = null;
+const PART_WORDS = ['المحطة', 'المرحلة', 'الجزيرة', 'الجولة', 'المحطّة', 'المغامرة', 'الرحلة', 'الخطوة', 'المستوى', 'الغرفة', 'البوابة', 'الواحة', 'المهمة', 'الكوكب', 'الساحة', 'القلعة', 'الشاطئ', 'الحديقة'];
+function detectPartWord(html) {
+  const txt = String(html || '').replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>/gi, ' ').replace(/[ً-ْ]/g, '');
+  let best = '', n = 1;
+  PART_WORDS.forEach(w => { const c = txt.split(w).length - 1; if (c > n) { best = w; n = c; } });
+  return best.replace('ّ', '');
+}
+async function lessonPartWord(l) {
+  if (!l) return '';
+  if (l.partWord) return l.partWord;
+  FBK.words = FBK.words || {}; if (FBK.words[l.id] != null) return FBK.words[l.id];
+  let w = '';
+  try { const d = await API.get('catalogFiles', l.id); w = detectPartWord(d && d.html); } catch (e) { console.error(e); }
+  FBK.words[l.id] = w; return w;
+}
+async function openFeedback() {
+  FBK = {type:'', sub:'', text:'', g:'', t:1, u:1, lid:'', part:'', words:{}};
+  if (!CAT.length) { try { await loadCatalog(); } catch (e) { console.error(e); } }
+  const gs = fbGrades();
+  const g1 = ME.grade || gradeOf(((ME.role !== 'student' && TD.vt && TD.vt.classes) || [])[0]);
+  FBK.g = gs.includes(g1) ? g1 : gs[0] || '';
+  fbRender();
+}
+const fbGrades = () => { const has = new Set(CAT.map(l => l.grade)); return GRADES.map(g => g.key).filter(k => has.has(k)); };
+function fbRender() {
+  const F = FBK, ch = (k, ic, t, fn) => `<button class="${(F.type === k || F.sub === k) ? 'on' : ''}" onclick="${fn}"><span>${ic}</span>${t}</button>`;
+  let html = `<h3 style="margin-top:0">💬 أرسل ملاحظة</h3><p style="margin:0;color:var(--muted);font-size:20px">ملاحظتك تصل إلى مدير المنصة مباشرة.</p>
+    <div class="fb-choices">${ch('suggest', '💡', 'مقترح', "FBK.type='suggest';FBK.sub='';fbRender()")}${ch('error', '⚠️', 'تنبيه على خطأ', "FBK.type='error';fbRender()")}</div>`;
+  if (F.type === 'error') html += `<div class="fb-choices" style="margin-top:0">${ch('general', '📝', 'ملاحظة عامة', "FBK.sub='general';fbRender()")}${ch('lesson', '📘', 'خطأ في درس', "FBK.sub='lesson';fbRender()")}</div>`;
+  const ready = F.type === 'suggest' || (F.type === 'error' && F.sub);
+  if (F.type === 'error' && F.sub === 'lesson') {
+    const gs = fbGrades();
+    if (!gs.length) html += '<p>لا توجد دروس في المنصة بعد.</p>';
+    else {
+      if (!gs.includes(F.g)) F.g = gs[0];
+      const L = cuLessons({g:F.g, t:F.t, u:F.u});
+      if (!L.some(l => l.id === F.lid)) { F.lid = ''; F.part = ''; }
+      const l = catById(F.lid), w = l ? (F.words[l.id] != null ? F.words[l.id] : l.partWord) : '';
+      const wl = w || 'الجزء', parts = l ? (l.components || []).map(c => c.label).filter(Boolean) : [];
+      html += `<div class="tree" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr));max-width:none">
+        <label>الصف<select onchange="FBK.g=this.value;fbRender()">${gs.map(g => `<option value="${esc(g)}" ${g === F.g ? 'selected' : ''}>${esc(gradeName(g))}</option>`).join('')}</select></label>
+        <label>الفصل<select onchange="FBK.t=+this.value;fbRender()">${[1, 2].map(t => `<option value="${t}" ${t === F.t ? 'selected' : ''}>${termName(t)}</option>`).join('')}</select></label>
+        <label>الباب<select onchange="FBK.u=+this.value;fbRender()">${[1, 2].map(u => `<option value="${u}" ${u === F.u ? 'selected' : ''}>${unitName(u)}</option>`).join('')}</select></label>
+        <label>الدرس<select onchange="FBK.lid=this.value;FBK.part='';fbRender();fbLoadWord()">${L.length ? '<option value="">— اختر الدرس —</option>' + L.map(x => `<option value="${esc(x.id)}" ${x.id === F.lid ? 'selected' : ''}>${esc(x.title)}</option>`).join('') : '<option value="">لا توجد دروس هنا</option>'}</select></label>
+        ${l ? `<label>${esc(wl)}<select onchange="FBK.part=this.value">${['<option value="">— اختر —</option>'].concat(parts.map(p => `<option ${p === F.part ? 'selected' : ''}>${esc(p)}</option>`), [`<option ${F.part === 'الدرس كله' ? 'selected' : ''}>الدرس كله</option>`, `<option ${F.part === 'غير ذلك' ? 'selected' : ''}>غير ذلك</option>`]).join('')}</select></label>` : ''}
+      </div>`;
+    }
+  }
+  if (ready && (F.sub !== 'lesson' || F.lid)) {
+    const ph = F.type === 'suggest' ? 'اكتب مقترحك هنا…' : F.sub === 'general' ? 'اكتب ملاحظتك هنا…' : 'صِف الخطأ: أين هو بالضبط؟ وما الصواب؟';
+    html += `<label style="display:block;margin-top:10px">${F.type === 'suggest' ? 'المقترح' : 'الملاحظة'}<textarea id="fbText" maxlength="2000" placeholder="${ph}" oninput="FBK.text=this.value">${esc(F.text)}</textarea></label>
+      <div class="row" style="margin-top:8px"><button class="btn" id="fbSend" onclick="sendFeedback()">📨 إرسال</button><button class="btn ghost" onclick="closeModal()">إلغاء</button></div>`;
+  }
+  openModal(html);
+  const t = $('#fbText'); if (t && !F.text) setTimeout(() => t.focus(), 50);
+}
+async function fbLoadWord() { const l = catById(FBK.lid); if (!l || l.partWord || FBK.words[l.id] != null) return; await lessonPartWord(l); if (FBK && FBK.lid === l.id && $('#modalRoot .modal')) fbRender(); }
+async function sendFeedback() {
+  const F = FBK, text = ($('#fbText').value || '').trim();
+  if (text.length < 3) return toast('اكتب ملاحظتك أولًا');
+  if (F.sub === 'lesson' && !F.part) return toast('اختر ' + ((catById(F.lid) || {}).partWord || F.words[F.lid] || 'الجزء') + ' من القائمة');
+  const role = ME.role === 'admin' ? 'admin' : ME.role === 'teacher' ? 'teacher' : ME.kind === 'class' ? 'student' : 'pstudent';
+  const d = {type:F.type === 'suggest' ? 'suggest' : F.sub, text, uid:ME.uid, role, name:(ME.cname || ME.name || ''), email:ME.email || '', cls:ME.cls || '', username:ME.username || '', teacherId:ME.teacherId || '', grade:ME.grade || '', at:Date.now(), status:'new'};
+  if (d.type === 'lesson') { const l = catById(F.lid); Object.assign(d, {lGrade:F.g, lTerm:F.t, lUnit:F.u, lessonId:F.lid, lessonTitle:l ? l.title : '', part:F.part, partWord:(l && (l.partWord || F.words[l.id])) || ''}); }
+  $('#fbSend').disabled = true;
+  try { await API.add('feedback', d); closeModal(); toast('وصلت ملاحظتك إلى مدير المنصة، شكرًا لك 🌹', 4000); if (isAdmin()) loadFeedback(); }
+  catch (e) { console.error(e); $('#fbSend').disabled = false; toast(isPerm(e) ? 'تعذّر الإرسال: قواعد الحماية تحتاج تحديثًا (أخبر مدير المنصة).' : 'تعذّر الإرسال: ' + errMsg(e), 5000); }
+}
+
+/* ---------- ملاحظات المستخدمين (للمدير) ---------- */
+const FB_TYPES = [['suggest', '💡 المقترحات'], ['general', '📝 ملاحظات عامة'], ['lesson', '📘 أخطاء في الدروس']];
+const FBV = {list:[], tab:'suggest', loaded:false};
+async function loadFeedback() {
+  if (!isAdmin()) return;
+  if ($('#fbList')) $('#fbList').innerHTML = '<p>⏳ جارٍ التحميل…</p>';
+  try { FBV.list = (await API.where('feedback', {})).sort((a, b) => (b.at || 0) - (a.at || 0)); FBV.loaded = true; }
+  catch (e) { console.error(e); FBV.list = []; if (isPerm(e)) $('#rulesWarn').hidden = false; if ($('#fbList')) $('#fbList').innerHTML = '<p>تعذّر التحميل: ' + esc(errMsg(e)) + '</p>'; updFbDot(); return; }
+  updFbDot(); renderFeedback();
+}
+function updFbDot() { const n = FBV.list.filter(f => f.status !== 'done').length; $('#fbDot').hidden = !n; $('#fbDot').textContent = n; }
+function fbWho(f) {
+  const tn = id => { const t = (TD.teachers || []).find(x => x.uid === id); return t ? t.name : ''; };
+  if (f.role === 'teacher') return `👨‍🏫 المعلم: <b>${esc(f.name)}</b> <small dir="ltr">${esc(f.email)}</small>`;
+  if (f.role === 'admin') return '👑 المدير';
+  if (f.role === 'student') return `🎒 الطالب: <b>${esc(f.name)}</b> · ${esc(f.cls)}${tn(f.teacherId) ? ' · معلمه: ' + esc(tn(f.teacherId)) : ''}`;
+  return `🌟 طالب بحساب خاص: <b>${esc(f.name)}</b>${f.cls ? ' · ' + esc(f.cls) : f.grade ? ' · ' + esc(gradeName(f.grade)) : ''}`;
+}
+function renderFeedback() {
+  if (!$('#fbList')) return;
+  const all = FBV.list, showDone = $('#fbShowDone').checked;
+  $('#fbTabs').innerHTML = FB_TYPES.map(([k, n]) => { const c = all.filter(f => f.type === k), nw = c.filter(f => f.status !== 'done').length; return `<button class="${FBV.tab === k ? 'on' : ''}" onclick="FBV.tab='${k}';renderFeedback()">${n} (${c.length})${nw ? `<span class="dot">${nw}</span>` : ''}</button>`; }).join('');
+  const L = all.filter(f => f.type === FBV.tab && (showDone || f.status !== 'done'));
+  if (!L.length) { $('#fbList').innerHTML = `<p>${all.some(f => f.type === FBV.tab) ? 'لا توجد ملاحظات جديدة هنا. علّم «إظهار ما تمت معالجته» لرؤية القديمة.' : 'لا توجد ملاحظات من هذا النوع بعد.'}</p>`; return; }
+  $('#fbList').innerHTML = L.map(f => {
+    const where = f.type === 'lesson' ? `<div style="font-size:20px">📍 ${esc(gradeName(f.lGrade))} · ${termName(f.lTerm || 1)} · ${unitName(f.lUnit || 1)} · <b>${esc(f.lessonTitle || '')}</b> · ${esc(f.partWord || 'الجزء')}: <b>${esc(f.part || '')}</b></div>` : '';
+    return `<div class="fbitem${f.status === 'done' ? ' done' : ''}"><div class="meta">${fbWho(f)} · ${fmtFull(f.at)} ${f.status === 'done' ? '<span class="chip done">✔ تمت المعالجة</span>' : '<span class="chip new">جديدة</span>'}</div>${where}
+      <div class="txt">${esc(f.text)}</div>
+      <div class="row" style="gap:4px">${f.status === 'done' ? `<button class="btn sm ghost" onclick="markFb(${A(f.id)},'new')">↩ إعادتها جديدة</button>` : `<button class="btn sm" onclick="markFb(${A(f.id)},'done')">✔ تمت المعالجة</button>`}
+        ${f.type === 'lesson' && catById(f.lessonId) ? `<button class="btn sm ghost" onclick="openLesson(${A(f.lessonId)},'preview')">👁 فتح الدرس</button>` : ''}
+        <button class="btn sm ghost" onclick="copyText(${A(f.text)})">📋 نسخ</button><button class="btn sm red" onclick="delFb(${A(f.id)})">🗑</button></div></div>`;
+  }).join('');
+}
+async function markFb(id, st) {
+  const f = FBV.list.find(x => x.id === id); if (!f) return;
+  try { await API.set('feedback', id, {status:st, doneAt:st === 'done' ? Date.now() : 0}, true); f.status = st; updFbDot(); renderFeedback(); } catch (e) { toast('تعذّر: ' + errMsg(e)); }
+}
+async function delFb(id) {
+  if (!confirm('حذف هذه الملاحظة نهائيًا؟')) return;
+  try { await API.del('feedback', id); FBV.list = FBV.list.filter(x => x.id !== id); updFbDot(); renderFeedback(); toast('حُذفت'); } catch (e) { toast('تعذّر: ' + errMsg(e)); }
 }
 
 /* ================= التشغيل ================= */
