@@ -224,6 +224,10 @@ input.phone.saved{border-color:var(--green);background:#f3faf6}
 .fbitem.done{border-inline-start-color:var(--green);opacity:.75}
 .fbitem .txt{white-space:pre-wrap;word-break:break-word;margin:4px 0;font-size:22px}
 .fbitem .meta{color:var(--muted);font-size:18px}
+.applogo{width:84px;height:84px;border-radius:20px;box-shadow:0 6px 16px rgba(0,0,0,.18);display:block;margin:0 auto}
+.tlogo{width:38px;height:38px;border-radius:10px;vertical-align:middle;box-shadow:0 2px 6px rgba(0,0,0,.25)}
+.hbtn.instbtn{background:#fde047;color:#1e1b4b;font-weight:700}
+.inst-steps{font-size:23px;line-height:1.9;background:#f3faf6;border-radius:14px;padding:10px 14px;margin:10px 0}
 #printArea{display:none}
 .pcards{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
 .pcard{border:2px dashed #888;border-radius:12px;padding:8px 12px;font-size:17px;line-height:1.7;break-inside:avoid}
@@ -244,16 +248,16 @@ input.phone.saved{border-color:var(--green);background:#f3faf6}
 <body>
 <div class="demo-banner" id="demoBanner" hidden>🧪 وضع تجريبي: البيانات على هذا الجهاز فقط · المدير: admin@demo.com / 123456</div>
 
-<section id="scrLoading"><div class="login-card"><div class="logo">📖</div><h2>منصة استعداد</h2><p>⏳ جارٍ التحميل…</p></div></section>
+<section id="scrLoading"><div class="login-card"><div class="logo"><img src="icon-180.png" alt="" class="applogo"></div><h2>منصة استعداد</h2><p>⏳ جارٍ التحميل…</p></div></section>
 
 <section id="scrSetup" hidden>
-  <div class="topbar"><div class="wrap"><h1>📖 إعداد منصة استعداد (مرة واحدة)</h1></div></div>
+  <div class="topbar"><div class="wrap"><h1><img src="icon-180.png" alt="" class="tlogo"> إعداد منصة استعداد (مرة واحدة)</h1></div></div>
   <div class="wrap" id="setupBox"></div>
 </section>
 
 <section id="scrRole" hidden>
   <div class="login-card">
-    <div class="logo">📖</div>
+    <div class="logo"><img src="icon-180.png" alt="" class="applogo"></div>
     <h2 style="margin-bottom:0">منصة استعداد</h2>
     <p style="margin-top:0;color:var(--muted)">التربية الإسلامية</p>
     <div class="role-btns">
@@ -344,7 +348,7 @@ input.phone.saved{border-color:var(--green);background:#f3faf6}
 </section>
 
 <section id="scrHub" hidden>
-  <div class="topbar"><div class="wrap"><h1>📖 منصة استعداد</h1><div class="row"><span id="hubWho"></span><button class="hbtn fbbtn" onclick="openFeedback()">💬 أرسل ملاحظة</button><button class="hbtn" onclick="doLogout()">🚪 خروج</button></div></div></div>
+  <div class="topbar"><div class="wrap"><h1><img src="icon-180.png" alt="" class="tlogo"> منصة استعداد</h1><div class="row"><span id="hubWho"></span><button class="hbtn instbtn" onclick="installApp()" hidden>📲 اجعلني على سطح المكتب</button><button class="hbtn fbbtn" onclick="openFeedback()">💬 أرسل ملاحظة</button><button class="hbtn" onclick="doLogout()">🚪 خروج</button></div></div></div>
   <div class="wrap">
     <h2 id="hubHello"></h2>
     <div class="space-btns">
@@ -356,7 +360,7 @@ input.phone.saved{border-color:var(--green);background:#f3faf6}
 </section>
 
 <section id="scrHome" hidden>
-  <div class="topbar"><div class="wrap"><h1>🏫 صفّي</h1><div class="row"><span id="homeWho"></span><button class="hbtn fbbtn" onclick="openFeedback()">💬 أرسل ملاحظة</button><button class="hbtn" onclick="showHub()">🏠 الرئيسية</button><button class="hbtn" onclick="doLogout()">🚪 خروج</button></div></div></div>
+  <div class="topbar"><div class="wrap"><h1>🏫 صفّي</h1><div class="row"><span id="homeWho"></span><button class="hbtn instbtn" onclick="installApp()" hidden>📲 اجعلني على سطح المكتب</button><button class="hbtn fbbtn" onclick="openFeedback()">💬 أرسل ملاحظة</button><button class="hbtn" onclick="showHub()">🏠 الرئيسية</button><button class="hbtn" onclick="doLogout()">🚪 خروج</button></div></div></div>
   <div class="wrap">
     <h2 id="homeHello"></h2>
     <h3>📚 دروسي</h3>
@@ -365,7 +369,7 @@ input.phone.saved{border-color:var(--green);background:#f3faf6}
 </section>
 
 <section id="scrPriv" hidden>
-  <div class="topbar"><div class="wrap"><h1>🌟 مساحتي الخاصة</h1><div class="row"><span id="pvWho"></span><button class="hbtn fbbtn" onclick="openFeedback()">💬 أرسل ملاحظة</button><button class="hbtn" id="pvHub" onclick="showHub()">🏠 الرئيسية</button><button class="hbtn" onclick="doLogout()">🚪 خروج</button></div></div></div>
+  <div class="topbar"><div class="wrap"><h1>🌟 مساحتي الخاصة</h1><div class="row"><span id="pvWho"></span><button class="hbtn instbtn" onclick="installApp()" hidden>📲 اجعلني على سطح المكتب</button><button class="hbtn fbbtn" onclick="openFeedback()">💬 أرسل ملاحظة</button><button class="hbtn" id="pvHub" onclick="showHub()">🏠 الرئيسية</button><button class="hbtn" onclick="doLogout()">🚪 خروج</button></div></div></div>
   <div class="wrap">
     <h2 id="pvHello"></h2>
     <div class="warnbar" id="pvWarn" hidden></div>
@@ -382,7 +386,7 @@ input.phone.saved{border-color:var(--green);background:#f3faf6}
 </section>
 
 <section id="scrTeacher" hidden>
-  <div class="topbar"><div class="wrap"><h1 id="tHead">📖 استعداد · لوحة المعلم</h1><div class="row"><span id="tWho"></span><button class="hbtn fbbtn" onclick="openFeedback()">💬 أرسل ملاحظة</button><button class="hbtn" onclick="doLogout()">🚪 خروج</button></div></div></div>
+  <div class="topbar"><div class="wrap"><h1><img src="icon-180.png" alt="" class="tlogo"> <span id="tHead">استعداد · لوحة المعلم</span></h1><div class="row"><span id="tWho"></span><button class="hbtn instbtn" onclick="installApp()" hidden>📲 اجعلني على سطح المكتب</button><button class="hbtn fbbtn" onclick="openFeedback()">💬 أرسل ملاحظة</button><button class="hbtn" onclick="doLogout()">🚪 خروج</button></div></div></div>
   <div class="wrap">
     <div class="warnbar" id="rulesWarn" hidden>⚠️ قواعد الحماية في Firebase قديمة. افتح تبويب «⚙️ الإعداد»، وانسخ القواعد الجديدة، والصقها في Firebase ← Firestore ← Rules، ثم اضغط Publish وحدّث الصفحة.</div>
     <div class="subtabs" id="tTabs">
@@ -1161,7 +1165,7 @@ async function openTeacher() {
   showScreen('scrTeacher');
   ['#newCreds', '#cuProg', '#wipeProg'].forEach(x => $(x).innerHTML = ''); $('#rulesWarn').hidden = true; closeAdd(); $('#clsRows').innerHTML = '';
   $('#tWho').textContent = '👤 ' + (ME.name || '') + (isAdmin() ? ' (المدير)' : '');
-  $('#tHead').textContent = isAdmin() ? '📖 استعداد · لوحة المدير' : '📖 استعداد · لوحة المعلم';
+  $('#tHead').textContent = isAdmin() ? 'استعداد · لوحة المدير' : 'استعداد · لوحة المعلم';
   $$('.adminOnly').forEach(e => e.hidden = !isAdmin());
   if (isAdmin()) { const t = await ensureAdmin(); if (t) Object.assign(ME, {tdoc:t, name:t.name || 'المدير'}); }
   try { await loadCatalog(); } catch (e) { console.error(e); if (isPerm(e)) $('#rulesWarn').hidden = false; }
@@ -2390,6 +2394,42 @@ async function delFb(id) {
   try { await API.del('feedback', id); FBV.list = FBV.list.filter(x => x.id !== id); updFbDot(); renderFeedback(); toast('حُذفت'); } catch (e) { toast('تعذّر: ' + errMsg(e)); }
 }
 
+
+/* ================= اجعلني على سطح المكتب (تثبيت المنصة) ================= */
+let INST_EVT = null;
+const isAppMode = () => navigator.standalone === true || (window.matchMedia && matchMedia('(display-mode: standalone), (display-mode: fullscreen), (display-mode: minimal-ui)').matches);
+const UA = navigator.userAgent || '';
+const isIOS = () => /iPhone|iPad|iPod/.test(UA) || (/Macintosh/.test(UA) && navigator.maxTouchPoints > 1);
+const isAndroid = () => /Android/i.test(UA);
+function updInstBtn() { const show = !isAppMode() && (isIOS() || isAndroid() || !!INST_EVT); $$('.instbtn').forEach(b => b.hidden = !show); }
+window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); INST_EVT = e; updInstBtn(); });
+window.addEventListener('appinstalled', () => { INST_EVT = null; updInstBtn(); closeModal(); toast('صارت المنصة على سطح المكتب ✓ افتحها من أيقونتها', 5000); });
+async function installApp() {
+  if (INST_EVT) {   // أندرويد (وكروم عمومًا): نافذة التثبيت مباشرة
+    const e = INST_EVT; INST_EVT = null;
+    try { e.prompt(); const r = await e.userChoice; if (r && r.outcome === 'accepted') return; } catch (er) { console.error(er); }
+    updInstBtn(); return;
+  }
+  let steps;
+  if (isIOS()) {
+    steps = /CriOS|FxiOS|EdgiOS/.test(UA)
+      ? 'اضغط زر المشاركة في أعلى المتصفح بجانب العنوان، ثم اضغط: <b>إضافة إلى الصفحة الرئيسية</b>.'
+      : 'اضغط زر المشاركة في سفاري، ثم اضغط: <b>إضافة إلى الصفحة الرئيسية</b>.';
+    steps += '<div style="font-size:19px;color:var(--muted)">زر المشاركة: مربّع يخرج منه سهم إلى الأعلى. وإن لم تجد «إضافة إلى الصفحة الرئيسية»، فاسحب القائمة إلى الأعلى لتظهر.</div>';
+  } else if (/SamsungBrowser/i.test(UA)) {
+    steps = 'اضغط زر القائمة <b>≡</b> في أسفل الشاشة، ثم اضغط: <b>إضافة الصفحة إلى</b>، ثم: <b>الشاشة الرئيسية</b>.';
+  } else if (isAndroid()) {
+    steps = 'اضغط زر القائمة <b>⋮</b> في أعلى الشاشة، ثم اضغط: <b>إضافة إلى الشاشة الرئيسية</b> (أو: <b>تثبيت التطبيق</b>).';
+  } else {
+    steps = 'اضغط زر التثبيت <b>⊕</b> في شريط العنوان أعلى المتصفح، أو افتح قائمة المتصفح واختر: <b>تثبيت منصة استعداد</b>.';
+  }
+  openModal(`<div style="text-align:center"><img src="icon-180.png" alt="" class="applogo" style="width:72px;height:72px"><h3 style="margin:8px 0 0">📲 اجعلني على سطح المكتب</h3></div>
+    <div class="inst-steps">${steps}</div>
+    <p style="font-size:20px;color:var(--muted);margin:4px 0">بعدها تظهر أيقونة المنصة على شاشة جهازك، فافتحها منها كل مرة كأنها تطبيق.</p>
+    <div class="row" style="justify-content:center;margin-top:8px"><button class="btn" onclick="closeModal()">حسنًا</button></div>`);
+}
+if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol) && !DEMO) navigator.serviceWorker.register('sw.js').catch(e => console.error(e));
+updInstBtn();
 /* ================= التشغيل ================= */
 setupCuDrop();
 boot();
