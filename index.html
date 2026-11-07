@@ -437,6 +437,7 @@ input.phone.saved{border-color:var(--green);background:#f3faf6}
         <div class="tree" id="cuTree"></div>
         <div class="drop" id="cuDrop" style="margin-top:10px" onclick="$('#cuFile').click()">📄 اضغط لاختيار ملف درس أو أكثر (HTML)، أو اسحبها وأفلتها هنا<br><small>تُرفع إلى الصف والفصل والباب المختارة أعلاه</small>
           <input type="file" id="cuFile" accept=".html,.htm,text/html" multiple hidden></div>
+        <p class="note" id="cuMultiNote" hidden>👁 تعرض الآن دروس أكثر من باب: تستطيع المعاينة والتعديل والتحديد والحذف. أما رفع دروس جديدة وتغيير الترتيب فيحتاجان اختيار صف واحد وفصل واحد وباب واحد.</p>
         <div id="cuProg"></div>
         <div id="cuList" style="margin-top:8px"></div>
       </div>
@@ -626,10 +627,12 @@ const STAGES = {
 };
 const GRADES = Object.values(STAGES).flat().map(([full, sh]) => ({full, key:sh.trim()}));
 const gradeOf = c => String(c || '').replace(/\s*\d+\s*$/, '').trim();
-const gradeName = k => 'الصف ' + ((GRADES.find(g => g.key === k) || {}).full || k);
+const STAGE_RANGE = {'ابتدائي':'الأول – السادس', 'إعدادي':'السابع – التاسع', 'ثانوي':'العاشر – الثاني عشر'};
+const gradeName = k => k === '*' ? 'كل الصفوف (الأول – الثاني عشر)' : String(k).startsWith('@') ? 'صفوف ال' + k.slice(1) + ' (' + (STAGE_RANGE[k.slice(1)] || '') + ')' : 'الصف ' + ((GRADES.find(g => g.key === k) || {}).full || k);
+const gradeIdx = k => GRADES.findIndex(g => g.key === k);
 const ORD = ['', 'الأول', 'الثاني'];
-const termName = t => 'الفصل ' + ORD[t];
-const unitName = u => 'الباب ' + ORD[u];
+const termName = t => t ? 'الفصل ' + ORD[t] : 'الفصلان معًا';
+const unitName = u => u ? 'الباب ' + ORD[u] : 'البابان معًا';
 const byLessonOrder = (a, b) => (a.term || 1) - (b.term || 1) || (a.unit || 1) - (b.unit || 1) || (a.order ?? 999) - (b.order ?? 999) || (a.title || '').localeCompare(b.title || '', 'ar');
 
 function showScreen(id) {
@@ -638,13 +641,15 @@ function showScreen(id) {
 }
 
 /* محدّد الصف/الفصل/الباب */
-function renderTree(box, key, onChange, gradeList) {
+function renderTree(box, key, onChange, gradeList, multi) {
   const st = LS.get('iste3dad-tree-' + key, null) || {};
   const G = gradeList && gradeList.length ? gradeList : GRADES.map(g => g.key);
-  const g0 = G.includes(st.g) ? st.g : G[0];
-  $(box).innerHTML = `<label>الصف<select data-k="g">${G.map(g => `<option value="${esc(g)}" ${g === g0 ? 'selected' : ''}>${esc(gradeName(g))}</option>`).join('')}</select></label>
-    <label>الفصل<select data-k="t">${[1, 2].map(t => `<option value="${t}" ${t === (st.t || 1) ? 'selected' : ''}>${termName(t)}</option>`).join('')}</select></label>
-    <label>الباب<select data-k="u">${[1, 2].map(u => `<option value="${u}" ${u === (st.u || 1) ? 'selected' : ''}>${unitName(u)}</option>`).join('')}</select></label>`;
+  const GM = multi ? ['*'].concat(Object.keys(STAGES).map(k => '@' + k)) : [];
+  const g0 = G.concat(GM).includes(st.g) ? st.g : G[0];
+  const T = multi ? [0, 1, 2] : [1, 2], t0 = T.includes(st.t) ? st.t : 1, u0 = T.includes(st.u) ? st.u : 1;
+  $(box).innerHTML = `<label>الصف<select data-k="g">${GM.map(g => `<option value="${esc(g)}" ${g === g0 ? 'selected' : ''}>${g === '*' ? '★ كل الصفوف' : '★ صفوف ال' + esc(g.slice(1))}</option>`).join('')}${G.map(g => `<option value="${esc(g)}" ${g === g0 ? 'selected' : ''}>${esc(gradeName(g))}</option>`).join('')}</select></label>
+    <label>الفصل<select data-k="t">${T.map(t => `<option value="${t}" ${t === t0 ? 'selected' : ''}>${termName(t)}</option>`).join('')}</select></label>
+    <label>الباب<select data-k="u">${T.map(u => `<option value="${u}" ${u === u0 ? 'selected' : ''}>${unitName(u)}</option>`).join('')}</select></label>`;
   $$(box + ' select').forEach(s => s.onchange = () => { LS.set('iste3dad-tree-' + key, treeVal(box)); onChange(treeVal(box)); });
   return treeVal(box);
 }
@@ -1484,10 +1489,12 @@ const CUSEL = {on:false, ids:new Set()};
 function cuSelReset() { CUSEL.on = false; CUSEL.ids = new Set(); }
 function renderCurriculum() {
   cuSelReset();
-  renderTree('#cuTree', 'cu', () => { cuSelReset(); renderCuList(); });
+  renderTree('#cuTree', 'cu', () => { cuSelReset(); renderCuList(); }, null, true);
   renderCuList();
 }
-function cuLessons(v) { return CAT.filter(l => l.grade === v.g && (l.term || 1) === v.t && (l.unit || 1) === v.u).sort(byLessonOrder); }
+const isMultiV = v => v.g === '*' || String(v.g).startsWith('@') || !v.t || !v.u;
+const gradeIn = (k, g) => g === '*' || (String(g).startsWith('@') ? (STAGES[g.slice(1)] || []).some(([, sh]) => sh.trim() === k) : k === g);
+function cuLessons(v) { return CAT.filter(l => gradeIn(l.grade, v.g) && (!v.t || (l.term || 1) === v.t) && (!v.u || (l.unit || 1) === v.u)).sort((a, b) => gradeIdx(a.grade) - gradeIdx(b.grade) || byLessonOrder(a, b)); }
 function renderCuList() {
   const v = treeVal('#cuTree'), L = cuLessons(v), ids = L.map(l => l.id);
   [...CUSEL.ids].forEach(id => { if (!ids.includes(id)) CUSEL.ids.delete(id); });
@@ -1496,18 +1503,22 @@ function renderCuList() {
   const selBar = !L.length ? '' : !CUSEL.on
     ? `<div class="row" style="gap:6px;margin:6px 0"><button class="btn sm ghost" onclick="cuSelStart(false)">☑️ تحديد</button><button class="btn sm ghost" onclick="cuSelStart(true)">✅ تحديد الكل</button></div>`
     : `<div class="cu-sel"><b>المحدد: ${n} من ${L.length}</b><button class="btn sm ghost" onclick="cuSelAll(${allOn ? 'false' : 'true'})">${allOn ? '✖ إلغاء تحديد الكل' : '✅ تحديد الكل'}</button><button class="btn sm red" ${n ? '' : 'disabled'} onclick="deleteSelected()">🗑 حذف المحدد (${n})</button><button class="btn sm ghost" onclick="cuSelReset();renderCuList()">إنهاء التحديد</button></div>`;
+  const multi = isMultiV(v);
+  $('#cuDrop').hidden = multi; $('#cuMultiNote').hidden = !multi;
+  let lastHead = '';
+  const head = l => { if (!multi) return ''; const h = gradeName(l.grade) + ' · ' + termName(l.term || 1) + ' · ' + unitName(l.unit || 1); if (h === lastHead) return ''; lastHead = h; return `<div class="unit-head" style="font-size:21px;margin-top:12px">📘 ${esc(h)}</div>`; };
   $('#cuList').innerHTML = `<div class="unit-head">📘 ${esc(gradeName(v.g))} · ${termName(v.t)} · ${unitName(v.u)} <small>(${L.length} درس)</small></div>` + selBar +
-    (L.length > 1 ? `<div class="row" style="gap:6px;margin:6px 0"><small style="color:var(--muted);flex:1 1 200px">⠿ اسحب الدرس من المقبض لتغيير ترتيبه</small><button class="btn sm ghost" onclick="sortCuByFile()">🔤 رتّب حسب اسم الملف</button></div>` : '') +
-    (L.length ? L.map((l, i) => `<div class="lrow cu${CUSEL.ids.has(l.id) ? ' picked' : ''}" data-id="${esc(l.id)}">${CUSEL.on ? `<input type="checkbox" class="selbox" ${CUSEL.ids.has(l.id) ? 'checked' : ''} onchange="cuSelOne(${A(l.id)},this.checked)">` : ''}<span class="grip" title="اسحب لتغيير الترتيب">⠿</span><span class="ic">${esc(l.icon || '📘')}</span>
+    (L.length > 1 && !multi ? `<div class="row" style="gap:6px;margin:6px 0"><small style="color:var(--muted);flex:1 1 200px">⠿ اسحب الدرس من المقبض لتغيير ترتيبه</small><button class="btn sm ghost" onclick="sortCuByFile()">🔤 رتّب حسب اسم الملف</button></div>` : '') +
+    (L.length ? L.map((l, i) => `${head(l)}<div class="lrow cu${CUSEL.ids.has(l.id) ? ' picked' : ''}" data-id="${esc(l.id)}">${CUSEL.on ? `<input type="checkbox" class="selbox" ${CUSEL.ids.has(l.id) ? 'checked' : ''} onchange="cuSelOne(${A(l.id)},this.checked)">` : ''}${multi ? '' : '<span class="grip" title="اسحب لتغيير الترتيب">⠿</span>'}<span class="ic">${esc(l.icon || '📘')}</span>
       <div class="t"><b>${esc(l.title)}</b><br><small style="color:var(--muted)">${esc(l.sub || '')}${l.tracked === false ? ' · للاطلاع' : ' · ' + (l.autoMax || 0) + ' درجة'} · 🧠 ${l.bankCount || 0} سؤالًا</small></div>
       <div class="row" style="gap:4px">
-        <button class="btn sm ghost" ${i === 0 ? 'disabled' : ''} onclick="moveCat(${A(l.id)},-1)">▲</button><button class="btn sm ghost" ${i === L.length - 1 ? 'disabled' : ''} onclick="moveCat(${A(l.id)},1)">▼</button>
+        ${multi ? '' : `<button class="btn sm ghost" ${i === 0 ? 'disabled' : ''} onclick="moveCat(${A(l.id)},-1)">▲</button><button class="btn sm ghost" ${i === L.length - 1 ? 'disabled' : ''} onclick="moveCat(${A(l.id)},1)">▼</button>`}
         <button class="btn sm" onclick="openLesson(${A(l.id)},'preview')">👁 معاينة</button>
         <button class="btn sm alt" onclick="openBank(${A(l.id)})">🧠 بنك الأسئلة</button>
         <button class="btn sm ghost" onclick="editCat(${A(l.id)})">✏️ تعديل</button>
         <button class="btn sm ghost" onclick="replaceCat(${A(l.id)})">🔄 استبدال الملف</button>
-        <button class="btn sm red" onclick="deleteCat(${A(l.id)})">🗑</button></div></div>`).join('') : '<p>لا توجد دروس في هذا الباب بعد. ارفعها من المربّع أعلاه.</p>');
-  setupCuSort();
+        <button class="btn sm red" onclick="deleteCat(${A(l.id)})">🗑</button></div></div>`).join('') : multi ? '<p>لا توجد دروس في هذا الاختيار.</p>' : '<p>لا توجد دروس في هذا الباب بعد. ارفعها من المربّع أعلاه.</p>');
+  if (!multi) setupCuSort();
 }
 /* ترتيب الدروس بالسحب والإفلات (بالفأرة واللمس) */
 function setupCuSort() {
@@ -1551,6 +1562,7 @@ function setupCuDrop() {
 const readText = file => new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(String(r.result || '')); r.onerror = rej; r.readAsText(file, 'utf-8'); });
 async function uploadCatFiles(files, forceId) {
   const v = treeVal('#cuTree'), prog = $('#cuProg'); const done = [], bad = [];
+  if (!forceId && isMultiV(v)) return toast('لرفع الدروس اختر صفًّا واحدًا وفصلًا واحدًا وبابًا واحدًا', 5000);
   for (let i = 0; i < files.length; i++) {
     const file = files[i];
     prog.innerHTML = `<p>⏳ ${i + 1} من ${files.length}: ${esc(file.name)}</p>`;
@@ -1615,7 +1627,7 @@ function cuSelAll(on) { CUSEL.ids = new Set(on ? cuLessons(treeVal('#cuTree')).m
 function cuSelOne(id, on) { on ? CUSEL.ids.add(id) : CUSEL.ids.delete(id); renderCuList(); }
 async function deleteSelected() {
   const L = [...CUSEL.ids].map(catById).filter(Boolean); if (!L.length) return toast('حدّد درسًا واحدًا على الأقل');
-  if (!confirm(`حذف ${L.length} ${L.length > 2 ? 'دروس' : 'درس'} من المنهج؟\n\n${L.map(l => '• ' + l.title).join('\n')}\n\nستختفي عند كل المعلمين والطلاب، وتبقى النتائج السابقة محفوظة.`)) return;
+  if (!confirm(`حذف ${L.length} ${L.length > 2 ? 'دروس' : 'درس'} من المنهج؟\n\n${L.slice(0, 12).map(l => '• ' + l.title + (l.grade ? ' (' + gradeName(l.grade) + ')' : '')).join('\n')}${L.length > 12 ? '\n… و' + (L.length - 12) + ' دروس أخرى' : ''}\n\nستختفي عند كل المعلمين والطلاب، وتبقى النتائج السابقة محفوظة.`)) return;
   const prog = $('#cuProg'), bad = []; let k = 0;
   for (const l of L) {
     prog.innerHTML = `<p>⏳ جارٍ الحذف ${++k} من ${L.length}: ${esc(l.title)}</p>`;
