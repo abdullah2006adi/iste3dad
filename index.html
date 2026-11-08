@@ -260,6 +260,15 @@ td.selc input,th.selc input{width:22px;height:22px}
 .emojis button:hover{background:#fff}
 .school-hint .sh-item{background:#fff8e6;border:1px solid var(--orange);border-radius:12px;padding:4px 10px;margin:4px 0;font-size:19px}
 .hbtn.who{background:rgba(255,255,255,.14);text-decoration:underline dotted;text-underline-offset:5px}
+.gp-lbl{font-size:20px;color:var(--muted);margin:8px 0 4px}
+.gp-stages{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.gp-stage{font:inherit;font-size:clamp(17px,4.8vw,22px);min-width:0;font-weight:700;padding:10px 4px;border:2px solid var(--line);border-radius:14px;background:#fff;color:var(--ink);cursor:pointer}
+.gp-stage.on{border:4px solid var(--teal);background:#eaf6f2;color:var(--teal)}
+.gp-grades{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px}
+.gp-grade{font:inherit;font-size:clamp(19px,5.6vw,28px);line-height:1.25;font-weight:800;aspect-ratio:1/0.8;min-width:0;padding:4px;overflow-wrap:anywhere;border:2px solid var(--line);border-radius:18px;background:#fff;color:var(--ink);cursor:pointer;box-shadow:0 3px 8px rgba(0,0,0,.06)}
+.gp-grade:hover,.gp-stage:hover{border-color:var(--green)}
+.gp-grade.on{border:4px solid var(--orange);background:var(--orange-l);color:#9a3b12;transform:scale(1.04)}
+.gp-hint{text-align:center;color:var(--muted);margin:12px 0 0}
 #printArea{display:none}
 .pcards{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
 .pcard{border:2px dashed #888;border-radius:12px;padding:8px 12px;font-size:17px;line-height:1.7;break-inside:avoid}
@@ -368,7 +377,7 @@ td.selc input,th.selc input{width:22px;height:22px}
     <h2 style="margin-bottom:0">إنشاء حساب خاص</h2>
     <p style="margin-top:0;color:var(--muted)">للطالب الذي يدرس وحده</p>
     <label>اسم الطالب<input type="text" id="psName" placeholder="مثال: محمد أحمد"></label>
-    <label>الصف<select id="psGrade"></select></label>
+    <div class="gp-lbl">اختر صفّك</div><div class="gpick" id="psPick"></div><input type="hidden" id="psGrade">
     <label>البريد الإلكتروني (لصغار الصفوف: بريد وليّ الأمر)<input type="email" class="ltr" id="psMail" autocomplete="email" autocapitalize="off" spellcheck="false" placeholder="name@gmail.com"></label>
     <label>كلمة المرور (6 أحرف على الأقل)<input type="password" class="ltr" id="psPass" autocomplete="new-password"></label>
     <label>تأكيد كلمة المرور<input type="password" class="ltr" id="psPass2" autocomplete="new-password"></label>
@@ -921,7 +930,7 @@ const catById = id => CAT.find(l => l.id === id);
 /* ================= حساب الطالب: الدخول والمساحتان ================= */
 const isSynth = () => isStudentEmail(ME && ME.email);
 function showPSignup() {
-  $('#psGrade').innerHTML = '<option value="">— اختر الصف —</option>' + GRADES.map(g => `<option value="${esc(g.key)}">${esc(gradeName(g.key))}</option>`).join('');
+  $('#psGrade').value = ''; gradePick('psPick', 'psGrade', '');
   $('#psMsg').textContent = ''; showScreen('scrPSignup'); setTimeout(() => $('#psName').focus(), 50);
 }
 async function doPSignup() {
@@ -1132,8 +1141,9 @@ function renderPvResults(mine, others, nl) {
   $('#pvBody').innerHTML = html;
 }
 function pickMyGrade() {
-  openModal(`<h3 style="margin-top:0">🎓 صفّي الدراسي</h3><label>اختر صفّك<select id="mgSel">${GRADES.map(g => `<option value="${esc(g.key)}" ${g.key === ME.grade ? 'selected' : ''}>${esc(gradeName(g.key))}</option>`).join('')}</select></label>
+  openModal(`<h3 style="margin-top:0">🎓 صفّي الدراسي</h3><div class="gpick" id="mgPick"></div><input type="hidden" id="mgSel" value="${esc(ME.grade || '')}">
     <div class="row" style="margin-top:10px"><button class="btn" onclick="saveMyGrade()">حفظ</button><button class="btn ghost" onclick="closeModal()">إلغاء</button></div>`);
+  gradePick('mgPick', 'mgSel', ME.grade || '');
 }
 async function saveMyGrade() {
   const g = $('#mgSel').value;
@@ -3284,6 +3294,16 @@ async function doRestore(id) {
   } catch (e) { console.error(e); if (isPerm(e)) $('#rulesWarn').hidden = false; toast('تعذّر: ' + errMsg(e)); }
 }
 
+/* ================= اختيار الصف بالأزرار (للطالب) ================= */
+const STAGE_LBL = {'ابتدائي':'ابتدائي', 'إعدادي':'إعدادي', 'ثانوي':'ثانوي'};
+function gradePick(boxId, inputId, val, stage) {
+  const box = $('#' + boxId); if (!box) return;
+  const st = stage || (val && stageOf(val)) || box.dataset.stage || '';
+  box.dataset.stage = st;
+  box.innerHTML = `<div class="gp-stages">${Object.keys(STAGES).map(k => `<button type="button" class="gp-stage${k === st ? ' on' : ''}" onclick="gradePick('${boxId}','${inputId}',$('#${inputId}').value,'${k}')">${STAGE_LBL[k] || k}</button>`).join('')}</div>`
+    + (st ? `<div class="gp-grades">${STAGES[st].map(([, sh]) => { const k = sh.trim(); return `<button type="button" class="gp-grade${k === val ? ' on' : ''}" onclick="$('#${inputId}').value='${k}';gradePick('${boxId}','${inputId}','${k}','${st}')">${esc(k)}</button>`; }).join('')}</div>`
+          : '<p class="gp-hint">اختر مرحلتك أولًا 👆</p>');
+}
 /* ================= التشغيل ================= */
 setupCuDrop();
 boot();
