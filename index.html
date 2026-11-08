@@ -228,6 +228,38 @@ input.phone.saved{border-color:var(--green);background:#f3faf6}
 .tlogo{width:38px;height:38px;border-radius:10px;vertical-align:middle;box-shadow:0 2px 6px rgba(0,0,0,.25)}
 .hbtn.instbtn{background:#fde047;color:#1e1b4b;font-weight:700}
 .inst-steps{font-size:23px;line-height:1.9;background:#f3faf6;border-radius:14px;padding:10px 14px;margin:10px 0}
+/* شاشة البداية والعبارة أسفل الصفحة */
+#splash{position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:34px;padding:20px;background:linear-gradient(160deg,#0f5e5a,#1f8a5b);color:#fff;transition:opacity .35s}
+#splash.out{opacity:0;pointer-events:none}
+#splash .sp-txt{font-size:clamp(34px,7.5vw,58px);font-weight:800;line-height:1.75;text-align:center;text-shadow:0 3px 12px rgba(0,0,0,.25)}
+#splash .sp-bar{width:min(340px,72vw);height:14px;border-radius:99px;background:rgba(255,255,255,.25);overflow:hidden;box-shadow:inset 0 1px 3px rgba(0,0,0,.2)}
+#splash .sp-bar i{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,#fde047,#fff);animation:spfill 3s linear forwards}
+@keyframes spfill{to{width:100%}}
+.site-foot{text-align:center;padding:34px 16px 40px;color:var(--teal);font-weight:700;font-size:25px;line-height:1.8;opacity:.85}
+@media print{.site-foot,#splash{display:none!important}}
+/* الإشعارات والتحديد */
+.hbtn.bellbtn{position:relative;font-size:22px;padding:2px 12px}
+.hbtn.bellbtn .bell-dot{position:absolute;top:-7px;inset-inline-end:-7px;margin:0;background:#dc2626;color:#fff;font-size:14px;font-weight:800;line-height:20px;min-width:20px;height:20px;padding:0 5px;border-radius:99px;text-align:center;box-shadow:0 0 0 2px #fff;vertical-align:baseline}
+.ntf{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line);border-radius:14px;padding:8px 12px;margin:6px 0;background:#fff;cursor:pointer}
+.ntf.new{background:#fff8e6;border-color:var(--orange)}
+.ntf .ic{font-size:28px;line-height:1.2}
+.ntf .tx{flex:1;font-size:21px;line-height:1.6}
+.ntf .tm{font-size:16px;color:var(--muted)}
+.btn.seen-blue{background:#2563eb;color:#fff;white-space:nowrap}
+.btn.seen-green{background:var(--green);color:#fff;white-space:nowrap}
+tr.picked td{background:var(--orange-l)}
+td.selc{width:34px}
+td.selc input,th.selc input{width:22px;height:22px}
+.num{font-weight:800;text-align:center}
+.row.filt{gap:8px;margin:8px 0;align-items:flex-end}
+.row.filt label{font-size:18px;flex:1 1 150px;max-width:230px}
+.row.filt select,.row.filt input{width:100%;font-size:19px;padding:3px 6px}
+.sortb.on{background:var(--teal);color:#fff}
+.emojis{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px;padding:6px;border:1px solid var(--line);border-radius:12px;background:#faf7ef}
+.emojis button{font-size:24px;line-height:1.2;border:0;background:transparent;cursor:pointer;padding:2px 4px;border-radius:8px}
+.emojis button:hover{background:#fff}
+.school-hint .sh-item{background:#fff8e6;border:1px solid var(--orange);border-radius:12px;padding:4px 10px;margin:4px 0;font-size:19px}
+.hbtn.who{background:rgba(255,255,255,.14);text-decoration:underline dotted;text-underline-offset:5px}
 #printArea{display:none}
 .pcards{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
 .pcard{border:2px dashed #888;border-radius:12px;padding:8px 12px;font-size:17px;line-height:1.7;break-inside:avoid}
@@ -246,6 +278,16 @@ input.phone.saved{border-color:var(--green);background:#f3faf6}
 </style>
 </head>
 <body>
+<div id="splash" role="status"><div class="sp-txt">اسْتَمْتِعِ الْآن<br>وَكُنْ مُتَمَيِّزاً فِي الْحِصَّة</div><div class="sp-bar"><i></i></div></div>
+<script>
+/* تظهر عند فتح المنصة من جديد فقط، لا عند تحديث الصفحة */
+(function () {
+  var sp = document.getElementById('splash'), seen = false;
+  try { seen = sessionStorage.getItem('iste3dad-splash') === '1'; sessionStorage.setItem('iste3dad-splash', '1'); } catch (e) {}
+  if (seen) { sp.remove(); return; }
+  setTimeout(function () { sp.classList.add('out'); setTimeout(function () { sp.remove(); }, 400); }, 3000);
+})();
+</script>
 <div class="demo-banner" id="demoBanner" hidden>🧪 وضع تجريبي: البيانات على هذا الجهاز فقط · المدير: admin@demo.com / 123456</div>
 
 <section id="scrLoading"><div class="login-card"><div class="logo"><img src="icon-180.png" alt="" class="applogo"></div><h2>منصة استعداد</h2><p>⏳ جارٍ التحميل…</p></div></section>
@@ -309,6 +351,8 @@ input.phone.saved{border-color:var(--green);background:#f3faf6}
     <h2 style="margin-bottom:0">إنشاء حساب معلم</h2>
     <p style="margin-top:0;color:var(--muted)">سيصلك رابط تحقّق على بريدك الإلكتروني</p>
     <label>الاسم كما يراه طلابك<input type="text" id="suName" placeholder="مثال: أ. عبدالله"></label>
+    <label>اسم المدرسة<input type="text" id="suSchool" list="schoolList" oninput="schoolHint(this,'suSchoolHint')" placeholder="اكتب أو اختر من القائمة"></label><datalist id="schoolList"></datalist><div class="school-hint" id="suSchoolHint"></div>
+    <label>المدرسة<select id="suGender"><option value="">— اختر —</option><option value="بنين">بنين</option><option value="بنات">بنات</option></select></label>
     <label>البريد الإلكتروني<input type="email" class="ltr" id="suMail" autocomplete="email" autocapitalize="off" spellcheck="false" placeholder="name@gmail.com"></label>
     <label>كلمة المرور (6 أحرف على الأقل)<input type="password" class="ltr" id="suPass" autocomplete="new-password"></label>
     <label>تأكيد كلمة المرور<input type="password" class="ltr" id="suPass2" autocomplete="new-password"></label>
@@ -348,28 +392,30 @@ input.phone.saved{border-color:var(--green);background:#f3faf6}
 </section>
 
 <section id="scrHub" hidden>
-  <div class="topbar"><div class="wrap"><h1><img src="icon-180.png" alt="" class="tlogo"> منصة استعداد</h1><div class="row"><span id="hubWho"></span><button class="hbtn instbtn" onclick="installApp()" hidden>📲 اجعلني على سطح المكتب</button><button class="hbtn fbbtn" onclick="openFeedback()">💬 أرسل ملاحظة</button><button class="hbtn" onclick="doLogout()">🚪 خروج</button></div></div></div>
+  <div class="topbar"><div class="wrap"><h1><img src="icon-180.png" alt="" class="tlogo"> منصة استعداد</h1><div class="row"><button id="hubWho" class="hbtn who" onclick="openProfile()" title="صفحتي: البريد والمدرسة"></button><button class="hbtn bellbtn" onclick="openBell()" title="الإشعارات">🔔<span class="dot bell-dot" hidden></span></button><button class="hbtn instbtn" onclick="installApp()" hidden>📲 اجعلني على سطح المكتب</button><button class="hbtn fbbtn" onclick="openFeedback()">💬 أرسل ملاحظة</button><button class="hbtn" onclick="doLogout()">🚪 خروج</button></div></div></div>
   <div class="wrap">
     <h2 id="hubHello"></h2>
     <div class="space-btns">
       <button class="sp-cls" onclick="openHome()"><span>🏫</span><b>صفّي</b><small id="hubClsTxt">دروس معلمك ونتائجك عنده</small></button>
       <button class="sp-priv" onclick="openPrivate()"><span>🌟</span><b>مساحتي الخاصة</b><small>كل الدروس متاحة لك، ونتائجك فيها خاصة بك</small></button>
     </div>
+    <div class="row" id="hubMsg" style="margin:8px 0"></div>
     <div class="acts" id="hubActs"></div>
   </div>
 </section>
 
 <section id="scrHome" hidden>
-  <div class="topbar"><div class="wrap"><h1>🏫 صفّي</h1><div class="row"><span id="homeWho"></span><button class="hbtn instbtn" onclick="installApp()" hidden>📲 اجعلني على سطح المكتب</button><button class="hbtn fbbtn" onclick="openFeedback()">💬 أرسل ملاحظة</button><button class="hbtn" onclick="showHub()">🏠 الرئيسية</button><button class="hbtn" onclick="doLogout()">🚪 خروج</button></div></div></div>
+  <div class="topbar"><div class="wrap"><h1>🏫 صفّي</h1><div class="row"><button id="homeWho" class="hbtn who" onclick="openProfile()" title="صفحتي: البريد والمدرسة"></button><button class="hbtn bellbtn" onclick="openBell()" title="الإشعارات">🔔<span class="dot bell-dot" hidden></span></button><button class="hbtn instbtn" onclick="installApp()" hidden>📲 اجعلني على سطح المكتب</button><button class="hbtn fbbtn" onclick="openFeedback()">💬 أرسل ملاحظة</button><button class="hbtn" onclick="showHub()">🏠 الرئيسية</button><button class="hbtn" onclick="doLogout()">🚪 خروج</button></div></div></div>
   <div class="wrap">
     <h2 id="homeHello"></h2>
+    <div class="row" style="margin:-4px 0 10px"><button class="btn sm alt" onclick="msgMyTeacher()">✉️ راسل معلّمك</button></div>
     <h3>📚 دروسي</h3>
     <div id="homeLessons"></div>
   </div>
 </section>
 
 <section id="scrPriv" hidden>
-  <div class="topbar"><div class="wrap"><h1>🌟 مساحتي الخاصة</h1><div class="row"><span id="pvWho"></span><button class="hbtn instbtn" onclick="installApp()" hidden>📲 اجعلني على سطح المكتب</button><button class="hbtn fbbtn" onclick="openFeedback()">💬 أرسل ملاحظة</button><button class="hbtn" id="pvHub" onclick="showHub()">🏠 الرئيسية</button><button class="hbtn" onclick="doLogout()">🚪 خروج</button></div></div></div>
+  <div class="topbar"><div class="wrap"><h1>🌟 مساحتي الخاصة</h1><div class="row"><button id="pvWho" class="hbtn who" onclick="openProfile()" title="صفحتي: البريد والمدرسة"></button><button class="hbtn bellbtn" onclick="openBell()" title="الإشعارات">🔔<span class="dot bell-dot" hidden></span></button><button class="hbtn instbtn" onclick="installApp()" hidden>📲 اجعلني على سطح المكتب</button><button class="hbtn fbbtn" onclick="openFeedback()">💬 أرسل ملاحظة</button><button class="hbtn" id="pvHub" onclick="showHub()">🏠 الرئيسية</button><button class="hbtn" onclick="doLogout()">🚪 خروج</button></div></div></div>
   <div class="wrap">
     <h2 id="pvHello"></h2>
     <div class="warnbar" id="pvWarn" hidden></div>
@@ -386,13 +432,14 @@ input.phone.saved{border-color:var(--green);background:#f3faf6}
 </section>
 
 <section id="scrTeacher" hidden>
-  <div class="topbar"><div class="wrap"><h1><img src="icon-180.png" alt="" class="tlogo"> <span id="tHead">استعداد · لوحة المعلم</span></h1><div class="row"><span id="tWho"></span><button class="hbtn instbtn" onclick="installApp()" hidden>📲 اجعلني على سطح المكتب</button><button class="hbtn fbbtn" onclick="openFeedback()">💬 أرسل ملاحظة</button><button class="hbtn" onclick="doLogout()">🚪 خروج</button></div></div></div>
+  <div class="topbar"><div class="wrap"><h1><img src="icon-180.png" alt="" class="tlogo"> <span id="tHead">استعداد · لوحة المعلم</span></h1><div class="row"><button id="tWho" class="hbtn who" onclick="openProfile()" title="صفحتي: البريد والمدرسة"></button><button class="hbtn bellbtn" onclick="openBell()" title="الإشعارات">🔔<span class="dot bell-dot" hidden></span></button><button class="hbtn instbtn" onclick="installApp()" hidden>📲 اجعلني على سطح المكتب</button><button class="hbtn fbbtn" onclick="openFeedback()">💬 أرسل ملاحظة</button><button class="hbtn" onclick="doLogout()">🚪 خروج</button></div></div></div>
   <div class="wrap">
     <div class="warnbar" id="rulesWarn" hidden>⚠️ قواعد الحماية في Firebase قديمة. افتح تبويب «⚙️ الإعداد»، وانسخ القواعد الجديدة، والصقها في Firebase ← Firestore ← Rules، ثم اضغط Publish وحدّث الصفحة.</div>
     <div class="subtabs" id="tTabs">
       <button data-t="teachers" class="adminOnly" onclick="tTab('teachers')" hidden>🏫 المعلمون</button>
       <button data-t="curriculum" class="adminOnly" onclick="tTab('curriculum')" hidden>🗂️ المنهج</button>
       <button data-t="feedback" class="adminOnly" onclick="tTab('feedback')" hidden>📨 ملاحظات المستخدمين<span class="dot" id="fbDot" hidden></span></button>
+      <button data-t="allst" class="adminOnly" onclick="tTab('allst')" hidden>🎓 كل الطلاب</button>
       <button data-t="results" onclick="tTab('results')">📊 النتائج</button>
       <button data-t="private" onclick="tTab('private')">🔐 النتائج الخاصة<span class="dot" id="pvDot" hidden></span></button>
       <button data-t="lessons" onclick="tTab('lessons')">📚 الدروس</button>
@@ -402,12 +449,38 @@ input.phone.saved{border-color:var(--green);background:#f3faf6}
     <div class="viewas" id="viewAs" hidden><span id="viewAsTxt"></span><button class="btn sm ghost" onclick="switchView(ME.uid)">↩ العودة إلى صفحتي</button></div>
 
     <!-- المعلمون (للمدير) -->
+    <div class="tview" id="tv-allst" hidden>
+      <div class="card">
+        <h3 style="margin-top:0">🏫 المدارس</h3>
+        <p style="margin:4px 0;font-size:20px">اضغط اسم المدرسة لتعرض طلابها في القائمة التالية. وزر ✏️ لتصحيح اسمها، أو دمجها مع مدرسة مكتوبة باسم آخر.</p>
+        <div class="row filt" id="scSearch"></div>
+        <div class="tbl-scroll" id="scTable"></div>
+      </div>
+      <div class="card" id="asCard">
+        <div class="row" style="justify-content:space-between"><h3 style="margin:0">🎓 كل طلاب المنصة</h3><button class="btn sm" onclick="loadAllStudents()">🔄 تحديث</button></div>
+        <p style="margin:4px 0">طلاب كل المعلمين، والطلاب بحسابات خاصة. المدرسة ونوعها مأخوذان من بيانات المعلم.</p>
+        <div class="row" style="gap:6px;margin:6px 0"><button class="btn sm alt" onclick="composeMsg({group:'students'})">📢 رسالة لكل الطلاب</button><button class="btn sm alt" onclick="composeMsg({group:'all'})">📢 رسالة للجميع (المعلمين والطلاب)</button></div>
+        <div class="row filt" id="asFilt"></div>
+        <div class="row" style="gap:6px;margin:6px 0" id="asSort"></div>
+        <div class="tbl-scroll" id="asTable"></div>
+      </div>
+    </div>
+
     <div class="tview" id="tv-teachers" hidden>
       <div class="card">
         <h3 style="margin-top:0">🏫 معلمو المنصة</h3>
         <p style="margin-top:0">يسجّل المعلم بنفسه: يفتح المنصة ← «👨‍🏫 أنا معلم» ← «أنشئ حساب معلم»، ثم يتحقّق من بريده. تستطيع هنا إيقاف أي حساب أو فتح صفحته.</p>
         <button class="btn sm ghost" onclick="copyText(inviteText())">📋 نسخ رسالة دعوة للمعلمين</button>
+        <div class="row filt" id="tcFilt"></div>
+        <div id="tcSel"></div>
         <div class="tbl-scroll" id="tcTable" style="margin-top:8px"></div>
+        <p style="font-size:19px;color:var(--muted)">زر «تم الاطلاع» يصير <b style="color:#2563eb">أزرق</b> كلما تغيّر شيء في إحصاءات المعلم (الصفوف أو الشعب أو الطلاب أو النتائج)، فإذا ضغطته صار <b style="color:var(--green)">أخضر</b>.</p>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0">🌟 الطلاب بحسابات خاصة</h3>
+        <p style="margin-top:0">الطلاب الذين سجّلوا بأنفسهم ببريدهم من «الحساب الخاص».</p>
+        <div id="pvSel"></div>
+        <div class="tbl-scroll" id="pvTable"></div>
       </div>
     </div>
 
@@ -508,13 +581,15 @@ input.phone.saved{border-color:var(--green);background:#f3faf6}
         </div>
         <div class="row" style="margin:6px 0"><button class="btn ghost sm" onclick="copyListCreds()">📋 نسخ بيانات الدخول للقائمة</button><button class="btn ghost sm" onclick="printCards()">🖨 طباعة بطاقات الدخول</button></div>
         <div class="row" style="margin:6px 0"><button class="btn sm wa" onclick="openPhoneImport()">📞 أرقام أولياء الأمور دفعة واحدة (إكسل)</button><button class="btn ghost sm" onclick="phoneTemplate()">⬇ تنزيل قائمة الطلاب لإضافة الأرقام</button></div>
-        <div class="tbl-scroll" id="stTable"></div>
-        <p style="font-size:19px;color:var(--muted)">اكتب رقم وليّ الأمر في خانته بجانب الاسم، ويُحفظ تلقائيًا عند الخروج من الخانة. لا يمكن حذف حساب الطالب نهائيًا من هنا؛ أوقفه بدلًا من ذلك.</p>
+        <div id="stSel"></div><div class="tbl-scroll" id="stTable"></div>
+        <p style="font-size:19px;color:var(--muted)">اكتب رقم وليّ الأمر في خانته بجانب الاسم، ويُحفظ تلقائيًا عند الخروج من الخانة. لحذف طلاب: اضغط «☑️ تحديد» أو «✅ تحديد الكل» فوق القائمة. يُحذف حساب الطالب وتبقى نتائجه محفوظة.</p>
       </div>
     </div>
 
     <!-- الإعداد -->
     <div class="tview" id="tv-setup" hidden>
+      <div class="card"><h3 style="margin-top:0">🏫 مدرستي</h3><div id="mySchool"></div></div>
+      <div class="card"><h3 style="margin-top:0">🗄️ الأرشيف</h3><p style="margin:0 0 6px;font-size:20px">صفوف مدارسك السابقة ونتائجها، والطلاب الذين انتقلوا إلى مدارس أخرى.</p><div id="archBox"></div></div>
       <div class="card"><h3 style="margin-top:0">✉️ رسائل جاهزة للطلاب</h3><div id="msgList"></div></div>
       <div class="card adminOnly" hidden><h3 style="margin-top:0">🔐 قواعد حماية قاعدة البيانات (للمدير)</h3>
         <p>تضعها في Firebase ← Firestore Database ← Rules، ثم Publish.</p>
@@ -529,6 +604,7 @@ input.phone.saved{border-color:var(--green);background:#f3faf6}
 </section>
 
 <div id="printArea"></div>
+<footer class="site-foot">اسْتَمْتِعِ الْآن<br>وَكُنْ مُتَمَيِّزاً فِي الْحِصَّة</footer>
 <div id="modalRoot"></div>
 <div class="toast" id="toast"></div>
 
@@ -570,6 +646,7 @@ input.phone.saved{border-color:var(--green);background:#f3faf6}
         await AU.signOut(a2); return c.user.uid;
       },
       addEmail: e => AU.verifyBeforeUpdateEmail(auth.currentUser, e),
+      reauth: p => AU.reauthenticateWithCredential(auth.currentUser, AU.EmailAuthProvider.credential(auth.currentUser.email, p)),
       /* جلسة ثانية بحساب الصف (للطالب صاحب الحساب الخاص بعد انضمامه إلى صف معلمه) */
       session: async (email, password) => {
         if (!clsApp) { clsApp = A.initializeApp(CONFIG.firebase, 'cls'); clsAuth = AU.initializeAuth(clsApp, {persistence:AU.inMemoryPersistence}); }
@@ -682,6 +759,7 @@ function DemoAPI() {
     async resetPass() { return delay(); },
     async newAuthUser(email, p) { await delay(); return mkUser(email, p, false); },
     async session(e, p) { await delay(); const u = db.users[e]; if (!u || u.pass !== p) throw err('auth/invalid-credential'); return Object.assign({}, this, {uid:u.uid}); },
+    async reauth(p) { await delay(); if (!cur || db.users[cur.email].pass !== p) throw err('auth/invalid-credential'); },
     async addEmail(e) { await delay(); if (db.users[e]) throw err('auth/email-already-in-use'); db.users[e] = db.users[cur.email]; delete db.users[cur.email]; cur = pub(e); LS.set('iste3dad-demo-auth5', cur); put(); },
     async get(col, id) { const v = C(col)[id]; return delay(v ? Object.assign({id}, clone(v)) : null); },
     async set(col, id, data, merge) { C(col)[id] = merge ? Object.assign({}, C(col)[id] || {}, clone(data)) : clone(data); put(); return delay(); },
@@ -723,20 +801,26 @@ function chooseRole(r) {
 function loginMsg(t, ok) { const m = $('#loginMsg'); m.textContent = t || ''; m.classList.toggle('ok', !!ok); }
 const isStudentEmail = e => String(e || '').toLowerCase().endsWith('@' + DOMAIN);
 async function onAuthChange(user) {
-  if (!user) { ME = null; stopTimers(); showScreen('scrRole'); return; }
+  if (!user) { ME = null; stopTimers(); try { closeModal(); } catch (e) {} NTF.items = []; showScreen('scrRole'); return; }
   const email = (user.email || '').toLowerCase();
   try {
     if (email && email === adminEmail()) { ME = {role:'admin', uid:user.uid, email, name:'المدير'}; await openTeacher(); return; }
+    if (email && !isStudentEmail(email)) {
+      const bl = await API.get('blocked', user.uid).catch(() => null);
+      if (bl) { await handleBlocked(user, bl); return; }
+    }
     const kind = LS.get('iste3dad-signup-kind', '');
     let t = await API.get('teachers', user.uid).catch(e => { if (isPerm(e)) return null; throw e; });
     if (t) {
       if (!isStudentEmail(email) && !user.emailVerified) { showVerify(email); return; }
       if (t.active === false) { await API.logout(); chooseRole('teacher'); loginMsg('حساب المعلم موقوف. راجع مدير المنصة.'); return; }
-      ME = Object.assign({role:'teacher', uid:user.uid, email}, t); await openTeacher(); return;
+      ME = Object.assign({role:'teacher', uid:user.uid, email}, t);
+      if (t.email !== email && email) { API.set('teachers', user.uid, {email}, true).catch(e => console.error(e)); ME.email = email; }
+      await openTeacher(); return;
     }
     const st = await API.get('students', user.uid).catch(() => null);
     if (st) {
-      if (st.active === false) { await API.logout(); chooseRole('student'); loginMsg('هذا الحساب موقوف. راجع معلّمك.'); return; }
+      if (st.active === false) { await API.logout(); chooseRole('student'); loginMsg(st.archStopped ? 'انتقل معلّمك إلى مدرسة أخرى، فتوقف حساب الصف هذا.' : st.moved ? 'انتقلت إلى مدرسة أخرى، فتوقف حساب الصف هذا. ادخل بحسابك الخاص، أو أنشئ حسابًا خاصًا، ثم انضم إلى صف معلمك الجديد برمزه.' : st.removed ? 'حذف معلّمك هذا الحساب. راجع معلّمك.' : 'هذا الحساب موقوف. راجع معلّمك.'); return; }
       await openStudent(user, st, null); return;
     }
     let ac = await API.get('accounts', user.uid).catch(() => null);
@@ -770,20 +854,24 @@ async function forgotPass() {
   if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e)) return loginMsg('اكتب بريدك الإلكتروني في الخانة أولًا، ثم اضغط «نسيت كلمة المرور؟»');
   try { await API.resetPass(e); loginMsg('أرسلنا رابط تغيير كلمة المرور إلى بريدك ✓', true); } catch (er) { loginMsg('تعذّر الإرسال: تأكّد من البريد.'); }
 }
-function showSignup() { $('#suMsg').textContent = ''; showScreen('scrSignup'); setTimeout(() => $('#suName').focus(), 50); }
+function showSignup() { fillSchoolSuggest(); $('#suMsg').textContent = ''; showScreen('scrSignup'); setTimeout(() => $('#suName').focus(), 50); }
 async function doSignup() {
   const name = $('#suName').value.trim(), e = $('#suMail').value.trim().toLowerCase(), p = $('#suPass').value, p2 = $('#suPass2').value;
   const msg = t => $('#suMsg').textContent = t;
+  const school = $('#suSchool').value.trim(), gender = $('#suGender').value;
   if (name.length < 2) return msg('اكتب اسمك');
+  if (school.length < 2) return msg('اكتب اسم المدرسة');
+  if (!gender) return msg('اختر: بنين أو بنات');
   if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e)) return msg('اكتب البريد الإلكتروني بشكل صحيح');
   if (isStudentEmail(e)) return msg('هذا البريد غير مسموح');
   if (p.length < 6) return msg('كلمة المرور 6 أحرف على الأقل');
   if (p !== p2) return msg('كلمتا المرور غير متطابقتين');
   const b = $('#suBtn'); b.disabled = true; b.textContent = '⏳ جارٍ الإنشاء…'; msg('');
-  LS.set('iste3dad-signup-name', name); LS.set('iste3dad-signup-kind', 'teacher');
+  LS.set('iste3dad-signup-name', name); LS.set('iste3dad-signup-school', {school, gender}); LS.set('iste3dad-signup-kind', 'teacher');
   try { await API.signup(e, p); }
   catch (er) {
     const c = er && er.code || '';
+    if (c.includes('email-already')) { try { await API.login(e, p); return; } catch (e2) { return msg('هذا البريد مسجّل من قبل، وكلمة المرور لا تطابقه. ادخل من صفحة الدخول بكلمة المرور القديمة، أو اضغط هناك «نسيت كلمة المرور؟».'); } }
     msg(c.includes('email-already') ? 'هذا البريد مسجّل من قبل. ادخل به من صفحة الدخول.' : c.includes('weak') ? 'كلمة المرور ضعيفة.' : c.includes('invalid-email') ? 'البريد غير صحيح.' : 'تعذّر إنشاء الحساب: ' + errMsg(er));
   } finally { b.disabled = false; b.textContent = 'إنشاء الحساب'; }
 }
@@ -810,15 +898,18 @@ async function createTeacherDoc(user) {
   const name = LS.get('iste3dad-signup-name', '') || (user.email || '').split('@')[0];
   const code = 't' + Math.random().toString(36).slice(2, 6);
   try {
-    await API.set('teachers', user.uid, {name, email:(user.email || '').toLowerCase(), active:true, classes:[], code, createdAt:Date.now()});
-    LS.del('iste3dad-signup-name'); LS.del('iste3dad-signup-kind'); return true;
+    const sc = LS.get('iste3dad-signup-school', null) || {};
+    const doc = {name, email:(user.email || '').toLowerCase(), active:true, classes:[], code, createdAt:Date.now()};
+    if (sc.school) doc.school = sc.school; if (sc.gender) doc.gender = sc.gender;
+    await API.set('teachers', user.uid, doc);
+    LS.del('iste3dad-signup-name'); LS.del('iste3dad-signup-school'); LS.del('iste3dad-signup-kind'); return true;
   } catch (e) {
     console.error(e);
     showVerify(user.email); $('#vfMsg').textContent = isPerm(e) ? 'تعذّر تفعيل الحساب: قواعد الحماية في Firebase تحتاج تحديثًا (أخبر مدير المنصة).' : 'تعذّر تفعيل الحساب: ' + errMsg(e);
     return false;
   }
 }
-async function doLogout() { await flushProgress(); stopTimers(); await API.logout(); }
+async function doLogout() { await flushProgress(); stopTimers(); try { closeModal(); } catch (e) {} await API.logout(); }
 const TIMERS = [];
 function stopTimers() { while (TIMERS.length) clearInterval(TIMERS.pop()); }
 
@@ -847,6 +938,7 @@ async function doPSignup() {
   try { await API.signup(e, p); }
   catch (er) {
     const c = er && er.code || '';
+    if (c.includes('email-already')) { try { await API.login(e, p); return; } catch (e2) { return msg('هذا البريد مسجّل من قبل، وكلمة المرور لا تطابقه. ادخل من صفحة الدخول بكلمة المرور القديمة، أو اضغط هناك «نسيت كلمة المرور؟».'); } }
     msg(c.includes('email-already') ? 'هذا البريد مسجّل من قبل. ادخل به من صفحة الدخول.' : c.includes('weak') ? 'كلمة المرور ضعيفة.' : c.includes('invalid-email') ? 'البريد غير صحيح.' : 'تعذّر إنشاء الحساب: ' + errMsg(er));
   } finally { b.disabled = false; b.textContent = 'إنشاء الحساب'; }
 }
@@ -863,16 +955,19 @@ async function openStudent(user, st, ac) {
     if (!ME.acct) ME.acct = await API.get('accounts', user.uid).catch(() => null);
   } else {
     Object.assign(ME, {kind:'private', name:ac.name});
+    if (ac.email !== ME.email && ME.email) { API.set('accounts', user.uid, {email:ME.email}, true).catch(() => {}); ac.email = ME.email; }
     if (ac.classUid && ac.cemail && ac.cpass) {
       try {
         const sx = await API.session(ac.cemail, ac.cpass), cst = await sx.get('students', sx.uid);
         if (cst && cst.active !== false) Object.assign(ME, {capi:sx, cuid:sx.uid, cname:cst.name, cls:cst.cls, teacherId:cst.teacherId, username:cst.username});
+        else if (cst && cst.moved) { ME.linkErr = 'وافق معلمك على انتقالك إلى «' + (cst.movedTo || '') + '». انضم إلى صف معلمك الجديد برمزه.'; try { await API.set('accounts', user.uid, {classUid:'', cemail:'', cpass:'', school:cst.movedTo || ''}, true); Object.assign(ac, {classUid:'', cemail:'', cpass:'', school:cst.movedTo || ''}); } catch (e) { console.error(e); } }
         else ME.linkErr = cst ? 'أوقف معلمك حساب صفّك، فلا يمكن فتح «صفّي» الآن.' : 'لم يعد حساب صفّك موجودًا. انضم مرة أخرى برمز معلمك.';
       } catch (e) { console.error(e); ME.linkErr = 'تعذّر فتح «صفّي»: ربما تغيّرت كلمة مرور حساب الصف. انضم مرة أخرى برمز معلمك وكلمة المرور الجديدة.'; }
     }
   }
   ME.grade = ME.cls ? gradeOf(ME.cls) : (ME.acct && ME.acct.grade) || '';
   if (ME.cuid) showHub(); else openPrivate();
+  initBell();
 }
 function showHub() {
   if (!ME || ME.role !== 'student') return;
@@ -881,6 +976,7 @@ function showHub() {
   $('#hubWho').textContent = '👤 ' + ME.name;
   $('#hubHello').textContent = 'مرحبًا يا ' + (ME.name || '').split(' ')[0] + ' 👋';
   $('#hubClsTxt').textContent = 'الشعبة ' + (ME.cls || '') + ' · دروس معلمك ونتائجك عنده';
+  $('#hubMsg').innerHTML = ME.teacherId ? '<button class="btn alt" onclick="msgMyTeacher()">✉️ راسل معلّمك</button>' : '';
   $('#hubActs').innerHTML = isSynth() ? `<button class="btn sm ghost" onclick="openAddEmail()">📧 أضف بريدك</button><small style="color:var(--muted)">اختياري: لتدخل ببريدك، وتستعيد كلمة المرور بنفسك إن نسيتها.</small>` : '';
 }
 function openAddEmail() {
@@ -934,13 +1030,13 @@ async function doJoin() {
     m.textContent = c.includes('invalid-credential') || c.includes('wrong-password') || c.includes('user-not-found') ? 'الرمز أو كلمة المرور غير صحيحة.' : c.includes('too-many') ? 'محاولات كثيرة. انتظر دقيقة.' : 'تعذّر الانضمام: ' + errMsg(e);
   } finally { const b = $('#jnBtn'); if (b) b.disabled = false; }
 }
-function showAttempts(title, max, list) {
-  const L = list.slice().sort((a, b) => b.at - a.at), best = L.reduce((m, s) => !m || (+s.auto || 0) > (+m.auto || 0) ? s : m, null);
-  openModal(`<h3 style="margin-top:0">📜 محاولاتي في: ${esc(title)}</h3>` + (L.length ? L.map(a => `<div style="border-top:1px dashed var(--line);padding:6px 0"><b>المحاولة ${esc(a.attempt || '')}</b> · ${fmtDate(a.at)} · الدرجة: <b>${+a.auto || 0} / ${max || ''}</b> ${a === best ? '<span class="chip done">الأفضل</span>' : ''}</div>`).join('') : '<p>لا توجد محاولات.</p>'));
+function showAttempts(title, max, list, pickAt) {
+  const L = list.slice().sort((a, b) => b.at - a.at), best = (pickAt && L.find(s => s.at === pickAt)) || L.reduce((m, s) => !m || (+s.auto || 0) > (+m.auto || 0) ? s : m, null);
+  openModal(`<h3 style="margin-top:0">📜 محاولاتي في: ${esc(title)}</h3>` + (L.length ? L.map(a => `<div style="border-top:1px dashed var(--line);padding:6px 0"><b>المحاولة ${esc(a.attempt || '')}</b> · ${fmtDate(a.at)} · الدرجة: <b>${+a.auto || 0} / ${max || ''}</b> ${a === best ? `<span class="chip done">${pickAt ? 'المعتمدة (اختارها معلمك)' : 'الأفضل'}</span>` : ''}</div>`).join('') : '<p>لا توجد محاولات.</p>'));
 }
 
 /* ================= صفّي (دروس المعلم) ================= */
-let LESSONS = [], SHOW = {}, MYSUBS = [];
+let LESSONS = [], SHOW = {}, MYSUBS = [], MYPICK = {};
 async function openHome() {
   showScreen('scrHome');
   $('#homeWho').textContent = '👤 ' + (ME.cname || ME.name) + ' · ' + ME.cls;
@@ -955,6 +1051,7 @@ async function loadStudentLessons() {
     SHOW = (show && show.lessons) || {};
     LESSONS = cat.filter(l => (SHOW[l.id] || []).includes(ME.cls)).sort(byLessonOrder);
     subs = MYSUBS = await ME.capi.where('submissions', {uid:ME.cuid});
+    const nt = await ME.capi.get('snote', ME.cuid).catch(() => null); MYPICK = (nt && nt.pick) || {};
   } catch (e) { console.error(e); $('#homeLessons').innerHTML = '<p>تعذّر تحميل الدروس. حدّث الصفحة.</p>'; return; }
   if (!LESSONS.length) { $('#homeLessons').innerHTML = '<div class="card">لا توجد دروس متاحة الآن. سيُظهر معلّمك الدروس قريبًا 🌿 وتستطيع أن تدرس ما تشاء في «🌟 مساحتي الخاصة».</div>'; return; }
   const prog = await Promise.all(LESSONS.map(l => l.tracked === false ? null : ME.capi.get('progress', ME.cuid + '_' + l.id).then(d => d ? JSON.parse(d.s || 'null') : null).catch(() => null)));
@@ -963,12 +1060,13 @@ async function loadStudentLessons() {
     const head = termName(l.term || 1) + ' · ' + unitName(l.unit || 1);
     if (head !== last) { html += `<div class="unit-head">📘 ${head}</div>`; last = head; }
     const my = subs.filter(s => s.lessonId === l.id), p = prog[i];
-    const best = my.length ? Math.max(...my.map(s => +s.auto || 0)) : null, aMax = +l.autoMax || 0;
+    const pk = MYPICK[l.id], ch = pk && my.find(s => s.at === pk.at);
+    const best = ch ? +ch.auto || 0 : my.length ? Math.max(...my.map(s => +s.auto || 0)) : null, aMax = +l.autoMax || 0;
     const started = p && (p.page || Object.keys(p).length > 3);
     let chip, btn;
     if (l.tracked === false) { chip = '<span class="chip grey">📖 للاطلاع</span>'; btn = 'افتح الدرس ←'; }
     else { chip = my.length ? '<span class="chip done">✅ أُرسل</span>' : started ? '<span class="chip wip">⏳ قيد الحل</span>' : '<span class="chip new">🆕 جديد</span>'; btn = my.length ? 'افتح الدرس ←' : started ? 'أكمل الدرس ←' : 'ابدأ الدرس ←'; }
-    const scoreLine = my.length ? `<div style="font-size:21px">🏅 أفضل درجة: <b>${best} / ${aMax}</b> · المحاولات: <b>${my.length}</b> <button class="btn sm ghost" onclick="showAttempts(${A(l.title)},${aMax},MYSUBS.filter(s=>s.lessonId===${A(l.id)}))">📜 المحاولات</button></div>` : '';
+    const scoreLine = my.length ? `<div style="font-size:21px">🏅 ${ch ? 'الدرجة المعتمدة' : 'أفضل درجة'}: <b>${best} / ${aMax}</b> · المحاولات: <b>${my.length}</b> <button class="btn sm ghost" onclick="showAttempts(${A(l.title)},${aMax},MYSUBS.filter(s=>s.lessonId===${A(l.id)}),${ch ? ch.at : 0})">📜 المحاولات</button></div>` : '';
     html += `<div class="lesson-card"><div class="ic">${esc(l.icon || '📘')}</div>
       <div class="info"><h3 style="margin:0">${esc(l.title)} ${chip}</h3><div style="color:var(--muted)">${esc(l.sub || '')}</div>${scoreLine}</div>
       <button class="btn alt big" onclick="openLesson(${A(l.id)},'student')">${btn}</button></div>`;
@@ -1043,7 +1141,7 @@ async function saveMyGrade() {
 }
 async function setShare(on) {
   try {
-    await API.set('accounts', ME.uid, {share:on}, true); ME.acct.share = on;
+    const sa = on ? Date.now() : 0; await API.set('accounts', ME.uid, {share:on, sharedAt:sa}, true); ME.acct.share = on; ME.acct.sharedAt = sa;
     if (on) await syncPShare(); else await API.del('pshare', ME.uid).catch(() => {});
     toast(on ? 'صار معلمك يرى نتائجك الخاصة ✓' : 'أُوقفت المشاركة: نتائجك الخاصة لا يراها أحد');
   } catch (e) { console.error(e); toast('تعذّر: ' + errMsg(e)); }
@@ -1058,7 +1156,7 @@ async function syncPShare() {
     if ((+s.auto || 0) > r.auto || ((+s.auto || 0) === r.auto && s.at > r.at)) Object.assign(r, {auto:+s.auto || 0, at:s.at, scores:s.scores || {}, grade:s.grade || ''});
   });
   Object.values(res).forEach(r => { r.att = r.att.sort((a, b) => b.at - a.at).slice(0, 30); });
-  await API.set('pshare', ME.uid, {teacherId:ME.teacherId, cuid:ME.cuid, cls:ME.cls, name:ME.cname || ME.name, grade:gradeOf(ME.cls), updatedAt:Date.now(), res});
+  await API.set('pshare', ME.uid, {teacherId:ME.teacherId, cuid:ME.cuid, cls:ME.cls, name:ME.cname || ME.name, grade:gradeOf(ME.cls), sharedAt:(ME.acct && ME.acct.sharedAt) || 0, updatedAt:Date.now(), res});
 }
 
 /* ================= مشغّل الدرس ================= */
@@ -1173,6 +1271,8 @@ async function openTeacher() {
   await switchView(ME.uid, true);
   tTab(LS.get('iste3dad-ttab', isAdmin() ? 'curriculum' : 'lessons'));
   if (isAdmin()) { loadTeachers(); loadFeedback(); }
+  initBell();
+  if (ME.role === 'teacher' && (!ME.school || !ME.gender)) openSchoolModal(ME.uid, true);
 }
 async function switchView(uid, silent) {
   TD.view = uid;
@@ -1194,8 +1294,9 @@ function fillClassSelects() {
 }
 async function loadTeacherData() {
   try {
-    const [st, show] = await Promise.all([API.where('students', {teacherId:TD.view}), API.get('tshow', TD.view)]);
-    TD.students = st.map(s => Object.assign({uid:s.id}, s)); TD.show = (show && show.lessons) || {};
+    const [st, show, nts] = await Promise.all([API.where('students', {teacherId:TD.view}), API.get('tshow', TD.view), API.where('snote', {teacherId:TD.view}).catch(() => [])]);
+    TD.notes = {}; nts.forEach(n => TD.notes[n.id] = n);
+    TD.students = st.map(s => Object.assign({uid:s.id}, s)); TD.show = (show && show.lessons) || {}; TD.showAt = (show && show.showAt) || {};
   } catch (e) { console.error(e); if (isPerm(e)) $('#rulesWarn').hidden = false; toast('تعذّر تحميل البيانات: ' + errMsg(e)); }
   try {
     const [ps, ap] = await Promise.all([API.where('pshare', {teacherId:TD.view}), API.get('tapprove', TD.view)]);
@@ -1214,6 +1315,8 @@ function tTab(t) {
   if (t === 'lessons') renderShowTab();
   if (t === 'private') renderPrivTab();
   if (t === 'feedback') loadFeedback();
+  if (t === 'allst') loadAllStudents();
+  if (t === 'setup') { renderMySchool(); renderArchive(); }
 }
 
 /* ---------- النتائج ---------- */
@@ -1263,6 +1366,8 @@ function bestOf(uid, lid) {
   if (!l.length && !pc) return null;
   let best = l.length ? l.reduce((m, s) => ((+s.auto || 0) > (+m.auto || 0) || ((+s.auto || 0) === (+m.auto || 0) && s.at > m.at)) ? s : m) : null;
   if (pc && (!best || (+pc.auto || 0) > (+best.auto || 0))) best = pc;
+  const pk = lid && (noteOf(uid).pick || {})[lid], ch = pk && l.find(s => s.at === pk.at);
+  if (ch) return {best:ch, count:l.length, all:l.slice().sort((a, b) => b.at - a.at), pc, picked:true};
   return {best, count:l.length, all:l.slice().sort((a, b) => b.at - a.at), pc};
 }
 /* النتائج الخاصة المعتمدة */
@@ -1281,7 +1386,7 @@ function privCand(cuid, lid) {
 const okMark = b => b && b.priv ? ` <span class="ok-mark" title="معتمدة من النتائج الخاصة${b.how === 'auto' ? ' (تلقائيًا)' : ''}">🆗</span>` : '';
 function allRows() {
   const f = $('#rClass').value, LL = curLessons();
-  return TD.students.filter(s => s.active !== false && (!f || s.cls === f) && LL.some(l => (TD.show[l.id] || []).includes(s.cls))).sort(byClsName).map(s => {
+  return TD.students.filter(s => !s.archived && !s.moved && (s.active !== false || (s.removed && !s.hideRes)) && (!f || s.cls === f) && LL.some(l => (TD.show[l.id] || []).includes(s.cls))).sort(byClsName).map(s => {
     const per = LL.filter(l => (TD.show[l.id] || []).includes(s.cls)).map(l => ({l, b:bestOf(s.uid, l.id)}));
     const sent = per.filter(p => p.b).length, total = per.reduce((a, p) => a + (p.b ? +p.b.best.auto || 0 : 0), 0), max = per.reduce((a, p) => a + (+p.l.autoMax || 0), 0);
     const pct = max ? total / max : 0, lvl = sent ? levelPct(pct)[0] : 'n';
@@ -1306,15 +1411,15 @@ function renderResults() {
     const comps = single.components || [], tMax = +single.autoMax || 1, ncol = 5 + comps.length + 3;
     $('#resTable').innerHTML = `<table><tr><th>#</th><th>الاسم</th><th>الشعبة</th><th>المحاولات</th><th>آخر إرسال</th>${comps.map(c => `<th>${esc(c.label)} /${c.max}</th>`).join('')}<th>المجموع /${tMax}</th><th>المستوى</th><th></th></tr>` +
       R.map((r, i) => {
-        if (!r.b) return `<tr class="nosub" data-u="${esc(r.s.uid)}"><td>${i + 1}</td><td>${esc(r.s.name)}</td><td>${esc(r.s.cls)}</td><td colspan="${ncol - 3}">لم يرسل بعد</td></tr>`;
+        if (!r.b) return `<tr class="nosub" data-u="${esc(r.s.uid)}"><td>${i + 1}</td><td>${esc(r.s.name)}${rmMark(r.s)}</td><td>${esc(r.s.cls)}</td><td colspan="${ncol - 3}">لم يرسل بعد</td></tr>`;
         const sc = r.b.best.scores || {};
-        return `<tr data-u="${esc(r.s.uid)}"><td>${i + 1}</td><td><b>${esc(r.s.name)}</b></td><td>${esc(r.s.cls)}</td><td>${r.b.count}${r.b.pc ? ' + 🆗' : ''}</td><td>${fmtDate((r.b.all[0] || r.b.best).at)}</td>
+        return `<tr data-u="${esc(r.s.uid)}"><td>${i + 1}</td><td><b>${esc(r.s.name)}</b>${rmMark(r.s)}</td><td>${esc(r.s.cls)}</td><td>${r.b.count}${r.b.pc ? ' + 🆗' : ''}</td><td>${fmtDate((r.b.all[0] || r.b.best).at)}</td>
           ${comps.map(c => `<td>${esc(sc[c.key] ?? '')}</td>`).join('')}<td><b>${r.total}</b>${okMark(r.b.best)}</td><td>${lvTd(r)}</td>
           <td><div class="row" style="gap:4px;flex-wrap:nowrap">${waBtn(r.s)}<button class="btn sm ghost" onclick="showDetails(${A(r.s.uid)})">تفاصيل</button></div></td></tr>`;
       }).join('') + '</table>';
   } else {
     $('#resTable').innerHTML = `<table><tr><th>#</th><th>الاسم</th><th>الشعبة</th>${LL.map(l => `<th style="font-size:17px;min-width:90px">${esc((l.icon || '') + ' ' + l.title)} /${+l.autoMax || 0}</th>`).join('')}<th>المجموع</th><th>النسبة</th><th>المستوى</th><th>أرسل</th><th></th></tr>` +
-      R.map((r, i) => `<tr data-u="${esc(r.s.uid)}" class="${r.sent ? '' : 'nosub'}"><td>${i + 1}</td><td><b>${esc(r.s.name)}</b></td><td>${esc(r.s.cls)}</td>
+      R.map((r, i) => `<tr data-u="${esc(r.s.uid)}" class="${r.sent ? '' : 'nosub'}"><td>${i + 1}</td><td><b>${esc(r.s.name)}</b>${rmMark(r.s)}</td><td>${esc(r.s.cls)}</td>
         ${LL.map(l => { const p = r.per.find(x => x.l.id === l.id); return `<td>${!p ? '<small style="color:var(--muted)">لا يظهر لشعبته</small>' : p.b ? (+p.b.best.auto || 0) + okMark(p.b.best) : '<span style="color:var(--orange)">—</span>'}</td>`; }).join('')}
         <td style="white-space:nowrap"><b>${r.total} / ${r.max}</b></td><td>${Math.round(r.pct * 100)}%</td><td>${lvTd(r)}</td><td style="white-space:nowrap">${r.sent} من ${r.n}</td>
         <td><div class="row" style="gap:4px;flex-wrap:nowrap">${r.sent ? waBtn(r.s) : ''}<button class="btn sm ghost" onclick="showDetails(${A(r.s.uid)})">تفاصيل</button></div></td></tr>`).join('') + '</table>';
@@ -1323,13 +1428,13 @@ function renderResults() {
 function showDetails(uid) {
   const s = TD.students.find(x => x.uid === uid); if (!s) return;
   const LL = curLessons().filter(l => (TD.show[l.id] || []).includes(s.cls));
-  openModal(`<h3 style="margin-top:0">${esc(s.name)} – ${esc(s.cls)}</h3>` + LL.map(L => {
+  openModal(`<h3 style="margin-top:0">${esc(s.name)} – ${esc(s.cls)}</h3><p style="margin:0;font-size:19px;color:var(--muted)">تُحسب للطالب أعلى درجاته، وتستطيع أن تعتمد محاولة أخرى بزر «✔ اعتمد هذه المحاولة».</p>` + LL.map(L => {
     const b = bestOf(uid, L.id), comps = L.components || [];
     if (!b) return `<div class="card" style="margin:8px 0"><b>${esc((L.icon || '') + ' ' + L.title)}</b> · <span style="color:var(--orange)">لم يرسل بعد</span></div>`;
     const pcLine = b.pc ? `<div style="border-top:1px dashed var(--line);margin-top:6px;padding-top:4px"><b>🆗 نتيجة خاصة معتمدة${b.pc.how === 'auto' ? ' (تلقائيًا)' : ''}</b> · ${fmtDate(b.pc.at)} · الدرجة: <b>${b.pc.auto} / ${L.autoMax || ''}</b> ${b.pc === b.best ? '<span class="chip done">الأفضل</span>' : ''}</div>` : '';
-    return `<div class="card" style="margin:8px 0"><b>${esc((L.icon || '') + ' ' + L.title)}</b>` + pcLine + b.all.map(a => {
+    return `<div class="card" style="margin:8px 0"><b>${esc((L.icon || '') + ' ' + L.title)}</b>${b.picked ? ` <button class="btn sm ghost" onclick="clearPick(${A(uid)},${A(L.id)})">↩ ارجع إلى أعلى درجة</button>` : ''}` + pcLine + b.all.map(a => {
       const sc = a.scores || {};
-      return `<div style="border-top:1px dashed var(--line);margin-top:6px;padding-top:4px"><b>المحاولة ${a.attempt || ''}</b> · ${fmtDate(a.at)} · الدرجة: <b>${a.auto} / ${L.autoMax || ''}</b> ${a === b.best ? '<span class="chip done">الأفضل</span>' : ''}
+      return `<div style="border-top:1px dashed var(--line);margin-top:6px;padding-top:4px"><b>المحاولة ${a.attempt || ''}</b> · ${fmtDate(a.at)} · الدرجة: <b>${a.auto} / ${L.autoMax || ''}</b> ${a === b.best ? `<span class="chip done">${b.picked ? 'المعتمدة (باختيارك)' : 'المعتمدة (الأعلى)'}</span>` : `<button class="btn sm ghost" onclick="setPick(${A(uid)},${A(L.id)},${a.at},${+a.auto || 0})">✔ اعتمد هذه المحاولة</button>`}
         <div style="font-size:19px">${comps.map(c => `${esc(c.label)} ${esc(sc[c.key] ?? '—')}/${c.max}`).join(' · ')}</div>${a.written ? `<div class="note">${esc(a.written)}</div>` : ''}</div>`;
     }).join('') + '</div>';
   }).join(''));
@@ -1385,6 +1490,7 @@ function approve(cuid, lid) {
   const p = pshareOf(cuid), r = p && p.res && p.res[lid]; if (!r) return;
   TD.ap.ok = TD.ap.ok || {}; TD.ap.ok[cuid] = TD.ap.ok[cuid] || {};
   TD.ap.ok[cuid][lid] = {auto:+r.auto || 0, scores:r.scores || {}, at:r.at, appAt:Date.now()};
+  saveNote(cuid, {apr:Object.assign({}, noteOf(cuid).apr, {[lid]:Date.now()})}).catch(e => console.error(e));
   saveAp(); toast('اعتُمدت النتيجة 🆗');
 }
 function unapprove(cuid, lid) {
@@ -1446,21 +1552,6 @@ function printResults() {
 }
 
 /* ---------- المعلمون (للمدير) ---------- */
-async function loadTeachers() {
-  $('#tcTable').innerHTML = '<p>⏳ جارٍ التحميل…</p>';
-  try {
-    const [tc, st] = await Promise.all([API.where('teachers', {}), API.where('students', {})]);
-    TD.teachers = tc.map(t => Object.assign({uid:t.id}, t));
-    const cnt = uid => st.filter(x => x.teacherId === uid).length;
-    const L = TD.teachers.slice().sort((a, b) => (b.isAdmin ? 1 : 0) - (a.isAdmin ? 1 : 0) || (b.createdAt || 0) - (a.createdAt || 0));
-    $('#tcTable').innerHTML = `<table><tr><th>المعلم</th><th>البريد</th><th>الشعب</th><th>الطلاب</th><th>تاريخ التسجيل</th><th>الحالة</th><th></th></tr>` + L.map(t => `<tr>
-      <td><b>${esc(t.name)}</b>${t.isAdmin ? ' <span class="chip done">المدير</span>' : ''}</td>
-      <td><code class="ltr">${esc(t.email || t.username || '')}</code></td>
-      <td style="font-size:18px">${(t.classes || []).map(esc).join('، ') || '—'}</td><td>${cnt(t.uid)}</td><td style="font-size:18px">${t.createdAt ? fmtDate(t.createdAt) : ''}</td>
-      <td>${t.active === false ? '<span class="chip off">موقوف</span>' : '<span class="chip done">فعّال</span>'}</td>
-      <td><div class="row" style="gap:4px"><button class="btn sm" onclick="switchView(${A(t.uid)})">📂 فتح صفحته</button>${t.isAdmin ? '' : `<button class="btn sm ghost" onclick="toggleTeacher(${A(t.uid)})">${t.active === false ? '✅ تفعيل' : '⛔ إيقاف'}</button>`}</div></td></tr>`).join('') + '</table>';
-  } catch (e) { console.error(e); if (isPerm(e)) $('#rulesWarn').hidden = false; $('#tcTable').innerHTML = '<p>تعذّر تحميل المعلمين: ' + esc(errMsg(e)) + '</p>'; }
-}
 const inviteText = () => `السلام عليكم ورحمة الله 🌿\nندعوكم لاستخدام منصة «استعداد» للتربية الإسلامية: دروس تفاعلية جاهزة يستعدّ بها الطلاب قبل الحصة، وتصلكم نتائجهم أولًا بأول.\n🔗 ${siteUrl()}\n\nطريقة التسجيل:\n1. افتح الرابط واختر «👨‍🏫 أنا معلم».\n2. اضغط «أنشئ حساب معلم» وأدخل بريدك وكلمة مرور.\n3. افتح رابط التحقّق الذي يصل إلى بريدك، ثم ادخل.\n4. أضف شعبك وطلابك، ثم أظهر لهم الدروس.`;
 async function toggleTeacher(uid) {
   const t = TD.teachers.find(x => x.uid === uid); if (!t) return;
@@ -1759,17 +1850,18 @@ function renderShowList() {
   $('#lsList').innerHTML = html;
 }
 async function saveShow(msg) {
-  try { await API.set('tshow', TD.view, {lessons:TD.show, teacherId:TD.view, updatedAt:Date.now()}); renderShowList(); fillResultLessons(); if (msg) toast(msg); }
+  try { await API.set('tshow', TD.view, {lessons:TD.show, showAt:TD.showAt || {}, teacherId:TD.view, updatedAt:Date.now()}); renderShowList(); fillResultLessons(); if (msg) toast(msg); }
   catch (e) { console.error(e); if (isPerm(e)) $('#rulesWarn').hidden = false; toast('تعذّر الحفظ: ' + errMsg(e)); }
 }
+function markShown(id, c) { TD.showAt = TD.showAt || {}; TD.showAt[id] = Object.assign({}, TD.showAt[id], {[c]:Date.now()}); }
 function toggleShow(id, c, on) {
-  const s = new Set(TD.show[id] || []); on ? s.add(c) : s.delete(c);
+  const s = new Set(TD.show[id] || []); if (on && !s.has(c)) markShown(id, c); on ? s.add(c) : s.delete(c);
   if (s.size) TD.show[id] = [...s]; else delete TD.show[id];
   saveShow(on ? 'ظهر الدرس لـ ' + c + ' ✓' : 'أُخفي الدرس عن ' + c);
 }
 function showAll(id, C) {
   const on = TD.show[id] || [], all = C.every(c => on.includes(c));
-  const s = new Set(on); C.forEach(c => all ? s.delete(c) : s.add(c));
+  const s = new Set(on); C.forEach(c => { if (!all && !s.has(c)) markShown(id, c); all ? s.delete(c) : s.add(c); });
   if (s.size) TD.show[id] = [...s]; else delete TD.show[id];
   saveShow(all ? 'أُخفي الدرس' : 'ظهر الدرس لكل الشعب ✓');
 }
@@ -1778,7 +1870,7 @@ function showAll(id, C) {
 function renderClassChips() {
   if (!$('#clsRows').children.length) addClsRow();
   const C = myClasses();
-  const cur = $('#bCls').value || $('#oCls').value, cnt = c => (TD.students || []).filter(s => s.cls === c && s.active !== false).length;
+  const cur = $('#bCls').value || $('#oCls').value, cnt = c => (TD.students || []).filter(s => s.cls === c && s.active !== false && !s.archived).length;
   $('#clsChips').innerHTML = C.length ? '<div class="clslist">' + C.map((c, i) => `<div class="clsitem${c === cur && (!$('#bulkCard').hidden || !$('#oneCard').hidden) ? ' on' : ''}"><span class="cname">🏫 ${esc(c)}</span><span class="ccount">👥 الطلاب: ${cnt(c)}</span>
     <button class="btn sm" onclick="openAdd(${i},'one')">👤 إضافة طالب</button><button class="btn sm alt" onclick="openAdd(${i},'bulk')">👥 إضافة دفعة</button><button class="btn sm ghost" title="حذف الشعبة" onclick="removeClass(${i})">✕</button></div>`).join('') + '</div>' : '<p style="margin:0;color:var(--muted)">لا توجد شعب بعد. أضف أول شعبة من القوائم أدناه.</p>';
 }
@@ -1832,16 +1924,17 @@ async function removeClass(i) {
 /* ---------- الطلاب والحسابات ---------- */
 function listStudentsView() {
   const f = $('#sClsF').value, off = $('#sShowOff').checked;
-  return TD.students.filter(s => (!f || s.cls === f) && (off || s.active !== false)).sort(byClsName);
+  return TD.students.filter(s => !s.removed && !s.archived && !s.moved && (!f || s.cls === f) && (off || s.active !== false)).sort(byClsName);
 }
 function renderStudents() {
   try { renderClassChips(); } catch (e) {}
   const L = listStudentsView();
+  $('#stSel').innerHTML = selBar('st', L.map(s => s.uid), n => `<button class="btn sm red" ${n ? '' : 'disabled'} onclick="deleteStudents([...selOf('st').ids])">🗑 حذف المحدد (${n})</button>`);
   if (!L.length) { $('#stTable').innerHTML = '<p>لا يوجد طلاب في هذه القائمة.</p>'; return; }
-  $('#stTable').innerHTML = `<table><tr><th>#</th><th>الاسم</th><th>📞 رقم وليّ الأمر</th><th>الشعبة</th><th>اسم المستخدم</th><th>كلمة المرور</th><th>الحالة</th><th></th></tr>` +
-    L.map((s, i) => `<tr><td>${i + 1}</td><td>${esc(s.name)}</td><td><input type="tel" class="phone" value="${esc(showPhone(s.parentPhone))}" placeholder="—" onchange="savePhone(${A(s.uid)},this)"></td><td>${esc(s.cls)}</td><td><code class="ltr">${esc(s.username)}</code>${s.ownerUid ? ' <span title="انضم إلى صفّك من حسابه الخاص">🔗</span>' : ''}</td><td><code class="ltr">${esc(s.password)}</code></td>
+  $('#stTable').innerHTML = `<table><tr>${selTh('st')}<th>#</th><th>الاسم</th><th>📞 رقم وليّ الأمر</th><th>الشعبة</th><th>اسم المستخدم</th><th>كلمة المرور</th><th>الحالة</th><th></th></tr>` +
+    L.map((s, i) => `<tr${selTr('st', s.uid)}>${selCell('st', s.uid)}<td>${i + 1}</td><td>${esc(s.name)}</td><td><input type="tel" class="phone" value="${esc(showPhone(s.parentPhone))}" placeholder="—" onchange="savePhone(${A(s.uid)},this)"></td><td>${esc(s.cls)}</td><td><code class="ltr">${esc(s.username)}</code>${s.ownerUid ? ' <span title="انضم إلى صفّك من حسابه الخاص">🔗</span>' : ''}</td><td><code class="ltr">${esc(s.password)}</code></td>
       <td>${s.active === false ? '<span class="chip off">موقوف</span>' : '<span class="chip done">فعّال</span>'}</td>
-      <td><div class="row" style="gap:4px;flex-wrap:nowrap"><button class="btn sm ghost" onclick="copyCreds(${A(s.uid)})">📋</button><button class="btn sm ghost" onclick="toggleActive(${A(s.uid)})">${s.active === false ? '✅ تفعيل' : '⛔ إيقاف'}</button></div></td></tr>`).join('') + '</table>';
+      <td><div class="row" style="gap:4px;flex-wrap:nowrap"><button class="btn sm ghost" onclick="copyCreds(${A(s.uid)})">📋</button><button class="btn sm ghost" onclick="toggleActive(${A(s.uid)})">${s.active === false ? '✅ تفعيل' : '⛔ إيقاف'}</button><button class="btn sm alt" style="white-space:nowrap" onclick="msgStudent(${A(s.uid)})">✉️ رسالة فردية</button><button class="btn sm red" title="حذف الحساب" onclick="deleteStudents([${A(s.uid)}])">🗑</button></div></td></tr>`).join('') + '</table>';
 }
 const credText = s => `السلام عليكم يا ${s.name} 🌿\nرابط منصة استعداد: ${siteUrl()}\nاختر «🎒 أنا طالب» ثم «🔑 لدي رمز من المعلم»، وادخل بـ:\nاسم المستخدم: ${s.username}\nكلمة المرور: ${s.password}`;
 function copyCreds(uid) { const s = TD.students.find(x => x.uid === uid); if (s) copyText(credText(s)); }
@@ -1957,9 +2050,10 @@ service cloud.firestore {
       allow create: if isAdmin() || (signedIn() && request.auth.uid == uid
         && request.auth.token.email_verified == true
         && request.resource.data.active == true
-        && request.resource.data.keys().hasOnly(['name', 'email', 'active', 'classes', 'code', 'createdAt']));
+        && request.resource.data.keys().hasOnly(['name', 'email', 'active', 'classes', 'code', 'createdAt', 'school', 'gender'])
+        && !exists(/databases/$(database)/documents/blocked/$(request.auth.uid)));
       allow update: if isAdmin() || (isTeacher() && request.auth.uid == uid
-        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['classes', 'name']));
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['classes', 'name', 'school', 'gender', 'email', 'archive']));
       allow delete: if isAdmin();
     }
     match /students/{uid} {
@@ -1967,9 +2061,41 @@ service cloud.firestore {
       allow create: if isAdmin() || owns(request.resource.data);
       allow update: if isAdmin() || (owns(resource.data) && owns(request.resource.data))
         || (signedIn() && request.auth.uid == uid && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['ownerUid']));
-      allow delete: if isAdmin();
+      allow delete: if isAdmin() || owns(resource.data);
     }
-    match /accounts/{uid} { allow read, write: if isAdmin() || (signedIn() && request.auth.uid == uid); }
+    match /accounts/{uid} {
+      allow read, update, delete: if isAdmin() || (signedIn() && request.auth.uid == uid);
+      allow create: if isAdmin() || (signedIn() && request.auth.uid == uid
+        && !exists(/databases/$(database)/documents/blocked/$(request.auth.uid)));
+    }
+    match /blocked/{uid} {
+      allow read: if isAdmin() || (signedIn() && request.auth.uid == uid);
+      allow create, delete: if isAdmin();
+      allow update: if isAdmin() || (signedIn() && request.auth.uid == uid && resource.data.status == 'deleted'
+        && request.resource.data.status == 'pending'
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'requestAt']));
+    }
+    match /seen/{uid} { allow read, write: if signedIn() && request.auth.uid == uid; }
+    match /schreq/{cuid} {
+      allow read: if isAdmin() || (signedIn() && request.auth.uid == cuid) || owns(resource.data);
+      allow create, update: if isAdmin()
+        || (isActiveStudent() && request.auth.uid == cuid && request.resource.data.teacherId == myT() && request.resource.data.status == 'pending')
+        || (owns(resource.data) && owns(request.resource.data) && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'doneAt']));
+      allow delete: if isAdmin() || owns(resource.data);
+    }
+    match /msgs/{id} {
+      allow read: if isAdmin() || (signedIn() && (resource.data.get('to', '') == request.auth.uid || resource.data.from == request.auth.uid))
+        || (signedIn() && resource.data.get('toGroup', '') in ['all', 'teachers', 'students']);
+      allow create: if signedIn() && request.resource.data.from == request.auth.uid
+        && request.resource.data.text is string && request.resource.data.text.size() <= 2000
+        && (isAdmin() || (!('toGroup' in request.resource.data) && (
+          (isTeacher() && exists(/databases/$(database)/documents/students/$(request.resource.data.to))
+            && get(/databases/$(database)/documents/students/$(request.resource.data.to)).data.teacherId == request.auth.uid)
+          || (isTeacher() && exists(/databases/$(database)/documents/teachers/$(request.resource.data.to))
+            && get(/databases/$(database)/documents/teachers/$(request.resource.data.to)).data.get('isAdmin', false) == true)
+          || (isActiveStudent() && request.resource.data.to == myT()))));
+      allow delete: if isAdmin() || (signedIn() && resource.data.from == request.auth.uid);
+    }
     match /pprogress/{id} { allow read, write: if isAdmin() || (signedIn() && id.matches(request.auth.uid + '_.*')); }
     match /psubs/{id} {
       allow read: if isAdmin() || (signedIn() && resource.data.uid == request.auth.uid);
@@ -2030,7 +2156,13 @@ service cloud.firestore {
         && request.resource.data.teacherId == myT() && request.resource.data.cls == myCls();
       allow update, delete: if isAdmin();
     }
-    match /settings/{id} { allow read: if signedIn(); allow write: if isAdmin(); }
+    match /settings/{id} { allow read: if signedIn() || id == 'schools'; allow write: if isAdmin(); }
+    match /snote/{cuid} {
+      allow read: if isAdmin() || (signedIn() && request.auth.uid == cuid) || owns(resource.data);
+      allow create, update: if isAdmin() || (owns(request.resource.data)
+        && get(/databases/$(database)/documents/students/$(cuid)).data.teacherId == request.auth.uid);
+      allow delete: if isAdmin() || owns(resource.data);
+    }
     match /feedback/{id} {
       allow create: if signedIn() && request.resource.data.uid == request.auth.uid
         && request.resource.data.status == 'new'
@@ -2430,6 +2562,728 @@ async function installApp() {
 }
 if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol) && !DEMO) navigator.serviceWorker.register('sw.js').catch(e => console.error(e));
 updInstBtn();
+/* ================= التحديد في القوائم ================= */
+const SELS = {};
+const selOf = k => SELS[k] || (SELS[k] = {on:false, ids:new Set()});
+function selBar(k, ids, acts) {
+  const S = selOf(k); [...S.ids].forEach(id => { if (!ids.includes(id)) S.ids.delete(id); });
+  if (!ids.length) { S.on = false; return ''; }
+  const MS = {st:['stMsgStart', 'stMsgSend'], tc:['tcMsgStart', 'tcMsgSend']}[k];
+  if (!S.on) return `<div class="row" style="gap:6px;margin:6px 0"><button class="btn sm ghost" onclick="selStart('${k}',false)">☑️ تحديد</button><button class="btn sm ghost" onclick="selStart('${k}',true)">✅ تحديد الكل</button>${MS ? `<button class="btn sm alt" onclick="${MS[0]}()">✉️ رسالة جماعية</button>` : ''}</div>`;
+  const n = S.ids.size, all = n === ids.length;
+  if (S.msg && MS) return `<div class="cu-sel"><b>✉️ رسالة جماعية:</b> ${n ? `<button class="btn sm alt" onclick="${MS[1]}(false)">📨 أرسل للمحدد (${n})</button>` : `<button class="btn sm alt" onclick="${MS[1]}(true)">📢 للجميع</button><small style="color:var(--muted)">أو حدّد أسماءً من القائمة</small>`}<button class="btn sm ghost" onclick="selAll('${k}',${all ? 'false' : 'true'})">${all ? '✖ إلغاء تحديد الكل' : '✅ تحديد الكل'}</button><button class="btn sm ghost" onclick="selEnd('${k}')">إلغاء</button></div>`;
+  return `<div class="cu-sel"><b>المحدد: ${n} من ${ids.length}</b><button class="btn sm ghost" onclick="selAll('${k}',${all ? 'false' : 'true'})">${all ? '✖ إلغاء تحديد الكل' : '✅ تحديد الكل'}</button>${acts(n)}<button class="btn sm ghost" onclick="selEnd('${k}')">إنهاء التحديد</button></div>`;
+}
+const SEL_IDS = {tc:() => tcFiltered().filter(t => !t.isAdmin).map(t => t.uid), pv:() => (PVA.list || []).map(a => a.id), st:() => listStudentsView().map(s => s.uid)};
+const SEL_RENDER = {tc:() => renderTeachers(), pv:() => renderPvAccounts(), st:() => renderStudents()};
+function selStart(k, all) { const S = selOf(k); S.on = true; S.ids = new Set(all ? SEL_IDS[k]() : []); SEL_RENDER[k](); }
+function selAll(k, on) { selOf(k).ids = new Set(on ? SEL_IDS[k]() : []); SEL_RENDER[k](); }
+function selEnd(k) { SELS[k] = {on:false, ids:new Set()}; SEL_RENDER[k](); }
+function selOne(k, id, on) { const S = selOf(k); on ? S.ids.add(id) : S.ids.delete(id); SEL_RENDER[k](); }
+const selCell = (k, id) => selOf(k).on ? `<td class="selc"><input type="checkbox" ${selOf(k).ids.has(id) ? 'checked' : ''} onchange="selOne('${k}',${A(id)},this.checked)"></td>` : '';
+const selTh = k => selOf(k).on ? '<th class="selc"></th>' : '';
+const selTr = (k, id) => selOf(k).on && selOf(k).ids.has(id) ? ' class="picked"' : '';
+const namesList = L => L.slice(0, 12).map(x => '• ' + x).join('\n') + (L.length > 12 ? '\n… و' + (L.length - 12) + ' آخرين' : '');
+/* نافذة اختيار نوع الحذف: ترجع مفتاح الخيار أو null */
+function askDelete(title, names, choices) {
+  return new Promise(res => {
+    window._delRes = k => { closeModal(); res(k); };
+    openModal(`<h3 style="margin-top:0">🗑 ${esc(title)}</h3>
+      <div style="font-size:19px;background:#faf7ef;border-radius:12px;padding:6px 12px;max-height:30vh;overflow:auto;white-space:pre-line">${esc(namesList(names))}</div>
+      <p style="margin:10px 0 4px">اختر طريقة الحذف:</p>
+      ${choices.map(([k, t, d, red]) => `<button class="btn ${red ? 'red' : ''}" style="display:block;width:100%;text-align:start;margin:8px 0;white-space:normal;line-height:1.5" onclick="_delRes(${A(k)})">${t}<br><small style="font-weight:400;opacity:.9">${d}</small></button>`).join('')}
+      <button class="btn ghost" style="width:100%" onclick="_delRes(null)">إلغاء</button>`);
+    const mr = $('#modalRoot'), obs = new MutationObserver(() => { if (!mr.querySelector('.modal')) { obs.disconnect(); res(null); } }); obs.observe(mr, {childList:true, subtree:true});
+  });
+}
+const delMany = async (col, where) => { const L = await API.where(col, where).catch(() => []); for (const d of L) await API.del(col, d.id).catch(e => console.error(e)); return L.length; };
+
+/* ================= المعلمون: الإحصاءات و«تم الاطلاع» والحذف ================= */
+const TCS = {stats:{}, seen:{}};
+async function loadTeachers() {
+  $('#tcTable').innerHTML = '<p>⏳ جارٍ التحميل…</p>';
+  try {
+    const [tc, st, sb, seen] = await Promise.all([API.where('teachers', {}), API.where('students', {}), API.where('submissions', {}).catch(() => []), API.get('settings', 'teacherSeen').catch(() => null)]);
+    TD.teachers = tc.map(t => Object.assign({uid:t.id}, t));
+    TD.allStudentIds = new Set(st.map(x => x.id));
+    TCS.seen = (seen && seen.map) || {};
+    TCS.stats = {};
+    TD.teachers.forEach(t => {
+      const C = t.classes || [], g = new Set(C.map(gradeOf).filter(Boolean)).size;
+      const s = st.filter(x => x.teacherId === t.uid).length, r = sb.filter(x => x.teacherId === t.uid).length;
+      TCS.stats[t.uid] = {g, c:C.length, s, r, sig:[g, C.length, s, r].join('|')};
+    });
+    renderTeachers(); syncSchoolList(TD.teachers);
+  } catch (e) { console.error(e); if (isPerm(e)) $('#rulesWarn').hidden = false; $('#tcTable').innerHTML = '<p>تعذّر تحميل المعلمين: ' + esc(errMsg(e)) + '</p>'; }
+  loadPvAccounts();
+}
+function renderTeachers() {
+  renderTcFilt();
+  const L = tcFiltered().sort((a, b) => (b.isAdmin ? 1 : 0) - (a.isAdmin ? 1 : 0) || (b.createdAt || 0) - (a.createdAt || 0));
+  $('#tcSel').innerHTML = selBar('tc', SEL_IDS.tc(), n => `<button class="btn sm seen-blue" ${n ? '' : 'disabled'} onclick="ackTeachers([...selOf('tc').ids])">👁 تم الاطلاع للمحدد (${n})</button><button class="btn sm red" ${n ? '' : 'disabled'} onclick="deleteTeachers([...selOf('tc').ids])">🗑 حذف المحدد (${n})</button>`);
+  const on = selOf('tc').on;
+  if (!L.length) { $('#tcTable').innerHTML = '<p>لا يوجد معلمون بهذه التصفية.</p>'; return; }
+  $('#tcTable').innerHTML = `<table><tr>${selTh('tc')}<th>المعلم</th><th>المدرسة</th><th>بنين / بنات</th><th>البريد</th><th>الصفوف</th><th>الشعب</th><th>الطلاب</th><th>النتائج</th><th>الاطلاع</th><th>تاريخ التسجيل</th><th>الحالة</th><th></th></tr>` + L.map(t => {
+    const x = TCS.stats[t.uid] || {}, seen = TCS.seen[t.uid] === x.sig;
+    return `<tr${selTr('tc', t.uid)}>${on ? (t.isAdmin ? '<td class="selc"></td>' : selCell('tc', t.uid)) : ''}
+      <td><b>${esc(t.name)}</b>${t.isAdmin ? ' <span class="chip done">المدير</span>' : ''}</td>
+      <td>${t.school ? esc(t.school) : '<small style="color:var(--muted)">غير محددة</small>'} <button class="btn sm ghost" title="تعديل المدرسة" onclick="openSchoolModal(${A(t.uid)})">✏️</button></td>
+      <td>${esc(t.gender || '—')}</td>
+      <td><code class="ltr">${esc(t.email || t.username || '')}</code></td>
+      <td class="num">${x.g ?? 0}</td><td class="num" title="${esc((t.classes || []).join('، '))}">${x.c ?? 0}</td><td class="num">${x.s ?? 0}</td><td class="num">${x.r ?? 0}</td>
+      <td>${seen ? '<button class="btn sm seen-green" title="لا جديد منذ آخر اطلاع">✔ تم الاطلاع</button>' : `<button class="btn sm seen-blue" title="تغيّر شيء منذ آخر اطلاع" onclick="ackTeachers([${A(t.uid)}])">👁 تم الاطلاع</button>`}</td>
+      <td style="font-size:18px">${t.createdAt ? fmtDate(t.createdAt) : ''}</td>
+      <td>${t.active === false ? '<span class="chip off">موقوف</span>' : '<span class="chip done">فعّال</span>'}</td>
+      <td><div class="row" style="gap:4px;flex-wrap:nowrap"><button class="btn sm" onclick="switchView(${A(t.uid)})">📂 فتح صفحته</button>${t.isAdmin ? '' : `<button class="btn sm alt" style="white-space:nowrap" onclick="msgTeacher(${A(t.uid)})">✉️ رسالة</button>`}${t.isAdmin ? '' : `<button class="btn sm ghost" onclick="toggleTeacher(${A(t.uid)})">${t.active === false ? '✅ تفعيل' : '⛔ إيقاف'}</button><button class="btn sm red" title="حذف الحساب" onclick="deleteTeachers([${A(t.uid)}])">🗑</button>`}</div></td></tr>`;
+  }).join('') + '</table>';
+}
+async function ackTeachers(uids) {
+  const map = Object.assign({}, TCS.seen); uids.forEach(u => { if (TCS.stats[u]) map[u] = TCS.stats[u].sig; });
+  try { await API.set('settings', 'teacherSeen', {map, updatedAt:Date.now()}); TCS.seen = map; renderTeachers(); }
+  catch (e) { console.error(e); if (isPerm(e)) $('#rulesWarn').hidden = false; toast('تعذّر الحفظ: ' + errMsg(e)); }
+}
+async function deleteTeachers(uids) {
+  const L = uids.map(u => TD.teachers.find(t => t.uid === u)).filter(t => t && !t.isAdmin); if (!L.length) return toast('حدّد معلمًا واحدًا على الأقل');
+  const k = await askDelete(L.length > 1 ? `حذف ${L.length} حسابات معلمين` : 'حذف حساب المعلم', L.map(t => t.name), [
+    ['acct', '👤 حذف الحساب وحده', 'يبقى طلابه ونتائجهم في المنصة.'],
+    ['all', '🧹 حذف الحساب مع طلابه ونتائجهم', 'تُحذف حسابات طلاب صفوفه ونتائجهم وما أظهره من دروس، ولا يمكن التراجع.', true]]);
+  if (!k) return;
+  const bad = [];
+  for (const t of L) {
+    try {
+      if (k === 'all') {
+        toast('⏳ جارٍ حذف طلاب ' + t.name + ' ونتائجهم…', 8000);
+        await delMany('submissions', {teacherId:t.uid}); await delMany('students', {teacherId:t.uid}); await delMany('snote', {teacherId:t.uid});
+        await API.del('tshow', t.uid).catch(() => {}); await API.del('tapprove', t.uid).catch(() => {});
+      }
+      await API.set('blocked', t.uid, {email:t.email || '', name:t.name || '', school:t.school || '', gender:t.gender || '', role:'teacher', status:'deleted', at:Date.now()});
+      await API.del('teachers', t.uid);
+    } catch (e) { console.error(e); bad.push(t.name); if (isPerm(e)) { $('#rulesWarn').hidden = false; break; } }
+  }
+  selEnd('tc'); toast(bad.length ? 'تعذّر حذف: ' + bad.join('، ') : 'حُذف ' + (L.length > 1 ? L.length + ' حسابات' : 'الحساب') + ' ✓', 5000); loadTeachers();
+}
+
+/* ---------- الطلاب بحسابات خاصة (للمدير) ---------- */
+const PVA = {list:[]};
+async function loadPvAccounts() {
+  $('#pvTable').innerHTML = '<p>⏳ جارٍ التحميل…</p>';
+  try {
+    const ac = await API.where('accounts', {});
+    PVA.list = ac.filter(a => !(TD.allStudentIds && TD.allStudentIds.has(a.id)) && !isStudentEmail(a.email)).sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+    renderPvAccounts();
+  } catch (e) { console.error(e); $('#pvTable').innerHTML = '<p>تعذّر التحميل: ' + esc(errMsg(e)) + '</p>'; }
+}
+function renderPvAccounts() {
+  const L = PVA.list;
+  $('#pvSel').innerHTML = selBar('pv', SEL_IDS.pv(), n => `<button class="btn sm red" ${n ? '' : 'disabled'} onclick="deletePvAccounts([...selOf('pv').ids])">🗑 حذف المحدد (${n})</button>`);
+  if (!L.length) { $('#pvTable').innerHTML = '<p>لا يوجد طلاب بحسابات خاصة بعد.</p>'; return; }
+  $('#pvTable').innerHTML = `<table><tr>${selTh('pv')}<th>الطالب</th><th>البريد</th><th>الصف</th><th>مرتبط بصف معلم</th><th>تاريخ التسجيل</th><th></th></tr>` + L.map(a => `<tr${selTr('pv', a.id)}>${selCell('pv', a.id)}
+    <td><b>${esc(a.name || '')}</b></td><td><code class="ltr">${esc(a.email || '')}</code></td><td>${a.grade ? esc(gradeName(a.grade)) : '—'}</td><td>${a.classUid ? '✅' : '—'}</td>
+    <td style="font-size:18px">${a.createdAt ? fmtDate(a.createdAt) : ''}</td><td><button class="btn sm red" title="حذف الحساب" onclick="deletePvAccounts([${A(a.id)}])">🗑</button></td></tr>`).join('') + '</table>';
+}
+async function deletePvAccounts(ids) {
+  const src = (PVA.list || []).concat((AS.list || []).filter(x => x.type === 'p').map(x => x.ac));
+  const L = [...new Set(ids)].map(id => src.find(a => a && a.id === id)).filter(Boolean); if (!L.length) return toast('حدّد طالبًا واحدًا على الأقل');
+  const k = await askDelete(L.length > 1 ? `حذف ${L.length} حسابات طلاب خاصة` : 'حذف حساب الطالب الخاص', L.map(a => a.name + ' (' + (a.email || '') + ')'), [
+    ['acct', '👤 حذف الحساب وحده', 'تبقى نتائجه الخاصة محفوظة.'],
+    ['res', '🧹 حذف الحساب مع نتائجه', 'تُحذف نتائجه الخاصة أيضًا، ولا يمكن التراجع.', true]]);
+  if (!k) return;
+  const bad = [];
+  for (const a of L) {
+    try {
+      if (k === 'res') { await delMany('psubs', {uid:a.id}); await API.del('pshare', a.id).catch(() => {}); }
+      await API.set('blocked', a.id, {email:a.email || '', name:a.name || '', grade:a.grade || '', role:'pstudent', status:'deleted', at:Date.now()});
+      await API.del('accounts', a.id);
+    } catch (e) { console.error(e); bad.push(a.name); if (isPerm(e)) { $('#rulesWarn').hidden = false; break; } }
+  }
+  selEnd('pv'); toast(bad.length ? 'تعذّر حذف: ' + bad.join('، ') : 'حُذف ✓', 5000); loadPvAccounts(); if (!$('#tv-allst').hidden) loadAllStudents();
+}
+
+/* ---------- حذف طلاب الصف (للمعلم وللمدير) ---------- */
+async function deleteStudents(uids, pool) {
+  const P = pool || TD.students, L = uids.map(u => P.find(s => s.uid === u)).filter(Boolean); if (!L.length) return toast('حدّد طالبًا واحدًا على الأقل');
+  const names = L.map(s => s.name + ' (' + s.cls + ')'), many = L.length > 1;
+  const k = isAdmin()
+    ? await askDelete(many ? `حذف ${L.length} حسابات طلاب` : 'حذف حساب الطالب', names, [
+        ['acct', '👤 حذف الحساب وحده', 'تبقى نتائجه محفوظة في المنصة.'],
+        ['res', '🧹 حذف الحساب مع نتائجه', 'تُحذف نتائجه أيضًا، ولا يمكن التراجع.', true]])
+    : await askDelete(many ? `حذف ${L.length} طلاب` : 'حذف الطالب', names, [
+        ['only', '👤 حذف الطالب وحده', 'يختفي من قائمة طلابك ولا يستطيع الدخول، وتبقى نتائجه ظاهرة عندك في تبويب النتائج.'],
+        ['res', '🧹 حذف الطالب مع نتائجه', 'يختفي هو ونتائجه من عندك.', true]]);
+  if (!k) return;
+  const bad = [];
+  for (const s of L) {
+    try {
+      if (isAdmin()) {
+        if (k === 'res') { await delMany('submissions', {uid:s.uid}); await API.del('snote', s.uid).catch(() => {}); }
+        await API.del('students', s.uid); TD.students = TD.students.filter(x => x.uid !== s.uid);
+      } else {
+        const patch = {removed:true, removedAt:Date.now(), hideRes:k === 'res', active:false};
+        await API.set('students', s.uid, patch, true); Object.assign(s, patch);
+      }
+    } catch (e) { console.error(e); bad.push(s.name); if (isPerm(e)) { $('#rulesWarn').hidden = false; break; } }
+  }
+  selEnd('st'); toast(bad.length ? 'تعذّر حذف: ' + bad.join('، ') : 'حُذف ✓', 5000); renderResults(); if (pool) loadAllStudents();
+}
+
+/* ---------- الحساب المحذوف: طلب العودة ---------- */
+async function handleBlocked(user, bl) {
+  const role = bl.role === 'teacher' ? 'teacher' : 'pstudent';
+  let m;
+  if (bl.status === 'rejected') m = 'رفض مدير المنصة طلب التسجيل بهذا البريد.';
+  else {
+    if (bl.status !== 'pending') { try { await API.set('blocked', user.uid, {status:'pending', requestAt:Date.now()}, true); } catch (e) { console.error(e); } }
+    m = '⏳ حُذف هذا الحساب من قبل، فأرسلنا طلب تسجيلك إلى مدير المنصة. تستطيع الدخول بعد موافقته.';
+  }
+  LS.del('iste3dad-signup-kind'); LS.del('iste3dad-signup-name'); LS.del('iste3dad-psignup');
+  await API.logout().catch(() => {}); chooseRole(role); loginMsg(m);
+}
+async function approveBlocked(uid) {
+  const b = (NTF.blocked || []).find(x => x.id === uid); if (!b) return;
+  try {
+    if (b.role === 'teacher') await API.set('teachers', uid, {name:b.name || (b.email || '').split('@')[0], email:b.email || '', active:true, classes:[], code:'t' + Math.random().toString(36).slice(2, 6), createdAt:Date.now()});
+    else await API.set('accounts', uid, {name:b.name || (b.email || '').split('@')[0], grade:b.grade || '', email:b.email || '', share:false, createdAt:Date.now()});
+    await API.del('blocked', uid);
+    toast('قُبل الطلب ✓ يستطيع ' + (b.name || 'صاحبه') + ' الدخول الآن', 5000); await refreshBell(true);
+    if (isAdmin() && !$('#tv-teachers').hidden) loadTeachers();
+  } catch (e) { console.error(e); if (isPerm(e)) $('#rulesWarn').hidden = false; toast('تعذّر: ' + errMsg(e)); }
+}
+async function rejectBlocked(uid) {
+  const b = (NTF.blocked || []).find(x => x.id === uid); if (!b) return;
+  if (!confirm('رفض طلب ' + (b.name || b.email) + '؟ لن يستطيع الدخول بهذا البريد.')) return;
+  try { await API.set('blocked', uid, {status:'rejected', rejectedAt:Date.now()}, true); toast('رُفض الطلب'); await refreshBell(true); }
+  catch (e) { console.error(e); toast('تعذّر: ' + errMsg(e)); }
+}
+
+/* ================= جرس الإشعارات ================= */
+const NTF = {items:[], seenAt:0, blocked:[], busy:false, msgs:[]};
+const NTF_DAYS = 30 * 864e5;
+async function initBell() {
+  NTF.items = []; NTF.seenAt = 0; updBell();
+  try { const d = await API.get('seen', ME.uid); NTF.seenAt = (d && d.at) || 0; } catch (e) { NTF.seenAt = +LS.get('iste3dad-seen-' + ME.uid, 0) || 0; }
+  await refreshBell();
+  const iv = setInterval(() => refreshBell(), 3 * 60 * 1000); TIMERS.push(iv);
+}
+async function refreshBell(rerender) {
+  if (!ME || NTF.busy) return; NTF.busy = true;
+  const since = Date.now() - NTF_DAYS, items = [];
+  try {
+    const groups = ME.role === 'admin' ? [] : ME.role === 'teacher' ? ['all', 'teachers'] : ['all', 'students'];
+    const mq = [API.where('msgs', {to:ME.uid})].concat(groups.map(g => API.where('msgs', {toGroup:g})));
+    if (ME.role === 'student' && ME.capi && ME.cuid && ME.cuid !== ME.uid) mq.push(ME.capi.where('msgs', {to:ME.cuid}));
+    const seenM = new Set();
+    NTF.msgs = (await Promise.all(mq.map(q => q.catch(() => [])))).flat().filter(m => { if (seenM.has(m.id) || (m.at || 0) <= since) return false; seenM.add(m.id); return true; });
+    NTF.msgs.forEach((m, k) => items.push({at:m.at, ic:m.toGroup ? '📢' : '✉️', tx:`${m.toGroup ? 'رسالة عامة' : 'رسالة'} من <b>${esc(m.fromName || '')}</b>: ${esc(String(m.text || '').slice(0, 120))}${String(m.text || '').length > 120 ? '…' : ''}`, go:`openMsg(${k})`}));
+    if (ME.role === 'admin') {
+      const [tc, ac, st, fb, bl] = await Promise.all(['teachers', 'accounts', 'students', 'feedback', 'blocked'].map(c => API.where(c, {}).catch(() => [])));
+      const sIds = new Set(st.map(x => x.id));
+      tc.filter(t => !t.isAdmin && (t.createdAt || 0) > since).forEach(t => items.push({at:t.createdAt, ic:'👨‍🏫', tx:`سجّل معلم جديد: <b>${esc(t.name)}</b> <small dir="ltr">${esc(t.email || '')}</small>`, go:"tTab('teachers')"}));
+      ac.filter(a => !sIds.has(a.id) && !isStudentEmail(a.email) && (a.createdAt || 0) > since).forEach(a => items.push({at:a.createdAt, ic:'🌟', tx:`سجّل طالب جديد بحساب خاص: <b>${esc(a.name || '')}</b>${a.grade ? ' · ' + esc(gradeName(a.grade)) : ''}`, go:"tTab('teachers')"}));
+      const fbN = {suggest:'💡 مقترح', general:'📝 ملاحظة عامة', lesson:'📘 خطأ في درس'};
+      fb.filter(f => (f.at || 0) > since).forEach(f => items.push({at:f.at, ic:'📨', tx:`${fbN[f.type] || 'ملاحظة'} من <b>${esc(f.name || '')}</b>: ${esc(String(f.text || '').slice(0, 90))}${String(f.text || '').length > 90 ? '…' : ''}`, go:`FBV.tab=${A(f.type)};tTab('feedback')`}));
+      NTF.blocked = bl;
+      bl.filter(b => b.status === 'pending').forEach(b => items.push({at:b.requestAt || b.at || 0, pin:true, ic:'🔐', tx:`طلب تسجيل من حساب محذوف: <b>${esc(b.name || '')}</b> <small dir="ltr">${esc(b.email || '')}</small> · ${b.role === 'teacher' ? 'معلم' : 'طالب بحساب خاص'}`,
+        acts:`<button class="btn sm" onclick="event.stopPropagation();approveBlocked(${A(b.id)})">✅ قبول</button><button class="btn sm red" onclick="event.stopPropagation();rejectBlocked(${A(b.id)})">✖ رفض</button>`}));
+    }
+    if (ME.role === 'admin' || ME.role === 'teacher') {
+      const sb = await API.where('submissions', {teacherId:ME.uid}).catch(() => []);
+      const nm = uid => { const s = (TD.students || []).find(x => x.uid === uid); return s ? s.name + ' (' + s.cls + ')' : 'طالب'; };
+      sb.filter(x => (x.at || 0) > since).forEach(x => { const l = catById(x.lessonId); items.push({at:x.at, ic:'📝', tx:`<b>${esc(nm(x.uid))}</b> حلّ درس «${esc(l ? l.title : 'درس')}»${l && l.autoMax ? ` · الدرجة: <b>${+x.auto || 0} / ${l.autoMax}</b>` : ''}`, go:`openResultFor(${A(x.lessonId)})`}); });
+      const mv = await API.where('schreq', {teacherId:ME.uid}).catch(() => []); NTF.moves = mv;
+      mv.filter(r => r.status === 'pending').forEach(r => items.push({at:r.at || 0, pin:true, ic:'🚶', tx:`طلب انتقال: الطالب <b>${esc(r.name || '')}</b> (${esc(r.cls || '')}) يقول إنه انتقل إلى «${esc(r.to || '')}»`,
+        acts:`<button class="btn sm" onclick="event.stopPropagation();answerMove(${A(r.id)},true)">✅ موافقة</button><button class="btn sm red" onclick="event.stopPropagation();answerMove(${A(r.id)},false)">✖ رفض</button>`}));
+      const ps = await API.where('pshare', {teacherId:ME.uid}).catch(() => []);
+      ps.filter(p => (p.sharedAt || 0) > since).forEach(p => items.push({at:p.sharedAt, ic:'🔐', tx:`شارك الطالب <b>${esc(p.name || '')}</b>${p.cls ? ' (' + esc(p.cls) + ')' : ''} نتائجه الخاصة معك`, go:"tTab('private')"}));
+    }
+    if (ME.role === 'student' && ME.capi && ME.teacherId && ME.cls) {
+      const sh = await ME.capi.get('tshow', ME.teacherId).catch(() => null), at = (sh && sh.showAt) || {}, ls = (sh && sh.lessons) || {};
+      if (!CAT.length) await loadCatalog().catch(() => {});
+      const rq = await ME.capi.get('schreq', ME.cuid).catch(() => null);
+      if (rq && rq.doneAt > since && rq.status !== 'pending') items.push({at:rq.doneAt, ic:'🚶', tx:rq.status === 'approved' ? `وافق معلّمك على انتقالك إلى «${esc(rq.to)}»` : `رفض معلّمك طلب انتقالك إلى «${esc(rq.to)}»`});
+      const nt = await ME.capi.get('snote', ME.cuid).catch(() => null);
+      Object.entries((nt && nt.apr) || {}).forEach(([lid, t]) => { const l = catById(lid); if (t > since && l) items.push({at:t, ic:'🆗', tx:`اعتمد معلّمك نتيجتك الخاصة في درس <b>${esc(l.title)}</b> ضمن نتائج الصف`, go:'showHub()'}); });
+      Object.keys(at).forEach(lid => { const t = at[lid] && at[lid][ME.cls]; const l = catById(lid); if (t && t > since && l && (ls[lid] || []).includes(ME.cls)) items.push({at:t, ic:'📗', tx:`أظهر معلّمك درسًا جديدًا: <b>${esc(l.title)}</b>`, go:`openHome()`}); });
+    }
+  } catch (e) { console.error(e); }
+  NTF.items = items.sort((a, b) => (b.pin ? 1 : 0) - (a.pin ? 1 : 0) || b.at - a.at).slice(0, 60);
+  NTF.busy = false; updBell();
+  if (rerender && $('#ntfList')) renderBell();
+}
+function updBell() { const n = NTF.items.filter(i => i.pin || i.at > NTF.seenAt).length; $$('.bell-dot').forEach(d => { d.hidden = !n; d.textContent = n > 99 ? '99+' : n; }); }
+function renderBell() {
+  const seen = NTF.prevSeen ?? NTF.seenAt;
+  $('#ntfList').innerHTML = NTF.items.length ? NTF.items.map((i, k) => `<div class="ntf${i.pin || i.at > seen ? ' new' : ''}" onclick="ntfGo(${k})"><div class="ic">${i.ic}</div><div class="tx">${i.tx}<div class="tm">${fmtFull(i.at)}</div>${i.acts ? `<div class="row" style="gap:6px;margin-top:4px">${i.acts}</div>` : ''}</div></div>`).join('')
+    : '<p style="text-align:center;color:var(--muted)">لا توجد إشعارات في آخر 30 يومًا.</p>';
+}
+async function openBell() {
+  openModal(`<div class="row" style="justify-content:space-between"><h3 style="margin:0">🔔 الإشعارات</h3><button class="btn sm ghost" style="margin-inline-end:56px" onclick="refreshBell(true)">🔄 تحديث</button></div><div id="ntfList" style="max-height:65vh;overflow:auto;margin-top:8px"><p>⏳ جارٍ التحميل…</p></div>`);
+  NTF.prevSeen = NTF.seenAt; if (!NTF.items.length) await refreshBell(); renderBell();
+  const now = Date.now(); NTF.seenAt = now; updBell();
+  try { await API.set('seen', ME.uid, {at:now}); } catch (e) { LS.set('iste3dad-seen-' + ME.uid, now); }
+}
+function ntfGo(k) { const i = NTF.items[k]; if (!i || !i.go) return; closeModal(); try { (new Function(i.go))(); } catch (e) { console.error(e); } }
+async function openResultFor(lid) { if (TD.view !== ME.uid) await switchView(ME.uid); tTab('results'); if (catById(lid)) { TD.lids = [lid]; try { fillResultLessons(); await loadResults(); } catch (e) { console.error(e); } } }
+
+/* ================= المدرسة (بنين/بنات) ================= */
+function openSchoolModal(uid, must) {
+  const t = uid === ME.uid && ME.role === 'teacher' ? ME : (TD.teachers || []).find(x => x.uid === uid) || (TD.view === uid ? TD.vt : null) || {};
+  openModal(`<h3 style="margin-top:0">🏫 ${must ? 'أكمل بيانات مدرستك' : 'بيانات المدرسة'}${t.name && uid !== ME.uid ? ' · ' + esc(t.name) : ''}</h3>
+    ${must ? '<p style="margin:4px 0">أضفنا إلى المنصة بيانات المدرسة. اكتبها مرة واحدة فقط، وتستطيع تعديلها لاحقًا من تبويب «⚙️ الإعداد».</p>' : ''}
+    <label>اسم المدرسة<input type="text" id="scName" list="schoolList2" oninput="schoolHint(this,'scHint')" value="${esc(t.school || '')}" placeholder="اكتب أو اختر من القائمة"></label><datalist id="schoolList2"></datalist><div class="school-hint" id="scHint"></div>
+    <small style="color:var(--muted)">إن كانت مدرستك في القائمة فاخترها كما هي، حتى لا تظهر مدرستك باسمين.</small>
+    <label>المدرسة<select id="scGender"><option value="">— اختر —</option>${['بنين', 'بنات'].map(g => `<option ${t.gender === g ? 'selected' : ''}>${g}</option>`).join('')}</select></label>
+    <div class="login-msg" id="scMsg"></div>
+    <div class="row" style="margin-top:10px"><button class="btn" onclick="saveSchool(${A(uid)})">💾 حفظ</button>${must ? '' : '<button class="btn ghost" onclick="closeModal()">إلغاء</button>'}</div>`);
+  API.get('settings', 'schools').then(d => { SCHOOLS = (d && d.list) || []; const dl = $('#schoolList2'); if (dl) dl.innerHTML = SCHOOLS.map(x => `<option value="${esc(x)}">`).join(''); }).catch(() => {});
+}
+async function saveSchool(uid) {
+  const school = $('#scName').value.trim(), gender = $('#scGender').value;
+  if (school.length < 2) return $('#scMsg').textContent = 'اكتب اسم المدرسة';
+  if (!gender) return $('#scMsg').textContent = 'اختر: بنين أو بنات';
+  try {
+    await API.set('teachers', uid, {school, gender}, true);
+    [ME.role === 'teacher' && ME.uid === uid ? ME : null, (TD.teachers || []).find(x => x.uid === uid), TD.view === uid ? TD.vt : null].forEach(o => { if (o) Object.assign(o, {school, gender}); });
+    closeModal(); toast('حُفظت بيانات المدرسة ✓'); renderMySchool();
+    if (isAdmin() && !$('#tv-teachers').hidden) { loadTeachers(); }
+  } catch (e) { console.error(e); if (isPerm(e)) $('#rulesWarn').hidden = false; $('#scMsg').textContent = 'تعذّر الحفظ: ' + errMsg(e); }
+}
+function renderMySchool() {
+  const box = $('#mySchool'); if (!box) return;
+  const t = (TD.view === ME.uid && ME.role === 'teacher') ? ME : (TD.vt || {});
+  box.innerHTML = `<p style="margin:0">${t.school ? `<b>${esc(t.school)}</b> · ${esc(t.gender || '—')}` : 'لم تُكتب بيانات المدرسة بعد.'}</p><div class="row" style="gap:6px;margin-top:6px"><button class="btn sm ghost" onclick="openSchoolModal(${A(TD.view)})">✏️ تصحيح كتابة الاسم</button>${TD.view === ME.uid ? '<button class="btn sm alt" onclick="openMoveSchool()">🔄 انتقلت إلى مدرسة أخرى</button>' : ''}</div>`;
+}
+
+/* ---------- مرشحات قائمة المعلمين ---------- */
+const TCF = {q:'', g:'', gender:'', school:'', ng:'', nc:'', ns:'', nr:''};
+const NUM_OPTS = [['', 'الكل'], ['0', 'صفر'], ['1', '1 أو أكثر'], ['5', '5 أو أكثر'], ['10', '10 أو أكثر'], ['20', '20 أو أكثر'], ['50', '50 أو أكثر'], ['100', '100 أو أكثر']];
+const numOk = (v, f) => f === '' || (f === '0' ? (v || 0) === 0 : (v || 0) >= +f);
+function tcFiltered() {
+  const q = normName(TCF.q);
+  return (TD.teachers || []).filter(t => { const x = TCS.stats[t.uid] || {};
+    return (!q || normName(t.name).includes(q) || String(t.email || '').toLowerCase().includes(TCF.q.trim().toLowerCase()))
+      && (!TCF.g || (t.classes || []).some(c => gradeOf(c) === TCF.g))
+      && (!TCF.gender || (TCF.gender === '-' ? !t.gender : t.gender === TCF.gender))
+      && (!TCF.school || (TCF.school === '-' ? !t.school : (t.school || '') === TCF.school))
+      && numOk(x.g, TCF.ng) && numOk(x.c, TCF.nc) && numOk(x.s, TCF.ns) && numOk(x.r, TCF.nr); });
+}
+function renderTcFilt() {
+  const schools = [...new Set((TD.teachers || []).map(t => t.school).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'ar'));
+  const sel = (k, opts) => `<select onchange="TCF.${k}=this.value;selEnd('tc')">${opts.map(([v, n]) => `<option value="${esc(v)}" ${TCF[k] === v ? 'selected' : ''}>${esc(n)}</option>`).join('')}</select>`;
+  const has = document.activeElement && document.activeElement.id === 'tcQ';
+  $('#tcFilt').innerHTML = `<label>بحث بالاسم أو البريد<input type="search" id="tcQ" value="${esc(TCF.q)}" placeholder="اكتب جزءًا من الاسم" oninput="TCF.q=this.value;renderTeachers()"></label>
+    <label>المدرسة${sel('school', [['', 'كل المدارس']].concat(schools.map(x => [x, x]), [['-', 'غير محددة']]))}</label>
+    <label>بنين / بنات${sel('gender', [['', 'الكل'], ['بنين', 'بنين'], ['بنات', 'بنات'], ['-', 'غير محدد']])}</label>
+    <label>يدرّس الصف${sel('g', [['', 'كل الصفوف']].concat(GRADES.map(g => [g.key, gradeName(g.key)])))}</label>
+    <label>عدد الصفوف${sel('ng', NUM_OPTS)}</label><label>عدد الشعب${sel('nc', NUM_OPTS)}</label>
+    <label>عدد الطلاب${sel('ns', NUM_OPTS)}</label><label>عدد النتائج${sel('nr', NUM_OPTS)}</label>
+    <button class="btn sm ghost" style="align-self:flex-end" onclick="Object.keys(TCF).forEach(k=>TCF[k]='');selEnd('tc')">↺ إلغاء التصفية</button>
+    <small style="color:var(--muted);align-self:center">المعروض: ${tcFiltered().length} من ${(TD.teachers || []).length}</small>`;
+  if (has) { const i = $('#tcQ'); i.focus(); i.setSelectionRange(i.value.length, i.value.length); }
+}
+
+/* ================= كل طلاب المنصة والمدارس (للمدير) ================= */
+const AS = {list:[], tc:[], f:{type:'', school:'', gender:'', g:'', q:'', rm:''}, sort:'total', scq:''};
+/* الدرجة المعتمدة لكل درس: اختيار المعلم إن وُجد، وإلا الأعلى */
+function lessonScores(subs, picks) {
+  const by = {}; subs.forEach(x => (by[x.lessonId] = by[x.lessonId] || []).push(x));
+  return Object.keys(by).map(lid => {
+    const A2 = by[lid], pk = picks && picks[lid], ch = pk && A2.find(a => a.at === pk.at);
+    return [lid, ch ? +ch.auto || 0 : Math.max(...A2.map(a => +a.auto || 0))];
+  });
+}
+function statsOf(L) {
+  const pc = L.map(([lid, v]) => { const l = catById(lid); return l && +l.autoMax ? v / l.autoMax * 100 : null; }).filter(x => x != null);
+  return {n:L.length, total:L.reduce((a, x) => a + x[1], 0), avg:pc.length ? pc.reduce((a, b) => a + b, 0) / pc.length : null};
+}
+async function loadAllStudents() {
+  $('#asTable').innerHTML = '<p>⏳ جارٍ التحميل…</p>';
+  try {
+    const [st, tc, sb, ac, ps, sn] = await Promise.all(['students', 'teachers', 'submissions', 'accounts', 'psubs', 'snote'].map(c => API.where(c, {}).catch(() => [])));
+    if (!CAT.length) await loadCatalog();
+    AS.tc = tc; AS.subs = sb; AS.psubs = ps; AS.notes = {}; sn.forEach(n => AS.notes[n.id] = n);
+    const T = {}; tc.forEach(t => T[t.id] = t);
+    const sIds = new Set(st.map(x => x.id));
+    const cls = st.map(s => {
+      const t = T[s.teacherId] || {}, x = statsOf(lessonScores(sb.filter(q => q.uid === s.id), (AS.notes[s.id] || {}).pick));
+      return Object.assign({type:'c', uid:s.id, name:s.name || '', cls:s.cls || '', g:gradeOf(s.cls), school:s.archSchool || t.school || '', moved:!!s.moved, movedTo:s.movedTo || '', gender:t.gender || '', teacher:t.name || '', active:s.active !== false, removed:!!s.removed, hideRes:!!s.hideRes, raw:s}, x);
+    });
+    const prv = ac.filter(a => !sIds.has(a.id) && !isStudentEmail(a.email)).map(a => Object.assign({type:'p', uid:a.id, name:a.name || '', cls:'', g:a.grade || '', school:a.school || '', gender:'', teacher:'', active:true, email:a.email || '', ac:Object.assign({id:a.id}, a)}, statsOf(lessonScores(ps.filter(q => q.uid === a.id)))));
+    AS.list = cls.concat(prv);
+    renderSchools(); renderAllStudents(); syncSchoolList(tc);
+  } catch (e) { console.error(e); if (isPerm(e)) $('#rulesWarn').hidden = false; $('#asTable').innerHTML = '<p>تعذّر التحميل: ' + esc(errMsg(e)) + '</p>'; }
+}
+/* قائمة أسماء المدارس (تظهر اقتراحًا للمعلم عند التسجيل) */
+async function syncSchoolList(T) {
+  const L = [...new Set((T || AS.tc || []).map(t => t.school).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'ar'));
+  try { const d = await API.get('settings', 'schools'); if (d && JSON.stringify(d.list || []) === JSON.stringify(L)) return; await API.set('settings', 'schools', {list:L, updatedAt:Date.now()}); } catch (e) { console.error(e); }
+}
+let SCHOOLS = [];
+async function fillSchoolSuggest() {
+  try { const d = await API.get('settings', 'schools'); SCHOOLS = (d && d.list) || []; const dl = $('#schoolList'); if (dl) dl.innerHTML = SCHOOLS.map(x => `<option value="${esc(x)}">`).join(''); } catch (e) {}
+}
+/* تشابه اسمين: نسبة الحروف المشتركة (بعد توحيد الهمزات والتاء المربوطة وحذف المسافات) */
+function schoolSim(a, b) {
+  const n = x => normName(x).replace(/\s+/g, ''), A2 = [...n(a)], B = [...n(b)]; if (!A2.length || !B.length) return 0;
+  const cnt = {}; B.forEach(c => cnt[c] = (cnt[c] || 0) + 1); let k = 0; A2.forEach(c => { if (cnt[c]) { cnt[c]--; k++; } });
+  return k / Math.max(A2.length, B.length);
+}
+function schoolHint(inp, boxId) {
+  const box = $('#' + boxId); if (!box) return;
+  const v = inp.value.trim();
+  if (v.length < 4 || SCHOOLS.includes(v)) { box.innerHTML = ''; return; }
+  const L = SCHOOLS.map(x => [x, schoolSim(v, x)]).filter(x => x[1] >= 0.75).sort((a, b) => b[1] - a[1]).slice(0, 3);
+  box.innerHTML = L.map(([x]) => `<div class="sh-item">🏫 هل هذه مدرستك؟ <b>${esc(x)}</b> <button type="button" class="btn sm" onclick="$('#${inp.id}').value=${A(x)};$('#${boxId}').innerHTML=''">نعم</button></div>`).join('');
+}
+const stageOf = g => { for (const k of Object.keys(STAGES)) if ((STAGES[k] || []).some(([, sh]) => sh.trim() === g)) return k; return ''; };
+const STAGE_NAME = {'ابتدائي':'ابتدائية', 'إعدادي':'إعدادية', 'ثانوي':'ثانوية'};
+function renderSchools() {
+  const M = {};
+  (AS.tc || []).filter(t => !t.isAdmin || t.school).forEach(t => {
+    const k = (t.school || '') + '|' + (t.gender || '');
+    const o = M[k] = M[k] || {school:t.school || '', gender:t.gender || '', teachers:0, grades:new Set(), st:[]};
+    o.teachers++; (t.classes || []).forEach(c => { const g = gradeOf(c); if (g) o.grades.add(g); });
+  });
+  AS.list.filter(s => s.type === 'c' && !s.removed).forEach(s => { const k = s.school + '|' + s.gender; if (M[k]) M[k].st.push(s); });
+  const q = normName(AS.scq);
+  const L = Object.values(M).map(o => {
+    const av = o.st.filter(s => s.avg != null), G = [...o.grades].sort((a, b) => gradeIdx(a) - gradeIdx(b));
+    return Object.assign(o, {G, stages:[...new Set(G.map(stageOf).filter(Boolean))].map(x => STAGE_NAME[x] || x), n:o.st.reduce((a, s) => a + s.n, 0), total:o.st.reduce((a, s) => a + s.total, 0), avg:av.length ? av.reduce((a, s) => a + s.avg, 0) / av.length : null});
+  }).filter(o => !q || normName(o.school).includes(q)).sort((a, b) => (!a.school) - (!b.school) || b.total - a.total || b.st.length - a.st.length);
+  const has = document.activeElement && document.activeElement.id === 'scQ';
+  $('#scSearch').innerHTML = `<label>بحث باسم المدرسة<input type="search" id="scQ" value="${esc(AS.scq)}" placeholder="اكتب جزءًا من الاسم" oninput="AS.scq=this.value;renderSchools()"></label>`;
+  if (has) { const i = $('#scQ'); i.focus(); i.setSelectionRange(i.value.length, i.value.length); }
+  if (!L.length) { $('#scTable').innerHTML = '<p>لا توجد مدارس.</p>'; return; }
+  $('#scTable').innerHTML = `<table><tr><th>#</th><th>المدرسة</th><th>بنين / بنات</th><th>المرحلة</th><th>الصفوف المسجّلة</th><th>المعلمون</th><th>الطلاب</th><th>الدروس المحلولة</th><th>متوسط الدرجات</th><th>مجموع الدرجات</th></tr>` +
+    L.map((o, i) => `<tr><td>${i + 1}</td><td>${o.school ? `<a href="#asCard" onclick="AS.f.type='c';AS.f.school=${A(o.school)};AS.f.gender=${A(o.gender)};renderAllStudents()"><b>${esc(o.school)}</b></a> <button class="btn sm ghost" title="تعديل اسم المدرسة أو دمجها مع مدرسة أخرى" onclick="renameSchool(${A(o.school)},${A(o.gender)})">✏️</button>` : '<small style="color:var(--muted)">غير محددة</small>'}</td>
+      <td>${esc(o.gender || '—')}</td><td>${o.stages.length ? esc(o.stages.join('، ')) : '—'}</td>
+      <td style="font-size:19px">${o.G.length ? o.G.map(g => esc(gradeName(g).replace('الصف ', ''))).join('، ') : '—'}</td>
+      <td class="num">${o.teachers}</td><td class="num">${o.st.length}</td><td class="num">${o.n}</td><td class="num">${o.avg == null ? '—' : Math.round(o.avg) + '٪'}</td><td class="num">${o.total}</td></tr>`).join('') + '</table>';
+}
+function renameSchool(old, gender) {
+  const names = [...new Set((AS.tc || []).map(t => t.school).filter(Boolean))].filter(x => x !== old).sort((a, b) => a.localeCompare(b, 'ar'));
+  const n = (AS.tc || []).filter(t => t.school === old && (t.gender || '') === gender).length;
+  openModal(`<h3 style="margin-top:0">✏️ تعديل اسم المدرسة</h3>
+    <p style="margin:4px 0">الاسم الحالي: <b>${esc(old)}</b> (${esc(gender || '—')}) · يُغيَّر عند ${n} ${n > 2 ? 'معلمين' : 'معلم'}.</p>
+    <label>الاسم الصحيح<input type="text" id="rsName" list="rsList" value="${esc(old)}"></label>
+    <datalist id="rsList">${names.map(x => `<option value="${esc(x)}">`).join('')}</datalist>
+    ${names.length ? `<p style="margin:6px 0 2px;font-size:19px">لدمجها مع مدرسة موجودة، اختر اسمها:</p><div class="row" style="gap:4px">${names.map(x => `<button class="btn sm ghost" onclick="$('#rsName').value=${A(x)}">${esc(x)}</button>`).join('')}</div>` : ''}
+    <div class="row" style="margin-top:10px"><button class="btn" onclick="doRenameSchool(${A(old)},${A(gender)})">💾 حفظ</button><button class="btn ghost" onclick="closeModal()">إلغاء</button></div>`);
+}
+async function doRenameSchool(old, gender) {
+  const nv = $('#rsName').value.trim(); if (nv.length < 2) return toast('اكتب اسم المدرسة');
+  if (nv === old) return closeModal();
+  const L = (AS.tc || []).filter(t => t.school === old && (t.gender || '') === gender);
+  try { for (const t of L) await API.set('teachers', t.id, {school:nv}, true); closeModal(); toast('عُدّل اسم المدرسة عند ' + L.length + ' ✓'); if (AS.f.school === old) AS.f.school = nv; await loadAllStudents(); }
+  catch (e) { console.error(e); if (isPerm(e)) $('#rulesWarn').hidden = false; toast('تعذّر: ' + errMsg(e)); }
+}
+const AS_SORTS = [['total', '➕ مجموع الدرجات'], ['avg', '📊 متوسط الدرجات'], ['n', '📚 عدد الدروس'], ['name', '🔤 الأبجدية'], ['school', '🏫 المدرسة'], ['gender', '🚻 بنين / بنات'], ['grade', '🎓 الصف']];
+function renderAllStudents() {
+  const F = AS.f, schools = [...new Set(AS.list.map(s => s.school).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'ar'));
+  const sel = (k, opts) => `<select onchange="AS.f.${k}=this.value;renderAllStudents()">${opts.map(([v, n]) => `<option value="${esc(v)}" ${F[k] === v ? 'selected' : ''}>${esc(n)}</option>`).join('')}</select>`;
+  $('#asFilt').innerHTML = `<label>نوع الحساب${sel('type', [['', 'كل الطلاب'], ['c', 'حسابات الصف فقط'], ['p', 'الحسابات الخاصة فقط']])}</label>
+    <label>المدرسة${sel('school', [['', 'كل المدارس']].concat(schools.map(x => [x, x]), [['-', 'بلا مدرسة']]))}</label>
+    <label>بنين / بنات${sel('gender', [['', 'الكل'], ['بنين', 'بنين'], ['بنات', 'بنات']])}</label>
+    <label>الصف${sel('g', [['', 'كل الصفوف']].concat(GRADES.map(g => [g.key, gradeName(g.key)])))}</label>
+    <label>المحذوفون من معلميهم${sel('rm', [['', 'إظهارهم'], ['hide', 'إخفاؤهم'], ['only', 'هم فقط']])}</label>
+    <label>بحث بالاسم<input type="search" id="asQ" value="${esc(F.q)}" placeholder="اكتب جزءًا من الاسم" oninput="AS.f.q=this.value;renderAsTable()"></label>`;
+  $('#asSort').innerHTML = '<b style="align-self:center;font-size:19px">رتّب حسب:</b>' + AS_SORTS.map(([k, n]) => `<button class="btn sm ghost sortb${AS.sort === k ? ' on' : ''}" onclick="AS.sort='${k}';renderAllStudents()">${n}</button>`).join('');
+  renderAsTable();
+}
+function renderAsTable() {
+  const F = AS.f, q = normName(F.q);
+  let L = AS.list.filter(s => (!F.type || s.type === F.type) && (!F.school || (F.school === '-' ? !s.school : s.school === F.school)) && (!F.gender || s.gender === F.gender) && (!F.g || s.g === F.g)
+    && (!q || normName(s.name).includes(q)) && (F.rm !== 'hide' || !s.removed) && (F.rm !== 'only' || s.removed));
+  const ar = (a, b) => (a || '￿').localeCompare(b || '￿', 'ar'), num = (a, b, k) => (b[k] ?? -1) - (a[k] ?? -1);
+  const by = {total:(a, b) => num(a, b, 'total') || num(a, b, 'n'), avg:(a, b) => num(a, b, 'avg') || num(a, b, 'total'), n:(a, b) => num(a, b, 'n') || num(a, b, 'total'),
+    name:(a, b) => ar(a.name, b.name), school:(a, b) => ar(a.school, b.school) || ar(a.cls, b.cls) || ar(a.name, b.name),
+    gender:(a, b) => ar(a.gender, b.gender) || num(a, b, 'total'), grade:(a, b) => (gradeIdx(a.g) < 0 ? 99 : gradeIdx(a.g)) - (gradeIdx(b.g) < 0 ? 99 : gradeIdx(b.g)) || ar(a.cls, b.cls) || num(a, b, 'total')};
+  L.sort(by[AS.sort] || by.total);
+  if (!L.length) { $('#asTable').innerHTML = `<p>${AS.list.length ? 'لا يوجد طلاب بهذه التصفية.' : 'لا يوجد طلاب بعد.'}</p>`; return; }
+  $('#asTable').innerHTML = `<p style="margin:4px 0;color:var(--muted);font-size:19px">عدد الطلاب: <b>${L.length}</b></p><table><tr><th>#</th><th>الطالب</th><th>المدرسة</th><th>الصف</th><th>الدروس التي حلّها</th><th>متوسط الدرجات</th><th>مجموع الدرجات</th><th></th></tr>` +
+    L.map((s, i) => `<tr${s.removed ? ' style="background:#fdf1f1"' : ''}><td>${i + 1}</td><td><b>${esc(s.name)}</b>${s.type === 'p' ? ' <span class="chip grey">حساب خاص</span>' : ''}${s.moved ? ` <span class="chip grey">🚶 انتقل إلى ${esc(s.movedTo)}</span>` : ''}${s.removed ? ` <span class="chip off" title="${esc(fmtFull(s.raw.removedAt))}">🗑 حذفه معلمه${s.hideRes ? ' مع نتائجه' : ''}</span>` : !s.active && !s.moved ? ' <span class="chip off">موقوف</span>' : ''}<br><small style="color:var(--muted)">${s.type === 'p' ? `<span dir="ltr">${esc(s.email)}</span>` : esc(s.teacher)}</small></td>
+      <td>${s.school ? esc(s.school) + `<br><small style="color:var(--muted)">${esc(s.gender)}</small>` : `<small style="color:var(--muted)">${s.type === 'p' ? '—' : 'غير محددة'}</small>`}</td>
+      <td>${s.g ? esc(gradeName(s.g).replace('الصف ', '')) : '—'}${s.cls ? `<br><small style="color:var(--muted)">${esc(s.cls)}</small>` : ''}</td>
+      <td class="num">${s.n}</td><td class="num">${s.avg == null ? '—' : Math.round(s.avg) + '٪'}</td><td class="num">${s.total}</td>
+      <td><div class="row" style="gap:4px;flex-wrap:nowrap"><button class="btn sm alt" style="white-space:nowrap" onclick="msgAsStudent(${A(s.uid)})">✉️</button><button class="btn sm ghost" style="white-space:nowrap" onclick="asDetails(${A(s.uid)},${A(s.type)})">📋 النتائج</button><button class="btn sm red" title="حذف" onclick="${s.type === 'p' ? `deletePvAccounts([${A(s.uid)}])` : `deleteStudents([${A(s.uid)}],AS.list.filter(x=>x.type==='c'))`}">🗑</button></div></td></tr>`).join('') + '</table>';
+}
+/* تفاصيل نتائج طالب لكل محاولاته (للمدير) */
+function asDetails(uid, type) {
+  const s = AS.list.find(x => x.uid === uid && x.type === type); if (!s) return;
+  const subs = (type === 'p' ? AS.psubs : AS.subs).filter(x => x.uid === uid), picks = type === 'c' ? ((AS.notes[uid] || {}).pick || {}) : {};
+  const by = {}; subs.forEach(x => (by[x.lessonId] = by[x.lessonId] || []).push(x));
+  const lids = Object.keys(by).sort((a, b) => byLessonOrder(catById(a) || {}, catById(b) || {}));
+  openModal(`<h3 style="margin-top:0">📋 ${esc(s.name)}${s.cls ? ' – ' + esc(s.cls) : ''}${type === 'p' ? ' (نتائج خاصة)' : ''}</h3>` + (lids.length ? lids.map(lid => {
+    const l = catById(lid) || {title:'(درس محذوف)'}, A2 = by[lid].slice().sort((a, b) => b.at - a.at), pk = picks[lid], ch = pk && A2.find(a => a.at === pk.at);
+    const top = A2.reduce((m, a) => !m || (+a.auto || 0) > (+m.auto || 0) ? a : m, null), cnt = ch || top;
+    return `<div class="card" style="margin:8px 0"><b>${esc((l.icon || '') + ' ' + l.title)}</b>${ch ? ' <span class="chip wip">اختار المعلم محاولة غير الأعلى</span>' : ''}` + A2.map(a => `<div style="border-top:1px dashed var(--line);margin-top:6px;padding-top:4px">المحاولة ${esc(a.attempt || '')} · ${fmtDate(a.at)} · الدرجة: <b>${+a.auto || 0} / ${l.autoMax || ''}</b> ${a === cnt ? '<span class="chip done">المعتمدة</span>' : ''}</div>`).join('') + '</div>';
+  }).join('') : '<p>لا توجد نتائج.</p>'));
+}
+
+/* ================= اعتماد محاولة يختارها المعلم ================= */
+const noteOf = uid => (TD.notes || {})[uid] || {};
+async function saveNote(uid, patch) {
+  const n = Object.assign({pick:{}, apr:{}}, noteOf(uid), patch, {teacherId:TD.view});
+  await API.set('snote', uid, n); TD.notes = TD.notes || {}; TD.notes[uid] = n;
+}
+async function setPick(uid, lid, at, auto) {
+  try { await saveNote(uid, {pick:Object.assign({}, noteOf(uid).pick, {[lid]:{at, auto:+auto || 0, by:Date.now()}})}); toast('اعتُمدت هذه المحاولة ✓'); showDetails(uid); renderResults(); }
+  catch (e) { console.error(e); if (isPerm(e)) $('#rulesWarn').hidden = false; toast('تعذّر: ' + errMsg(e)); }
+}
+async function clearPick(uid, lid) {
+  const p = Object.assign({}, noteOf(uid).pick); delete p[lid];
+  try { await saveNote(uid, {pick:p}); toast('عاد الاعتماد إلى أعلى درجة ✓'); showDetails(uid); renderResults(); }
+  catch (e) { console.error(e); toast('تعذّر: ' + errMsg(e)); }
+}
+const rmMark = s => s && s.removed ? ' <span class="chip off" title="حذفته من قائمة طلابك">محذوف</span>' : '';
+
+/* ================= المراسلات ================= */
+const EMOJIS = ['🌟', '⭐', '👏', '👍', '💪', '🎉', '🏆', '🥇', '💯', '✨', '📚', '📖', '✍️', '📝', '✅', '❗', '⏰', '📌', '📢', '🔔', '💡', '🎯', '❤️', '🌹', '🌿', '😊', '😀', '🤩', '😉', '🙌', '🙏', '🤲', '🕌', '🌙', '☀️', '🎁', '👋', '🤝', '📅', '❓'];
+const myName = () => ME.role === 'admin' ? 'مدير المنصة' : ME.role === 'teacher' ? (ME.name || 'المعلم') : (ME.cname || ME.name || 'طالب');
+/* targets: [{uid, name}] أو group: 'teachers' | 'students' | 'all' */
+function composeMsg(opt) {
+  window._msgOpt = opt;
+  const to = opt.group ? {teachers:'كل المعلمين', students:'كل الطلاب', all:'الجميع (المعلمين والطلاب)'}[opt.group]
+    : opt.targets.length === 1 ? opt.targets[0].name : opt.targets.length + ' ' + (opt.targets.length > 10 ? 'مستلمًا' : 'مستلمين');
+  openModal(`<h3 style="margin-top:0">✉️ ${opt.reply ? 'رد على' : 'رسالة إلى'}: ${esc(to)}</h3>
+    ${opt.reply ? `<div class="note" style="white-space:pre-wrap;font-size:19px;max-height:22vh;overflow:auto">${esc(opt.reply)}</div>` : ''}
+    ${opt.targets && opt.targets.length > 1 ? `<details style="font-size:18px;color:var(--muted)"><summary>عرض الأسماء</summary>${opt.targets.map(t => esc(t.name)).join('، ')}</details>` : ''}
+    <textarea id="msgText" maxlength="2000" style="min-height:150px" placeholder="اكتب رسالتك هنا…"></textarea>
+    <div class="emojis">${EMOJIS.map(e => `<button type="button" onclick="insEmoji('${e}')">${e}</button>`).join('')}</div>
+    <div class="row" style="margin-top:8px"><button class="btn" id="msgSend" onclick="sendMsg()">📨 إرسال</button><button class="btn ghost" onclick="closeModal()">إلغاء</button><span id="msgProg"></span></div>`);
+  setTimeout(() => $('#msgText') && $('#msgText').focus(), 50);
+}
+function insEmoji(e) { const t = $('#msgText'), a = t.selectionStart ?? t.value.length, b = t.selectionEnd ?? a; t.value = t.value.slice(0, a) + e + t.value.slice(b); t.focus(); t.selectionStart = t.selectionEnd = a + e.length; }
+async function sendMsg() {
+  const opt = window._msgOpt, text = $('#msgText').value.trim(); if (!opt) return;
+  if (!text) return toast('اكتب الرسالة أولًا');
+  const api = opt.api || API, from = opt.from || ME.uid, base = {from, fromName:myName(), fromRole:ME.role === 'student' ? 'student' : ME.role, text, at:Date.now()};
+  $('#msgSend').disabled = true; const bad = [];
+  try {
+    if (opt.group) await api.add('msgs', Object.assign({toGroup:opt.group}, base));
+    else for (let i = 0; i < opt.targets.length; i++) {
+      const t = opt.targets[i]; if (opt.targets.length > 3) $('#msgProg').textContent = `⏳ ${i + 1} من ${opt.targets.length}`;
+      try { await api.add('msgs', Object.assign({to:t.uid, toName:t.name || ''}, base)); } catch (e) { console.error(e); bad.push(t.name); if (isPerm(e)) throw e; }
+    }
+    closeModal(); toast(bad.length ? 'تعذّر الإرسال إلى: ' + bad.join('، ') : 'أُرسلت الرسالة ✓ وستصل في الإشعارات 🔔', 5000);
+    if (opt.done) opt.done();
+  } catch (e) { console.error(e); $('#msgSend').disabled = false; toast(isPerm(e) ? 'تعذّر الإرسال: قواعد الحماية تحتاج تحديثًا (أخبر مدير المنصة).' : 'تعذّر الإرسال: ' + errMsg(e), 6000); }
+}
+/* من صفحة المعلم: طلابه */
+function msgStudent(uid) { const s = TD.students.find(x => x.uid === uid); if (s) composeMsg({targets:[{uid:s.uid, name:s.name}]}); }
+function stMsgStart() { const S = selOf('st'); S.on = true; S.msg = true; S.ids = new Set(); renderStudents(); }
+function stMsgSend(all) {
+  const L = all ? listStudentsView().filter(s => s.active !== false) : [...selOf('st').ids].map(u => TD.students.find(s => s.uid === u)).filter(Boolean);
+  if (!L.length) return toast('لا يوجد طلاب في القائمة');
+  composeMsg({targets:L.map(s => ({uid:s.uid, name:s.name})), done:() => selEnd('st')});
+}
+/* من صفحة المدير: المعلمون */
+function msgTeacher(uid) { const t = TD.teachers.find(x => x.uid === uid); if (t) composeMsg({targets:[{uid:t.uid, name:t.name}]}); }
+function tcMsgStart() { const S = selOf('tc'); S.on = true; S.msg = true; S.ids = new Set(); renderTeachers(); }
+function tcMsgSend(all) {
+  if (all) return composeMsg({group:'teachers', done:() => selEnd('tc')});
+  const L = [...selOf('tc').ids].map(u => TD.teachers.find(t => t.uid === u)).filter(Boolean);
+  composeMsg({targets:L.map(t => ({uid:t.uid, name:t.name})), done:() => selEnd('tc')});
+}
+function msgAsStudent(uid) { const s = AS.list.find(x => x.uid === uid); if (s) composeMsg({targets:[{uid:s.uid, name:s.name}]}); }
+/* الطالب يراسل معلمه */
+function msgMyTeacher() {
+  if (!ME.capi || !ME.teacherId) return toast('انضم إلى صف معلمك أولًا');
+  composeMsg({targets:[{uid:ME.teacherId, name:'معلّمك'}], api:ME.capi, from:ME.cuid});
+}
+/* قراءة رسالة من الإشعارات والرد عليها */
+function openMsg(k) {
+  const m = (NTF.msgs || [])[k]; if (!m) return;
+  const canReply = !m.toGroup && m.from && ((ME.role === 'student' && m.from === ME.teacherId) || (ME.role === 'teacher' && (m.fromRole === 'student' || m.fromRole === 'admin')) || ME.role === 'admin');
+  openModal(`<h3 style="margin-top:0">✉️ رسالة من: ${esc(m.fromName || '')}</h3><div class="tm" style="color:var(--muted);font-size:18px">${fmtFull(m.at)}${m.toGroup ? ' · رسالة عامة' : ''}</div>
+    <div style="white-space:pre-wrap;font-size:23px;line-height:1.8;background:#faf7ef;border-radius:14px;padding:10px 14px;margin:10px 0">${esc(m.text)}</div>
+    <div class="row">${canReply ? `<button class="btn" onclick="replyMsg(${k})">↩ رد</button>` : ''}<button class="btn ghost" onclick="openBell()">↩ الإشعارات</button></div>`);
+}
+function replyMsg(k) {
+  const m = NTF.msgs[k]; if (!m) return;
+  const opt = {targets:[{uid:m.from, name:m.fromName}], reply:m.text};
+  if (ME.role === 'student') Object.assign(opt, {api:ME.capi, from:ME.cuid});
+  composeMsg(opt);
+}
+
+/* ================= صفحتي (الصفحة الشخصية) ================= */
+const roleName = () => ME.role === 'admin' ? 'مدير المنصة' : ME.role === 'teacher' ? 'معلم' : ME.kind === 'class' ? 'طالب' : 'طالب (حساب خاص)';
+async function openProfile() {
+  if (!ME) return;
+  await fillSchoolSuggest();
+  const synth = isSynth(), isT = ME.role === 'teacher' || ME.role === 'admin';
+  const tdoc = isT ? (ME.role === 'admin' ? (TD.teachers || []).find(t => t.uid === ME.uid) || TD.vt || {} : ME) : null;
+  let schoolHtml = '';
+  if (isT) {
+    schoolHtml = `<p style="margin:2px 0">مدرستك الحالية: <b>${esc((tdoc && tdoc.school) || 'غير محددة')}</b>${tdoc && tdoc.gender ? ' · ' + esc(tdoc.gender) : ''}</p>
+      <div class="row" style="gap:6px"><button class="btn sm ghost" onclick="openSchoolModal(${A(ME.uid)})">✏️ تصحيح كتابة الاسم</button><button class="btn sm alt" onclick="openMoveSchool()">🔄 انتقلت إلى مدرسة أخرى</button></div>
+      <small style="color:var(--muted)">«تصحيح الاسم» لخطأ في الكتابة فقط. أما الانتقال فيضع صفوف مدرستك الحالية ونتائجها في الأرشيف، وتبدأ صفوف مدرستك الجديدة من جديد.</small>`;
+  } else if (ME.cuid && ME.capi) {
+    const rq = await ME.capi.get('schreq', ME.cuid).catch(() => null);
+    schoolHtml = rq && rq.status === 'pending'
+      ? `<div class="note">⏳ طلبك الانتقال إلى «${esc(rq.to)}» بانتظار موافقة معلمك.</div>`
+      : `${rq && rq.status === 'rejected' ? `<div class="note">رفض معلمك طلب الانتقال إلى «${esc(rq.to)}».</div>` : ''}<p style="margin:2px 0">إن انتقلت إلى مدرسة أخرى فاكتب اسمها، ويصل طلبك إلى معلمك ليوافق.</p>
+        <label>مدرستي الجديدة<input type="text" id="pfSchool" list="schoolList" oninput="schoolHint(this,'pfHint')" placeholder="اكتب أو اختر من القائمة"></label><div class="school-hint" id="pfHint"></div>
+        <small style="color:var(--muted)">بعد موافقة معلمك تخرج من صفّه، وتبقى نتائجك القديمة عنده. ${synth ? '<b>تنبيه:</b> حسابك حساب صف، فلن تستطيع الدخول به بعد الموافقة. أنشئ «حسابًا خاصًا» ببريدك لتتابع، ثم انضم إلى صف معلمك الجديد برمزه.' : 'تبقى في «مساحتي الخاصة»، وتنضم إلى صف معلمك الجديد برمزه.'}</small>
+        <div class="row" style="margin-top:6px"><button class="btn sm" onclick="requestMoveSchool()">📨 أرسل الطلب إلى معلمي</button></div>`;
+  } else {
+    const ac = ME.acct || {};
+    schoolHtml = `<label>مدرستي<input type="text" id="pfSchool" list="schoolList" oninput="schoolHint(this,'pfHint')" value="${esc(ac.school || '')}" placeholder="اكتب أو اختر من القائمة"></label><div class="school-hint" id="pfHint"></div>
+      <div class="row" style="margin-top:6px"><button class="btn sm" onclick="savePvSchool()">💾 حفظ</button></div>`;
+  }
+  const emailHtml = ME.role === 'admin'
+    ? `<p style="margin:2px 0"><code class="ltr">${esc(ME.email)}</code></p><small style="color:var(--muted)">بريد المدير ثابت، لأنه مفتاح صلاحيات المنصة في قواعد Firebase.</small>`
+    : synth
+      ? `<p style="margin:2px 0">لم تضف بريدًا بعد. تدخل باسم المستخدم: <code class="ltr">${esc(ME.username || '')}</code></p><button class="btn sm ghost" onclick="openAddEmail()">📧 أضف بريدك</button>`
+      : `<p style="margin:2px 0">بريدك الحالي: <code class="ltr">${esc(ME.email)}</code></p>
+        <details><summary style="cursor:pointer;color:var(--teal);font-weight:700">✏️ تغيير البريد</summary>
+          <label>البريد الجديد<input type="email" class="ltr" id="pfMail" placeholder="name@gmail.com"></label>
+          <label>كلمة المرور الحالية (للتأكد أنك صاحب الحساب)<input type="password" class="ltr" id="pfPass"></label>
+          <div class="login-msg" id="pfMsg"></div>
+          <button class="btn sm" id="pfBtn" onclick="changeEmail()">إرسال رابط التأكيد إلى البريد الجديد</button>
+          <p style="font-size:18px;color:var(--muted);margin:4px 0">يتغيّر البريد بعد أن تفتح الرابط في البريد الجديد، ثم تدخل به في المرة القادمة.</p></details>`;
+  openModal(`<h3 style="margin-top:0">👤 صفحتي</h3>
+    <p style="margin:0"><b style="font-size:26px">${esc(ME.role === 'admin' ? 'المدير' : ME.cname || ME.name || '')}</b> · ${roleName()}${ME.cls ? ' · ' + esc(ME.cls) : ''}</p>
+    <div class="card" style="margin:10px 0;padding:10px 14px"><h4 style="margin:0 0 4px">📧 البريد الإلكتروني</h4>${emailHtml}</div>
+    <div class="card" style="margin:10px 0;padding:10px 14px"><h4 style="margin:0 0 4px">🏫 المدرسة</h4>${schoolHtml}</div>
+    <datalist id="schoolList">${SCHOOLS.map(x => `<option value="${esc(x)}">`).join('')}</datalist>`);
+}
+async function changeEmail() {
+  const e = $('#pfMail').value.trim().toLowerCase(), p = $('#pfPass').value, m = $('#pfMsg');
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e) || isStudentEmail(e)) return m.textContent = 'اكتب البريد الجديد بشكل صحيح';
+  if (e === ME.email) return m.textContent = 'هذا بريدك الحالي نفسه';
+  if (!p) return m.textContent = 'اكتب كلمة المرور الحالية';
+  $('#pfBtn').disabled = true; m.classList.remove('ok'); m.textContent = '⏳ …';
+  try {
+    await API.reauth(p); await API.addEmail(e);
+    if (DEMO) { await syncEmail(e); m.classList.add('ok'); m.textContent = 'تغيّر البريد ✓ (وضع تجريبي)'; return; }
+    m.classList.add('ok'); m.textContent = 'أرسلنا رابط تأكيد إلى ' + e + '. افتحه، ثم اخرج وادخل بالبريد الجديد وكلمة المرور نفسها.';
+  } catch (er) {
+    const c = er && er.code || '';
+    m.textContent = c.includes('invalid-credential') || c.includes('wrong-password') ? 'كلمة المرور غير صحيحة.' : c.includes('email-already') ? 'هذا البريد مستعمل في حساب آخر.' : c.includes('too-many') ? 'محاولات كثيرة. انتظر قليلًا.' : 'تعذّر: ' + errMsg(er);
+  } finally { const b = $('#pfBtn'); if (b) b.disabled = false; }
+}
+/* بعد تأكيد البريد الجديد: تحديث البريد المحفوظ في وثيقة الحساب */
+async function syncEmail(email) {
+  try {
+    if (ME.role === 'teacher' && ME.email !== email) await API.set('teachers', ME.uid, {email}, true);
+    if (ME.acct && ME.acct.email !== email) { await API.set('accounts', ME.uid, {email}, true); ME.acct.email = email; }
+    ME.email = email;
+  } catch (e) { console.error(e); }
+}
+async function savePvSchool() {
+  const v = $('#pfSchool').value.trim();
+  try { await API.set('accounts', ME.uid, {school:v}, true); ME.acct.school = v; closeModal(); toast('حُفظت مدرستك ✓'); } catch (e) { toast('تعذّر: ' + errMsg(e)); }
+}
+async function requestMoveSchool() {
+  const v = $('#pfSchool').value.trim(); if (v.length < 2) return toast('اكتب اسم مدرستك الجديدة');
+  if (!confirm(`إرسال طلب الانتقال إلى «${v}» إلى معلمك؟\nبعد موافقته تخرج من صفّه.`)) return;
+  try { await ME.capi.set('schreq', ME.cuid, {cuid:ME.cuid, teacherId:ME.teacherId, name:ME.cname || ME.name, cls:ME.cls, to:v, status:'pending', at:Date.now()}); closeModal(); toast('أُرسل طلبك إلى معلمك ✓', 5000); }
+  catch (e) { console.error(e); toast(isPerm(e) ? 'تعذّر الإرسال: قواعد الحماية تحتاج تحديثًا (أخبر مدير المنصة).' : 'تعذّر: ' + errMsg(e)); }
+}
+/* المعلم يوافق على انتقال طالبه أو يرفض */
+async function answerMove(cuid, ok) {
+  const r = (NTF.moves || []).find(x => x.id === cuid); if (!r) return;
+  if (ok && !confirm(`الموافقة على انتقال ${r.name} إلى «${r.to}»؟\nيخرج من صفّك ولا يستطيع الدخول بحساب الصف، وتبقى نتائجه عندك في الأرشيف.`)) return;
+  try {
+    if (ok) {
+      const s = (TD.students || []).find(x => x.uid === cuid);
+      await API.set('students', cuid, {active:false, moved:true, movedTo:r.to, movedAt:Date.now(), archSchool:(ME.school || (TD.vt && TD.vt.school) || '')}, true);
+      if (s) Object.assign(s, {active:false, moved:true, movedTo:r.to});
+    }
+    await API.set('schreq', cuid, {status:ok ? 'approved' : 'rejected', doneAt:Date.now()}, true);
+    toast(ok ? 'وافقت على الانتقال ✓' : 'رُفض الطلب'); await refreshBell(true); renderStudents();
+  } catch (e) { console.error(e); if (isPerm(e)) $('#rulesWarn').hidden = false; toast('تعذّر: ' + errMsg(e)); }
+}
+/* المعلم ينتقل إلى مدرسة أخرى: أرشفة المدرسة الحالية */
+const curTDoc = () => ME.role === 'admin' ? ((TD.teachers || []).find(t => t.uid === ME.uid) || TD.vt || {}) : ME;
+function archModeHtml(name) {
+  return `<p style="margin:10px 0 4px"><b>حسابات طلاب صفوف «${esc(name)}»:</b></p>
+    <label style="display:flex;gap:8px;align-items:flex-start;font-size:20px;margin:6px 0"><input type="radio" name="amode" value="stop" checked style="display:inline-block;width:22px;height:22px;flex:none;margin:6px 0 0"> <span><b>تتوقف حسابات الصف</b><br><small style="color:var(--muted)">لا يدخل الطالب برمز المعلم، ويبقى لمن له حساب خاص حسابُه الخاص. وترى نتائجهم في «الأرشيف».</small></span></label>
+    <label style="display:flex;gap:8px;align-items:flex-start;font-size:20px;margin:6px 0"><input type="radio" name="amode" value="keep" style="display:inline-block;width:22px;height:22px;flex:none;margin:6px 0 0"> <span><b>تبقى الحسابات تعمل</b><br><small style="color:var(--muted)">يبقى الطلاب يدخلون ويرون دروسهم القديمة، لكنهم يختفون من قوائمك.</small></span></label>`;
+}
+function openMoveSchool() {
+  const t = curTDoc();
+  openModal(`<h3 style="margin-top:0">🔄 الانتقال إلى مدرسة أخرى</h3>
+    <p style="margin:4px 0">مدرستك الحالية: <b>${esc(t.school || 'غير محددة')}</b> · صفوفها: ${(t.classes || []).length ? esc(t.classes.join('، ')) : 'لا يوجد'}</p>
+    <label>اسم مدرستك الجديدة<input type="text" id="mvName" list="schoolList" oninput="schoolHint(this,'mvHint')" placeholder="اكتب أو اختر من القائمة"></label><div class="school-hint" id="mvHint"></div>
+    <label>المدرسة<select id="mvGender"><option value="">— اختر —</option><option>بنين</option><option>بنات</option></select></label>
+    ${(t.classes || []).length ? archModeHtml(t.school || 'المدرسة الحالية') : ''}
+    <div class="row" style="margin-top:10px"><button class="btn" onclick="doMoveSchool()">🔄 انتقال</button><button class="btn ghost" onclick="closeModal()">إلغاء</button></div>
+    <datalist id="schoolList">${SCHOOLS.map(x => `<option value="${esc(x)}">`).join('')}</datalist>`);
+}
+/* يضع صفوف المعلم الحالية وطلابها في الأرشيف، ويرجع عنصر الأرشيف */
+async function archiveCurrent(t, mode) {
+  const C = t.classes || []; if (!C.length) return null;
+  const arch = {id:'a' + Date.now(), school:t.school || '', gender:t.gender || '', classes:C.slice(), at:Date.now(), mode};
+  if (TD.view !== ME.uid) await switchView(ME.uid, true);
+  for (const s of TD.students.filter(s => C.includes(s.cls) && !s.archived && !s.moved)) {
+    const patch = {archived:arch.id, archSchool:arch.school};
+    if (mode === 'stop' && s.active !== false) { patch.active = false; patch.archStopped = true; }
+    await API.set('students', s.uid, patch, true); Object.assign(s, patch);
+  }
+  return arch;
+}
+async function doMoveSchool() {
+  const name = $('#mvName').value.trim(), gender = $('#mvGender').value, t = curTDoc();
+  if (name.length < 2) return toast('اكتب اسم مدرستك الجديدة'); if (!gender) return toast('اختر: بنين أو بنات');
+  const mode = ($$('input[name="amode"]').find(x => x.checked) || {}).value || 'stop';
+  try {
+    const arch = await archiveCurrent(t, mode);
+    const archive = (t.archive || []).concat(arch ? [arch] : []);
+    await API.set('teachers', ME.uid, {school:name, gender, classes:[], archive}, true);
+    [t, ME.role === 'teacher' ? ME : null, TD.view === ME.uid ? TD.vt : null].forEach(o => { if (o) Object.assign(o, {school:name, gender, classes:[], archive}); });
+    closeModal(); fillClassSelects(); renderClassChips(); tTab('students');
+    openModal(`<h3 style="margin-top:0">🏫 مرحبًا بك في ${esc(name)}</h3><p>وُضعت صفوف مدرستك السابقة ونتائجها في «🗄️ الأرشيف» (في تبويب الإعداد).</p><p>ابدأ الآن بإضافة صفوفك وشعبك في هذه المدرسة: اختر <b>المرحلة</b> ثم <b>المستوى</b> ثم <b>الشعبة</b> من «➕ إضافة شعب جديدة»، ثم اضغط «💾 حفظ الشعب»، وأضف طلابك.</p><div class="row"><button class="btn" onclick="closeModal()">حسنًا</button></div>`);
+  } catch (e) { console.error(e); if (isPerm(e)) $('#rulesWarn').hidden = false; toast('تعذّر: ' + errMsg(e)); }
+}
+/* الأرشيف في تبويب الإعداد */
+function renderArchive() {
+  const box = $('#archBox'); if (!box) return;
+  const t = TD.view === ME.uid ? curTDoc() : (TD.vt || {}), A3 = t.archive || [], moved = (TD.students || []).filter(s => s.moved);
+  if (!A3.length && !moved.length) { box.innerHTML = '<p style="margin:0;color:var(--muted)">الأرشيف فارغ.</p>'; return; }
+  box.innerHTML = A3.slice().reverse().map(a => { const n = (TD.students || []).filter(s => s.archived === a.id).length;
+    return `<div class="fbitem done" style="opacity:1"><b>🏫 ${esc(a.school || 'مدرسة غير محددة')}</b>${a.gender ? ' · ' + esc(a.gender) : ''} <small style="color:var(--muted)">· أُرشفت ${fmtDate(a.at)}</small><br>
+      <small>الشعب: ${esc(a.classes.join('، '))} · الطلاب: ${n} · ${a.mode === 'stop' ? 'حسابات الصف متوقفة' : 'حسابات الصف تعمل'}</small>
+      <div class="row" style="gap:6px;margin-top:4px"><button class="btn sm ghost" onclick="archResults(${A(a.id)})">📊 النتائج</button><button class="btn sm" onclick="openRestore(${A(a.id)})">↩ استرجاع</button></div></div>`; }).join('')
+    + (moved.length ? `<div class="fbitem done" style="opacity:1"><b>🚶 طلاب انتقلوا إلى مدارس أخرى (${moved.length})</b><br><small>${moved.map(s => esc(s.name) + ' ← ' + esc(s.movedTo || '')).join('، ')}</small><div class="row" style="margin-top:4px"><button class="btn sm ghost" onclick="archResults('moved')">📊 النتائج</button></div></div>` : '');
+}
+async function archResults(id) {
+  const S = (TD.students || []).filter(s => id === 'moved' ? s.moved : s.archived === id).sort(byClsName);
+  openModal('<p>⏳ جارٍ التحميل…</p>');
+  let subs = []; try { subs = await API.where('submissions', {teacherId:TD.view}); } catch (e) { console.error(e); }
+  const rows = S.map(s => { const x = statsOf(lessonScores(subs.filter(q => q.uid === s.uid), noteOf(s.uid).pick)); return `<tr><td><b>${esc(s.name)}</b>${s.moved ? `<br><small style="color:var(--muted)">انتقل إلى: ${esc(s.movedTo || '')}</small>` : ''}</td><td>${esc(s.cls)}</td><td class="num">${x.n}</td><td class="num">${x.avg == null ? '—' : Math.round(x.avg) + '٪'}</td><td class="num">${x.total}</td><td><button class="btn sm ghost" onclick="archStudent(${A(s.uid)},${A(id)})">📋</button></td></tr>`; }).join('');
+  window._archSubs = subs;
+  openModal(`<h3 style="margin-top:0">📊 نتائج الأرشيف</h3>${S.length ? `<div class="tbl-scroll"><table><tr><th>الطالب</th><th>الشعبة</th><th>الدروس</th><th>المتوسط</th><th>المجموع</th><th></th></tr>${rows}</table></div>` : '<p>لا يوجد طلاب.</p>'}`);
+}
+function archStudent(uid, back) {
+  const s = TD.students.find(x => x.uid === uid), subs = (window._archSubs || []).filter(q => q.uid === uid);
+  const by = {}; subs.forEach(x => (by[x.lessonId] = by[x.lessonId] || []).push(x));
+  openModal(`<h3 style="margin-top:0">📋 ${esc(s ? s.name : '')}</h3>` + (Object.keys(by).length ? Object.keys(by).map(lid => { const l = catById(lid) || {title:'(درس محذوف)'}; return `<div class="card" style="margin:6px 0"><b>${esc(l.title)}</b>${by[lid].sort((a, b) => b.at - a.at).map(a => `<div style="border-top:1px dashed var(--line);margin-top:4px">المحاولة ${esc(a.attempt || '')} · ${fmtDate(a.at)} · <b>${+a.auto || 0} / ${l.autoMax || ''}</b></div>`).join('')}</div>`; }).join('') : '<p>لا توجد نتائج.</p>') + `<button class="btn ghost" onclick="archResults(${A(back)})">↩ رجوع</button>`);
+}
+function openRestore(id) {
+  const t = curTDoc(), a = (t.archive || []).find(x => x.id === id); if (!a) return;
+  openModal(`<h3 style="margin-top:0">↩ استرجاع ${esc(a.school || 'المدرسة')}</h3>
+    <p>ترجع صفوفها (${esc(a.classes.join('، '))}) وطلابها ونتائجها كما كانت، وتصير مدرستك الحالية.</p>
+    ${(t.classes || []).length ? `<p>وصفوف مدرستك الحالية «${esc(t.school || '')}» تُوضع في الأرشيف.</p>` + archModeHtml(t.school || 'المدرسة الحالية') : ''}
+    <div class="row" style="margin-top:10px"><button class="btn" onclick="doRestore(${A(id)})">↩ استرجاع</button><button class="btn ghost" onclick="closeModal()">إلغاء</button></div>`);
+}
+async function doRestore(id) {
+  const t = curTDoc(), a = (t.archive || []).find(x => x.id === id); if (!a) return;
+  const mode = ($$('input[name="amode"]').find(x => x.checked) || {}).value || 'stop';
+  try {
+    const cur = await archiveCurrent(t, mode);
+    for (const s of TD.students.filter(s => s.archived === id)) {
+      const patch = {archived:'', archSchool:''}; if (s.archStopped && !s.removed) { patch.active = true; patch.archStopped = false; }
+      await API.set('students', s.uid, patch, true); Object.assign(s, patch);
+    }
+    const archive = (t.archive || []).filter(x => x.id !== id).concat(cur ? [cur] : []);
+    const patch = {school:a.school, gender:a.gender, classes:a.classes, archive};
+    await API.set('teachers', ME.uid, patch, true);
+    [t, ME.role === 'teacher' ? ME : null, TD.view === ME.uid ? TD.vt : null].forEach(o => { if (o) Object.assign(o, patch); });
+    closeModal(); fillClassSelects(); renderClassChips(); renderArchive(); toast('استُرجعت ' + (a.school || 'المدرسة') + ' ✓', 5000);
+  } catch (e) { console.error(e); if (isPerm(e)) $('#rulesWarn').hidden = false; toast('تعذّر: ' + errMsg(e)); }
+}
+
 /* ================= التشغيل ================= */
 setupCuDrop();
 boot();
