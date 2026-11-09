@@ -1474,7 +1474,15 @@ async function getLessonHtml(l) {
 function fixLessonHtml(h) {
   if (!h) return h;
   if (h.indexOf('class="port ${') >= 0) h = h.replace(/(^|[^\w-])\.port(?![\w-])/g, '$1.mport').split('class="port ${').join('class="mport ${');
-  return h.split('.line{position:absolute;top:12%;').join('.g52-pond .line{position:absolute;top:12%;');
+  h = h.split('.line{position:absolute;top:12%;').join('.g52-pond .line{position:absolute;top:12%;');
+  /* زر الرجوع ↩ في الألعاب بملء الشاشة: أكبر قليلًا، وتحت شريط الساعة في الآيباد والآيفون */
+  const T = safeTop();
+  const css = `<style id="plat-fix">.g2-fs>.g2-fsbar{margin-top:${T}px}.g2-fs>.g2-fsbar button{width:46px;height:46px;font-size:24px;border-radius:13px}.g2-fs.port>.g2-fsbar{right:max(6px,calc((100vw - 100vh * 9 / 16) / 2 - 54px))}</style>`;
+  return /<\/head>/i.test(h) ? h.replace(/<\/head>/i, css + '</head>') : css + h;
+}
+function safeTop() {
+  const d = document.createElement('div'); d.style.cssText = 'position:fixed;top:0;left:0;width:1px;height:env(safe-area-inset-top,0px);visibility:hidden;pointer-events:none';
+  document.body.appendChild(d); const v = d.offsetHeight || 0; d.remove(); return v;
 }
 async function openLesson(id, mode) {
   const l = (mode === 'student' ? LESSONS : CAT).find(x => x.id === id); if (!l) return;
