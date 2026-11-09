@@ -712,6 +712,7 @@ html[data-mode=dark] .modal{background:rgba(0,0,0,.62)}
       <button data-t="curriculum" class="adminOnly" onclick="tTab('curriculum')" hidden>🗂️ المنهج</button>
       <button data-t="feedback" class="adminOnly" onclick="tTab('feedback')" hidden>📨 ملاحظات المستخدمين<span class="dot" id="fbDot" hidden></span></button>
       <button data-t="allst" class="adminOnly" onclick="tTab('allst')" hidden>🎓 كل الطلاب</button>
+      <button data-t="schools" class="adminOnly" onclick="tTab('schools')" hidden>🏫 المدارس</button>
       <button data-t="results" onclick="tTab('results')">📊 النتائج</button>
       <button data-t="private" onclick="tTab('private')">🔐 النتائج الخاصة<span class="dot" id="pvDot" hidden></span></button>
       <button data-t="lessons" onclick="tTab('lessons')">📚 الدروس</button>
@@ -720,14 +721,18 @@ html[data-mode=dark] .modal{background:rgba(0,0,0,.62)}
     </div>
     <div class="viewas" id="viewAs" hidden><span id="viewAsTxt"></span><button class="btn sm ghost" onclick="switchView(ME.uid)">↩ العودة إلى صفحتي</button></div>
 
-    <!-- المعلمون (للمدير) -->
-    <div class="tview" id="tv-allst" hidden>
+    <!-- المدارس (للمدير) -->
+    <div class="tview" id="tv-schools" hidden>
       <div class="card">
         <h3 style="margin-top:0">🏫 المدارس</h3>
-        <p style="margin:4px 0;font-size:20px">اضغط اسم المدرسة لتعرض طلابها في القائمة التالية. وزر ✏️ لتصحيح اسمها، أو دمجها مع مدرسة مكتوبة باسم آخر.</p>
+        <p style="margin:4px 0;font-size:20px">اضغط اسم المدرسة لتعرض طلابها في تبويب «🎓 كل الطلاب». وزر ✏️ لتصحيح اسمها، أو دمجها مع مدرسة مكتوبة باسم آخر.</p>
         <div class="row filt" id="scSearch"></div>
         <div class="tbl-scroll" id="scTable"></div>
       </div>
+    </div>
+
+    <!-- المعلمون (للمدير) -->
+    <div class="tview" id="tv-allst" hidden>
       <div class="card" id="asCard">
         <div class="row" style="justify-content:space-between"><h3 style="margin:0">🎓 كل طلاب المنصة</h3><button class="btn sm" onclick="loadAllStudents()">🔄 تحديث</button></div>
         <p style="margin:4px 0">طلاب كل المعلمين، والطلاب بحسابات خاصة. المدرسة ونوعها مأخوذان من بيانات المعلم.</p>
@@ -1591,7 +1596,7 @@ function tTab(t) {
   if (t === 'lessons') renderShowTab();
   if (t === 'private') renderPrivTab();
   if (t === 'feedback') loadFeedback();
-  if (t === 'allst') loadAllStudents();
+  if (t === 'allst' || t === 'schools') loadAllStudents();
   if (t === 'setup') { renderMySchool(); renderArchive(); }
 }
 
@@ -3234,7 +3239,7 @@ function renderSchools() {
   if (has) { const i = $('#scQ'); i.focus(); i.setSelectionRange(i.value.length, i.value.length); }
   if (!L.length) { $('#scTable').innerHTML = '<p>لا توجد مدارس.</p>'; return; }
   $('#scTable').innerHTML = `<table><tr><th>#</th><th>المدرسة</th><th>بنين / بنات</th><th>المرحلة</th><th>الصفوف المسجّلة</th><th>المعلمون</th><th>الطلاب</th><th>الدروس المحلولة</th><th>متوسط الدرجات</th><th>مجموع الدرجات</th></tr>` +
-    L.map((o, i) => `<tr><td>${i + 1}</td><td>${o.school ? `<a href="#asCard" onclick="AS.f.type='c';AS.f.school=${A(o.school)};AS.f.gender=${A(o.gender)};renderAllStudents()"><b>${esc(o.school)}</b></a> <button class="btn sm ghost" title="تعديل اسم المدرسة أو دمجها مع مدرسة أخرى" onclick="renameSchool(${A(o.school)},${A(o.gender)})">✏️</button>` : '<small style="color:var(--muted)">غير محددة</small>'}</td>
+    L.map((o, i) => `<tr><td>${i + 1}</td><td>${o.school ? `<a href="#" onclick="AS.f.type='c';AS.f.school=${A(o.school)};AS.f.gender=${A(o.gender)};tTab('allst');scrollTo(0,0);return false"><b>${esc(o.school)}</b></a> <button class="btn sm ghost" title="تعديل اسم المدرسة أو دمجها مع مدرسة أخرى" onclick="renameSchool(${A(o.school)},${A(o.gender)})">✏️</button>` : '<small style="color:var(--muted)">غير محددة</small>'}</td>
       <td>${esc(o.gender || '—')}</td><td>${o.stages.length ? esc(o.stages.join('، ')) : '—'}</td>
       <td style="font-size:19px">${o.G.length ? o.G.map(g => esc(gradeName(g).replace('الصف ', ''))).join('، ') : '—'}</td>
       <td class="num">${o.teachers}</td><td class="num">${o.st.length}</td><td class="num">${o.n}</td><td class="num">${o.avg == null ? '—' : Math.round(o.avg) + '٪'}</td><td class="num">${o.total}</td></tr>`).join('') + '</table>';
