@@ -252,6 +252,9 @@ input.phone.saved{border-color:var(--green);background:var(--tint)}
 .btn.seen-blue{background:#2563eb;color:#fff;white-space:nowrap}
 .btn.seen-green{background:var(--green);color:#fff;white-space:nowrap}
 tr.picked td{background:var(--orange-l)}
+tr[data-g="بنات"]>td{background:#fde4ee}
+html[data-mode=dark] tr[data-g="بنات"]>td{background:rgba(236,72,153,.17)}
+tr.picked[data-g="بنات"]>td{background:var(--orange-l)}
 td.selc{width:34px}
 td.selc input,th.selc input{width:22px;height:22px}
 .num{font-weight:800;text-align:center}
@@ -869,7 +872,7 @@ html[data-mode=dark] .modal{background:rgba(0,0,0,.62)}
           </div>
         </div>
         <div class="row" style="margin:6px 0"><button class="btn ghost sm" onclick="copyListCreds()">📋 نسخ بيانات الدخول للقائمة</button><button class="btn ghost sm" onclick="printCards()">🖨 طباعة بطاقات الدخول</button></div>
-        <div class="row" style="margin:6px 0"><button class="btn sm wa" onclick="openPhoneImport()">📞 أرقام أولياء الأمور دفعة واحدة (إكسل)</button><button class="btn ghost sm" onclick="phoneTemplate()">⬇ تنزيل قائمة الطلاب لإضافة الأرقام</button></div>
+        <div class="row" style="margin:6px 0"><button class="btn sm wa" onclick="openPhoneImport()">📞 أرقام أولياء الأمور دفعة واحدة (إكسل)</button><button class="btn sm wa" onclick="openPhoneImport('studentPhone')">📱 أرقام الطلاب دفعة واحدة (إكسل)</button><button class="btn ghost sm" onclick="phoneTemplate()">⬇ تنزيل قائمة الطلاب لإضافة الأرقام</button></div>
         <div id="stSel"></div><div class="tbl-scroll" id="stTable"></div>
         <p style="font-size:19px;color:var(--muted)">اكتب رقم وليّ الأمر في خانته بجانب الاسم، ويُحفظ تلقائيًا عند الخروج من الخانة. لحذف طلاب: اضغط «☑️ تحديد» أو «✅ تحديد الكل» فوق القائمة. يُحذف حساب الطالب وتبقى نتائجه محفوظة.</p>
       </div>
@@ -1477,8 +1480,13 @@ function fixLessonHtml(h) {
   h = h.split('.line{position:absolute;top:12%;').join('.g52-pond .line{position:absolute;top:12%;');
   /* زر الرجوع ↩ في الألعاب بملء الشاشة: أكبر قليلًا، وتحت شريط الساعة في الآيباد والآيفون */
   const T = safeTop();
-  const css = `<style id="plat-fix">.g2-fs>.g2-fsbar{margin-top:${T}px}.g2-fs>.g2-fsbar button{width:46px;height:46px;font-size:24px;border-radius:13px}.g2-fs.port>.g2-fsbar{right:max(6px,calc((100vw - 100vh * 9 / 16) / 2 - 54px))}</style>`;
-  return /<\/head>/i.test(h) ? h.replace(/<\/head>/i, css + '</head>') : css + h;
+  /* بعد الخروج من اللعبة: يُعاد حساب مقاسها عدة مرات (متصفح الآيفون يتأخر في إرجاع الإطار إلى حجمه)،
+     ولا يُسمح لها بأن تبقى أعرض من الشاشة فتغطي الأزرار */
+  const js = `<script>(function(){try{var t=function(){[150,400,900,1600].forEach(function(ms){setTimeout(function(){try{dispatchEvent(new Event('resize'));scrollTo(0,scrollY);}catch(e){}},ms);});};
+var mo=new MutationObserver(function(L){for(var i=0;i<L.length;i++){var r=L[i];if(r.attributeName==='class'&&r.oldValue&&/(^|\\s)g2-fs(\\s|$)/.test(r.oldValue)&&!r.target.classList.contains('g2-fs')){t();break;}}});
+var go=function(){mo.observe(document.body,{subtree:true,attributes:true,attributeFilter:['class'],attributeOldValue:true});};document.body?go():addEventListener('DOMContentLoaded',go);}catch(e){}})();<\/script>`;
+  const css = `<style id="plat-fix">html,body{max-width:100%;overflow-x:hidden}.g2-fs>.g2-fsbar{margin-top:${T}px}.g2-fs>.g2-fsbar button{width:46px;height:46px;font-size:24px;border-radius:13px}.g2-fs.port>.g2-fsbar{right:max(6px,calc((100vw - 100vh * 9 / 16) / 2 - 54px))}</style>`;
+  return /<\/head>/i.test(h) ? h.replace(/<\/head>/i, () => css + js + '</head>') : css + js + h;
 }
 function safeTop() {
   const d = document.createElement('div'); d.style.cssText = 'position:fixed;top:0;left:0;width:1px;height:env(safe-area-inset-top,0px);visibility:hidden;pointer-events:none';
@@ -2251,8 +2259,8 @@ function renderStudents() {
   const L = listStudentsView();
   $('#stSel').innerHTML = selBar('st', L.map(s => s.uid), n => `<button class="btn sm red" ${n ? '' : 'disabled'} onclick="deleteStudents([...selOf('st').ids])">🗑 حذف المحدد (${n})</button>`);
   if (!L.length) { $('#stTable').innerHTML = '<p>لا يوجد طلاب في هذه القائمة.</p>'; return; }
-  $('#stTable').innerHTML = `<table><tr>${selTh('st')}<th>#</th><th>الاسم</th><th>📞 رقم وليّ الأمر</th><th>الشعبة</th><th>اسم المستخدم</th><th>كلمة المرور</th><th>الحالة</th><th></th></tr>` +
-    L.map((s, i) => `<tr${selTr('st', s.uid)}>${selCell('st', s.uid)}<td>${i + 1}</td><td>${esc(s.name)}</td><td><input type="tel" class="phone" value="${esc(showPhone(s.parentPhone))}" placeholder="—" onchange="savePhone(${A(s.uid)},this)"></td><td>${esc(s.cls)}</td><td><code class="ltr">${esc(s.username)}</code>${s.ownerUid ? ' <span title="انضم إلى صفّك من حسابه الخاص">🔗</span>' : ''}</td><td><code class="ltr">${esc(s.password)}</code></td>
+  $('#stTable').innerHTML = `<table><tr>${selTh('st')}<th>#</th><th>الاسم</th><th>📞 رقم وليّ الأمر</th><th>📱 رقم الطالب</th><th>الشعبة</th><th>اسم المستخدم</th><th>كلمة المرور</th><th>الحالة</th><th></th></tr>` +
+    L.map((s, i) => `<tr${selTr('st', s.uid)}>${selCell('st', s.uid)}<td>${i + 1}</td><td>${esc(s.name)}</td><td><input type="tel" class="phone" value="${esc(showPhone(s.parentPhone))}" placeholder="—" onchange="savePhone(${A(s.uid)},this)"></td><td><input type="tel" class="phone" value="${esc(showPhone(s.studentPhone))}" placeholder="—" onchange="savePhone(${A(s.uid)},this,'studentPhone')"></td><td>${esc(s.cls)}</td><td><code class="ltr">${esc(s.username)}</code>${s.ownerUid ? ' <span title="انضم إلى صفّك من حسابه الخاص">🔗</span>' : ''}</td><td><code class="ltr">${esc(s.password)}</code></td>
       <td>${s.active === false ? '<span class="chip off">موقوف</span>' : '<span class="chip done">فعّال</span>'}</td>
       <td><div class="row" style="gap:4px;flex-wrap:nowrap"><button class="btn sm ghost" onclick="copyCreds(${A(s.uid)})">📋</button><button class="btn sm ghost" onclick="toggleActive(${A(s.uid)})">${s.active === false ? '✅ تفعيل' : '⛔ إيقاف'}</button><button class="btn sm alt" style="white-space:nowrap" onclick="msgStudent(${A(s.uid)})">✉️ رسالة فردية</button><button class="btn sm red" title="حذف الحساب" onclick="deleteStudents([${A(s.uid)}])">🗑</button></div></td></tr>`).join('') + '</table>';
 }
@@ -2533,13 +2541,17 @@ function normPhone(v) {
   return s.length >= 8 && s.length <= 15 ? s : '';
 }
 const showPhone = p => p ? '+' + p : '';
-async function savePhone(uid, el) {
+/* نوعا الأرقام: رقم وليّ الأمر، ورقم الطالب */
+const PHK = {parentPhone:{who:'وليّ الأمر', file:'أرقام_أولياء_الأمور', ic:'📞', title:'أرقام أولياء الأمور'}, studentPhone:{who:'الطالب', file:'أرقام_الطلاب', ic:'📱', title:'أرقام الطلاب'}};
+let PHF = 'parentPhone';
+async function savePhone(uid, el, fld) {
+  fld = fld || 'parentPhone';
   const s = TD.students.find(x => x.uid === uid); if (!s) return;
   const raw = el.value.trim(), p = normPhone(raw);
   if (raw && !p) { el.style.borderColor = 'var(--red)'; return toast('الرقم غير صحيح. اكتبه هكذا: 55123456 أو 97455123456'); }
   el.style.borderColor = '';
-  if (p === (s.parentPhone || '')) { el.value = showPhone(p); return; }
-  try { await API.set('students', uid, {parentPhone:p}, true); s.parentPhone = p; el.value = showPhone(p); el.classList.add('saved'); toast(p ? 'حُفظ رقم وليّ أمر ' + s.name + ' ✓' : 'حُذف الرقم'); }
+  if (p === (s[fld] || '')) { el.value = showPhone(p); return; }
+  try { await API.set('students', uid, {[fld]:p}, true); s[fld] = p; el.value = showPhone(p); el.classList.add('saved'); toast(p ? (fld === 'studentPhone' ? 'حُفظ رقم الطالب ' : 'حُفظ رقم وليّ أمر ') + s.name + ' ✓' : 'حُذف الرقم'); }
   catch (e) { console.error(e); if (isPerm(e)) $('#rulesWarn').hidden = false; toast('تعذّر حفظ الرقم: ' + errMsg(e)); }
 }
 /* قراءة ملف إكسل (xlsx) أو CSV دون مكتبات خارجية */
@@ -2630,18 +2642,20 @@ function makeXlsx(rows, widths) {
     ['xl/worksheets/sheet1.xml', sheet]
   ]);
 }
-function phoneTemplate() {
+function phoneTemplate(fld) {
+  fld = fld || PHF; const K = PHK[fld];
   const L = listStudentsView().filter(s => s.active !== false); if (!L.length) return toast('القائمة فارغة');
-  const blob = makeXlsx([['الاسم', 'الشعبة', 'اسم المستخدم', 'رقم وليّ الأمر']].concat(L.map(s => [s.name, s.cls, s.username, s.parentPhone || ''])), [32, 12, 16, 20]);
-  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'أرقام_أولياء_الأمور' + ($('#sClsF').value ? '_' + $('#sClsF').value : '') + '.xlsx'; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 3000);
+  const blob = makeXlsx([['الاسم', 'الشعبة', 'اسم المستخدم', 'رقم ' + K.who]].concat(L.map(s => [s.name, s.cls, s.username, s[fld] || ''])), [32, 12, 16, 20]);
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = K.file + ($('#sClsF').value ? '_' + $('#sClsF').value : '') + '.xlsx'; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 3000);
   toast('نُزّل ملف إكسل بأسماء الطلاب. اكتب الأرقام في العمود الأخير، ثم احفظه وارفعه.', 6000);
 }
-function openPhoneImport() {
+function openPhoneImport(fld) {
+  PHF = fld || 'parentPhone'; const K = PHK[PHF];
   if (!TD.students.length) return toast('أضف الطلاب أولًا');
-  openModal(`<h3 style="margin-top:0">📞 أرقام أولياء الأمور دفعة واحدة</h3>
+  openModal(`<h3 style="margin-top:0">${K.ic} ${K.title} دفعة واحدة</h3>
     <p style="margin:4px 0">الطريقة الأسهل:</p>
-    <ol style="margin:0 0 6px;font-size:21px"><li>اضغط «⬇ تنزيل قائمة الطلاب» لتحصل على ملف إكسل فيه أسماء طلابك.</li><li>افتحه، واكتب رقم وليّ الأمر في العمود الأخير أمام كل طالب، ثم احفظه.</li><li>ارفعه من الزر أدناه.</li></ol>
-    <div class="row"><button class="btn sm ghost" onclick="phoneTemplate()">⬇ تنزيل قائمة الطلاب</button></div>
+    <ol style="margin:0 0 6px;font-size:21px"><li>اضغط «⬇ تنزيل قائمة الطلاب» لتحصل على ملف إكسل فيه أسماء طلابك.</li><li>افتحه، واكتب رقم ${K.who} في العمود الأخير أمام كل طالب، ثم احفظه.</li><li>ارفعه من الزر أدناه.</li></ol>
+    <div class="row"><button class="btn sm ghost" onclick="phoneTemplate(PHF)">⬇ تنزيل قائمة الطلاب</button></div>
     <div class="drop" style="margin-top:10px" onclick="$('#phFile').click()">📄 اضغط لاختيار ملف إكسل (xlsx) أو CSV<br><small>يكفي أن يكون فيه عمود للاسم (أو اسم المستخدم) وعمود للرقم</small><input type="file" id="phFile" accept=".xlsx,.csv,.txt" hidden onchange="phoneFile(this)"></div>
     <p style="margin:10px 0 2px">أو انسخ عمودَي الاسم والرقم من إكسل والصقهما هنا:</p>
     <textarea id="phPaste" placeholder="محمد أحمد علي	55123456&#10;خالد سعيد حسن	66123456" style="min-height:110px" dir="rtl"></textarea>
@@ -2673,12 +2687,12 @@ function phoneMatch(rows) {
     }
     if (s) found.set(s.uid, {s, p}); else miss.push(cells.join(' · '));
   });
-  const ch = [...found.values()].filter(x => x.p !== (x.s.parentPhone || ''));
+  const ch = [...found.values()].filter(x => x.p !== (x.s[PHF] || ''));
   window._phSave = ch;
   if (!found.size) { $('#phMsg').textContent = 'لم أجد في الملف أسماء طلاب مطابقة مع أرقام. تأكّد أن الأسماء مكتوبة كما في المنصة.'; return; }
-  openModal(`<h3 style="margin-top:0">📞 راجع الأرقام قبل الحفظ</h3>
+  openModal(`<h3 style="margin-top:0">${PHK[PHF].ic} راجع ${PHK[PHF].title} قبل الحفظ</h3>
     <p style="margin:4px 0">وُجد ${found.size} طالبًا في الملف${ch.length < found.size ? '، منهم ' + (found.size - ch.length) + ' رقمه محفوظ نفسه من قبل' : ''}. ${ch.length ? 'سيُحفظ <b>' + ch.length + '</b> رقمًا:' : 'لا يوجد رقم جديد.'}</p>
-    ${ch.length ? `<div class="tbl-scroll" style="max-height:45vh;overflow:auto"><table><tr><th>الاسم</th><th>الشعبة</th><th>الرقم الحالي</th><th>الرقم الجديد</th></tr>${ch.map(x => `<tr><td>${esc(x.s.name)}</td><td>${esc(x.s.cls)}</td><td dir="ltr">${esc(showPhone(x.s.parentPhone) || '—')}</td><td dir="ltr"><b>${esc(showPhone(x.p))}</b></td></tr>`).join('')}</table></div>` : ''}
+    ${ch.length ? `<div class="tbl-scroll" style="max-height:45vh;overflow:auto"><table><tr><th>الاسم</th><th>الشعبة</th><th>الرقم الحالي</th><th>الرقم الجديد</th></tr>${ch.map(x => `<tr><td>${esc(x.s.name)}</td><td>${esc(x.s.cls)}</td><td dir="ltr">${esc(showPhone(x.s[PHF]) || '—')}</td><td dir="ltr"><b>${esc(showPhone(x.p))}</b></td></tr>`).join('')}</table></div>` : ''}
     ${miss.length ? `<div class="note">⚠️ لم أتعرّف على ${miss.length} ${miss.length > 2 ? 'أسطر' : 'سطر'} (الاسم غير موجود في طلابك):<br><small>${miss.slice(0, 15).map(esc).join('<br>')}${miss.length > 15 ? '<br>…' : ''}</small></div>` : ''}
     <div class="row" style="margin-top:10px">${ch.length ? `<button class="btn" id="phSaveBtn" onclick="phoneSaveAll()">💾 حفظ ${ch.length} رقمًا</button>` : ''}<button class="btn ghost" onclick="closeModal()">${ch.length ? 'إلغاء' : 'إغلاق'}</button><span id="phProg"></span></div>`);
 }
@@ -2686,7 +2700,7 @@ async function phoneSaveAll() {
   const L = window._phSave || [], bad = []; $('#phSaveBtn').disabled = true;
   for (let i = 0; i < L.length; i++) {
     $('#phProg').textContent = `⏳ ${i + 1} من ${L.length}`;
-    try { await API.set('students', L[i].s.uid, {parentPhone:L[i].p}, true); L[i].s.parentPhone = L[i].p; } catch (e) { console.error(e); bad.push(L[i].s.name); if (isPerm(e)) { $('#rulesWarn').hidden = false; break; } }
+    try { await API.set('students', L[i].s.uid, {[PHF]:L[i].p}, true); L[i].s[PHF] = L[i].p; } catch (e) { console.error(e); bad.push(L[i].s.name); if (isPerm(e)) { $('#rulesWarn').hidden = false; break; } }
   }
   closeModal(); renderStudents(); renderResults();
   toast(bad.length ? 'تعذّر حفظ بعض الأرقام: ' + bad.join('، ') : 'حُفظت الأرقام ✓', 5000);
@@ -2980,7 +2994,7 @@ function renderTeachers() {
   if (!L.length) { $('#tcTable').innerHTML = '<p>لا يوجد معلمون بهذه التصفية.</p>'; return; }
   $('#tcTable').innerHTML = `<table><tr>${selTh('tc')}<th>المعلم</th><th>المدرسة</th><th>بنين / بنات</th><th>البريد</th><th>الصفوف</th><th>الشعب</th><th>الطلاب</th><th>النتائج</th><th>الاطلاع</th><th>تاريخ التسجيل</th><th>الحالة</th><th></th></tr>` + L.map(t => {
     const x = TCS.stats[t.uid] || {}, seen = TCS.seen[t.uid] === x.sig;
-    return `<tr${selTr('tc', t.uid)}>${on ? (t.isAdmin ? '<td class="selc"></td>' : selCell('tc', t.uid)) : ''}
+    return `<tr${selTr('tc', t.uid)} data-g="${esc(t.gender || '')}">${on ? (t.isAdmin ? '<td class="selc"></td>' : selCell('tc', t.uid)) : ''}
       <td><b>${esc(t.name)}</b>${t.isAdmin ? ' <span class="chip done">المدير</span>' : ''}</td>
       <td>${t.school ? esc(t.school) : '<small style="color:var(--muted)">غير محددة</small>'} <button class="btn sm ghost" title="تعديل المدرسة" onclick="openSchoolModal(${A(t.uid)})">✏️</button></td>
       <td>${esc(t.gender || '—')}</td>
@@ -3309,7 +3323,7 @@ function renderSchools() {
   if (has) { const i = $('#scQ'); i.focus(); i.setSelectionRange(i.value.length, i.value.length); }
   if (!L.length) { $('#scTable').innerHTML = '<p>لا توجد مدارس.</p>'; return; }
   $('#scTable').innerHTML = `<table><tr><th>#</th><th>المدرسة</th><th>بنين / بنات</th><th>المرحلة</th><th>الصفوف المسجّلة</th><th>المعلمون</th><th>الطلاب</th><th>الدروس المحلولة</th><th>متوسط الدرجات</th><th>مجموع الدرجات</th></tr>` +
-    L.map((o, i) => `<tr><td>${i + 1}</td><td>${o.school ? `<a href="#" onclick="AS.f.type='c';AS.f.school=${A(o.school)};AS.f.gender=${A(o.gender)};tTab('allst');scrollTo(0,0);return false"><b>${esc(o.school)}</b></a> <button class="btn sm ghost" title="تعديل اسم المدرسة أو دمجها مع مدرسة أخرى" onclick="renameSchool(${A(o.school)},${A(o.gender)})">✏️</button>` : '<small style="color:var(--muted)">غير محددة</small>'}</td>
+    L.map((o, i) => `<tr data-g="${esc(o.gender || '')}"><td>${i + 1}</td><td>${o.school ? `<a href="#" onclick="AS.f.type='c';AS.f.school=${A(o.school)};AS.f.gender=${A(o.gender)};tTab('allst');scrollTo(0,0);return false"><b>${esc(o.school)}</b></a> <button class="btn sm ghost" title="تعديل اسم المدرسة أو دمجها مع مدرسة أخرى" onclick="renameSchool(${A(o.school)},${A(o.gender)})">✏️</button>` : '<small style="color:var(--muted)">غير محددة</small>'}</td>
       <td>${esc(o.gender || '—')}</td><td>${o.stages.length ? esc(o.stages.join('، ')) : '—'}</td>
       <td style="font-size:19px">${o.G.length ? o.G.map(g => esc(gradeName(g).replace('الصف ', ''))).join('، ') : '—'}</td>
       <td class="num">${o.teachers}</td><td class="num">${o.st.length}</td><td class="num">${o.n}</td><td class="num">${o.avg == null ? '—' : Math.round(o.avg) + '٪'}</td><td class="num">${o.total}</td></tr>`).join('') + '</table>';
@@ -3355,7 +3369,7 @@ function renderAsTable() {
   L.sort(by[AS.sort] || by.total);
   if (!L.length) { $('#asTable').innerHTML = `<p>${AS.list.length ? 'لا يوجد طلاب بهذه التصفية.' : 'لا يوجد طلاب بعد.'}</p>`; return; }
   $('#asTable').innerHTML = `<p style="margin:4px 0;color:var(--muted);font-size:19px">عدد الطلاب: <b>${L.length}</b></p><table><tr><th>#</th><th>الطالب</th><th>المدرسة</th><th>الصف</th><th>الدروس التي حلّها</th><th>متوسط الدرجات</th><th>مجموع الدرجات</th><th></th></tr>` +
-    L.map((s, i) => `<tr${s.removed ? ' style="background:var(--danger-tint)"' : ''}><td>${i + 1}</td><td><b>${esc(s.name)}</b>${s.type === 'p' ? ' <span class="chip grey">حساب خاص</span>' : ''}${s.moved ? ` <span class="chip grey">🚶 انتقل إلى ${esc(s.movedTo)}</span>` : ''}${s.removed ? ` <span class="chip off" title="${esc(fmtFull(s.raw.removedAt))}">🗑 حذفه معلمه${s.hideRes ? ' مع نتائجه' : ''}</span>` : !s.active && !s.moved ? ' <span class="chip off">موقوف</span>' : ''}<br><small style="color:var(--muted)">${s.type === 'p' ? `<span dir="ltr">${esc(s.email)}</span>` : esc(s.teacher)}</small></td>
+    L.map((s, i) => `<tr${s.removed ? ' style="background:var(--danger-tint)"' : ` data-g="${esc(s.gender || '')}"`}><td>${i + 1}</td><td><b>${esc(s.name)}</b>${s.type === 'p' ? ' <span class="chip grey">حساب خاص</span>' : ''}${s.moved ? ` <span class="chip grey">🚶 انتقل إلى ${esc(s.movedTo)}</span>` : ''}${s.removed ? ` <span class="chip off" title="${esc(fmtFull(s.raw.removedAt))}">🗑 حذفه معلمه${s.hideRes ? ' مع نتائجه' : ''}</span>` : !s.active && !s.moved ? ' <span class="chip off">موقوف</span>' : ''}<br><small style="color:var(--muted)">${s.type === 'p' ? `<span dir="ltr">${esc(s.email)}</span>` : esc(s.teacher)}</small></td>
       <td>${s.school ? esc(s.school) + `<br><small style="color:var(--muted)">${esc(s.gender)}</small>` : `<small style="color:var(--muted)">${s.type === 'p' ? '—' : 'غير محددة'}</small>`}</td>
       <td>${s.g ? esc(gradeName(s.g).replace('الصف ', '')) : '—'}${s.cls ? `<br><small style="color:var(--muted)">${esc(s.cls)}</small>` : ''}</td>
       <td class="num">${s.n}</td><td class="num">${s.avg == null ? '—' : Math.round(s.avg) + '٪'}</td><td class="num">${s.total}</td>
