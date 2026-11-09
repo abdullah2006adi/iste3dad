@@ -2200,7 +2200,7 @@ function renderClassChips() {
   const C = myClasses();
   const cur = $('#bCls').value || $('#oCls').value, cnt = c => (TD.students || []).filter(s => s.cls === c && s.active !== false && !s.archived).length;
   $('#clsChips').innerHTML = C.length ? '<div class="clslist">' + C.map((c, i) => `<div class="clsitem${c === cur && (!$('#bulkCard').hidden || !$('#oneCard').hidden) ? ' on' : ''}"><span class="cname">🏫 ${esc(c)}</span><span class="ccount">👥 الطلاب: ${cnt(c)}</span>
-    <button class="btn sm" onclick="openAdd(${i},'one')">👤 إضافة طالب</button><button class="btn sm alt" onclick="openAdd(${i},'bulk')">👥 إضافة دفعة</button><button class="btn sm ghost" title="حذف الشعبة" onclick="removeClass(${i})">✕</button></div>`).join('') + '</div>' : '<p style="margin:0;color:var(--muted)">لا توجد شعب بعد. أضف أول شعبة من القوائم أدناه.</p>';
+    <button class="btn sm" onclick="openAdd(${i},'one')">👤 إضافة طالب</button><button class="btn sm alt" onclick="openAdd(${i},'bulk')">👥 إضافة دفعة</button><button class="btn sm ghost" title="تعديل الشعبة (الصف أو الرقم)" onclick="editClass(${i})">✏️</button><button class="btn sm ghost" title="حذف الشعبة" onclick="removeClass(${i})">✕</button></div>`).join('') + '</div>' : '<p style="margin:0;color:var(--muted)">لا توجد شعب بعد. أضف أول شعبة من القوائم أدناه.</p>';
 }
 async function saveClasses(C) {
   try { await API.set('teachers', TD.view, {classes:C}, true); TD.vt.classes = C; if (TD.view === ME.uid && ME.role === 'teacher') ME.classes = C; renderClassChips(); fillClassSelects(); renderStudents(); return true; }
@@ -2242,6 +2242,38 @@ function openAdd(i, kind) {
   setTimeout(() => $(kind === 'bulk' ? '#bNames' : '#oName').focus(), 350);
 }
 function closeAdd() { $('#bulkCard').hidden = true; $('#oneCard').hidden = true; renderClassChips(); }
+/* تعديل شعبة سُجّلت خطأً: يتغيّر اسمها عند الطلاب، وفي قائمة الدروس الظاهرة لها */
+function editClass(i) {
+  const c = myClasses()[i]; if (!c) return;
+  const g = gradeOf(c), n = (String(c).match(/(\d+)\s*$/) || [])[1] || '';
+  const opts = Object.values(STAGES).flat().map(([full, sh]) => `<option value="${esc(sh)}"${sh.trim() === g ? ' selected' : ''}>${esc(full)}</option>`).join('');
+  const cnt = (TD.students || []).filter(s => s.cls === c && !s.removed).length;
+  openModal(`<h3 style="margin-top:0">✏️ تعديل الشعبة «${esc(c)}»</h3>
+    <div class="row" style="gap:10px;align-items:flex-end"><label style="flex:2">الصف<select id="ecLv">${opts}</select></label>
+    <label style="flex:1">رقم الشعبة<select id="ecN">${Array.from({length:15}, (_, k) => `<option${String(k + 1) === n ? ' selected' : ''}>${k + 1}</option>`).join('')}</select></label></div>
+    <p style="margin:8px 0;font-size:19px">سيتغيّر اسم الشعبة عند طلابها (${cnt})، وفي الدروس الظاهرة لها، ولا يتغيّر شيء من نتائجهم ولا من أسماء دخولهم وكلمات مرورهم.</p>
+    <div class="login-msg" id="ecMsg"></div>
+    <div class="row"><button class="btn" id="ecBtn" onclick="saveEditClass(${A(c)})">💾 حفظ التعديل</button><button class="btn ghost" onclick="closeModal()">إلغاء</button><span id="ecProg"></span></div>`);
+}
+async function saveEditClass(c) {
+  const v = $('#ecLv').value + $('#ecN').value;
+  if (v === c) return closeModal();
+  const C = myClasses().slice(); if (C.includes(v)) return $('#ecMsg').textContent = `الشعبة «${v}» موجودة من قبل. إن أردت نقل الطلاب إليها فاحذف هذه الشعبة بعد نقلهم.`;
+  const gradeChanged = gradeOf(v) !== gradeOf(c);
+  $('#ecBtn').disabled = true;
+  try {
+    const L = (TD.students || []).filter(s => s.cls === c);
+    for (let k = 0; k < L.length; k++) { $('#ecProg').textContent = `⏳ الطلاب ${k + 1} من ${L.length}`; await API.set('students', L[k].uid, {cls:v}, true); L[k].cls = v; }
+    let showCh = false;
+    Object.keys(TD.show || {}).forEach(id => { const a = TD.show[id] || []; if (a.includes(c)) { TD.show[id] = [...new Set(a.map(x => x === c ? v : x))]; showCh = true; } });
+    Object.keys(TD.showAt || {}).forEach(id => { const o = TD.showAt[id]; if (o && o[c] != null) { o[v] = o[c]; delete o[c]; showCh = true; } });
+    if (showCh) await API.set('tshow', TD.view, {lessons:TD.show, showAt:TD.showAt || {}, teacherId:TD.view, updatedAt:Date.now()});
+    const i = C.indexOf(c); C[i] = v; C.sort((a, b) => a.localeCompare(b, 'ar', {numeric:true}));
+    await saveClasses(C);
+    closeModal(); try { renderShowList(); fillResultLessons(); renderResults(); } catch (e) {}
+    toast(`صارت الشعبة «${c}» ← «${v}» ✓` + (gradeChanged && showCh ? ' — راجع الدروس الظاهرة لها في تبويب الدروس، فقد كانت لصف آخر.' : ''), 7000);
+  } catch (e) { console.error(e); if (isPerm(e)) $('#rulesWarn').hidden = false; $('#ecMsg').textContent = 'تعذّر الحفظ: ' + errMsg(e); $('#ecBtn').disabled = false; }
+}
 async function removeClass(i) {
   const C = myClasses().slice(), c = C[i];
   const n = TD.students.filter(s => s.cls === c && s.active !== false).length;
