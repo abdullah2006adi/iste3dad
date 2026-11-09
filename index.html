@@ -11,6 +11,9 @@
 <meta name="theme-color" content="#1b4f65">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-180.png">
+<link rel="apple-touch-icon" sizes="180x180" href="icon-180.png">
+<link rel="apple-touch-icon" sizes="512x512" href="icon-512.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Baloo+Bhaijaan+2:wght@400..800&family=Changa:wght@400..700&family=El+Messiri:wght@400..700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Lalezar&family=Readex+Pro:wght@400..700&family=Reem+Kufi:wght@400..700&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
 <script>(function(){try{var d=document.documentElement,m=localStorage.getItem("iste3dad-mode"),t=localStorage.getItem("iste3dad-theme");d.dataset.mode=m?JSON.parse(m):(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");d.dataset.theme=t?JSON.parse(t):"diwan";}catch(e){document.documentElement.dataset.theme="diwan";document.documentElement.dataset.mode="light";}})();</script>
@@ -285,6 +288,15 @@ html[data-theme=sky] .gchip{border:0} html[data-theme=sky] .gchip.on{background:
   .topbar .hbtn.who{width:auto;max-width:42vw;padding:0 12px;border-radius:999px;font-size:18px;flex:0 1 auto;margin-inline-end:auto}
   .hbtn.instbtn{background:#fde047}
 }
+/* مساحة شريط الساعة في الآيباد والآيفون عند الفتح من الأيقونة */
+.topbar{padding-top:calc(10px + env(safe-area-inset-top))}
+.pbar{padding-top:calc(4px + env(safe-area-inset-top))}
+.modal{padding-top:calc(30px + env(safe-area-inset-top))}
+#modeFab{top:calc(12px + env(safe-area-inset-top))}
+.fb-img{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:8px}
+.fb-img img{max-height:90px;max-width:140px;border-radius:10px;border:1px solid var(--line)}
+.fbitem .fbpic{display:block;margin:6px 0;max-width:min(100%,360px);max-height:260px;border-radius:12px;border:1px solid var(--line);cursor:zoom-in}
+.spamw{color:#c62828;font-weight:800}
 #printArea{display:none}
 .pcards{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
 .pcard{border:2px dashed #888;border-radius:12px;padding:8px 12px;font-size:17px;line-height:1.7;break-inside:avoid}
@@ -655,7 +667,7 @@ html[data-mode=dark] .modal{background:rgba(0,0,0,.62)}
     <div class="logo">📧</div>
     <h2 style="margin-bottom:0">تحقّق من بريدك</h2>
     <p>أرسلنا رابط التحقّق إلى:<br><b dir="ltr" id="vfMail"></b></p>
-    <p style="font-size:20px;color:var(--muted)">افتح بريدك (وانظر في مجلد الرسائل غير المرغوب فيها Spam أيضًا)، واضغط الرابط، ثم ارجع هنا واضغط الزر.</p>
+    <p style="font-size:20px;color:var(--muted)">افتح بريدك (وانظر في مجلد الرسائل <span class="spamw">غير المرغوب فيها</span> Spam أيضًا)، واضغط الرابط، ثم ارجع هنا واضغط الزر.</p>
     <label id="vfNameBox" hidden>اسمك كما يراه طلابك<input type="text" id="vfName"></label>
     <div class="login-msg" id="vfMsg"></div>
     <button class="btn big" id="vfBtn" style="width:100%" onclick="checkVerified()">✅ تحقّقت، ادخل</button>
@@ -925,6 +937,7 @@ html[data-mode=dark] .modal{background:rgba(0,0,0,.62)}
       },
       addEmail: e => AU.verifyBeforeUpdateEmail(auth.currentUser, e),
       reauth: p => AU.reauthenticateWithCredential(auth.currentUser, AU.EmailAuthProvider.credential(auth.currentUser.email, p)),
+      updatePass: p => AU.updatePassword(auth.currentUser, p),
       /* جلسة ثانية بحساب الصف (للطالب صاحب الحساب الخاص بعد انضمامه إلى صف معلمه) */
       session: async (email, password) => {
         if (!clsApp) { clsApp = A.initializeApp(CONFIG.firebase, 'cls'); clsAuth = AU.initializeAuth(clsApp, {persistence:AU.inMemoryPersistence}); }
@@ -1038,6 +1051,7 @@ function DemoAPI() {
     async newAuthUser(email, p) { await delay(); return mkUser(email, p, false); },
     async session(e, p) { await delay(); const u = db.users[e]; if (!u || u.pass !== p) throw err('auth/invalid-credential'); return Object.assign({}, this, {uid:u.uid}); },
     async reauth(p) { await delay(); if (!cur || db.users[cur.email].pass !== p) throw err('auth/invalid-credential'); },
+    async updatePass(p) { await delay(); if (p.length < 6) throw err('auth/weak-password'); db.users[cur.email].pass = p; put(); },
     async addEmail(e) { await delay(); if (db.users[e]) throw err('auth/email-already-in-use'); db.users[e] = db.users[cur.email]; delete db.users[cur.email]; cur = pub(e); LS.set('iste3dad-demo-auth5', cur); put(); },
     async get(col, id) { const v = C(col)[id]; return delay(v ? Object.assign({id}, clone(v)) : null); },
     async set(col, id, data, merge) { C(col)[id] = merge ? Object.assign({}, C(col)[id] || {}, clone(data)) : clone(data); put(); return delay(); },
@@ -1453,6 +1467,15 @@ async function getLessonHtml(l) {
   }
   if (h) HTML_CACHE[key] = h; return h;
 }
+/* إصلاح عند العرض لتعارض أسماء في ملفات الدروس:
+   - خريطة الرحلة تستعمل الاسم «port» لمرافئها، والألعاب الطولية تستعمل الاسم نفسه، فتتشوّه الألعاب ونافذة «اختر لعبة أخرى».
+   - خيط لعبة «صيد السمك» اسمه «line»، وهو اسم عبارات المشاهد نفسه، فتنضغط العبارات وتتراكب.
+   لا يغيّر ملف الدرس المحفوظ، بل النسخة المعروضة فقط. */
+function fixLessonHtml(h) {
+  if (!h) return h;
+  if (h.indexOf('class="port ${') >= 0) h = h.replace(/(^|[^\w-])\.port(?![\w-])/g, '$1.mport').split('class="port ${').join('class="mport ${');
+  return h.split('.line{position:absolute;top:12%;').join('.g52-pond .line{position:absolute;top:12%;');
+}
 async function openLesson(id, mode) {
   const l = (mode === 'student' ? LESSONS : CAT).find(x => x.id === id); if (!l) return;
   const learner = mode === 'student' || mode === 'private';
@@ -1467,7 +1490,7 @@ async function openLesson(id, mode) {
     if (!html) { toast('ملف الدرس غير موجود'); leaveLesson(); return; }
     PL = {lesson:l, mode, state, ready:false};
     fr.onload = () => { $('#plLoad').hidden = true; };
-    fr.srcdoc = html;
+    fr.srcdoc = fixLessonHtml(html);
   } catch (e) { console.error(e); toast('تعذّر فتح الدرس: ' + errMsg(e)); leaveLesson(); }
 }
 function postToLesson(m) { try { $('#plFrame').contentWindow.postMessage(Object.assign({iste:''}, m), '*'); } catch (e) {} }
@@ -1476,9 +1499,17 @@ async function flushProgress() {
   if (PL.mode === 'student' && PL.state) { try { await ME.capi.set('progress', ME.cuid + '_' + PL.lesson.id, {s:JSON.stringify(PL.state), updatedAt:Date.now()}); } catch (e) { console.error(e); } }
   if (PL.mode === 'private' && PL.state) { try { await API.set('pprogress', ME.uid + '_' + PL.lesson.id, {s:JSON.stringify(PL.state), updatedAt:Date.now()}); } catch (e) { console.error(e); } }
 }
+/* يزيل إطار الدرس كله ويضع مكانه إطارًا جديدًا فارغًا، فيتوقف كل صوت أو لعبة كانت تعمل داخله */
+function killFrame() {
+  const old = $('#plFrame'); if (!old) return;
+  try { old.contentWindow.postMessage({iste:'stop'}, '*'); } catch (e) {}
+  const n = old.cloneNode(false); n.removeAttribute('srcdoc'); n.removeAttribute('src'); n.className = '';
+  try { old.srcdoc = ''; old.src = 'about:blank'; } catch (e) {}
+  old.replaceWith(n);
+}
 async function leaveLesson() {
   await flushProgress();
-  const m = PL && PL.mode; PL = null; $('#plFrame').srcdoc = ''; $('#plFrame').classList.remove('fsx'); document.body.classList.remove('fsx-on');
+  const m = PL && PL.mode; PL = null; killFrame(); document.body.classList.remove('fsx-on'); plFull(false);
   if (ME && ME.role !== 'student') showScreen('scrTeacher');
   else if (ME && m === 'private') openPrivate();
   else if (ME) { showScreen('scrHome'); loadStudentLessons(); } else showScreen('scrRole');
@@ -2341,7 +2372,7 @@ service cloud.firestore {
       allow read: if isAdmin() || (signedIn() && request.auth.uid == uid) || owns(resource.data);
       allow create: if isAdmin() || owns(request.resource.data);
       allow update: if isAdmin() || (owns(resource.data) && owns(request.resource.data))
-        || (signedIn() && request.auth.uid == uid && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['ownerUid']));
+        || (signedIn() && request.auth.uid == uid && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['ownerUid', 'password']));
       allow delete: if isAdmin() || owns(resource.data);
     }
     match /accounts/{uid} {
@@ -2751,18 +2782,48 @@ function fbRender() {
   if (ready && (F.sub !== 'lesson' || F.lid)) {
     const ph = F.type === 'suggest' ? 'اكتب مقترحك هنا…' : F.sub === 'general' ? 'اكتب ملاحظتك هنا…' : 'صِف الخطأ: أين هو بالضبط؟ وما الصواب؟';
     html += `<label style="display:block;margin-top:10px">${F.type === 'suggest' ? 'المقترح' : 'الملاحظة'}<textarea id="fbText" maxlength="2000" placeholder="${ph}" oninput="FBK.text=this.value">${esc(F.text)}</textarea></label>
+      <div class="fb-img">${F.img ? `<img src="${F.img}" alt="الصورة المرفقة"><button type="button" class="btn sm red" onclick="FBK.img='';fbRender()">✕ احذف الصورة</button>` : `<label class="btn sm ghost" style="cursor:pointer;margin:0">🖼️ أرفق صورة (اختياري)<input type="file" accept="image/*" hidden onchange="fbPickImg(this)"></label>`}</div>
       <div class="row" style="margin-top:8px"><button class="btn" id="fbSend" onclick="sendFeedback()">📨 إرسال</button><button class="btn ghost" onclick="closeModal()">إلغاء</button></div>`;
   }
-  openModal(html);
-  const t = $('#fbText'); if (t && !F.text) setTimeout(() => t.focus(), 50);
+  const box = $('#modalRoot .modal .box.fbbox');
+  if (box) { const sc = box.parentElement.scrollTop; box.innerHTML = '<button class="btn sm ghost x" onclick="closeModal()">✕</button>' + html; box.parentElement.scrollTop = sc; }
+  else { openModal(html); const b = $('#modalRoot .modal .box'); if (b) b.classList.add('fbbox'); }
+  const t = $('#fbText'); if (t && !F.text && !F.focused) { F.focused = true; if (!/iPhone|iPad|Android/.test(navigator.userAgent) && navigator.maxTouchPoints < 2) setTimeout(() => t.focus(), 50); }
 }
 async function fbLoadWord() { const l = catById(FBK.lid); if (!l || l.partWord || FBK.words[l.id] != null) return; await lessonPartWord(l); if (FBK && FBK.lid === l.id && $('#modalRoot .modal')) fbRender(); }
+/* تصغير الصورة قبل إرسالها حتى تتسع في قاعدة البيانات */
+function shrinkImage(file, maxSide, maxLen) {
+  return new Promise((ok, bad) => {
+    const url = URL.createObjectURL(file), im = new Image();
+    im.onload = () => {
+      let side = maxSide, q = .8, out = '';
+      for (let i = 0; i < 8; i++) {
+        const k = Math.min(1, side / Math.max(im.naturalWidth, im.naturalHeight)), c = document.createElement('canvas');
+        c.width = Math.max(1, Math.round(im.naturalWidth * k)); c.height = Math.max(1, Math.round(im.naturalHeight * k));
+        const g = c.getContext('2d'); g.fillStyle = '#fff'; g.fillRect(0, 0, c.width, c.height); g.drawImage(im, 0, 0, c.width, c.height);
+        out = c.toDataURL('image/jpeg', q); if (out.length <= maxLen) break;
+        if (q > .55) q -= .1; else side = Math.round(side * .8);
+      }
+      URL.revokeObjectURL(url); out.length <= maxLen ? ok(out) : bad(new Error('big'));
+    };
+    im.onerror = () => { URL.revokeObjectURL(url); bad(new Error('bad')); };
+    im.src = url;
+  });
+}
+async function fbPickImg(inp) {
+  const f = inp.files && inp.files[0]; if (!f) return;
+  if (!/^image\//.test(f.type)) return toast('اختر صورة فقط');
+  toast('⏳ جارٍ تجهيز الصورة…');
+  try { FBK.img = await shrinkImage(f, 1400, 650000); FBK.text = ($('#fbText') || {}).value || FBK.text; fbRender(); toast('أُرفقت الصورة ✓'); }
+  catch (e) { toast('تعذّر قراءة الصورة، جرّب صورة أخرى'); }
+}
 async function sendFeedback() {
   const F = FBK, text = ($('#fbText').value || '').trim();
   if (text.length < 3) return toast('اكتب ملاحظتك أولًا');
   if (F.sub === 'lesson' && !F.part) return toast('اختر ' + ((catById(F.lid) || {}).partWord || F.words[F.lid] || 'الجزء') + ' من القائمة');
   const role = ME.role === 'admin' ? 'admin' : ME.role === 'teacher' ? 'teacher' : ME.kind === 'class' ? 'student' : 'pstudent';
   const d = {type:F.type === 'suggest' ? 'suggest' : F.sub, text, uid:ME.uid, role, name:(ME.cname || ME.name || ''), email:ME.email || '', cls:ME.cls || '', username:ME.username || '', teacherId:ME.teacherId || '', grade:ME.grade || '', at:Date.now(), status:'new'};
+  if (F.img) d.img = F.img;
   if (d.type === 'lesson') { const l = catById(F.lid); Object.assign(d, {lGrade:F.g, lTerm:F.t, lUnit:F.u, lessonId:F.lid, lessonTitle:l ? l.title : '', part:F.part, partWord:(l && (l.partWord || F.words[l.id])) || ''}); }
   $('#fbSend').disabled = true;
   try { await API.add('feedback', d); closeModal(); toast('وصلت ملاحظتك إلى مدير المنصة، شكرًا لك 🌹', 4000); if (isAdmin()) loadFeedback(); }
@@ -2796,12 +2857,13 @@ function renderFeedback() {
   $('#fbList').innerHTML = L.map(f => {
     const where = f.type === 'lesson' ? `<div style="font-size:20px">📍 ${esc(gradeName(f.lGrade))} · ${termName(f.lTerm || 1)} · ${unitName(f.lUnit || 1)} · <b>${esc(f.lessonTitle || '')}</b> · ${esc(f.partWord || 'الجزء')}: <b>${esc(f.part || '')}</b></div>` : '';
     return `<div class="fbitem${f.status === 'done' ? ' done' : ''}"><div class="meta">${fbWho(f)} · ${fmtFull(f.at)} ${f.status === 'done' ? '<span class="chip done">✔ تمت المعالجة</span>' : '<span class="chip new">جديدة</span>'}</div>${where}
-      <div class="txt">${esc(f.text)}</div>
+      <div class="txt">${esc(f.text)}</div>${f.img && /^data:image\/(jpeg|png|webp);base64,/.test(f.img) ? `<img class="fbpic" src="${f.img}" alt="صورة مرفقة" onclick="showFbImg(${A(f.id)})">` : ''}
       <div class="row" style="gap:4px">${f.status === 'done' ? `<button class="btn sm ghost" onclick="markFb(${A(f.id)},'new')">↩ إعادتها جديدة</button>` : `<button class="btn sm" onclick="markFb(${A(f.id)},'done')">✔ تمت المعالجة</button>`}
         ${f.type === 'lesson' && catById(f.lessonId) ? `<button class="btn sm ghost" onclick="openLesson(${A(f.lessonId)},'preview')">👁 فتح الدرس</button>` : ''}
         <button class="btn sm ghost" onclick="copyText(${A(f.text)})">📋 نسخ</button><button class="btn sm red" onclick="delFb(${A(f.id)})">🗑</button></div></div>`;
   }).join('');
 }
+function showFbImg(id) { const f = FBV.list.find(x => x.id === id); if (f && f.img) openModal(`<h3 style="margin-top:0">🖼️ الصورة المرفقة</h3><img src="${f.img}" alt="" style="max-width:100%;border-radius:12px">`); }
 async function markFb(id, st) {
   const f = FBV.list.find(x => x.id === id); if (!f) return;
   try { await API.set('feedback', id, {status:st, doneAt:st === 'done' ? Date.now() : 0}, true); f.status = st; updFbDot(); renderFeedback(); } catch (e) { toast('تعذّر: ' + errMsg(e)); }
@@ -3430,7 +3492,33 @@ async function openProfile() {
     <p style="margin:0"><b style="font-size:26px">${esc(ME.role === 'admin' ? 'المدير' : ME.cname || ME.name || '')}</b> · ${roleName()}${ME.cls ? ' · ' + esc(ME.cls) : ''}</p>
     <div class="card" style="margin:10px 0;padding:10px 14px"><h4 style="margin:0 0 4px">📧 البريد الإلكتروني</h4>${emailHtml}</div>
     <div class="card" style="margin:10px 0;padding:10px 14px"><h4 style="margin:0 0 4px">🏫 المدرسة</h4>${schoolHtml}</div>
+    ${ME.role === 'student' ? `<div class="card" style="margin:10px 0;padding:10px 14px"><h4 style="margin:0 0 4px">🔒 كلمة المرور</h4>
+      <details><summary style="cursor:pointer;color:var(--teal);font-weight:700">✏️ تغيير كلمة المرور</summary>
+        <label>كلمة المرور الحالية<input type="password" class="ltr" id="pwOld" autocomplete="current-password"></label>
+        <label>كلمة المرور الجديدة (6 أحرف أو أرقام على الأقل)<input type="password" class="ltr" id="pwNew" autocomplete="new-password"></label>
+        <label>اكتب الجديدة مرة أخرى<input type="password" class="ltr" id="pwNew2" autocomplete="new-password"></label>
+        <div class="login-msg" id="pwMsg"></div>
+        <button class="btn sm" id="pwBtn" onclick="changeMyPass()">💾 غيّر كلمة المرور</button>
+        ${ME.kind === 'class' ? '<p style="font-size:18px;color:var(--muted);margin:4px 0">تتغيّر عند معلمك أيضًا، فيعرف كلمتك الجديدة إن نسيتها.</p>' : ''}</details></div>` : ''}
     <datalist id="schoolList">${SCHOOLS.map(x => `<option value="${esc(x)}">`).join('')}</datalist>`);
+}
+async function changeMyPass() {
+  const o = $('#pwOld').value, n = $('#pwNew').value, n2 = $('#pwNew2').value, m = $('#pwMsg');
+  m.classList.remove('ok');
+  if (!o) return m.textContent = 'اكتب كلمة المرور الحالية';
+  if (n.length < 6) return m.textContent = 'كلمة المرور الجديدة قصيرة: 6 أحرف أو أرقام على الأقل';
+  if (n !== n2) return m.textContent = 'الكلمتان الجديدتان غير متطابقتين، اكتبهما مرة أخرى';
+  if (n === o) return m.textContent = 'الجديدة هي الحالية نفسها';
+  $('#pwBtn').disabled = true; m.textContent = '⏳ …';
+  try {
+    await API.reauth(o); await API.updatePass(n);
+    if (ME.kind === 'class') { try { await API.set('students', ME.uid, {password:n}, true); } catch (e) { console.error(e); } }
+    m.classList.add('ok'); m.textContent = 'تغيّرت كلمة المرور ✓ ادخل بها في المرة القادمة.';
+    ['#pwOld', '#pwNew', '#pwNew2'].forEach(k => $(k).value = '');
+  } catch (er) {
+    const c = er && er.code || '';
+    m.textContent = /wrong-password|invalid-credential|invalid-login/.test(c) ? 'كلمة المرور الحالية غير صحيحة' : /weak-password/.test(c) ? 'كلمة المرور الجديدة ضعيفة، اجعلها أطول' : /too-many/.test(c) ? 'محاولات كثيرة، انتظر قليلًا ثم حاول' : 'تعذّر التغيير: ' + errMsg(er);
+  } finally { if ($('#pwBtn')) $('#pwBtn').disabled = false; }
 }
 async function changeEmail() {
   const e = $('#pfMail').value.trim().toLowerCase(), p = $('#pfPass').value, m = $('#pfMsg');
