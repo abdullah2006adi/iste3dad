@@ -306,6 +306,60 @@ html[data-theme=sky] .gchip{border:0} html[data-theme=sky] .gchip.on{background:
 .fb-img img{max-height:90px;max-width:140px;border-radius:10px;border:1px solid var(--line)}
 .fbitem .fbpic{display:block;margin:6px 0;max-width:min(100%,360px);max-height:260px;border-radius:12px;border:1px solid var(--line);cursor:zoom-in}
 .spamw{color:#c62828;font-weight:800}
+/* ===== لوحة الشرف ===== */
+.hb{position:relative;margin:6px 0 20px;padding:24px clamp(10px,3vw,24px) 20px;border-radius:28px;color:#f6ecd4;overflow:hidden;isolation:isolate;
+  background:radial-gradient(90% 60% at 50% 0%,rgba(242,201,76,.22),transparent 70%),radial-gradient(120% 90% at 50% 10%,#2c2142 0%,#17111f 58%,#0c0912 100%);
+  box-shadow:0 22px 50px rgba(18,8,36,.45)}
+.hb::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:2.5px;background:linear-gradient(135deg,#fbe9a6,#b8862b 28%,#fff6cf 50%,#9c6a17 72%,#f3d77a);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none;z-index:2}
+.hb::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;opacity:.55;
+  background-image:radial-gradient(1.5px 1.5px at 12% 18%,#fff6cf 50%,transparent 51%),radial-gradient(1px 1px at 78% 12%,#fff 50%,transparent 51%),radial-gradient(1.5px 1.5px at 88% 46%,#f3d77a 50%,transparent 51%),radial-gradient(1px 1px at 22% 62%,#fff 50%,transparent 51%),radial-gradient(1.5px 1.5px at 60% 30%,#fbe9a6 50%,transparent 51%),radial-gradient(1px 1px at 40% 8%,#fff 50%,transparent 51%),radial-gradient(1px 1px at 6% 40%,#f3d77a 50%,transparent 51%)}
+.hb-title{margin:0;text-align:center;font-family:var(--font-head);font-weight:800;font-size:clamp(28px,6vw,40px);letter-spacing:.5px;line-height:1.3;
+  background:linear-gradient(180deg,#fffbe6 0%,#f7d774 42%,#c8901f 70%,#fff0b0 100%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 2px 10px rgba(242,201,76,.35))}
+.hb-head{display:flex;justify-content:center;align-items:center;gap:10px}.hb-cup{font-size:clamp(26px,5vw,34px);filter:drop-shadow(0 3px 8px rgba(242,201,76,.5))}
+.hb .hb-title{-webkit-text-fill-color:transparent}
+.hb-sub{text-align:center;color:#cdbf9f;font-size:17px;margin-top:2px}
+.hb-tabs{display:flex;justify-content:center;gap:8px;margin:12px 0 4px;flex-wrap:wrap}
+.hb-tabs button{font:inherit;font-size:18px;font-weight:700;padding:5px 18px;border-radius:999px;cursor:pointer;background:rgba(255,255,255,.04);color:#f3d77a;border:1.5px solid rgba(243,215,122,.5)}
+.hb-tabs button.on{background:linear-gradient(180deg,#fbe38a,#c9971f);color:#2a1c04;border-color:transparent;box-shadow:0 4px 14px rgba(242,201,76,.35)}
+.podium{display:grid;grid-template-columns:1fr 1.18fr 1fr;align-items:end;gap:clamp(6px,2vw,16px);margin-top:26px}
+.pd{display:flex;flex-direction:column;align-items:center;text-align:center;min-width:0}
+.pd.empty{visibility:hidden}
+.medal{position:relative;overflow:hidden;border-radius:50%;display:grid;place-items:center;width:clamp(62px,15vw,84px);aspect-ratio:1;font-family:var(--font-head);font-weight:900;font-size:clamp(28px,6vw,36px);
+  box-shadow:0 8px 20px rgba(0,0,0,.5),inset 0 3px 4px rgba(255,255,255,.75),inset 0 -6px 10px rgba(0,0,0,.28)}
+.medal::before{content:"";position:absolute;inset:7px;border-radius:50%;border:1.5px dashed rgba(255,255,255,.55)}
+.medal::after{content:"";position:absolute;inset:-50%;background:linear-gradient(115deg,transparent 42%,rgba(255,255,255,.85) 50%,transparent 58%);transform:translateX(-110%);animation:hbSheen 5.5s ease-in-out infinite}
+@keyframes hbSheen{0%,72%{transform:translateX(-110%)}100%{transform:translateX(110%)}}
+.pd.gold .medal{width:clamp(84px,21vw,116px);font-size:clamp(38px,9vw,52px);color:#4a3105;background:conic-gradient(from 210deg,#fff6c2,#f2c94c,#a87512,#ffe680,#d4a017,#fff6c2);
+  box-shadow:0 0 0 4px rgba(242,201,76,.25),0 0 38px rgba(242,201,76,.55),0 10px 24px rgba(0,0,0,.55),inset 0 3px 5px rgba(255,255,255,.8),inset 0 -8px 12px rgba(120,70,0,.35)}
+.pd.silver .medal{color:#2b333d;background:conic-gradient(from 210deg,#ffffff,#d5dce4,#8a96a3,#f4f7fa,#a6b1bd,#ffffff)}
+.pd.bronze .medal{color:#3f1f06;background:conic-gradient(from 210deg,#ffe0bd,#d08a45,#7f4317,#f2b47c,#a95f27,#ffe0bd)}
+.crown{font-size:clamp(34px,8vw,46px);line-height:1;margin-bottom:-8px;position:relative;z-index:1;filter:drop-shadow(0 4px 10px rgba(242,201,76,.7));animation:hbFloat 3.2s ease-in-out infinite}
+@keyframes hbFloat{50%{transform:translateY(-5px) rotate(-4deg)}}
+.pd-name{margin-top:10px;font-weight:800;font-size:clamp(16px,4vw,20px);line-height:1.35;overflow-wrap:anywhere}
+.pd.gold .pd-name{font-size:clamp(18px,4.6vw,23px);color:#fff3c4}
+.pd-cls{font-size:15px;color:#bfb196}
+.pd-score{margin-top:6px;padding:2px 14px;border-radius:999px;font-weight:800;font-size:17px;background:rgba(255,255,255,.07);border:1px solid rgba(243,215,122,.35);white-space:nowrap}
+.pd.gold .pd-score{background:linear-gradient(180deg,#fff1ad,#e1b02c);color:#3b2703;border:0;box-shadow:0 4px 14px rgba(242,201,76,.4)}
+.step{width:100%;margin-top:12px;border-radius:16px 16px 8px 8px;display:grid;place-items:start center;padding-top:8px;font-family:var(--font-head);font-weight:900;font-size:clamp(28px,7vw,42px);position:relative;overflow:hidden;
+  box-shadow:inset 0 2px 0 rgba(255,255,255,.55),inset 0 -10px 18px rgba(0,0,0,.25),0 10px 24px rgba(0,0,0,.35)}
+.pd.gold .step{height:clamp(96px,22vw,128px);background:linear-gradient(180deg,#f9dc79,#c8951f 70%,#9b6c12);color:rgba(90,58,0,.55)}
+.pd.silver .step{height:clamp(70px,16vw,92px);background:linear-gradient(180deg,#eef2f6,#a7b2bf 70%,#7d8895);color:rgba(40,50,60,.45)}
+.pd.bronze .step{height:clamp(52px,12vw,68px);background:linear-gradient(180deg,#f0b27a,#b56a2c 70%,#7f4317);color:rgba(70,30,5,.45)}
+.hb-fourth{margin-top:16px;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:12px;padding:10px 14px;border-radius:18px;
+  background:linear-gradient(100deg,rgba(64,201,162,.22),rgba(99,102,241,.18));border:1.5px solid rgba(126,240,198,.45);box-shadow:0 6px 18px rgba(0,0,0,.3)}
+.hb-fourth .rk{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;font-weight:900;font-size:22px;color:#062a20;background:linear-gradient(180deg,#9ff5d6,#2fb98d);box-shadow:inset 0 2px 3px rgba(255,255,255,.6)}
+.hb-fourth .nm{font-weight:800;font-size:19px}.hb-fourth .tag{font-size:14px;color:#a8f0d6}
+.hb-list{margin-top:10px;display:grid;gap:6px}
+.hb-row{display:grid;grid-template-columns:40px 1fr auto;align-items:center;gap:10px;padding:7px 12px;border-radius:14px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.07)}
+.hb-row .rk{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:17px;color:#f3d77a;background:rgba(243,215,122,.1);border:1px solid rgba(243,215,122,.35)}
+.hb-row .nm{font-weight:700;font-size:18px;line-height:1.3}.hb-row .cl{font-size:14px;color:#a99d84}
+.hb-bar{height:5px;border-radius:9px;background:rgba(255,255,255,.08);margin-top:4px;overflow:hidden}.hb-bar i{display:block;height:100%;border-radius:9px;background:linear-gradient(90deg,#c8951f,#fbe38a)}
+.hb-row .sc,.hb-fourth .sc{font-weight:800;font-size:18px;color:#fbe38a;white-space:nowrap}
+.hb .me{outline:2.5px solid #7ef0c6;outline-offset:3px;border-radius:16px}
+.hb .youtag{display:inline-block;margin-inline-start:6px;padding:0 8px;border-radius:999px;font-size:13px;font-weight:800;color:#062a20;background:#7ef0c6;vertical-align:middle}
+.hb-empty{text-align:center;color:#cdbf9f;padding:18px 6px}
+.hb-foot{text-align:center;color:#9d927b;font-size:14px;margin-top:12px}
 #printArea{display:none}
 .pcards{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
 .pcard{border:2px dashed #888;border-radius:12px;padding:8px 12px;font-size:17px;line-height:1.7;break-inside:avoid}
@@ -702,6 +756,7 @@ html[data-mode=dark] .modal{background:rgba(0,0,0,.62)}
   <div class="wrap">
     <h2 id="homeHello"></h2>
     <div class="row" style="margin:-4px 0 10px"><button class="btn sm alt" onclick="msgMyTeacher()">✉️ راسل معلّمك</button></div>
+    <div id="homeBoard"></div>
     <h3>📚 دروسي</h3>
     <div id="homeLessons"></div>
   </div>
@@ -838,6 +893,7 @@ html[data-mode=dark] .modal{background:rgba(0,0,0,.62)}
         <div class="tbl-scroll" id="resTable"></div>
         <p style="font-size:19px;color:var(--muted)">تُحتسب <b>أفضل محاولة</b> لكل طالب. زر «تفاصيل» يعرض كل المحاولات.</p>
       </div>
+      <div class="card" id="bdCard"></div>
     </div>
 
     <!-- الدروس -->
@@ -1345,6 +1401,7 @@ async function openHome() {
   showScreen('scrHome');
   $('#homeWho').textContent = '👤 ' + (ME.cname || ME.name) + ' · ' + ME.cls;
   $('#homeHello').textContent = 'مرحبًا يا ' + (ME.cname || ME.name || '').split(' ')[0] + ' 👋';
+  loadStudentBoard();
   await loadStudentLessons();
 }
 async function loadStudentLessons() {
@@ -1641,6 +1698,7 @@ async function loadTeacherData() {
   renderPrivTab();
   fillResultLessons(); renderStudents(); renderSetupTab(); renderShowTab();
   await loadResults();
+  loadBoard(true);
 }
 function tTab(t) {
   if (!$('#tv-' + t) || ($('#tTabs button[data-t="' + t + '"]') || {}).hidden) t = isAdmin() ? 'curriculum' : 'lessons';
@@ -1782,6 +1840,113 @@ function renderResults() {
         <td><div class="row" style="gap:4px;flex-wrap:nowrap">${r.sent ? waBtn(r.s) : ''}<button class="btn sm ghost" onclick="showDetails(${A(r.s.uid)})">تفاصيل</button></div></td></tr>`).join('') + '</table>';
   }
 }
+/* ================= لوحة الشرف ================= */
+const BOARD_DEF = {on:false, showCls:true, showAll:true, n:10};
+const shortName = n => String(n || '').trim().split(/\s+/).slice(0, 2).join(' ');
+async function loadBoard(publish) {
+  let d = null; try { d = await API.get('board', TD.view); } catch (e) { console.error(e); }
+  TD.board = Object.assign({}, BOARD_DEF, d || {});
+  renderBoardCard();
+  if (publish && TD.board.on) publishBoard(true);
+}
+function rankList(L, n) {
+  L.sort((a, b) => b.total - a.total || b.cnt - a.cnt || a.name.localeCompare(b.name, 'ar'));
+  let rk = 0; L.forEach((r, i) => { if (i === 0 || r.total !== L[i - 1].total) rk = i + 1; r.rk = rk; });
+  return L.filter(r => r.rk <= n).slice(0, Math.max(n, 1) * 2).map(r => ({uid:r.uid, name:r.name, cls:r.cls, total:r.total, max:r.max, rk:r.rk}));
+}
+async function computeBoard(n) {
+  const subs = await API.where('submissions', {teacherId:TD.view}), by = {};
+  subs.forEach(x => (by[x.uid] = by[x.uid] || []).push(x));
+  const rows = TD.students.filter(s => !s.archived && !s.moved && !s.removed && s.active !== false).map(s => {
+    let total = 0, max = 0, cnt = 0;
+    CAT.filter(l => l.tracked !== false && (TD.show[l.id] || []).includes(s.cls)).forEach(l => {
+      max += +l.autoMax || 0;
+      const my = (by[s.uid] || []).filter(x => x.lessonId === l.id), pk = (noteOf(s.uid).pick || {})[l.id], ch = pk && my.find(x => x.at === pk.at);
+      let v = ch ? +ch.auto || 0 : my.length ? Math.max(...my.map(x => +x.auto || 0)) : null;
+      const pc = privCand(s.uid, l.id); if (pc && !ch && (v == null || (+pc.auto || 0) > v)) v = +pc.auto || 0;
+      if (v != null) { total += v; cnt++; }
+    });
+    return {uid:s.uid, name:shortName(s.name), cls:s.cls, g:gradeOf(s.cls), total, max, cnt};
+  }).filter(r => r.cnt > 0);
+  const cls = {}, grade = {};
+  [...new Set(rows.map(r => r.cls))].forEach(c => cls[c] = rankList(rows.filter(r => r.cls === c), n));
+  [...new Set(rows.map(r => r.g))].forEach(g => grade[g] = rankList(rows.filter(r => r.g === g), n));
+  return {cls, grade};
+}
+async function publishBoard(silent) {
+  const b = TD.board, n = Math.min(100, Math.max(1, +b.n || 10));
+  const data = {on:!!b.on, showCls:!!b.showCls, showAll:!!b.showAll, n, teacherId:TD.view, updatedAt:Date.now(), cls:{}, grade:{}};
+  try {
+    if (b.on) Object.assign(data, await computeBoard(n));
+    await API.set('board', TD.view, data); Object.assign(TD.board, data); renderBoardCard();
+    if (!silent) toast(b.on ? 'حُدّثت لوحة الشرف عند الطلاب ✓' : 'أُخفيت لوحة الشرف عن الطلاب');
+  } catch (e) { console.error(e); if (isPerm(e)) $('#rulesWarn').hidden = false; if (!silent) toast('تعذّر الحفظ: ' + errMsg(e)); }
+}
+function boardCfg(patch) {
+  Object.assign(TD.board, patch);
+  if (!TD.board.showCls && !TD.board.showAll) { TD.board.showCls = true; toast('يبقى زر واحد على الأقل ظاهرًا'); }
+  renderBoardCard(); publishBoard();
+}
+function renderBoardCard() {
+  const el = $('#bdCard'); if (!el || !TD.board) return;
+  const b = TD.board, n = +b.n || 10;
+  el.innerHTML = `<h3 style="margin-top:0">🏆 لوحة الشرف عند الطلاب</h3>
+    <p style="margin-top:0;font-size:19px;color:var(--muted)">تظهر لطلابك في «🏫 صفّي» قائمةُ أعلاهم في <b>مجموع الدرجات</b> (مجموع أفضل درجة في كل درس ظاهر لشعبتهم). «كل الشعب» تجمع شعب الصف نفسه.</p>
+    <label class="sw"><input type="checkbox" ${b.on ? 'checked' : ''} onchange="boardCfg({on:this.checked})"> أظهر لوحة الشرف لطلابي</label>
+    ${b.on ? `<div class="rf-row"><span class="rf-lbl">الأزرار عند الطالب:</span><div class="rf-chips">
+        <button class="rf-chip${b.showCls ? ' on' : ''}" onclick="boardCfg({showCls:!TD.board.showCls})">🏫 المتميزون في الشعبة</button>
+        <button class="rf-chip${b.showAll ? ' on' : ''}" onclick="boardCfg({showAll:!TD.board.showAll})">🌟 المتميزون في كل الشعب</button></div></div>
+      <div class="rf-row"><span class="rf-lbl">عدد الطلاب في القائمة:</span><div class="rf-chips">
+        ${[3, 5, 10, 20].map(k => `<button class="rf-chip${n === k ? ' on' : ''}" onclick="boardCfg({n:${k}})">أفضل ${k}</button>`).join('')}
+        <label class="row" style="gap:4px;font-size:18px">عدد آخر: <input type="number" min="1" max="100" value="${n}" style="width:80px" onchange="boardCfg({n:Math.min(100,Math.max(1,+this.value||10))})"></label></div></div>
+      <div class="row" style="margin-top:10px"><button class="btn sm" onclick="publishBoard()">🔄 حدّث اللوحة الآن</button><button class="btn sm ghost" onclick="previewBoard()">👁 معاينة كما يراها الطالب</button>
+        <span style="font-size:17px;color:var(--muted)">${b.updatedAt ? 'آخر تحديث: ' + esc(fmtDate(b.updatedAt)) : ''}</span></div>
+      <p style="font-size:17px;color:var(--muted);margin-bottom:0">تتحدّث اللوحة تلقائيًا كلما فتحت المنصة، وتستطيع تحديثها بالزر في أي وقت.</p>` : ''}`;
+}
+function previewBoard() {
+  const C = myClasses().filter(c => (TD.board.cls || {})[c]);
+  if (!C.length) return toast('لا توجد نتائج بعد في الشعب');
+  BV.prev = {c:C[0], m:TD.board.showCls ? 'cls' : 'all'};
+  const draw = () => { $('#bvPrev').innerHTML = boardHtml(TD.board, BV.prev.c, BV.prev.m, '', 'BV.prev.m', 'drawPrev'); };
+  window.drawPrev = draw;
+  openModal(`<h3 style="margin-top:0">👁 معاينة لوحة الشرف</h3><div class="rf-row" style="margin-bottom:8px"><span class="rf-lbl">كما يراها طالب في شعبة:</span><div class="rf-chips">${C.map(c => `<button class="rf-chip" onclick="BV.prev.c=${A(c)};drawPrev();$$('.bvc').forEach(x=>x.classList.toggle('on',x.textContent===${A(c)}))" >${esc(c)}</button>`).join('').replace(/class="rf-chip"/g, 'class="rf-chip bvc"')}</div></div><div id="bvPrev"></div>`);
+  draw(); $$('.bvc').forEach(x => x.classList.toggle('on', x.textContent === BV.prev.c));
+}
+const BV = {m:'cls', prev:null};
+/* يرسم اللوحة: d = بيانات اللوحة، c = شعبة الطالب، m = cls|all */
+function boardHtml(d, c, m, meUid, mVar, redraw) {
+  if (!d || !d.on) return '';
+  const modes = [d.showCls && 'cls', d.showAll && 'all'].filter(Boolean); if (!modes.includes(m)) m = modes[0];
+  const L = (m === 'all' ? (d.grade || {})[gradeOf(c)] : (d.cls || {})[c]) || [];
+  const tabs = modes.length > 1 ? `<div class="hb-tabs">${modes.map(k => `<button class="${k === m ? 'on' : ''}" onclick="${mVar}='${k}';${redraw}()">${k === 'cls' ? '🏫 المتميزون في شعبتي' : '🌟 المتميزون في كل الشعب'}</button>`).join('')}</div>` : '';
+  const sub = m === 'all' ? `أعلى طلاب ${esc(gradeName(gradeOf(c)))} في كل الشعب` : `أعلى طلاب شعبة ${esc(c)}`;
+  const me = r => r.uid && r.uid === meUid, you = r => me(r) ? '<span class="youtag">أنت</span>' : '';
+  const sc = r => `${r.total}${r.max ? ` <small style="font-weight:600;opacity:.75">من ${r.max}</small>` : ''}`;
+  let body = '';
+  if (!L.length) body = '<div class="hb-empty">لم يُرسل أحد نتائجه بعد… كن أنت الأول! 🚀</div>';
+  else {
+    const top = [L[0], L[1], L[2]], kind = ['gold', 'silver', 'bronze'];
+    const pd = i => { const r = top[i]; if (!r) return `<div class="pd ${kind[i]} empty"></div>`;
+      const k = kind[r.rk - 1] || kind[i];
+      return `<div class="pd ${k}${me(r) ? ' me' : ''}">${k === 'gold' ? '<div class="crown">👑</div>' : ''}<div class="medal">${r.rk}</div>
+        <div class="pd-name">${esc(r.name)}${you(r)}</div>${m === 'all' ? `<div class="pd-cls">${esc(r.cls)}</div>` : ''}<div class="pd-score">${sc(r)}</div><div class="step">${r.rk}</div></div>`; };
+    body = `<div class="podium">${pd(1)}${pd(0)}${pd(2)}</div>`;
+    const rest = L.slice(3), topT = L[0].total || 1;
+    if (rest[0]) { const r = rest[0];
+      body += `<div class="hb-fourth${me(r) ? ' me' : ''}"><div class="rk">${r.rk}</div><div><div class="nm">🎖️ ${esc(r.name)}${you(r)}</div><div class="tag">${m === 'all' ? esc(r.cls) + ' · ' : ''}وسام التميّز</div></div><div class="sc">${sc(r)}</div></div>`; }
+    if (rest.length > 1) body += `<div class="hb-list">${rest.slice(1).map(r => `<div class="hb-row${me(r) ? ' me' : ''}"><div class="rk">${r.rk}</div>
+      <div><div class="nm">${esc(r.name)}${you(r)} ${m === 'all' ? `<span class="cl">${esc(r.cls)}</span>` : ''}</div><div class="hb-bar"><i style="width:${Math.round(r.total / topT * 100)}%"></i></div></div><div class="sc">${sc(r)}</div></div>`).join('')}</div>`;
+  }
+  return `<div class="hb"><div class="hb-head"><span class="hb-cup">🏆</span><span class="hb-title">لوحة الشرف</span><span class="hb-cup">🏆</span></div><div class="hb-sub">${sub}</div>${tabs}${body}
+    ${d.updatedAt ? `<div class="hb-foot">آخر تحديث: ${esc(fmtDate(d.updatedAt))}</div>` : ''}</div>`;
+}
+/* عند الطالب في «صفّي» */
+async function loadStudentBoard() {
+  const el = $('#homeBoard'); if (!el) return; el.innerHTML = '';
+  try { BV.d = ME.teacherId ? await ME.capi.get('board', ME.teacherId) : null; } catch (e) { BV.d = null; }
+  drawStudentBoard();
+}
+function drawStudentBoard() { $('#homeBoard').innerHTML = boardHtml(BV.d, ME.cls, BV.m, ME.cuid, 'BV.m', 'drawStudentBoard'); }
 function showDetails(uid) {
   const s = TD.students.find(x => x.uid === uid); if (!s) return;
   const LL = curLessons().filter(l => (TD.show[l.id] || []).includes(s.cls));
@@ -2504,6 +2669,10 @@ service cloud.firestore {
     match /catalog/{id} { allow read: if signedIn(); allow write: if isAdmin(); }
     match /catalogFiles/{id} { allow read: if signedIn(); allow write: if isAdmin(); }
     match /banks/{id} { allow read: if signedIn(); allow write: if isAdmin(); }
+    match /board/{tid} {
+      allow read: if signedIn();
+      allow write: if isAdmin() || (isTeacher() && request.auth.uid == tid);
+    }
     match /tshow/{tid} {
       allow read: if signedIn();
       allow write: if isAdmin() || (isTeacher() && request.auth.uid == tid);
