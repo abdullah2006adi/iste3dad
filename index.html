@@ -822,8 +822,8 @@ html[data-mode=dark] .modal{background:rgba(0,0,0,.62)}
     <div class="tview" id="tv-results">
       <div class="card">
         <div class="row">
-          <label class="row" style="gap:4px">الدرس: <select id="rLesson" style="width:auto;max-width:380px" onchange="onLessonPick()"></select></label>
-          <button class="btn sm ghost" onclick="pickLessons()">📚 اختر عدة دروس</button>
+          <button class="btn sm" onclick="pickLessons()">📚 اختر الدروس</button>
+          <span id="rLessonLbl" style="font-weight:700"></span>
           <button class="btn" onclick="loadTeacherData()">🔄 تحديث</button>
         </div>
         <div class="rf-row"><span class="rf-lbl">الشعب:</span><div class="rf-chips" id="rClassChips"></div></div>
@@ -1665,13 +1665,8 @@ function fillResultLessons() {
   TD.lids = TD.lids.filter(id => ids.includes(id));
   if (!TD.lids.length && L.length) TD.lids = [L[0].id];
   const multi = TD.lids.length > 1;
-  $('#rLesson').innerHTML = L.length ? L.map(l => `<option value="${esc(l.id)}" ${!multi && l.id === TD.lids[0] ? 'selected' : ''}>${esc((l.icon || '') + ' ' + l.title)} — ${esc(gradeName(l.grade))}</option>`).join('') +
-    `<option value="__multi" ${multi ? 'selected' : ''}>📚 ${multi ? 'مجموعة دروس (' + TD.lids.length + ') — تغيير…' : 'مجموعة دروس…'}</option>` : '<option value="">— لم تُظهر أي درس بعد —</option>';
-}
-function onLessonPick() {
-  const v = $('#rLesson').value;
-  if (v === '__multi') return pickLessons();
-  TD.lids = v ? [v] : []; fillResultLessons(); loadResults();
+  const one = !multi && catById(TD.lids[0]);
+  $('#rLessonLbl').textContent = !L.length ? 'لم تُظهر أي درس بعد' : multi ? `المعروض: ${TD.lids.length} دروس` : one ? `المعروض: ${(one.icon || '') + ' ' + one.title} — ${gradeName(one.grade)}` : '';
 }
 function pickLessons() {
   const L = shownLessons(); let html = '', last = '';
