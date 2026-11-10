@@ -81,6 +81,12 @@ th{background:var(--green-l);color:var(--teal)}
 .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:10px 0}
 .stat{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:8px;text-align:center;font-size:20px}
 .stat b{display:block;font-size:34px;color:var(--teal);line-height:1.3}
+.stat.click{cursor:pointer;transition:transform .12s} .stat.click:hover{transform:translateY(-2px)} .stat.on{outline:3px solid var(--teal);outline-offset:-2px;background:var(--tint)}
+.rf-row{display:flex;align-items:center;gap:8px;margin-top:8px;flex-wrap:wrap} .rf-lbl{font-weight:700;white-space:nowrap}
+.rf-chips{display:flex;flex-wrap:wrap;gap:6px}
+.rf-chip{font:inherit;font-size:18px;font-weight:700;padding:3px 14px;border:2px solid var(--line);border-radius:999px;background:var(--surface);color:var(--ink);cursor:pointer}
+.rf-chip.on{background:var(--teal);border-color:var(--teal);color:#fff}
+.rf-chip small{font-weight:500;opacity:.8}
 tr.nosub td{color:#97a3a3;background:var(--surface-2)}
 .tview[hidden],.hview[hidden],section[hidden],[hidden]{display:none!important}
 .modal{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:90;display:flex;align-items:flex-start;justify-content:center;padding:30px 12px;overflow:auto}
@@ -817,11 +823,13 @@ html[data-mode=dark] .modal{background:rgba(0,0,0,.62)}
       <div class="card">
         <div class="row">
           <label class="row" style="gap:4px">الدرس: <select id="rLesson" style="width:auto;max-width:380px" onchange="onLessonPick()"></select></label>
-          <label class="row" style="gap:4px">الشعبة: <select id="rClass" style="width:auto" onchange="renderResults()"></select></label>
+          <button class="btn sm ghost" onclick="pickLessons()">📚 اختر عدة دروس</button>
           <button class="btn" onclick="loadTeacherData()">🔄 تحديث</button>
         </div>
+        <div class="rf-row"><span class="rf-lbl">الشعب:</span><div class="rf-chips" id="rClassChips"></div></div>
+        <div class="rf-row"><span class="rf-lbl">المستوى:</span><div class="rf-chips" id="rLevelChips"></div></div>
         <div class="row" style="margin-top:8px">
-          <label class="row" style="gap:4px">🔎 المستوى: <select id="rLevel" style="width:auto" onchange="TD.picked=new Set();renderResults()"><option value="">كل المستويات</option></select></label>
+          <label class="row" style="gap:4px">↕ الترتيب: <select id="rSort" style="width:auto" onchange="TD.rf.sort=this.value;renderResults()"><option value="cls">حسب الشعب</option><option value="total">المجموع الأعلى</option><option value="name">الأبجدي</option></select></label>
           <button class="btn alt" onclick="randomPick()">🎲 اختيار عشوائي</button>
           <button class="btn blue" onclick="exportResults()">⬇ تصدير Excel</button>
           <button class="btn ghost" onclick="printResults()">🖨 طباعة</button>
@@ -1615,7 +1623,7 @@ async function switchView(uid, silent) {
 }
 function fillClassSelects() {
   const C = myClasses(), opts = C.map(c => `<option>${esc(c)}</option>`).join('');
-  $('#rClass').innerHTML = '<option value="">كل الشعب</option>' + opts;
+  TD.rf.cls = TD.rf.cls.filter(c => C.includes(c));
   $('#sClsF').innerHTML = '<option value="">كل الشعب</option>' + opts;
   ['bCls', 'oCls'].forEach(id => { const el = $('#' + id), v = el.value; el.innerHTML = '<option value="">— الشعبة —</option>' + opts; el.value = C.includes(v) ? v : ''; });
   if (!$('#bCls').value) { $('#bulkCard').hidden = true; $('#oneCard').hidden = true; }
@@ -1651,6 +1659,7 @@ function tTab(t) {
 const shownLessons = () => CAT.filter(l => l.tracked !== false && (TD.show[l.id] || []).length);
 const LEVELS = [['a', 'متميز', '90% فأكثر'], ['b', 'متقدم', '75–89%'], ['c', 'متمكن', '60–74%'], ['d', 'يحتاج دعمًا', 'أقل من 60%'], ['n', 'لم يرسل', '']];
 TD.lids = []; TD.picked = new Set();
+TD.rf = {cls:[], lv:[], send:'', sort:'cls'}; /* تصفية النتائج: شعب، مستويات، أرسلوا/لم يرسلوا، الترتيب */
 function fillResultLessons() {
   const L = shownLessons(), ids = L.map(l => l.id);
   TD.lids = TD.lids.filter(id => ids.includes(id));
@@ -1713,26 +1722,51 @@ function privCand(cuid, lid) {
 }
 const okMark = b => b && b.priv ? ` <span class="ok-mark" title="معتمدة من النتائج الخاصة${b.how === 'auto' ? ' (تلقائيًا)' : ''}">🆗</span>` : '';
 function allRows() {
-  const f = $('#rClass').value, LL = curLessons();
-  return TD.students.filter(s => !s.archived && !s.moved && (s.active !== false || (s.removed && !s.hideRes)) && (!f || s.cls === f) && LL.some(l => (TD.show[l.id] || []).includes(s.cls))).sort(byClsName).map(s => {
+  const F = TD.rf.cls, LL = curLessons();
+  return TD.students.filter(s => !s.archived && !s.moved && (s.active !== false || (s.removed && !s.hideRes)) && (!F.length || F.includes(s.cls)) && LL.some(l => (TD.show[l.id] || []).includes(s.cls))).sort(byClsName).map(s => {
     const per = LL.filter(l => (TD.show[l.id] || []).includes(s.cls)).map(l => ({l, b:bestOf(s.uid, l.id)}));
     const sent = per.filter(p => p.b).length, total = per.reduce((a, p) => a + (p.b ? +p.b.best.auto || 0 : 0), 0), max = per.reduce((a, p) => a + (+p.l.autoMax || 0), 0);
     const pct = max ? total / max : 0, lvl = sent ? levelPct(pct)[0] : 'n';
     return {s, per, sent, n:per.length, total, max, pct, lvl, b:LL.length === 1 && per[0] ? per[0].b : null};
   });
 }
-function resultRows() { const lv = $('#rLevel').value; return allRows().filter(r => !lv || r.lvl === lv); }
+function rfPass(r) { const f = TD.rf; return (!f.send || (f.send === 'y' ? r.sent > 0 : !r.sent)) && (!f.lv.length || f.lv.includes(r.lvl)); }
+function rfSort(R) {
+  const k = TD.rf.sort;
+  if (k === 'total') return R.sort((a, b) => b.total - a.total || b.pct - a.pct || a.s.name.localeCompare(b.s.name, 'ar'));
+  if (k === 'name') return R.sort((a, b) => a.s.name.localeCompare(b.s.name, 'ar'));
+  return R;
+}
+function resultRows() { return rfSort(allRows().filter(rfPass)); }
+function rfToggle(k, v) {
+  const f = TD.rf; TD.picked = new Set();
+  if (k === 'all') { f.cls = []; f.lv = []; f.send = ''; }
+  else if (k === 'allcls') f.cls = [];
+  else if (k === 'send') f.send = f.send === v ? '' : v;
+  else { const a = f[k], i = a.indexOf(v); i < 0 ? a.push(v) : a.splice(i, 1); }
+  renderResults();
+}
+const rfDesc = () => [TD.rf.send === 'y' ? 'أرسلوا' : TD.rf.send === 'n' ? 'لم يرسلوا' : '', TD.rf.lv.map(lvlName).join(' أو ')].filter(Boolean).join(' · ');
 const lvlName = k => (LEVELS.find(x => x[0] === k) || [])[1] || '';
 function renderResults() {
   const LL = curLessons(), single = LL.length === 1 ? LL[0] : null;
   TD.lastRows = [];
   if (!LL.length) { $('#rStats').innerHTML = ''; $('#resTable').innerHTML = '<p>أظهر درسًا لطلابك من تبويب «📚 الدروس» لتظهر نتائجه هنا.</p>'; return; }
-  const ALL = allRows(), lv = $('#rLevel').value;
-  $('#rLevel').innerHTML = `<option value="">كل المستويات (${ALL.length})</option>` + LEVELS.map(([k, n, d]) => `<option value="${k}" ${k === lv ? 'selected' : ''}>${n}${d ? ' – ' + d : ''} (${ALL.filter(r => r.lvl === k).length})</option>`).join('');
-  const R = ALL.filter(r => !lv || r.lvl === lv); TD.lastRows = R;
+  const ALL = allRows(), f = TD.rf, C = myClasses();
+  $('#rSort').value = f.sort;
+  $('#rClassChips').innerHTML = `<button class="rf-chip${f.cls.length ? '' : ' on'}" onclick="rfToggle('allcls')">كل الشعب</button>` + C.map(c => `<button class="rf-chip${f.cls.includes(c) ? ' on' : ''}" onclick="rfToggle('cls',${A(c)})">${esc(c)}</button>`).join('');
+  const base = ALL.filter(r => !f.send || (f.send === 'y' ? r.sent > 0 : !r.sent));
+  $('#rLevelChips').innerHTML = `<button class="rf-chip${f.lv.length ? '' : ' on'}" onclick="TD.rf.lv=[];renderResults()">كل المستويات</button>` + LEVELS.map(([k, n, d]) => `<button class="rf-chip${f.lv.includes(k) ? ' on' : ''}" title="${esc(d)}" onclick="rfToggle('lv','${k}')">${n} <small>(${base.filter(r => r.lvl === k).length})</small></button>`).join('');
+  const R = rfSort(ALL.filter(rfPass)); TD.lastRows = R;
+  const filt = f.send || f.lv.length, lv = filt;
   const sent = ALL.filter(r => r.sent), avgPct = sent.length ? Math.round(sent.reduce((a, r) => a + r.pct, 0) / sent.length * 100) + '%' : '—';
-  $('#rStats').innerHTML = `<div class="stat"><b>${ALL.length}</b>طالبًا</div><div class="stat"><b style="color:var(--green)">${sent.length}</b>${single ? 'أرسلوا' : 'أرسلوا درسًا واحدًا على الأقل'}</div><div class="stat"><b style="color:var(--orange)">${ALL.length - sent.length}</b>لم يرسلوا</div><div class="stat"><b>${avgPct}</b>متوسط النسبة</div><div class="stat"><b style="color:var(--red)">${ALL.filter(r => r.lvl === 'd').length}</b>يحتاجون دعمًا</div>` +
-    (lv ? `<div class="stat" style="border-color:var(--teal)"><b>${R.length}</b>معروض الآن: ${esc(lvlName(lv))}</div>` : '');
+  const need = ALL.filter(r => r.lvl === 'd').length;
+  $('#rStats').innerHTML = `<div class="stat click${filt ? '' : ' on'}" onclick="rfToggle('all')" title="اعرض الجميع"><b>${ALL.length}</b>طالبًا</div>
+    <div class="stat click${f.send === 'y' ? ' on' : ''}" onclick="rfToggle('send','y')"><b style="color:var(--green)">${sent.length}</b>${single ? 'أرسلوا' : 'أرسلوا درسًا واحدًا على الأقل'}</div>
+    <div class="stat click${f.send === 'n' ? ' on' : ''}" onclick="rfToggle('send','n')"><b style="color:var(--orange)">${ALL.length - sent.length}</b>لم يرسلوا</div>
+    <div class="stat"><b>${avgPct}</b>متوسط النسبة</div>
+    <div class="stat click${f.lv.includes('d') ? ' on' : ''}" onclick="rfToggle('lv','d')"><b style="color:var(--red)">${need}</b>يحتاجون دعمًا</div>` +
+    (filt ? `<div class="stat" style="border-color:var(--teal)"><b>${R.length}</b>معروض الآن: ${esc(rfDesc())}</div>` : '');
   if (!R.length) { $('#resTable').innerHTML = ALL.length ? '<p>لا يوجد طلاب في هذا المستوى.</p>' : '<p>لا يوجد طلاب في الشعب التي تظهر لها هذه الدروس.</p>'; return; }
   const lvTd = r => r.lvl === 'n' ? '<span class="chip grey">لم يرسل</span>' : `<span class="lvl ${r.lvl}">${lvlName(r.lvl)}</span>`;
   if (single) {
@@ -1840,7 +1874,7 @@ function randomPick() {
   openModal(`<div style="text-align:center;padding:10px 0"><div style="font-size:60px;line-height:1">🎲</div>
     <div id="rpName" style="font-size:44px;font-weight:800;color:var(--teal);min-height:70px;margin:10px 0"></div><div id="rpInfo" style="font-size:22px;color:var(--muted);min-height:34px"></div>
     <div id="rpBtns" class="row" style="justify-content:center;margin-top:14px;visibility:hidden"><button class="btn alt big" onclick="randomPick()">🎲 اختيار آخر</button><button class="btn ghost" onclick="TD.picked=new Set();toast('بدأ اختيار جديد: كل الطلاب متاحون')">↺ بدء من جديد</button></div>
-    <p style="font-size:18px;color:var(--muted);margin-bottom:0">يُختار من ${R.length} طالبًا معروضين الآن${$('#rLevel').value ? ' (' + esc(lvlName($('#rLevel').value)) + ')' : ''}. لا يتكرر الطالب حتى يُختار الجميع (اختير ${TD.picked.size} من ${R.length}).</p></div>`);
+    <p style="font-size:18px;color:var(--muted);margin-bottom:0">يُختار من ${R.length} طالبًا معروضين الآن${rfDesc() ? ' (' + esc(rfDesc()) + ')' : ''}. لا يتكرر الطالب حتى يُختار الجميع (اختير ${TD.picked.size} من ${R.length}).</p></div>`);
   let k = 0; const steps = 18;
   const spin = () => {
     const el = $('#rpName'); if (!el) return;
@@ -1865,7 +1899,7 @@ function exportResults() {
     rows = R.map(r => [r.s.name, r.s.cls, r.s.username].concat(LL.map(l => { const p = r.per.find(x => x.l.id === l.id); return !p ? '' : p.b ? (+p.b.best.auto || 0) : 'لم يرسل'; }), [r.total, r.max, Math.round(r.pct * 100) + '%', lvlName(r.lvl), r.sent + ' من ' + r.n]));
   }
   const name = single ? single.title : 'مجموعة_دروس';
-  saveFile('نتائج_' + name.replace(/\s+/g, '_') + ($('#rLevel').value ? '_' + lvlName($('#rLevel').value) : '') + '.csv', '﻿' + [head].concat(rows).map(r => r.map(q).join(',')).join('\r\n'), 'text/csv;charset=utf-8');
+  saveFile('نتائج_' + name.replace(/\s+/g, '_') + (rfDesc() ? '_' + rfDesc().replace(/[\s·]+/g, '_') : '') + '.csv', '﻿' + [head].concat(rows).map(r => r.map(q).join(',')).join('\r\n'), 'text/csv;charset=utf-8');
 }
 function printHtml(html) {
   $('#printArea').innerHTML = html; document.body.classList.add('printing');
@@ -1876,7 +1910,7 @@ function printResults() {
   const LL = curLessons(); if (!LL.length) return;
   const t = $('#resTable').cloneNode(true); t.querySelectorAll('button').forEach(b => b.remove()); t.querySelectorAll('tr').forEach(tr => tr.style.outline = '');
   const what = LL.length === 1 ? 'درس ' + LL[0].title : LL.length + ' دروس';
-  printHtml(`<h2>منصة استعداد – ${esc(TD.vt && TD.vt.name || '')} – نتائج ${esc(what)} ${$('#rClass').value ? '– ' + esc($('#rClass').value) : ''} ${$('#rLevel').value ? '– ' + esc(lvlName($('#rLevel').value)) : ''}</h2>` + t.innerHTML);
+  printHtml(`<h2>منصة استعداد – ${esc(TD.vt && TD.vt.name || '')} – نتائج ${esc(what)} ${TD.rf.cls.length ? '– ' + esc(TD.rf.cls.join('، ')) : ''} ${rfDesc() ? '– ' + esc(rfDesc()) : ''}</h2>` + t.innerHTML);
 }
 
 /* ---------- المعلمون (للمدير) ---------- */
