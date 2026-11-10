@@ -307,6 +307,8 @@ html[data-theme=sky] .gchip{border:0} html[data-theme=sky] .gchip.on{background:
 .fbitem .fbpic{display:block;margin:6px 0;max-width:min(100%,360px);max-height:260px;border-radius:12px;border:1px solid var(--line);cursor:zoom-in}
 .spamw{color:#c62828;font-weight:800}
 /* ===== لوحة الشرف ===== */
+#tTabs button.hbgold{background:linear-gradient(180deg,#fbe38a,#c9971f)!important;color:#2a1c04!important;border-color:#b8862b!important;font-weight:800;box-shadow:0 3px 10px rgba(201,151,31,.35)}
+#scrTeacher .wrap{max-width:none;padding-inline:clamp(10px,2vw,28px)}
 .hb{position:relative;margin:6px 0 20px;padding:24px clamp(10px,3vw,24px) 20px;border-radius:28px;color:#f6ecd4;overflow:hidden;isolation:isolate;
   background:radial-gradient(90% 60% at 50% 0%,rgba(242,201,76,.22),transparent 70%),radial-gradient(120% 90% at 50% 10%,#2c2142 0%,#17111f 58%,#0c0912 100%);
   box-shadow:0 22px 50px rgba(18,8,36,.45)}
@@ -794,6 +796,7 @@ html[data-mode=dark] .modal{background:rgba(0,0,0,.62)}
       <button data-t="lessons" onclick="tTab('lessons')">📚 الدروس</button>
       <button data-t="students" onclick="tTab('students')">👥 الطلاب والصفوف</button>
       <button data-t="setup" onclick="tTab('setup')">⚙️ الإعداد</button>
+      <button class="hbgold" onclick="openBoardCfg()" title="إعدادات لوحة الشرف التي يراها طلابك">🏆 لوحة الشرف</button>
     </div>
     <div class="viewas" id="viewAs" hidden><span id="viewAsTxt"></span><button class="btn sm ghost" onclick="switchView(ME.uid)">↩ العودة إلى صفحتي</button></div>
 
@@ -893,7 +896,7 @@ html[data-mode=dark] .modal{background:rgba(0,0,0,.62)}
         <div class="tbl-scroll" id="resTable"></div>
         <p style="font-size:19px;color:var(--muted)">تُحتسب <b>أفضل محاولة</b> لكل طالب. زر «تفاصيل» يعرض كل المحاولات.</p>
       </div>
-      <div class="card" id="bdCard"></div>
+
     </div>
 
     <!-- الدروس -->
@@ -1543,6 +1546,14 @@ function fixLessonHtml(h) {
   if (!h) return h;
   if (h.indexOf('class="port ${') >= 0) h = h.replace(/(^|[^\w-])\.port(?![\w-])/g, '$1.mport').split('class="port ${').join('class="mport ${');
   h = h.split('.line{position:absolute;top:12%;').join('.g52-pond .line{position:absolute;top:12%;');
+  /* «تحدي الحفظ»: الضغط على أكثر من خيار قبل ظهور الفراغ التالي كان يوقف النشاط. نقبل ضغطة واحدة لكل فراغ،
+     ونُصلح حالة الطالب المحفوظة إن كانت قد علقت، فيكمل النشاط ويُحتسب. */
+  h = h.split("const o = b.dataset.o, ok = o === blanks[cur].a; st.ans.push(o); ctx.save();")
+       .join("if (st.ans.length !== cur) return; ctx.el.querySelectorAll('.wbtn').forEach(x => x.disabled = true); const o = b.dataset.o, ok = o === blanks[cur].a; st.ans.push(o); ctx.save();");
+  h = h.split("    const nb = blanks.length;\n    const phase = () => st.phase || 'read';")
+       .join("    const nb = blanks.length; if (st.ans.length > nb) st.ans.length = nb;\n    const phase = () => st.phase || 'read';");
+  h = h.split("      const cur = st.ans.length;\n      ctx.el.innerHTML = `<div class=\"ghead\"><h3>🧠 ${esc(c.title || 'تحدي الحفظ')}</h3>")
+       .join("      const cur = st.ans.length; if (cur >= nb && !(S.st[ctx.i] || {}).done) setTimeout(() => { if (!(S.st[ctx.i] || {}).done) ctx.finish(scale5(st.ans.filter((a, k) => a === blanks[k].a).length, nb)); }, 60);\n      ctx.el.innerHTML = `<div class=\"ghead\"><h3>🧠 ${esc(c.title || 'تحدي الحفظ')}</h3>");
   /* زر الرجوع ↩ في الألعاب بملء الشاشة: أكبر قليلًا، وتحت شريط الساعة في الآيباد والآيفون */
   const T = safeTop();
   /* بعد الخروج من اللعبة: يُعاد حساب مقاسها عدة مرات (متصفح الآيفون يتأخر في إرجاع الإطار إلى حجمه)،
@@ -1903,13 +1914,17 @@ function renderBoardCard() {
         <span style="font-size:17px;color:var(--muted)">${b.updatedAt ? 'آخر تحديث: ' + esc(fmtDate(b.updatedAt)) : ''}</span></div>
       <p style="font-size:17px;color:var(--muted);margin-bottom:0">تتحدّث اللوحة تلقائيًا كلما فتحت المنصة، وتستطيع تحديثها بالزر في أي وقت.</p>` : ''}`;
 }
+async function openBoardCfg() {
+  openModal('<div id="bdCard"><p>⏳ …</p></div>');
+  if (!TD.board) await loadBoard(false); else renderBoardCard();
+}
 function previewBoard() {
   const C = myClasses().filter(c => (TD.board.cls || {})[c]);
   if (!C.length) return toast('لا توجد نتائج بعد في الشعب');
   BV.prev = {c:C[0], m:TD.board.showCls ? 'cls' : 'all'};
   const draw = () => { $('#bvPrev').innerHTML = boardHtml(TD.board, BV.prev.c, BV.prev.m, '', 'BV.prev.m', 'drawPrev'); };
   window.drawPrev = draw;
-  openModal(`<h3 style="margin-top:0">👁 معاينة لوحة الشرف</h3><div class="rf-row" style="margin-bottom:8px"><span class="rf-lbl">كما يراها طالب في شعبة:</span><div class="rf-chips">${C.map(c => `<button class="rf-chip" onclick="BV.prev.c=${A(c)};drawPrev();$$('.bvc').forEach(x=>x.classList.toggle('on',x.textContent===${A(c)}))" >${esc(c)}</button>`).join('').replace(/class="rf-chip"/g, 'class="rf-chip bvc"')}</div></div><div id="bvPrev"></div>`);
+  openModal(`<h3 style="margin-top:0">👁 معاينة لوحة الشرف <button class="btn sm ghost" onclick="openBoardCfg()">↩ رجوع إلى الإعدادات</button></h3><div class="rf-row" style="margin-bottom:8px"><span class="rf-lbl">كما يراها طالب في شعبة:</span><div class="rf-chips">${C.map(c => `<button class="rf-chip" onclick="BV.prev.c=${A(c)};drawPrev();$$('.bvc').forEach(x=>x.classList.toggle('on',x.textContent===${A(c)}))" >${esc(c)}</button>`).join('').replace(/class="rf-chip"/g, 'class="rf-chip bvc"')}</div></div><div id="bvPrev"></div>`);
   draw(); $$('.bvc').forEach(x => x.classList.toggle('on', x.textContent === BV.prev.c));
 }
 const BV = {m:'cls', prev:null};
