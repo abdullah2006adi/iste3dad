@@ -371,6 +371,13 @@ html[data-theme=sky] .gchip{border:0} html[data-theme=sky] .gchip.on{background:
   body.printing #printArea{display:block!important}
   body{background:#fff}
   #printArea table{font-size:13px}
+  #printArea .hb-print{max-width:720px;margin:0 auto}
+  #printArea .hb{-webkit-print-color-adjust:exact;print-color-adjust:exact;break-inside:avoid;box-shadow:none}
+  #printArea .hb *{-webkit-print-color-adjust:exact;print-color-adjust:exact;animation:none!important}
+  #printArea .hb-tabs{display:none}
+  #printArea .hb::before{display:none}
+  #printArea .hb{border:3px solid #c9971f}
+  @page{margin:12mm}
 }
 @media (max-width:640px){
   body{font-size:22px} h2{font-size:28px} .topbar h1{font-size:23px}
@@ -1924,10 +1931,20 @@ function previewBoard() {
   BV.prev = {c:C[0], m:TD.board.showCls ? 'cls' : 'all'};
   const draw = () => { $('#bvPrev').innerHTML = boardHtml(TD.board, BV.prev.c, BV.prev.m, '', 'BV.prev.m', 'drawPrev'); };
   window.drawPrev = draw;
-  openModal(`<h3 style="margin-top:0">👁 معاينة لوحة الشرف <button class="btn sm ghost" onclick="openBoardCfg()">↩ رجوع إلى الإعدادات</button></h3><div class="rf-row" style="margin-bottom:8px"><span class="rf-lbl">كما يراها طالب في شعبة:</span><div class="rf-chips">${C.map(c => `<button class="rf-chip" onclick="BV.prev.c=${A(c)};drawPrev();$$('.bvc').forEach(x=>x.classList.toggle('on',x.textContent===${A(c)}))" >${esc(c)}</button>`).join('').replace(/class="rf-chip"/g, 'class="rf-chip bvc"')}</div></div><div id="bvPrev"></div>`);
+  openModal(`<h3 style="margin-top:0">👁 معاينة لوحة الشرف <button class="btn sm" onclick="boardPdf()">⬇ تحميل PDF</button> <button class="btn sm ghost" onclick="openBoardCfg()">↩ رجوع إلى الإعدادات</button></h3><div class="rf-row" style="margin-bottom:8px"><span class="rf-lbl">كما يراها طالب في شعبة:</span><div class="rf-chips">${C.map(c => `<button class="rf-chip" onclick="BV.prev.c=${A(c)};drawPrev();$$('.bvc').forEach(x=>x.classList.toggle('on',x.textContent===${A(c)}))" >${esc(c)}</button>`).join('').replace(/class="rf-chip"/g, 'class="rf-chip bvc"')}</div></div><div id="bvPrev"></div>`);
   draw(); $$('.bvc').forEach(x => x.classList.toggle('on', x.textContent === BV.prev.c));
 }
 const BV = {m:'cls', prev:null};
+/* تحميل اللوحة PDF: تُفتح نافذة الطباعة، وفيها «حفظ بصيغة PDF» */
+function boardPdf() {
+  const P = BV.prev; if (!P) return;
+  const t0 = document.title, nm = 'لوحة الشرف - ' + (P.m === 'all' ? 'كل شعب ' + gradeName(gradeOf(P.c)) : 'شعبة ' + P.c);
+  document.title = nm;
+  printHtml(`<div class="hb-print">${boardHtml(TD.board, P.c, P.m, '', 'BV.prev.m', 'drawPrev')}</div>`);
+  const back = () => { document.title = t0; window.removeEventListener('afterprint', back); };
+  window.addEventListener('afterprint', back); setTimeout(back, 60000);
+  toast('اختر «حفظ بصيغة PDF» من نافذة الطباعة', 6000);
+}
 /* يرسم اللوحة: d = بيانات اللوحة، c = شعبة الطالب، m = cls|all */
 function boardHtml(d, c, m, meUid, mVar, redraw) {
   if (!d || !d.on) return '';
