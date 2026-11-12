@@ -749,7 +749,7 @@ html[data-mode=dark] .modal{background:rgba(0,0,0,.62)}
       <button onclick="chooseRole('pstudent')"><span>🌟</span>حساب خاص</button>
     </div>
     <p style="font-size:19px;color:var(--muted)">«الحساب الخاص» لمن لا يستخدم معلّمه المنصة: تدرس فيه أي درس تريده، وتنضم إلى صف معلمك لاحقًا إن أردت.</p>
-    <button class="linkbtn" onclick="showScreen('scrRole')">→ رجوع</button>
+    <button class="linkbtn" onclick="navBack(() => showScreen('scrRole'))">→ رجوع</button>
   </div>
 </section>
 
@@ -771,7 +771,7 @@ html[data-mode=dark] .modal{background:rgba(0,0,0,.62)}
       <button class="linkbtn" onclick="forgotPass()">نسيت كلمة المرور؟</button>
     </div>
     <p style="font-size:19px;color:var(--muted);margin-bottom:0" id="lgHint"></p>
-    <button class="linkbtn" onclick="loginBack()">→ رجوع</button>
+    <button class="linkbtn" onclick="navBack(loginBack)">→ رجوع</button>
   </div>
 </section>
 
@@ -835,7 +835,7 @@ html[data-mode=dark] .modal{background:rgba(0,0,0,.62)}
 </section>
 
 <section id="scrHome" hidden>
-  <div class="topbar"><div class="wrap"><h1>🏫 صفّي</h1><div class="row"><button id="homeWho" class="hbtn who" onclick="openProfile()" title="صفحتي: البريد والمدرسة"></button><button class="hbtn bellbtn" onclick="openBell()" title="الإشعارات">🔔<span class="dot bell-dot" hidden></span></button><button class="hbtn modebtn" onclick="toggleMode()" title="الوضع الليلي">🌙</button><button class="hbtn instbtn" onclick="installApp()" title="اجعلني على سطح المكتب" hidden>📲<span class="hl"> اجعلني على سطح المكتب</span></button><button class="hbtn fbbtn" onclick="openFeedback()" title="أرسل ملاحظة">💬<span class="hl"> أرسل ملاحظة</span></button><button class="hbtn" onclick="showHub()" title="الرئيسية">🏠<span class="hl"> الرئيسية</span></button><button class="hbtn" onclick="doLogout()" title="خروج">🚪<span class="hl"> خروج</span></button></div></div></div>
+  <div class="topbar"><div class="wrap"><h1>🏫 صفّي</h1><div class="row"><button id="homeWho" class="hbtn who" onclick="openProfile()" title="صفحتي: البريد والمدرسة"></button><button class="hbtn bellbtn" onclick="openBell()" title="الإشعارات">🔔<span class="dot bell-dot" hidden></span></button><button class="hbtn modebtn" onclick="toggleMode()" title="الوضع الليلي">🌙</button><button class="hbtn instbtn" onclick="installApp()" title="اجعلني على سطح المكتب" hidden>📲<span class="hl"> اجعلني على سطح المكتب</span></button><button class="hbtn fbbtn" onclick="openFeedback()" title="أرسل ملاحظة">💬<span class="hl"> أرسل ملاحظة</span></button><button class="hbtn" onclick="navBack(showHub)" title="الرئيسية">🏠<span class="hl"> الرئيسية</span></button><button class="hbtn" onclick="doLogout()" title="خروج">🚪<span class="hl"> خروج</span></button></div></div></div>
   <div class="wrap">
     <h2 id="homeHello"></h2>
     <div class="row" style="margin:-4px 0 10px"><button class="btn sm alt" onclick="msgMyTeacher()">✉️ راسل معلّمك</button></div>
@@ -846,7 +846,7 @@ html[data-mode=dark] .modal{background:rgba(0,0,0,.62)}
 </section>
 
 <section id="scrPriv" hidden>
-  <div class="topbar"><div class="wrap"><h1>🌟 مساحتي الخاصة</h1><div class="row"><button id="pvWho" class="hbtn who" onclick="openProfile()" title="صفحتي: البريد والمدرسة"></button><button class="hbtn bellbtn" onclick="openBell()" title="الإشعارات">🔔<span class="dot bell-dot" hidden></span></button><button class="hbtn modebtn" onclick="toggleMode()" title="الوضع الليلي">🌙</button><button class="hbtn instbtn" onclick="installApp()" title="اجعلني على سطح المكتب" hidden>📲<span class="hl"> اجعلني على سطح المكتب</span></button><button class="hbtn fbbtn" onclick="openFeedback()" title="أرسل ملاحظة">💬<span class="hl"> أرسل ملاحظة</span></button><button class="hbtn" id="pvHub" onclick="showHub()" title="الرئيسية">🏠<span class="hl"> الرئيسية</span></button><button class="hbtn" onclick="doLogout()" title="خروج">🚪<span class="hl"> خروج</span></button></div></div></div>
+  <div class="topbar"><div class="wrap"><h1>🌟 مساحتي الخاصة</h1><div class="row"><button id="pvWho" class="hbtn who" onclick="openProfile()" title="صفحتي: البريد والمدرسة"></button><button class="hbtn bellbtn" onclick="openBell()" title="الإشعارات">🔔<span class="dot bell-dot" hidden></span></button><button class="hbtn modebtn" onclick="toggleMode()" title="الوضع الليلي">🌙</button><button class="hbtn instbtn" onclick="installApp()" title="اجعلني على سطح المكتب" hidden>📲<span class="hl"> اجعلني على سطح المكتب</span></button><button class="hbtn fbbtn" onclick="openFeedback()" title="أرسل ملاحظة">💬<span class="hl"> أرسل ملاحظة</span></button><button class="hbtn" id="pvHub" onclick="navBack(showHub)" title="الرئيسية">🏠<span class="hl"> الرئيسية</span></button><button class="hbtn" onclick="doLogout()" title="خروج">🚪<span class="hl"> خروج</span></button></div></div></div>
   <div class="wrap">
     <h2 id="pvHello"></h2>
     <div class="warnbar" id="pvWarn" hidden></div>
@@ -1141,8 +1141,12 @@ const isPerm = e => String((e && (e.code || e.message)) || '').includes('permiss
 const errMsg = e => { const c = (e && (e.code || e.message)) || ''; return c.includes('permission') ? 'لا تملك صلاحية (قد تكون قواعد الحماية قديمة).' : c.includes('unavailable') || c.includes('network') ? 'لا يوجد اتصال بالإنترنت.' : c; };
 const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
 const uidGen = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
-function closeModal() { $('#modalRoot').innerHTML = ''; }
-function openModal(html) { $('#modalRoot').innerHTML = `<div class="modal" onclick="if(event.target===this)closeModal()"><div class="box"><button class="btn sm ghost x" onclick="closeModal()">✕</button>${html}</div></div>`; }
+function closeModal(fromNav) {
+  const had = !!$('#modalRoot .modal'); $('#modalRoot').innerHTML = '';
+  if (had && fromNav !== true && !NAV.sup && history.state && history.state.ist === 'modal')
+    setTimeout(() => { if (!$('#modalRoot .modal') && history.state && history.state.ist === 'modal') { NAV.skip++; history.back(); } }, 0);
+}
+function openModal(html) { if (!$('#modalRoot .modal')) navPush('modal'); $('#modalRoot').innerHTML = `<div class="modal" onclick="if(event.target===this)closeModal()"><div class="box"><button class="btn sm ghost x" onclick="closeModal()">✕</button>${html}</div></div>`; }
 
 /* ================= الإعدادات العامة ================= */
 const DOMAIN = 'iste3dad-students.com';
@@ -1170,7 +1174,40 @@ const termName = t => t ? 'الفصل ' + ORD[t] : 'الفصلان معًا';
 const unitName = u => u ? 'الباب ' + ORD[u] : 'البابان معًا';
 const byLessonOrder = (a, b) => (a.term || 1) - (b.term || 1) || (a.unit || 1) - (b.unit || 1) || (a.order ?? 999) - (b.order ?? 999) || (a.title || '').localeCompare(b.title || '', 'ar');
 
+/* ================= زر الرجوع في المتصفح والجوال =================
+   كل انتقال إلى الأمام (شاشة، تبويب، نافذة) يُسجَّل في سجل المتصفح، فيعمل زر الرجوع مثل أزرار «رجوع» في الصفحة. */
+const NAV = {sup:0, skip:0, tabs:[]};
+const ENTRY = ['scrLoading', 'scrLogin', 'scrSignup', 'scrPSignup', 'scrVerify'];   /* الوصول منها إلى الحساب لا يُسجَّل */
+const curScreen = () => ['scrSetup', 'scrRole', 'scrStuChoice', 'scrLogin', 'scrSignup', 'scrPSignup', 'scrVerify', 'scrHub', 'scrHome', 'scrPriv', 'scrPlayer', 'scrTeacher'].find(s => { const e = $('#' + s); return e && !e.hidden; }) || '';
+function navPush(k) { if (NAV.sup) return; try { history.pushState({ist:k, n:((history.state && history.state.n) || 0) + 1}, ''); } catch (e) {} }
+/* رجوع من زر في الصفحة: ينفّذ الرجوع ويحذف خطوة من سجل المتصفح حتى يبقيا متطابقين */
+async function navBack(fn) {
+  if (history.state && history.state.ist) { NAV.skip++; history.back(); }
+  NAV.sup++; try { await fn(); } finally { NAV.sup--; }
+}
+function backAction() {
+  if ($('#modalRoot .modal')) { closeModal(true); return true; }
+  const c = curScreen();
+  if (c === 'scrPlayer') { leaveLesson(true); return true; }
+  if ((c === 'scrHome' || c === 'scrPriv') && ME && ME.cuid) { showHub(); return true; }
+  if (c === 'scrTeacher' && NAV.tabs.length) { tTab(NAV.tabs.pop()); return true; }
+  if (c === 'scrLogin') { loginBack(); return true; }
+  if (c === 'scrStuChoice') { showScreen('scrRole'); return true; }
+  if (c === 'scrSignup') { chooseRole('teacher'); return true; }
+  if (c === 'scrPSignup') { chooseRole('pstudent'); return true; }
+  return false;
+}
+window.addEventListener('popstate', () => {
+  if (NAV.skip) { NAV.skip--; return; }
+  NAV.sup++;
+  let done = false; try { done = backAction(); } finally { NAV.sup--; }
+  /* لا رجوع داخل المنصة (الصفحة الرئيسية): يخرج من المنصة كما في أي موقع */
+  if (!done) { const n = ((history.state && history.state.n) || 0) + 1; NAV.skip++; history.go(-n); setTimeout(() => { NAV.skip = 0; }, 1500); }
+});
+
 function showScreen(id) {
+  const prev = curScreen();
+  if (id !== prev && prev && !ENTRY.includes(prev) && id !== 'scrRole') navPush(id);
   ['scrLoading', 'scrSetup', 'scrRole', 'scrStuChoice', 'scrLogin', 'scrSignup', 'scrPSignup', 'scrVerify', 'scrHub', 'scrHome', 'scrPriv', 'scrPlayer', 'scrTeacher', 'scrGame'].forEach(s => { const e = $('#' + s); if (e) e.hidden = s !== id; });
   window.scrollTo(0, 0);
 }
@@ -1668,14 +1705,16 @@ async function openLesson(id, mode) {
   $('#plTitle').textContent = (l.icon || '📘') + ' ' + l.title;
   $('#plPrev').hidden = mode !== 'preview';
   $('#plWho').textContent = mode === 'student' ? '👤 ' + (ME.cname || ME.name) : mode === 'private' ? '🌟 ' + ME.name + ' · مساحتي الخاصة' : '';
-  const fr = $('#plFrame'); fr.srcdoc = '';
+  killFrame();
   try {
     const pget = !learner || l.tracked === false ? null : (mode === 'student' ? ME.capi.get('progress', ME.cuid + '_' + id) : API.get('pprogress', ME.uid + '_' + id)).then(d => d ? JSON.parse(d.s || 'null') : null).catch(() => null);
     const [html, state] = await Promise.all([getLessonHtml(l), pget]);
     if (!html) { toast('ملف الدرس غير موجود'); leaveLesson(); return; }
     PL = {lesson:l, mode, state, ready:false};
-    fr.onload = () => { $('#plLoad').hidden = true; };
-    fr.srcdoc = fixLessonHtml(html);
+    /* إطار جديد يُكتب فيه الدرس قبل إضافته للصفحة، فلا يضيف خطوة إلى سجل المتصفح */
+    const old = $('#plFrame'), fr = old.cloneNode(false); fr.removeAttribute('src');
+    fr.setAttribute('srcdoc', fixLessonHtml(html)); fr.onload = () => { $('#plLoad').hidden = true; };
+    old.replaceWith(fr);
   } catch (e) { console.error(e); toast('تعذّر فتح الدرس: ' + errMsg(e)); leaveLesson(); }
 }
 function postToLesson(m) { try { $('#plFrame').contentWindow.postMessage(Object.assign({iste:''}, m), '*'); } catch (e) {} }
@@ -1689,10 +1728,13 @@ function killFrame() {
   const old = $('#plFrame'); if (!old) return;
   try { old.contentWindow.postMessage({iste:'stop'}, '*'); } catch (e) {}
   const n = old.cloneNode(false); n.removeAttribute('srcdoc'); n.removeAttribute('src'); n.className = '';
-  try { old.srcdoc = ''; old.src = 'about:blank'; } catch (e) {}
   old.replaceWith(n);
 }
-async function leaveLesson() {
+async function leaveLesson(fromNav) {
+  if (fromNav !== true && !NAV.sup) return navBack(() => leaveLesson(true));
+  NAV.sup++; try { await leaveLesson2(); } finally { NAV.sup--; }
+}
+async function leaveLesson2() {
   await flushProgress();
   const m = PL && PL.mode; PL = null; killFrame(); document.body.classList.remove('fsx-on'); plFull(false);
   if (ME && ME.role !== 'student') showScreen('scrTeacher');
@@ -1807,6 +1849,8 @@ async function loadTeacherData() {
 }
 function tTab(t) {
   if (!$('#tv-' + t) || ($('#tTabs button[data-t="' + t + '"]') || {}).hidden) t = isAdmin() ? 'curriculum' : 'lessons';
+  const was = ($('#tTabs button.on') || {}).dataset ? $('#tTabs button.on').dataset.t : '';
+  if (was && was !== t && !$('#scrTeacher').hidden && !NAV.sup) { NAV.tabs.push(was); navPush('tab'); }
   LS.set('iste3dad-ttab', t);
   $$('#tTabs button').forEach(b => b.classList.toggle('on', b.dataset.t === t));
   $$('.tview').forEach(v => v.hidden = v.id !== 'tv-' + t);
