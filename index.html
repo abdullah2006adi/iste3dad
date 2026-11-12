@@ -15,7 +15,7 @@
 <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Baloo+Bhaijaan+2:wght@400..800&family=Changa:wght@400..700&family=El+Messiri:wght@400..700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Lalezar&family=Readex+Pro:wght@400..700&family=Reem+Kufi:wght@400..700&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Baloo+Bhaijaan+2:wght@400..800&family=Changa:wght@400..700&family=El+Messiri:wght@400..700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Lalezar&family=Noto+Naskh+Arabic:wght@600;700&family=Readex+Pro:wght@400..700&family=Reem+Kufi:wght@400..700&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
 <script>(function(){try{var d=document.documentElement,m=localStorage.getItem("iste3dad-mode"),t=localStorage.getItem("iste3dad-theme");d.dataset.mode=m?JSON.parse(m):(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");d.dataset.theme=t?JSON.parse(t):"diwan";}catch(e){document.documentElement.dataset.theme="diwan";document.documentElement.dataset.mode="light";}})();</script>
 <style>
 :root{
@@ -241,12 +241,13 @@ input.phone.saved{border-color:var(--green);background:var(--tint)}
 /* شاشة البداية والعبارة أسفل الصفحة */
 #splash{position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:34px;padding:20px;background:linear-gradient(160deg,var(--sp1,#1b2540),var(--sp2,#25345a));font-family:var(--font-head);color:#fff;transition:opacity .35s}
 #splash.out{opacity:0;pointer-events:none}
-#splash .sp-txt{font-size:clamp(34px,7.5vw,58px);font-weight:800;line-height:1.75;text-align:center;text-shadow:0 3px 12px rgba(0,0,0,.25)}
+#splash .sp-txt{font-family:'Noto Naskh Arabic',var(--font-head),serif;font-size:clamp(34px,7.5vw,58px);font-weight:700;line-height:1.75;text-align:center;text-shadow:0 3px 12px rgba(0,0,0,.25)}
 #splash .sp-bar{width:min(340px,72vw);height:14px;border-radius:99px;background:rgba(255,255,255,.25);overflow:hidden;box-shadow:inset 0 1px 3px rgba(0,0,0,.2)}
 #splash .sp-bar i{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,#fde047,#fff);animation:spfill 3s linear forwards}
 @keyframes spfill{to{width:100%}}
 .site-foot{text-align:center;padding:34px 16px 40px;color:var(--teal);font-weight:700;font-size:25px;line-height:1.8;opacity:.85}
 @media print{.site-foot,#splash{display:none!important}}
+html .site-foot{font-family:'Noto Naskh Arabic',var(--font-head),serif!important;font-weight:700!important}
 /* الإشعارات والتحديد */
 .hbtn.bellbtn{position:relative;font-size:22px;padding:2px 12px}
 .hbtn.bellbtn .bell-dot{position:absolute;top:-7px;inset-inline-end:-7px;margin:0;background:#dc2626;color:#fff;font-size:14px;font-weight:800;line-height:20px;min-width:20px;height:20px;padding:0 5px;border-radius:99px;text-align:center;box-shadow:0 0 0 2px #fff;vertical-align:baseline}
