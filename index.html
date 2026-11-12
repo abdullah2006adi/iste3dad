@@ -431,6 +431,60 @@ html[data-theme=diwan] body::before{content:"";position:fixed;inset:0;z-index:-1
 html[data-theme=diwan] .login-card{border-radius:24px;border-top:3px solid #b38b4d}
 html[data-theme=diwan] .role-btns button{background:var(--surface);color:var(--teal);border-color:var(--line);box-shadow:var(--sh1)}
 html[data-theme=diwan] .role-btns button:hover{border-color:#b38b4d;background:var(--warm)}
+/* ===== ديوان: جداول وقوائم دافئة أنيقة (حساب المعلم والمدير) ===== */
+html[data-theme=diwan] .tbl-scroll{border-radius:18px;border:1px solid #e3d7bf;background:var(--surface);box-shadow:0 1px 0 rgba(179,139,77,.25),0 14px 34px -22px rgba(27,37,64,.45)}
+html[data-theme=diwan] .tbl-scroll>table{border-collapse:separate;border-spacing:0;background:transparent}
+html[data-theme=diwan] .tbl-scroll th{background:linear-gradient(180deg,#24335a,#1b2540);color:#f3e7d3;font-family:var(--font-head);font-weight:600;font-size:19px;border:0;border-bottom:3px solid #c9a46a;padding:10px 10px;white-space:nowrap}
+html[data-theme=diwan] .tbl-scroll th:first-child{border-start-start-radius:17px}
+html[data-theme=diwan] .tbl-scroll th:last-child{border-start-end-radius:17px}
+html[data-theme=diwan] .tbl-scroll th input{accent-color:#c9a46a}
+html[data-theme=diwan] .tbl-scroll td{border:0;border-bottom:1px solid #efe6d4;padding:9px 10px;transition:background-color .15s}
+html[data-theme=diwan] .tbl-scroll tr:last-child>td{border-bottom:0}
+html[data-theme=diwan] .tbl-scroll tr:not([style]):nth-child(odd)>td{background:#fcf9f2}
+html[data-theme=diwan] .tbl-scroll tr:not([style]):hover>td{background:#eef5f0}
+html[data-theme=diwan] .tbl-scroll tr:hover>td:first-child{box-shadow:inset -4px 0 0 #b38b4d}
+html[data-theme=diwan] .tbl-scroll td:nth-child(2){min-width:150px}
+html[data-theme=diwan] .tbl-scroll td:first-child{color:#9a8a6a;font-weight:700;font-size:17px;text-align:center}
+html[data-theme=diwan] .tbl-scroll tr.nosub>td{color:#9b958a;background:repeating-linear-gradient(135deg,transparent 0 10px,rgba(179,139,77,.05) 10px 20px) !important}
+html[data-theme=diwan] .tbl-scroll tr.nosub>td:nth-child(4){font-style:italic}
+html[data-theme=diwan] .tbl-scroll tr[data-g="بنات"]:not([style]):nth-child(n)>td{background:#fde4ee}
+html[data-theme=diwan] .tbl-scroll tr[data-g="بنات"]:not([style]):nth-child(n):hover>td{background:#fbd3e3}
+html[data-theme=diwan] .tbl-scroll tr.picked:not([style]):nth-child(n)>td{background:var(--orange-l)}
+html[data-theme=diwan] .lvl{border-radius:999px;padding:1px 12px;box-shadow:inset 0 0 0 1px currentColor}
+/* بطاقات الإحصاء */
+html[data-theme=diwan] .stats{gap:14px}
+html[data-theme=diwan] .stat{position:relative;overflow:hidden;border:1px solid #e3d7bf;border-radius:20px;padding:14px 10px 12px;background:linear-gradient(180deg,var(--surface),#fbf7ee);box-shadow:0 10px 26px -18px rgba(27,37,64,.5)}
+html[data-theme=diwan] .stat::before{content:"";position:absolute;inset:0 0 auto 0;height:5px;background:var(--acc,#1b2540)}
+html[data-theme=diwan] .stat b{font-family:var(--font-head);font-size:40px;line-height:1.2}
+html[data-theme=diwan] .stat:nth-child(1){--acc:linear-gradient(90deg,#1b2540,#3a4d7f)}
+html[data-theme=diwan] .stat:nth-child(2){--acc:linear-gradient(90deg,#3f7a62,#6fb08f)}
+html[data-theme=diwan] .stat:nth-child(3){--acc:linear-gradient(90deg,#b07a2a,#e0b25c)}
+html[data-theme=diwan] .stat:nth-child(4){--acc:linear-gradient(90deg,#c9a46a,#f0d9a8)}
+html[data-theme=diwan] .stat:nth-child(5){--acc:linear-gradient(90deg,#a63a3a,#d76b6b)}
+html[data-theme=diwan] .stat.click:hover{transform:translateY(-3px);box-shadow:0 16px 30px -18px rgba(27,37,64,.6)}
+html[data-theme=diwan] .stat.on{outline:0;background:linear-gradient(180deg,#f3ead8,#fbf7ee);box-shadow:inset 0 0 0 2px #b38b4d,0 12px 26px -16px rgba(179,139,77,.7)}
+/* أزرار التصفية */
+html[data-theme=diwan] .rf-chip{border:1.5px solid #e1d3b5;background:#fdfaf3;color:#1b2540;font-weight:600;transition:all .15s}
+html[data-theme=diwan] .rf-chip:hover{border-color:#b38b4d}
+html[data-theme=diwan] .rf-chip.on{background:linear-gradient(180deg,#24335a,#1b2540);border-color:#1b2540;color:#f3e7d3;box-shadow:inset 0 -3px 0 #c9a46a}
+html[data-theme=diwan] .rf-lbl{font-family:var(--font-head);color:#1b2540}
+html[data-theme=diwan] .card{border:1px solid #ebe1cc;box-shadow:0 1px 0 rgba(179,139,77,.18),0 16px 40px -28px rgba(27,37,64,.45)}
+html[data-theme=diwan] .card>h3:first-child{display:flex;align-items:center;gap:8px}
+html[data-theme=diwan] .card>h3:first-child::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,transparent,#d9c39a)}
+/* الوضع الليلي */
+html[data-theme=diwan][data-mode=dark] .tbl-scroll{border-color:#2a3550;box-shadow:0 14px 34px -22px rgba(0,0,0,.8)}
+html[data-theme=diwan][data-mode=dark] .tbl-scroll th{background:linear-gradient(180deg,#1f2a44,#141b2c);color:#e8d6b0}
+html[data-theme=diwan][data-mode=dark] .tbl-scroll td{border-bottom-color:#232c40}
+html[data-theme=diwan][data-mode=dark] .tbl-scroll tr:not([style]):nth-child(odd)>td{background:#1a2132}
+html[data-theme=diwan][data-mode=dark] .tbl-scroll tr:not([style]):hover>td{background:#1e2c2a}
+html[data-theme=diwan][data-mode=dark] .tbl-scroll tr[data-g="بنات"]:not([style]):nth-child(n)>td{background:rgba(236,72,153,.17)}
+html[data-theme=diwan][data-mode=dark] .tbl-scroll tr.nosub>td{color:#7f8698}
+html[data-theme=diwan][data-mode=dark] .stat{border-color:#2a3550;background:linear-gradient(180deg,#1a2132,#151b2a)}
+html[data-theme=diwan][data-mode=dark] .stat.on{background:linear-gradient(180deg,#262b33,#1a2132)}
+html[data-theme=diwan][data-mode=dark] .rf-chip{background:#1a2132;border-color:#2f3a55;color:#e3e8f2}
+html[data-theme=diwan][data-mode=dark] .rf-chip.on{background:#c9a46a;border-color:#c9a46a;color:#121827;box-shadow:none}
+html[data-theme=diwan][data-mode=dark] .rf-lbl{color:#e8d6b0}
+html[data-theme=diwan][data-mode=dark] .card{border-color:#262f45}
 html[data-theme=diwan][data-mode=dark]{--bg:#0f1420;--card:#171e2d;--surface:#171e2d;--surface-2:#1c2436;--tint:#1d2a2a;--warm:#2a2418;--danger-tint:#2d1a1a;--input-bg:#121827;
   --ink:#e6e9f0;--muted:#9aa3b5;--line:#2a3449;--teal:#e7d3ae;--green:#5c9c80;--green-l:#1d3329;--orange:#c99a5c;--orange-l:#33281a;--blue:#7ea6e0;--blue-l:#1b2840;
   --gold:#c9a46a;--gold-l:#2e2717;--red:#e07a70;--red-l:#3a1f1d;--top-a:#0b101b;--top-b:#16203a;--lip:#0a0f18;
