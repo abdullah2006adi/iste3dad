@@ -307,9 +307,13 @@ html[data-theme=sky] .gchip{border:0} html[data-theme=sky] .gchip.on{background:
 .fb-img img{max-height:90px;max-width:140px;border-radius:10px;border:1px solid var(--line)}
 .fbitem .fbpic{display:block;margin:6px 0;max-width:min(100%,360px);max-height:260px;border-radius:12px;border:1px solid var(--line);cursor:zoom-in}
 .spamw{color:#c62828;font-weight:800}
-/* ===== لوحة الشرف ===== */
+/* ===== قائمة التميّز ===== */
 #tTabs button.hbgold{background:linear-gradient(180deg,#fbe38a,#c9971f)!important;color:#2a1c04!important;border-color:#b8862b!important;font-weight:800;box-shadow:0 3px 10px rgba(201,151,31,.35)}
 #scrTeacher .wrap{max-width:none;padding-inline:clamp(10px,2vw,28px)}
+.adm-stats{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin:2px 0 10px}
+.adm-stats .as-pill{display:flex;align-items:center;gap:10px;padding:8px 20px;border-radius:999px;background:linear-gradient(180deg,#24335a,#1b2540);color:#f3e7d3;box-shadow:inset 0 -3px 0 #c9a46a,0 8px 20px -12px rgba(27,37,64,.7);font-weight:700}
+.adm-stats .as-pill b{font-family:var(--font-head);font-size:30px;color:#f2d38a;line-height:1.1}
+.adm-stats .as-pill small{opacity:.8;font-weight:500}
 .hb{position:relative;margin:6px 0 20px;padding:24px clamp(10px,3vw,24px) 20px;border-radius:28px;color:#f6ecd4;overflow:hidden;isolation:isolate;
   background:radial-gradient(90% 60% at 50% 0%,rgba(242,201,76,.22),transparent 70%),radial-gradient(120% 90% at 50% 10%,#2c2142 0%,#17111f 58%,#0c0912 100%);
   box-shadow:0 22px 50px rgba(18,8,36,.45)}
@@ -361,6 +365,21 @@ html[data-theme=sky] .gchip{border:0} html[data-theme=sky] .gchip.on{background:
 .hb-row .sc,.hb-fourth .sc{font-weight:800;font-size:18px;color:#fbe38a;white-space:nowrap}
 .hb .me{outline:2.5px solid #7ef0c6;outline-offset:3px;border-radius:16px}
 .hb .youtag{display:inline-block;margin-inline-start:6px;padding:0 8px;border-radius:999px;font-size:13px;font-weight:800;color:#062a20;background:#7ef0c6;vertical-align:middle}
+.hb-champ{margin:22px auto 6px;max-width:560px;display:flex;flex-direction:column;align-items:center;text-align:center;padding:4px 10px 16px;border-radius:24px;
+  background:radial-gradient(closest-side,rgba(242,201,76,.18),transparent)}
+.hb-champ .medal{width:clamp(96px,24vw,124px);font-size:clamp(42px,10vw,56px);color:#4a3105;background:conic-gradient(from 210deg,#fff6c2,#f2c94c,#a87512,#ffe680,#d4a017,#fff6c2);
+  box-shadow:0 0 0 4px rgba(242,201,76,.25),0 0 38px rgba(242,201,76,.55),0 10px 24px rgba(0,0,0,.55),inset 0 3px 5px rgba(255,255,255,.8),inset 0 -8px 12px rgba(120,70,0,.35)}
+.champ-names{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 10px;margin-top:14px}
+.champ-nm{padding:5px 16px;border-radius:999px;font-weight:800;font-size:clamp(17px,4.4vw,21px);color:#fff3c4;background:linear-gradient(180deg,rgba(242,201,76,.22),rgba(242,201,76,.08));border:1.5px solid rgba(243,215,122,.55)}
+.champ-nm .cl{font-size:14px;font-weight:600;color:#d9c79e}
+.hb-champ .pd-score{background:linear-gradient(180deg,#fff1ad,#e1b02c);color:#3b2703;border:0;box-shadow:0 4px 14px rgba(242,201,76,.4);margin-top:12px}
+.champ-note{margin-top:8px;font-size:15px;color:#e8d6a6}
+.hb-row.r2{background:linear-gradient(100deg,rgba(226,232,240,.20),rgba(148,163,184,.08));border:1.5px solid rgba(214,222,232,.55)}
+.hb-row.r2 .rk{background:conic-gradient(from 210deg,#ffffff,#d5dce4,#8a96a3,#f4f7fa,#a6b1bd,#ffffff);border:0;font-size:19px}
+.hb-row.r2 .nm{color:#f1f5f9}.hb-row.r2 .sc{color:#e2e8f0}.hb-row.r2 .hb-bar i{background:linear-gradient(90deg,#8a96a3,#f4f7fa)}
+.hb-row.r3{background:linear-gradient(100deg,rgba(240,178,122,.20),rgba(169,95,39,.08));border:1.5px solid rgba(232,165,105,.55)}
+.hb-row.r3 .rk{background:conic-gradient(from 210deg,#ffe0bd,#d08a45,#7f4317,#f2b47c,#a95f27,#ffe0bd);border:0;font-size:19px}
+.hb-row.r3 .nm{color:#ffe4cc}.hb-row.r3 .sc{color:#f6c193}.hb-row.r3 .hb-bar i{background:linear-gradient(90deg,#a95f27,#f2b47c)}
 .hb-empty{text-align:center;color:#cdbf9f;padding:18px 6px}
 .hb-foot{text-align:center;color:#9d927b;font-size:14px;margin-top:12px}
 #printArea{display:none}
@@ -847,6 +866,7 @@ html[data-mode=dark] .modal{background:rgba(0,0,0,.62)}
   <div class="topbar"><div class="wrap"><h1><img src="icon-180.png" alt="" class="tlogo"> <span id="tHead">استعداد · لوحة المعلم</span></h1><div class="row"><button id="tWho" class="hbtn who" onclick="openProfile()" title="صفحتي: البريد والمدرسة"></button><button class="hbtn bellbtn" onclick="openBell()" title="الإشعارات">🔔<span class="dot bell-dot" hidden></span></button><button class="hbtn modebtn" onclick="toggleMode()" title="الوضع الليلي">🌙</button><button class="hbtn instbtn" onclick="installApp()" title="اجعلني على سطح المكتب" hidden>📲<span class="hl"> اجعلني على سطح المكتب</span></button><button class="hbtn fbbtn" onclick="openFeedback()" title="أرسل ملاحظة">💬<span class="hl"> أرسل ملاحظة</span></button><button class="hbtn" onclick="doLogout()" title="خروج">🚪<span class="hl"> خروج</span></button></div></div></div>
   <div class="wrap">
     <div class="warnbar" id="rulesWarn" hidden>⚠️ قواعد الحماية في Firebase قديمة. افتح تبويب «⚙️ الإعداد»، وانسخ القواعد الجديدة، والصقها في Firebase ← Firestore ← Rules، ثم اضغط Publish وحدّث الصفحة.</div>
+    <div class="adm-stats adminOnly" id="admStats" hidden></div>
     <div class="subtabs" id="tTabs">
       <button data-t="teachers" class="adminOnly" onclick="tTab('teachers')" hidden>🏫 المعلمون</button>
       <button data-t="curriculum" class="adminOnly" onclick="tTab('curriculum')" hidden>🗂️ المنهج</button>
@@ -858,7 +878,7 @@ html[data-mode=dark] .modal{background:rgba(0,0,0,.62)}
       <button data-t="lessons" onclick="tTab('lessons')">📚 الدروس</button>
       <button data-t="students" onclick="tTab('students')">👥 الطلاب والصفوف</button>
       <button data-t="setup" onclick="tTab('setup')">⚙️ الإعداد</button>
-      <button class="hbgold" onclick="openBoardCfg()" title="إعدادات لوحة الشرف التي يراها طلابك">🏆 لوحة الشرف</button>
+      <button class="hbgold" onclick="openBoardCfg()" title="إعدادات قائمة التميّز التي يراها طلابك">🏆 قائمة التميّز</button>
     </div>
     <div class="viewas" id="viewAs" hidden><span id="viewAsTxt"></span><button class="btn sm ghost" onclick="switchView(ME.uid)">↩ العودة إلى صفحتي</button></div>
 
@@ -921,6 +941,17 @@ html[data-mode=dark] .modal{background:rgba(0,0,0,.62)}
         <label class="sw"><input type="checkbox" id="apAll" onchange="setAutoAll(this.checked)"> اعتماد النتائج الخاصة تلقائيًا لجميع الطلاب</label>
         <div class="row" style="margin-top:8px"><label style="flex:1 1 220px">الشعبة<select id="pvCls" onchange="renderPrivTab()"></select></label></div>
         <div id="pvList" style="margin-top:8px"></div>
+      </div>
+      <div class="card adminOnly" hidden>
+        <div class="row" style="justify-content:space-between"><h3 style="margin:0">🔓 كل النتائج الخاصة في المنصة (للمدير)</h3><button class="btn sm" onclick="loadAllPriv()">🔄 تحديث</button></div>
+        <p style="margin:4px 0 8px">نتائج كل الطلاب في «مساحتهم الخاصة»، شاركوها أو لم يشاركوها. تظهر لك وحدك، ولا تظهر للمعلمين.</p>
+        <div class="row" style="gap:10px;align-items:flex-end">
+          <label style="flex:2 1 220px">بحث بالاسم أو البريد أو الدرس<input id="paQ" placeholder="اكتب جزءًا…" oninput="renderAllPriv()"></label>
+          <label style="flex:1 1 160px">الصف<select id="paG" onchange="renderAllPriv()"></select></label>
+          <label style="flex:1 1 160px">الترتيب<select id="paS" onchange="renderAllPriv()"><option value="date">الأحدث</option><option value="name">الأبجدي</option><option value="score">الدرجة الأعلى</option></select></label>
+        </div>
+        <div id="paStat" style="margin:8px 0;font-weight:700"></div>
+        <div class="tbl-scroll" id="paTable"></div>
       </div>
     </div>
 
@@ -1772,6 +1803,7 @@ async function loadTeacherData() {
   fillResultLessons(); renderStudents(); renderSetupTab(); renderShowTab();
   await loadResults();
   loadBoard(true);
+  loadAdminTotals();
 }
 function tTab(t) {
   if (!$('#tv-' + t) || ($('#tTabs button[data-t="' + t + '"]') || {}).hidden) t = isAdmin() ? 'curriculum' : 'lessons';
@@ -1780,7 +1812,7 @@ function tTab(t) {
   $$('.tview').forEach(v => v.hidden = v.id !== 'tv-' + t);
   if (t === 'curriculum') renderCurriculum();
   if (t === 'lessons') renderShowTab();
-  if (t === 'private') renderPrivTab();
+  if (t === 'private') { renderPrivTab(); if (isAdmin()) loadAllPriv(); }
   if (t === 'feedback') loadFeedback();
   if (t === 'allst' || t === 'schools') loadAllStudents();
   if (t === 'setup') { renderMySchool(); renderArchive(); }
@@ -1913,7 +1945,54 @@ function renderResults() {
         <td><div class="row" style="gap:4px;flex-wrap:nowrap">${r.sent ? waBtn(r.s) : ''}<button class="btn sm ghost" onclick="showDetails(${A(r.s.uid)})">تفاصيل</button></div></td></tr>`).join('') + '</table>';
   }
 }
-/* ================= لوحة الشرف ================= */
+/* ================= إحصاء المنصة وكل النتائج الخاصة (للمدير) ================= */
+function bestPairs(list) {
+  const m = new Map();
+  list.forEach(x => { if (!x || !x.uid || !x.lessonId) return; const k = x.uid + '|' + x.lessonId, v = +x.auto || 0; if (!m.has(k) || v > m.get(k).v) m.set(k, {v, x}); });
+  return m;
+}
+async function loadAdminTotals() {
+  const el = $('#admStats'); if (!el || !isAdmin()) return;
+  try {
+    const [sb, ps] = await Promise.all([API.where('submissions', {}), API.where('psubs', {})]);
+    const a = bestPairs(sb), b = bestPairs(ps);
+    const n = a.size + b.size, pts = [...a.values(), ...b.values()].reduce((t, o) => t + o.v, 0);
+    el.innerHTML = `<div class="as-pill">📚 الدروس المنجزة في المنصة <b>${n.toLocaleString('ar')}</b><small>(الصفوف ${a.size.toLocaleString('ar')} · الخاص ${b.size.toLocaleString('ar')})</small></div>
+      <div class="as-pill">⭐ مجموع الدرجات المحرزة <b>${pts.toLocaleString('ar')}</b></div>`;
+    el.title = 'يُحتسب كل درس مرة واحدة لكل طالب، بأفضل محاولاته.';
+  } catch (e) { console.error(e); }
+}
+const PA = {list:[], ac:{}};
+async function loadAllPriv() {
+  if (!isAdmin()) return;
+  $('#paTable').innerHTML = '<p>⏳ جارٍ التحميل…</p>';
+  try {
+    await loadCatalog();
+    const [ps, ac] = await Promise.all([API.where('psubs', {}), API.where('accounts', {})]);
+    PA.ac = {}; ac.forEach(a => PA.ac[a.id] = a);
+    const by = new Map();
+    ps.forEach(x => { const k = x.uid + '|' + x.lessonId; const o = by.get(k) || {uid:x.uid, lid:x.lessonId, n:0, best:null, last:0}; o.n++; if (!o.best || (+x.auto || 0) > (+o.best.auto || 0)) o.best = x; o.last = Math.max(o.last, +x.at || 0); by.set(k, o); });
+    PA.list = [...by.values()];
+    const G = [...new Set(PA.list.map(r => (catById(r.lid) || {}).grade).filter(Boolean))].sort((a, b) => gradeIdx(a) - gradeIdx(b));
+    const cur = $('#paG').value;
+    $('#paG').innerHTML = '<option value="">كل الصفوف</option>' + G.map(g => `<option value="${esc(g)}"${g === cur ? ' selected' : ''}>${esc(gradeName(g))}</option>`).join('');
+    renderAllPriv();
+  } catch (e) { console.error(e); $('#paTable').innerHTML = '<p>تعذّر التحميل: ' + esc(errMsg(e)) + '</p>'; }
+}
+function renderAllPriv() {
+  const q = ($('#paQ').value || '').trim(), g = $('#paG').value, srt = $('#paS').value;
+  let R = PA.list.map(r => { const a = PA.ac[r.uid] || {}, l = catById(r.lid) || {}; return Object.assign({}, r, {name:a.name || r.best.name || '—', email:a.email || '', l, sc:+r.best.auto || 0, max:+l.autoMax || 0}); });
+  if (g) R = R.filter(r => r.l.grade === g);
+  if (q) R = R.filter(r => (r.name + ' ' + r.email + ' ' + (r.l.title || '')).includes(q));
+  R.sort(srt === 'name' ? (a, b) => a.name.localeCompare(b.name, 'ar') || b.last - a.last : srt === 'score' ? (a, b) => (b.max ? b.sc / b.max : 0) - (a.max ? a.sc / a.max : 0) || b.sc - a.sc : (a, b) => b.last - a.last);
+  const st = new Set(R.map(r => r.uid)).size;
+  $('#paStat').textContent = R.length ? `${R.length} نتيجة · ${st} طالبًا · مجموع الدرجات ${R.reduce((t, r) => t + r.sc, 0)}` : '';
+  $('#paTable').innerHTML = !R.length ? '<p>لا توجد نتائج خاصة بعد.</p>' : `<table><tr><th>#</th><th>الطالب</th><th>البريد</th><th>الدرس</th><th>الصف</th><th>أفضل درجة</th><th>المحاولات</th><th>آخر محاولة</th></tr>` +
+    R.map((r, i) => `<tr><td>${i + 1}</td><td><b>${esc(r.name)}</b></td><td><code class="ltr" style="font-size:16px">${esc(r.email)}</code></td><td>${esc((r.l.icon || '') + ' ' + (r.l.title || 'درس محذوف'))}</td><td>${r.l.grade ? esc(gradeName(r.l.grade)) : '—'}</td>
+      <td><b>${r.sc}</b>${r.max ? ' / ' + r.max : ''}</td><td>${r.n}</td><td style="font-size:17px">${r.last ? esc(fmtDate(r.last)) : ''}</td></tr>`).join('') + '</table>';
+}
+
+/* ================= قائمة التميّز ================= */
 const BOARD_DEF = {on:false, showCls:true, showAll:true, n:10};
 const shortName = n => String(n || '').trim().split(/\s+/).slice(0, 2).join(' ');
 async function loadBoard(publish) {
@@ -1952,7 +2031,7 @@ async function publishBoard(silent) {
   try {
     if (b.on) Object.assign(data, await computeBoard(n));
     await API.set('board', TD.view, data); Object.assign(TD.board, data); renderBoardCard();
-    if (!silent) toast(b.on ? 'حُدّثت لوحة الشرف عند الطلاب ✓' : 'أُخفيت لوحة الشرف عن الطلاب');
+    if (!silent) toast(b.on ? 'حُدّثت قائمة التميّز عند الطلاب ✓' : 'أُخفيت قائمة التميّز عن الطلاب');
   } catch (e) { console.error(e); if (isPerm(e)) $('#rulesWarn').hidden = false; if (!silent) toast('تعذّر الحفظ: ' + errMsg(e)); }
 }
 function boardCfg(patch) {
@@ -1963,18 +2042,18 @@ function boardCfg(patch) {
 function renderBoardCard() {
   const el = $('#bdCard'); if (!el || !TD.board) return;
   const b = TD.board, n = +b.n || 10;
-  el.innerHTML = `<h3 style="margin-top:0">🏆 لوحة الشرف عند الطلاب</h3>
+  el.innerHTML = `<h3 style="margin-top:0">🏆 قائمة التميّز عند الطلاب</h3>
     <p style="margin-top:0;font-size:19px;color:var(--muted)">تظهر لطلابك في «🏫 صفّي» قائمةُ أعلاهم في <b>مجموع الدرجات</b> (مجموع أفضل درجة في كل درس ظاهر لشعبتهم). «كل الشعب» تجمع شعب الصف نفسه.</p>
-    <label class="sw"><input type="checkbox" ${b.on ? 'checked' : ''} onchange="boardCfg({on:this.checked})"> أظهر لوحة الشرف لطلابي</label>
+    <label class="sw"><input type="checkbox" ${b.on ? 'checked' : ''} onchange="boardCfg({on:this.checked})"> أظهر قائمة التميّز لطلابي</label>
     ${b.on ? `<div class="rf-row"><span class="rf-lbl">الأزرار عند الطالب:</span><div class="rf-chips">
         <button class="rf-chip${b.showCls ? ' on' : ''}" onclick="boardCfg({showCls:!TD.board.showCls})">🏫 المتميزون في الشعبة</button>
         <button class="rf-chip${b.showAll ? ' on' : ''}" onclick="boardCfg({showAll:!TD.board.showAll})">🌟 المتميزون في كل الشعب</button></div></div>
       <div class="rf-row"><span class="rf-lbl">عدد الطلاب في القائمة:</span><div class="rf-chips">
         ${[3, 5, 10, 20].map(k => `<button class="rf-chip${n === k ? ' on' : ''}" onclick="boardCfg({n:${k}})">أفضل ${k}</button>`).join('')}
         <label class="row" style="gap:4px;font-size:18px">عدد آخر: <input type="number" min="1" max="100" value="${n}" style="width:80px" onchange="boardCfg({n:Math.min(100,Math.max(1,+this.value||10))})"></label></div></div>
-      <div class="row" style="margin-top:10px"><button class="btn sm" onclick="publishBoard()">🔄 حدّث اللوحة الآن</button><button class="btn sm ghost" onclick="previewBoard()">👁 معاينة كما يراها الطالب</button>
+      <div class="row" style="margin-top:10px"><button class="btn sm" onclick="publishBoard()">🔄 حدّث القائمة الآن</button><button class="btn sm ghost" onclick="previewBoard()">👁 معاينة كما يراها الطالب</button>
         <span style="font-size:17px;color:var(--muted)">${b.updatedAt ? 'آخر تحديث: ' + esc(fmtDate(b.updatedAt)) : ''}</span></div>
-      <p style="font-size:17px;color:var(--muted);margin-bottom:0">تتحدّث اللوحة تلقائيًا كلما فتحت المنصة، وتستطيع تحديثها بالزر في أي وقت.</p>` : ''}`;
+      <p style="font-size:17px;color:var(--muted);margin-bottom:0">تتحدّث القائمة تلقائيًا كلما فتحت المنصة، وتستطيع تحديثها بالزر في أي وقت.</p>` : ''}`;
 }
 async function openBoardCfg() {
   openModal('<div id="bdCard"><p>⏳ …</p></div>');
@@ -1986,14 +2065,14 @@ function previewBoard() {
   BV.prev = {c:C[0], m:TD.board.showCls ? 'cls' : 'all'};
   const draw = () => { $('#bvPrev').innerHTML = boardHtml(TD.board, BV.prev.c, BV.prev.m, '', 'BV.prev.m', 'drawPrev'); };
   window.drawPrev = draw;
-  openModal(`<h3 style="margin-top:0">👁 معاينة لوحة الشرف <button class="btn sm" onclick="boardPdf()">⬇ تحميل PDF</button> <button class="btn sm ghost" onclick="openBoardCfg()">↩ رجوع إلى الإعدادات</button></h3><div class="rf-row" style="margin-bottom:8px"><span class="rf-lbl">كما يراها طالب في شعبة:</span><div class="rf-chips">${C.map(c => `<button class="rf-chip" onclick="BV.prev.c=${A(c)};drawPrev();$$('.bvc').forEach(x=>x.classList.toggle('on',x.textContent===${A(c)}))" >${esc(c)}</button>`).join('').replace(/class="rf-chip"/g, 'class="rf-chip bvc"')}</div></div><div id="bvPrev"></div>`);
+  openModal(`<h3 style="margin-top:0">👁 معاينة قائمة التميّز <button class="btn sm" onclick="boardPdf()">⬇ تحميل PDF</button> <button class="btn sm ghost" onclick="openBoardCfg()">↩ رجوع إلى الإعدادات</button></h3><div class="rf-row" style="margin-bottom:8px"><span class="rf-lbl">كما يراها طالب في شعبة:</span><div class="rf-chips">${C.map(c => `<button class="rf-chip" onclick="BV.prev.c=${A(c)};drawPrev();$$('.bvc').forEach(x=>x.classList.toggle('on',x.textContent===${A(c)}))" >${esc(c)}</button>`).join('').replace(/class="rf-chip"/g, 'class="rf-chip bvc"')}</div></div><div id="bvPrev"></div>`);
   draw(); $$('.bvc').forEach(x => x.classList.toggle('on', x.textContent === BV.prev.c));
 }
 const BV = {m:'cls', prev:null};
-/* تحميل اللوحة PDF: تُفتح نافذة الطباعة، وفيها «حفظ بصيغة PDF» */
+/* تحميل القائمة PDF: تُفتح نافذة الطباعة، وفيها «حفظ بصيغة PDF» */
 function boardPdf() {
   const P = BV.prev; if (!P) return;
-  const t0 = document.title, nm = 'لوحة الشرف - ' + (P.m === 'all' ? 'كل شعب ' + gradeName(gradeOf(P.c)) : 'شعبة ' + P.c);
+  const t0 = document.title, nm = 'قائمة التميّز - ' + (P.m === 'all' ? 'كل شعب ' + gradeName(gradeOf(P.c)) : 'شعبة ' + P.c);
   document.title = nm;
   printHtml(`<div class="hb-print">${boardHtml(TD.board, P.c, P.m, '', 'BV.prev.m', 'drawPrev')}</div>`);
   const back = () => { document.title = t0; window.removeEventListener('afterprint', back); };
@@ -2012,19 +2091,33 @@ function boardHtml(d, c, m, meUid, mVar, redraw) {
   let body = '';
   if (!L.length) body = '<div class="hb-empty">لم يُرسل أحد نتائجه بعد… كن أنت الأول! 🚀</div>';
   else {
-    const top = [L[0], L[1], L[2]], kind = ['gold', 'silver', 'bronze'];
-    const pd = i => { const r = top[i]; if (!r) return `<div class="pd ${kind[i]} empty"></div>`;
-      const k = kind[r.rk - 1] || kind[i];
-      return `<div class="pd ${k}${me(r) ? ' me' : ''}">${k === 'gold' ? '<div class="crown">👑</div>' : ''}<div class="medal">${r.rk}</div>
-        <div class="pd-name">${esc(r.name)}${you(r)}</div>${m === 'all' ? `<div class="pd-cls">${esc(r.cls)}</div>` : ''}<div class="pd-score">${sc(r)}</div><div class="step">${r.rk}</div></div>`; };
-    body = `<div class="podium">${pd(1)}${pd(0)}${pd(2)}</div>`;
-    const rest = L.slice(3), topT = L[0].total || 1;
-    if (rest[0]) { const r = rest[0];
-      body += `<div class="hb-fourth${me(r) ? ' me' : ''}"><div class="rk">${r.rk}</div><div><div class="nm">🎖️ ${esc(r.name)}${you(r)}</div><div class="tag">${m === 'all' ? esc(r.cls) + ' · ' : ''}وسام التميّز</div></div><div class="sc">${sc(r)}</div></div>`; }
-    if (rest.length > 1) body += `<div class="hb-list">${rest.slice(1).map(r => `<div class="hb-row${me(r) ? ' me' : ''}"><div class="rk">${r.rk}</div>
-      <div><div class="nm">${esc(r.name)}${you(r)} ${m === 'all' ? `<span class="cl">${esc(r.cls)}</span>` : ''}</div><div class="hb-bar"><i style="width:${Math.round(r.total / topT * 100)}%"></i></div></div><div class="sc">${sc(r)}</div></div>`).join('')}</div>`;
+    /* ترتيب متقارب: المتساوون في المجموع لهم المركز نفسه، والمركز التالي يليه مباشرة */
+    let dr = 0; L.forEach((r, i) => { if (i === 0 || r.total !== L[i - 1].total) dr++; r.dr = dr; });
+    const cnt = k => L.filter(r => r.dr === k).length, topT = L[0].total || 1;
+    const cl = r => m === 'all' ? `<span class="cl">${esc(r.cls)}</span>` : '';
+    const row = r => `<div class="hb-row${r.dr === 2 ? ' r2' : r.dr === 3 ? ' r3' : ''}${me(r) ? ' me' : ''}"><div class="rk">${r.dr === 2 ? '🥈' : r.dr === 3 ? '🥉' : r.dr}</div>
+      <div><div class="nm">${esc(r.name)}${you(r)} ${cl(r)}</div><div class="hb-bar"><i style="width:${Math.round(r.total / topT * 100)}%"></i></div></div><div class="sc">${sc(r)}</div></div>`;
+    if (cnt(1) === 1 && cnt(2) <= 1 && cnt(3) <= 1) {
+      /* نموذج 2: لا تكرار في المراكز الثلاثة الأولى ← منصة التتويج كما هي */
+      const top = [L[0], L[1], L[2]], kind = ['gold', 'silver', 'bronze'];
+      const pd = i => { const r = top[i]; if (!r) return `<div class="pd ${kind[i]} empty"></div>`;
+        return `<div class="pd ${kind[i]}${me(r) ? ' me' : ''}">${i === 0 ? '<div class="crown">👑</div>' : ''}<div class="medal">${i + 1}</div>
+          <div class="pd-name">${esc(r.name)}${you(r)}</div>${m === 'all' ? `<div class="pd-cls">${esc(r.cls)}</div>` : ''}<div class="pd-score">${sc(r)}</div><div class="step">${i + 1}</div></div>`; };
+      body = `<div class="podium">${pd(1)}${pd(0)}${pd(2)}</div>`;
+      const rest = L.slice(3);
+      if (rest[0]) { const r = rest[0];
+        body += `<div class="hb-fourth${me(r) ? ' me' : ''}"><div class="rk">${r.dr}</div><div><div class="nm">🎖️ ${esc(r.name)}${you(r)}</div><div class="tag">${m === 'all' ? esc(r.cls) + ' · ' : ''}وسام التميّز</div></div><div class="sc">${sc(r)}</div></div>`; }
+      if (rest.length > 1) body += `<div class="hb-list">${rest.slice(1).map(row).join('')}</div>`;
+    } else {
+      /* نموذج 1 و3: ميدالية ذهبية واحدة عندها كل أصحاب المركز الأول، والبقية في القائمة */
+      const G = L.filter(r => r.dr === 1), rest = L.filter(r => r.dr > 1);
+      body = `<div class="hb-champ"><div class="crown">👑</div><div class="medal">1</div>
+        <div class="champ-names">${G.map(r => `<div class="champ-nm${me(r) ? ' me' : ''}">${esc(r.name)}${you(r)}${m === 'all' ? ` <span class="cl">${esc(r.cls)}</span>` : ''}</div>`).join('')}</div>
+        <div class="pd-score">${sc(G[0])}</div>${G.length > 1 ? `<div class="champ-note">المركز الأول مشترك بين ${G.length} طلاب</div>` : ''}</div>`;
+      if (rest.length) body += `<div class="hb-list">${rest.map(row).join('')}</div>`;
+    }
   }
-  return `<div class="hb"><div class="hb-head"><span class="hb-cup">🏆</span><span class="hb-title">لوحة الشرف</span><span class="hb-cup">🏆</span></div><div class="hb-sub">${sub}</div>${tabs}${body}
+  return `<div class="hb"><div class="hb-head"><span class="hb-cup">🏆</span><span class="hb-title">قائمة التميّز</span><span class="hb-cup">🏆</span></div><div class="hb-sub">${sub}</div>${tabs}${body}
     ${d.updatedAt ? `<div class="hb-foot">آخر تحديث: ${esc(fmtDate(d.updatedAt))}</div>` : ''}</div>`;
 }
 /* عند الطالب في «صفّي» */
@@ -3834,8 +3927,9 @@ async function openProfile() {
     ${ME.role === 'student' ? `<div class="card" style="margin:10px 0;padding:10px 14px"><h4 style="margin:0 0 4px">🔒 كلمة المرور</h4>
       <details><summary style="cursor:pointer;color:var(--teal);font-weight:700">✏️ تغيير كلمة المرور</summary>
         <label>كلمة المرور الحالية<input type="password" class="ltr" id="pwOld" autocomplete="current-password"></label>
-        <label>كلمة المرور الجديدة (6 أحرف أو أرقام على الأقل)<input type="password" class="ltr" id="pwNew" autocomplete="new-password"></label>
-        <label>اكتب الجديدة مرة أخرى<input type="password" class="ltr" id="pwNew2" autocomplete="new-password"></label>
+        <label>كلمة المرور الجديدة (6 أحرف أو أرقام على الأقل)<input type="text" class="ltr" id="pwNew" autocomplete="off" autocapitalize="off" spellcheck="false" data-lpignore="true"></label>
+        <label>اكتب الجديدة مرة أخرى<input type="text" class="ltr" id="pwNew2" autocomplete="off" autocapitalize="off" spellcheck="false" data-lpignore="true"></label>
+        <p style="font-size:17px;color:var(--muted);margin:2px 0 6px">الكلمة الجديدة تظهر مكتوبة لتتأكد منها. إن اقترح عليك المتصفح كلمة من عنده فارفضها، واكتب كلمة تحفظها.</p>
         <div class="login-msg" id="pwMsg"></div>
         <button class="btn sm" id="pwBtn" onclick="changeMyPass()">💾 غيّر كلمة المرور</button>
         ${ME.kind === 'class' ? '<p style="font-size:18px;color:var(--muted);margin:4px 0">تتغيّر عند معلمك أيضًا، فيعرف كلمتك الجديدة إن نسيتها.</p>' : ''}</details></div>` : ''}
@@ -3852,7 +3946,8 @@ async function changeMyPass() {
   try {
     await API.reauth(o); await API.updatePass(n);
     if (ME.kind === 'class') { try { await API.set('students', ME.uid, {password:n}, true); } catch (e) { console.error(e); } }
-    m.classList.add('ok'); m.textContent = 'تغيّرت كلمة المرور ✓ ادخل بها في المرة القادمة.';
+    m.classList.add('ok'); m.innerHTML = `تغيّرت كلمة المرور ✓<br>كلمة مرورك الجديدة: <b class="ltr" style="font-size:26px;letter-spacing:1px;user-select:all">${esc(n)}</b><br>احفظها أو اكتبها في دفترك، فستدخل بها من الآن.`;
+    toast('احفظ كلمة مرورك الجديدة: ' + n, 9000);
     ['#pwOld', '#pwNew', '#pwNew2'].forEach(k => $(k).value = '');
   } catch (er) {
     const c = er && er.code || '';
