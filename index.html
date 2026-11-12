@@ -937,7 +937,7 @@ html[data-mode=dark] .modal{background:rgba(0,0,0,.62)}
     <div class="tview" id="tv-private" hidden>
       <div class="card">
         <h3 style="margin-top:0">🔐 النتائج الخاصة</h3>
-        <p style="margin-top:0">هنا نتائج الطلاب من «مساحتهم الخاصة»، لمن اختار منهم مشاركتها معك فقط. نتائج دروس صفّه تستطيع اعتمادها، فتُضاف إلى قائمة النتائج بعلامة 🆗، وتُحتسب الدرجة الأعلى بينها وبين محاولاته في الصف. ولا تظهر في القائمة إلا بعد إظهار الدرس لشعبته.</p>
+        <p style="margin-top:0">هنا نتائج طلابك في دروس صفّهم من «مساحتهم الخاصة»، تصلك تلقائيًا. نتائج دروس صفّه تستطيع اعتمادها، فتُضاف إلى قائمة النتائج بعلامة 🆗، وتُحتسب الدرجة الأعلى بينها وبين محاولاته في الصف. ولا تظهر في القائمة إلا بعد إظهار الدرس لشعبته.</p>
         <label class="sw"><input type="checkbox" id="apAll" onchange="setAutoAll(this.checked)"> اعتماد النتائج الخاصة تلقائيًا لجميع الطلاب</label>
         <div class="row" style="margin-top:8px"><label style="flex:1 1 220px">الشعبة<select id="pvCls" onchange="renderPrivTab()"></select></label></div>
         <div id="pvList" style="margin-top:8px"></div>
@@ -1582,12 +1582,13 @@ async function openPrivate() {
   catch (e) { console.error(e); $('#pvBody').innerHTML = '<p>تعذّر التحميل: ' + esc(errMsg(e)) + '</p>'; return; }
   if (!PV.g) PV.g = (CAT[0] && CAT[0].grade) || GRADES[0].key;
   renderPrivate();
+  if (ME.cuid && PV.subs.length) syncPShare().catch(e => console.error(e));
 }
 function pvGradesWithLessons() { const has = new Set(CAT.map(l => l.grade)); return GRADES.map(g => g.key).filter(k => has.has(k)); }
 function renderPrivate() {
   const share = !!(ME.acct && ME.acct.share);
   $('#pvActs').innerHTML = (ME.cuid
-      ? `<label class="sw"><input type="checkbox" ${share ? 'checked' : ''} onchange="setShare(this.checked)"> 🤝 شارك نتائجك الخاصة مع معلمك</label>`
+      ? ''
       : `<button class="btn sm" onclick="openJoin()">🤝 انضم إلى صف معلمك</button>`) +
     (ME.kind === 'private' && !ME.cls ? `<button class="btn sm ghost" onclick="pickMyGrade()">🎓 صفّي الدراسي: ${esc(ME.grade ? gradeName(ME.grade) : 'لم يُحدَّد')} ✏️</button>` : '');
   const mine = PV.subs.filter(s => s.grade === ME.grade), others = PV.subs.filter(s => s.grade !== ME.grade);
@@ -1622,7 +1623,7 @@ function renderPvResults(mine, others, nl) {
     return `<tr><td><b>${esc((l.icon || '') + ' ' + l.title)}</b></td>${PV.rtab === 'other' ? `<td>${esc(gradeName(l.grade))}</td>` : ''}<td><b>${best} / ${+l.autoMax || ''}</b></td><td>${L.length}</td><td>${fmtDate(lastAt)}</td>
       <td><button class="btn sm ghost" onclick="showAttempts(${A(l.title)},${+l.autoMax || 0},PV.subs.filter(s=>s.lessonId===${A(l.id)}))">📜 المحاولات</button></td></tr>`;
   }).join('') + '</table></div>';
-  if (ME.cuid) html += `<p class="note">${ME.acct && ME.acct.share ? '🤝 نتائجك الخاصة مشتركة مع معلمك: يراها ويستطيع اعتماد دروس صفّك منها.' : '🔒 نتائجك الخاصة لا يراها أحد غيرك. فعّل «شارك نتائجك الخاصة مع معلمك» إن أردت أن يراها.'}</p>`;
+  if (ME.cuid) html += `<p class="note">🤝 نتائج دروس صفّك في مساحتك الخاصة تظهر لمعلمك، ويستطيع اعتمادها. أما دروس الصفوف الأخرى فلا يراها غيرك.</p>`;
   $('#pvBody').innerHTML = html;
 }
 function pickMyGrade() {
@@ -1643,9 +1644,10 @@ async function setShare(on) {
   renderPrivate();
 }
 async function syncPShare() {
-  if (!ME.cuid || !(ME.acct && ME.acct.share)) return;
-  const res = {};
-  PV.subs.forEach(s => {
+  if (!ME.cuid || !ME.teacherId) return;
+  /* نتائج دروس صفّه فقط تصل إلى معلمه تلقائيًا، أما دروس الصفوف الأخرى فتبقى خاصة */
+  const g = gradeOf(ME.cls), res = {};
+  PV.subs.filter(s => !g || (catById(s.lessonId) || {grade:s.grade}).grade === g).forEach(s => {
     const r = res[s.lessonId] = res[s.lessonId] || {auto:-1, n:0, att:[]};
     r.n++; r.att.push({auto:+s.auto || 0, at:s.at, attempt:s.attempt || r.n});
     if ((+s.auto || 0) > r.auto || ((+s.auto || 0) === r.auto && s.at > r.at)) Object.assign(r, {auto:+s.auto || 0, at:s.at, scores:s.scores || {}, grade:s.grade || ''});
@@ -1769,7 +1771,7 @@ window.addEventListener('message', async ev => {
         const data = Object.assign(cleanSubmission(m.data || {}), {uid:ME.uid, name:ME.name, lessonId:lid, grade:PL.lesson.grade || '', attempt:mine.length + 1, at:Date.now()});
         const nid = await API.add('psubs', data);
         PV.subs = PV.subs.filter(s => s.id !== nid).concat([Object.assign({id:nid}, data)]);
-        if (ME.acct && ME.acct.share && ME.cuid) syncPShare().catch(e => console.error(e));
+        if (ME.cuid) syncPShare().catch(e => console.error(e));
         postToLesson({iste:'submitted', ok:true, attempt:data.attempt}); return;
       }
       const mine = (await ME.capi.where('submissions', {uid:ME.cuid})).filter(s => s.lessonId === lid);
@@ -2196,7 +2198,7 @@ function renderPrivTab() {
   rows.forEach(({p, s}) => { if (isAutoAp(s.uid)) return; Object.entries(p.res || {}).forEach(([lid, r]) => { const l = catById(lid), man = ((TD.ap.ok || {})[s.uid] || {})[lid]; if (l && l.grade === gradeOf(s.cls) && (!man || (+r.auto || 0) > (+man.auto || 0))) pending++; }); });
   $('#pvDot').hidden = !pending; $('#pvDot').textContent = pending;
   const R = rows.filter(x => !cf || x.s.cls === cf);
-  if (!R.length) { $('#pvList').innerHTML = `<p>${rows.length ? 'لا يوجد في هذه الشعبة طالب شارك نتائجه الخاصة.' : 'لم يشارك أي طالب نتائجه الخاصة بعد. يشاركها الطالب من «🌟 مساحتي الخاصة» إن أراد.'}</p>`; return; }
+  if (!R.length) { $('#pvList').innerHTML = `<p>${rows.length ? 'لا توجد في هذه الشعبة نتائج خاصة بعد.' : 'لا توجد نتائج خاصة لطلابك بعد. تظهر هنا حين يحلّ طالبك درسًا من دروس صفّه في «🌟 مساحتي الخاصة».'}</p>`; return; }
   $('#pvList').innerHTML = R.map(({p, s}) => {
     const g = gradeOf(s.cls), res = Object.entries(p.res || {}).map(([lid, r]) => ({lid, r, l:catById(lid)})).filter(x => x.l).sort((a, b) => byLessonOrder(a.l, b.l));
     const mine = res.filter(x => x.l.grade === g), other = res.filter(x => x.l.grade !== g), tab = TD.pvTab[s.uid] || 'mine', list = tab === 'mine' ? mine : other;
