@@ -382,6 +382,13 @@ html[data-theme=sky] .gchip{border:0} html[data-theme=sky] .gchip.on{background:
 .hb-row.r3 .nm{color:#ffe4cc}.hb-row.r3 .sc{color:#f6c193}.hb-row.r3 .hb-bar i{background:linear-gradient(90deg,#a95f27,#f2b47c)}
 .hb-empty{text-align:center;color:#cdbf9f;padding:18px 6px}
 .hb-foot{text-align:center;color:#9d927b;font-size:14px;margin-top:12px}
+/* أزرار الدخول المصوّرة */
+.role-btns button.imgb{background:none!important;border:0!important;box-shadow:none!important;padding:0!important;border-radius:28px!important;transform:none;transition:transform .18s,filter .18s}
+.role-btns button.imgb img{display:block;width:100%;height:auto;filter:drop-shadow(0 10px 18px rgba(27,37,64,.22))}
+.role-btns button.imgb:hover{transform:translateY(-4px) scale(1.02)}
+.role-btns button.imgb:active{transform:scale(.97)}
+.role-btns button.imgb:focus-visible{outline:3px solid #c9a46a;outline-offset:4px}
+html[data-mode=dark] .role-btns button.imgb img{filter:drop-shadow(0 10px 22px rgba(0,0,0,.55))}
 #printArea{display:none}
 .pcards{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
 .pcard{border:2px dashed #888;border-radius:12px;padding:8px 12px;font-size:17px;line-height:1.7;break-inside:avoid}
@@ -733,8 +740,8 @@ html[data-mode=dark] .modal{background:rgba(0,0,0,.62)}
     <h2 style="margin-bottom:0">منصة استعداد</h2>
     <p style="margin-top:0;color:var(--muted)">التربية الإسلامية</p>
     <div class="role-btns">
-      <button onclick="chooseRole('teacher')"><span>👨‍🏫</span>أنا معلم</button>
-      <button onclick="showScreen('scrStuChoice')"><span>🎒</span>أنا طالب</button>
+      <button class="imgb" onclick="chooseRole('teacher')" aria-label="أنا معلم"><img src="btn-teacher.webp" alt="أنا معلم" width="420" height="440"></button>
+      <button class="imgb" onclick="showScreen('scrStuChoice')" aria-label="أنا طالب"><img src="btn-student.webp" alt="أنا طالب" width="405" height="440"></button>
     </div>
   </div>
 </section>
@@ -745,8 +752,8 @@ html[data-mode=dark] .modal{background:rgba(0,0,0,.62)}
     <h2 style="margin-bottom:0">دخول الطالب</h2>
     <p style="margin-top:0;color:var(--muted)">كيف تريد الدخول؟</p>
     <div class="role-btns">
-      <button onclick="chooseRole('student')"><span>🔑</span>لدي رمز من المعلم</button>
-      <button onclick="chooseRole('pstudent')"><span>🌟</span>حساب خاص</button>
+      <button class="imgb" onclick="chooseRole('student')" aria-label="لدي رمز من المعلم"><img src="btn-code.webp" alt="لدي رمز من المعلم" width="439" height="440"></button>
+      <button class="imgb" onclick="chooseRole('pstudent')" aria-label="حساب خاص"><img src="btn-private.webp" alt="حساب خاص" width="431" height="440"></button>
     </div>
     <p style="font-size:19px;color:var(--muted)">«الحساب الخاص» لمن لا يستخدم معلّمه المنصة: تدرس فيه أي درس تريده، وتنضم إلى صف معلمك لاحقًا إن أردت.</p>
     <button class="linkbtn" onclick="navBack(() => showScreen('scrRole'))">→ رجوع</button>
