@@ -2736,7 +2736,7 @@ function renderAllPriv() {
 }
 
 /* ================= قائمة التميّز ================= */
-const BOARD_DEF = {on:false, showCls:true, showAll:true, n:10, teamsOn:false};
+const BOARD_DEF = {on:false, showCls:true, showAll:true, n:10, teamsOn:false, lids:[]};
 const shortName = n => String(n || '').trim().split(/\s+/).slice(0, 2).join(' ');
 async function loadBoard(publish) {
   let d = null; try { d = await API.get('board', TD.view); } catch (e) { console.error(e); }
@@ -2801,7 +2801,8 @@ async function computeRows() {
   subs.forEach(x => (by[x.uid] = by[x.uid] || []).push(x));
   const rows = TD.students.filter(s => !s.archived && !s.moved && !s.removed && s.active !== false).map(s => {
     let total = 0, max = 0, cnt = 0;
-    CAT.filter(l => l.tracked !== false && (TD.show[l.id] || []).includes(s.cls)).forEach(l => {
+    const BL = (TD.board && TD.board.lids) || [];
+    CAT.filter(l => l.tracked !== false && (TD.show[l.id] || []).includes(s.cls) && (!BL.length || BL.includes(l.id))).forEach(l => {
       max += +l.autoMax || 0;
       const my = (by[s.uid] || []).filter(x => x.lessonId === l.id), pk = (noteOf(s.uid).pick || {})[l.id], ch = pk && my.find(x => x.at === pk.at);
       let v = ch ? +ch.auto || 0 : my.length ? Math.max(...my.map(x => +x.auto || 0)) : null;
@@ -2814,7 +2815,7 @@ async function computeRows() {
 }
 async function publishBoard(silent, rows) {
   const b = TD.board, n = Math.min(100, Math.max(1, +b.n || 10));
-  const data = {on:!!b.on, showCls:!!b.showCls, showAll:!!b.showAll, n, teamsOn:!!b.teamsOn, teams:{}, teacherId:TD.view, updatedAt:Date.now(), cls:{}, grade:{}};
+  const data = {on:!!b.on, showCls:!!b.showCls, showAll:!!b.showAll, n, teamsOn:!!b.teamsOn, lids:(b.lids || []).slice(), teams:{}, teacherId:TD.view, updatedAt:Date.now(), cls:{}, grade:{}};
   try {
     if (b.on || b.teamsOn) { rows = rows || await computeRows(); TD.teams = teamsFrom(rows); renderTeamsBar(); }
     if (b.on) Object.assign(data, await computeBoard(n, rows));
@@ -2840,9 +2841,30 @@ function renderBoardCard() {
       <div class="rf-row"><span class="rf-lbl">عدد الطلاب في القائمة:</span><div class="rf-chips">
         ${[3, 5, 10, 20].map(k => `<button class="rf-chip${n === k ? ' on' : ''}" onclick="boardCfg({n:${k}})">أفضل ${k}</button>`).join('')}
         <label class="row" style="gap:4px;font-size:18px">عدد آخر: <input type="number" min="1" max="100" value="${n}" style="width:80px" onchange="boardCfg({n:Math.min(100,Math.max(1,+this.value||10))})"></label></div></div>
+      <div class="rf-row"><span class="rf-lbl">الدروس المحتسبة:</span><div class="rf-chips">
+        <button class="rf-chip${(b.lids || []).length ? '' : ' on'}" onclick="boardCfg({lids:[]})">📚 كل الدروس</button>
+        <button class="rf-chip${(b.lids || []).length ? ' on' : ''}" onclick="pickBoardLessons()">✅ دروس محددة${(b.lids || []).length ? ' (' + b.lids.length + ')' : ''}</button></div></div>
+      ${(b.lids || []).length ? `<p style="font-size:17px;margin:0 0 4px;color:var(--muted)">تُحسب درجات: ${b.lids.map(id => esc((catById(id) || {}).title || '')).filter(Boolean).join('، ')}</p>` : ''}
       <div class="row" style="margin-top:10px"><button class="btn sm" onclick="publishBoard()">🔄 حدّث القائمة الآن</button><button class="btn sm ghost" onclick="previewBoard()">👁 معاينة كما يراها الطالب</button>
         <span style="font-size:17px;color:var(--muted)">${b.updatedAt ? 'آخر تحديث: ' + esc(fmtDate(b.updatedAt)) : ''}</span></div>
       <p style="font-size:17px;color:var(--muted);margin-bottom:0">تتحدّث القائمة تلقائيًا كلما فتحت المنصة، وتستطيع تحديثها بالزر في أي وقت.</p>` : ''}`;
+}
+/* اختيار الدروس التي تُحتسب درجاتها في قائمة التميّز (وتحدي الشعب) */
+function pickBoardLessons() {
+  const L = CAT.filter(l => l.tracked !== false && (TD.show[l.id] || []).length).sort((a, b) => gradeIdx(a.grade) - gradeIdx(b.grade) || byLessonOrder(a, b)), sel = new Set(TD.board.lids || []);
+  if (!L.length) return toast('لم تُظهر أي درس لطلابك بعد');
+  let last = '';
+  openModal(`<h3 style="margin-top:0">✅ الدروس المحتسبة في قائمة التميّز</h3><p style="margin:0 0 6px;color:var(--muted);font-size:18px">اختر درسًا أو أكثر. تظهر هنا الدروس التي أظهرتها لطلابك.</p>
+    <div class="row" style="gap:6px;margin-bottom:6px"><button class="btn sm ghost" onclick="$$('#blList input').forEach(x=>x.checked=true)">تحديد الكل</button><button class="btn sm ghost" onclick="$$('#blList input').forEach(x=>x.checked=false)">إلغاء التحديد</button></div>
+    <div id="blList" style="max-height:52vh;overflow:auto">${L.map(l => { const h = gradeName(l.grade) + ' · ' + termName(l.term || 1) + ' · ' + unitName(l.unit || 1), hd = h !== last ? `<div class="unit-head" style="margin-top:8px">📘 ${esc(h)}</div>` : ''; last = h;
+      return hd + `<label class="sw" style="display:flex;gap:8px;align-items:center;margin:4px 0"><input type="checkbox" value="${esc(l.id)}" ${sel.has(l.id) ? 'checked' : ''} style="width:auto"> ${esc((l.icon || '') + ' ' + l.title)}</label>`; }).join('')}</div>
+    <div class="row" style="margin-top:10px"><button class="btn" onclick="saveBoardLessons()">💾 حفظ</button><button class="btn ghost" onclick="openBoardCfg()">↩ رجوع</button></div>`);
+}
+function saveBoardLessons() {
+  const ids = $$('#blList input:checked').map(x => x.value);
+  if (!ids.length) return toast('اختر درسًا واحدًا على الأقل، أو اختر «كل الدروس»');
+  const all = $$('#blList input').length === ids.length;
+  openBoardCfg().then(() => boardCfg({lids:all ? [] : ids}));
 }
 async function openBoardCfg() {
   openModal('<div id="bdCard"><p>⏳ …</p></div>');
@@ -3485,12 +3507,12 @@ function listStudentsView() {
 function renderStudents() {
   try { renderClassChips(); } catch (e) {}
   const L = listStudentsView();
-  $('#stSel').innerHTML = selBar('st', L.map(s => s.uid), n => `<button class="btn sm red" ${n ? '' : 'disabled'} onclick="deleteStudents([...selOf('st').ids])">🗑 حذف المحدد (${n})</button>`);
+  $('#stSel').innerHTML = selBar('st', L.map(s => s.uid), n => `<button class="btn sm red" ${n ? '' : 'disabled'} onclick="deleteStudents([...selOf('st').ids])">🗑 حذف المحدد (${n})</button> <button class="btn sm blue" ${n ? '' : 'disabled'} onclick="moveStudents([...selOf('st').ids])">🔀 نقل المحدد (${n})</button>`);
   if (!L.length) { $('#stTable').innerHTML = '<p>لا يوجد طلاب في هذه القائمة.</p>'; return; }
   $('#stTable').innerHTML = `<table><tr>${selTh('st')}<th>#</th><th>الاسم</th><th>📞 رقم وليّ الأمر</th><th>📱 رقم الطالب</th><th>الشعبة</th><th>اسم المستخدم</th><th>كلمة المرور</th><th>الحالة</th><th></th></tr>` +
     L.map((s, i) => `<tr${selTr('st', s.uid)}>${selCell('st', s.uid)}<td>${i + 1}</td><td><span class="stname">${esc(s.name)}</span> <button class="btn sm ghost stren" title="تغيير اسم الطالب" onclick="renameStu(${A(s.uid)})">✏️</button></td><td><input type="tel" class="phone" value="${esc(showPhone(s.parentPhone))}" placeholder="—" onchange="savePhone(${A(s.uid)},this)"></td><td><input type="tel" class="phone" value="${esc(showPhone(s.studentPhone))}" placeholder="—" onchange="savePhone(${A(s.uid)},this,'studentPhone')"></td><td>${esc(s.cls)}</td><td><code class="ltr">${esc(s.username)}</code>${s.ownerUid ? ' <span title="انضم إلى صفّك من حسابه الخاص">🔗</span>' : ''}</td><td><code class="ltr">${esc(s.password)}</code></td>
       <td>${s.active === false ? '<span class="chip off">موقوف</span>' : '<span class="chip done">فعّال</span>'}</td>
-      <td><div class="row" style="gap:4px;flex-wrap:nowrap"><button class="btn sm ghost" onclick="copyCreds(${A(s.uid)})">📋</button><button class="btn sm ghost" onclick="toggleActive(${A(s.uid)})">${s.active === false ? '✅ تفعيل' : '⛔ إيقاف'}</button><button class="btn sm alt" style="white-space:nowrap" onclick="msgStudent(${A(s.uid)})">✉️ رسالة فردية</button><button class="btn sm red" title="حذف الحساب" onclick="deleteStudents([${A(s.uid)}])">🗑</button></div></td></tr>`).join('') + '</table>';
+      <td><div class="row" style="gap:4px;flex-wrap:nowrap"><button class="btn sm ghost" onclick="copyCreds(${A(s.uid)})">📋</button><button class="btn sm ghost" title="نقل إلى شعبة أخرى" onclick="moveStudents([${A(s.uid)}])">🔀 نقل</button><button class="btn sm ghost" onclick="toggleActive(${A(s.uid)})">${s.active === false ? '✅ تفعيل' : '⛔ إيقاف'}</button><button class="btn sm alt" style="white-space:nowrap" onclick="msgStudent(${A(s.uid)})">✉️ رسالة فردية</button><button class="btn sm red" title="حذف الحساب" onclick="deleteStudents([${A(s.uid)}])">🗑</button></div></td></tr>`).join('') + '</table>';
 }
 const credText = s => `السلام عليكم يا ${s.name} 🌿\nرابط منصة استعداد: ${siteUrl()}\nاختر «🎒 أنا طالب» ثم «🔑 لدي رمز من المعلم»، وادخل بـ:\nاسم المستخدم: ${s.username}\nكلمة المرور: ${s.password}`;
 function copyCreds(uid) { const s = TD.students.find(x => x.uid === uid); if (s) copyText(credText(s)); }
@@ -3777,6 +3799,27 @@ const showPhone = p => p ? '+' + p : '';
 const PHK = {parentPhone:{who:'وليّ الأمر', file:'أرقام_أولياء_الأمور', ic:'📞', title:'أرقام أولياء الأمور'}, studentPhone:{who:'الطالب', file:'أرقام_الطلاب', ic:'📱', title:'أرقام الطلاب'}};
 let PHF = 'parentPhone';
 /* المعلم يغيّر اسم طالبه: ثلاثي وبالعربية؛ اسم المستخدم وكلمة المرور لا يتغيّران */
+/* نقل طالب أو أكثر إلى شعبة أخرى من شعب المعلم؛ نتائجهم تنتقل معهم */
+function moveStudents(ids) {
+  const L = ids.map(u => TD.students.find(x => x.uid === u)).filter(Boolean); if (!L.length) return;
+  const from = [...new Set(L.map(x => x.cls))], C = myClasses().filter(c => !(from.length === 1 && c === from[0]));
+  if (!C.length) return toast('ليس لديك شعبة أخرى. أضفها أولًا من «الصفوف والشعب».');
+  openModal(`<h3 style="margin-top:0">🔀 نقل ${L.length === 1 ? 'الطالب: ' + esc(L[0].name) : L.length + ' طلاب'}</h3>
+    <p style="margin:0 0 6px">${L.length === 1 ? 'شعبته الحالية: <b>' + esc(L[0].cls) + '</b>' : 'من: <b>' + from.map(esc).join('، ') + '</b>'}</p>
+    <label>انقله إلى شعبة<select id="mvTo"><option value="">— اختر الشعبة —</option>${C.map(c => `<option>${esc(c)}</option>`).join('')}</select></label>
+    <p style="font-size:17px;color:var(--muted);margin:6px 0">تنتقل نتائجه معه، ويرى في «صفّي» دروس شعبته الجديدة. اسم المستخدم وكلمة المرور لا يتغيّران.</p>
+    <div class="login-msg" id="mvMsg"></div><div class="row"><button class="btn" id="mvBtn" onclick="doMoveStudents(${A(ids)})">🔀 نقل</button><button class="btn ghost" onclick="closeModal()">إلغاء</button></div>`);
+}
+async function doMoveStudents(ids) {
+  const to = $('#mvTo').value; if (!to) return $('#mvMsg').textContent = 'اختر الشعبة';
+  const L = ids.map(u => TD.students.find(x => x.uid === u)).filter(x => x && x.cls !== to);
+  if (L.some(x => gradeOf(x.cls) !== gradeOf(to)) && !confirm('الشعبة الجديدة في صف آخر غير صف الطالب. هل تريد النقل؟')) return;
+  $('#mvBtn').disabled = true;
+  try { for (const x of L) { await API.set('students', x.uid, {cls:to}, true); x.cls = to; }
+    closeModal(); try { selOf('st').ids.clear(); } catch (e) {} renderStudents(); try { renderResults(); } catch (e) {} refreshTeams(TD.board && (TD.board.on || TD.board.teamsOn));
+    toast((L.length === 1 ? 'نُقل ' + L[0].name : 'نُقل ' + L.length + ' طلاب') + ' إلى ' + to + ' ✓', 4000); }
+  catch (e) { console.error(e); $('#mvBtn').disabled = false; if (isPerm(e)) $('#rulesWarn').hidden = false; $('#mvMsg').textContent = 'تعذّر النقل: ' + errMsg(e); }
+}
 function renameStu(uid) {
   const st = TD.students.find(x => x.uid === uid); if (!st) return;
   const pr = namePartsOf(st.name);
