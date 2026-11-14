@@ -968,6 +968,298 @@ html[data-mode=dark] .nextc{background:linear-gradient(135deg,#3A2A8F,#22175E)}
 .lt .acts2 .btn{flex:1}
 .lt.done{border-color:color-mix(in srgb,var(--green) 40%,var(--line))}
 @media (max-width:760px){.sh-top{grid-template-columns:1fr}.hscore small{display:none}}
+
+/* =================== أجواء المراحل (تظهر للطالب فقط) =================== */
+html[data-band] body::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background-repeat:no-repeat}
+/* ---------- الصفوف 1–3: «مدينة البالونات» — أملس، لامع، مريح للعين ---------- */
+html[data-band=sky]{--font:'Baloo Bhaijaan 2','Readex Pro',sans-serif;--font-head:'Baloo Bhaijaan 2','Readex Pro',sans-serif;
+  --bl:#3FA9F5;--bl-d:#1E7FD6;--bl-l:#9AD6FF;--pk:#FF6FA3;--pk-d:#E0457F;--pk-l:#FFC2D8;--mn:#2FD3A2;--mn-d:#12A27A;--mn-l:#A6F2DA;--sn:#FFC93C;--sn-d:#E3A000;--sn-l:#FFE9A6;--gp:#9B7BFF;--gp-d:#6E4FE0;--gp-l:#D6CAFF;
+  --vio:#3FA9F5;--vio-d:#1E7FD6;--buzz:#FF6FA3;--buzz-d:#E0457F;--cup:#FFC93C;--cup-d:#E3A000;--sky:#2FD3A2;--sky-d:#12A27A;
+  --bg:#EAF6FF;--card:#fff;--surface:#fff;--surface-2:#F3F9FF;--tint:#E8F4FF;--line:#DCEBFA;--lip:#D2E5F8;--muted:#5D7392;--ink:#233355;--teal:#1E7FD6;--radius:30px;
+  --gloss:linear-gradient(180deg,rgba(255,255,255,.55) 0%,rgba(255,255,255,.18) 44%,rgba(255,255,255,0) 46%);--soft:0 14px 30px -16px rgba(30,127,214,.45)}
+html[data-band=sky][data-mode=dark]{--bg:#26306A;--card:#323E86;--surface:#323E86;--surface-2:#2C377A;--tint:#36438F;--input-bg:#2C377A;--line:#4352A0;--lip:#1C2456;
+  --ink:#F4F7FF;--muted:#C3CCF2;--teal:#FFE08A;--hud:rgba(38,48,106,.82);--soft:0 14px 30px -14px rgba(5,10,40,.8);--gloss:linear-gradient(180deg,rgba(255,255,255,.16) 0%,rgba(255,255,255,.05) 44%,rgba(255,255,255,0) 46%)}
+html[data-band=sky] .rankc .mypos b,html[data-band=sky] .hscore,html[data-band=sky] .tc-sc,html[data-band=sky] .lt .ft b,html[data-band=sky] .space-btns b,html[data-band=sky] .rankc .pts,html[data-band=sky] .rankc .m,html[data-band=sky] .tc-md,html[data-band=sky] .unit-head{font-weight:800}
+html[data-band=sky] body{font-size:22px}
+html[data-band=sky] h1,html[data-band=sky] h2,html[data-band=sky] h3,html[data-band=sky] h4{font-family:var(--font-head);font-weight:800;letter-spacing:0}
+/* السماء: هادئة، وبالونات لامعة على الأطراف */
+html[data-band=sky] body::before{background:radial-gradient(60% 40% at 85% 0%,rgba(255,233,166,.75),transparent 70%),radial-gradient(70% 45% at 10% 100%,rgba(255,194,216,.55),transparent 70%),linear-gradient(180deg,#D9EFFF 0%,#EEF7FF 45%,#F8F4FF 100%)}
+html[data-band=sky] body::after{opacity:1;background-image:
+  radial-gradient(circle at 3.5% 28.4%,rgba(255,255,255,.85) 0 4px,transparent 5px),radial-gradient(ellipse 30px 36px at 4% 30%,#FF8CB6 97%,transparent),
+  radial-gradient(circle at 7.0% 38.4%,rgba(255,255,255,.85) 0 4px,transparent 5px),radial-gradient(ellipse 24px 29px at 7.5% 40%,#FFD15C 97%,transparent),
+  radial-gradient(circle at 95.5% 50.4%,rgba(255,255,255,.85) 0 4px,transparent 5px),radial-gradient(ellipse 28px 34px at 96% 52%,#5EC0FF 97%,transparent),
+  radial-gradient(circle at 92.5% 60.4%,rgba(255,255,255,.85) 0 4px,transparent 5px),radial-gradient(ellipse 22px 27px at 93% 62%,#4FE0B4 97%,transparent),
+  radial-gradient(circle at 2.5% 80.4%,rgba(255,255,255,.85) 0 4px,transparent 5px),radial-gradient(ellipse 26px 31px at 3% 82%,#B49CFF 97%,transparent),
+  radial-gradient(ellipse 80px 28px at 20% 12%,#fff 96%,transparent),radial-gradient(ellipse 50px 26px at 24% 9%,#fff 96%,transparent),
+  radial-gradient(ellipse 90px 30px at 78% 20%,rgba(255,255,255,.9) 96%,transparent),radial-gradient(ellipse 56px 28px at 82% 17%,rgba(255,255,255,.9) 96%,transparent)}
+html[data-band=sky][data-mode=dark] body::before{background:radial-gradient(60% 40% at 85% 0%,rgba(255,224,138,.22),transparent 70%),radial-gradient(70% 45% at 10% 100%,rgba(255,111,163,.18),transparent 70%),linear-gradient(180deg,#2E3A80 0%,#26306A 100%)}
+html[data-band=sky][data-mode=dark] body::after{background-image:
+  radial-gradient(circle at 3.5% 28.4%,rgba(255,255,255,.7) 0 4px,transparent 5px),radial-gradient(ellipse 30px 36px at 4% 30%,#FF6FA3 97%,transparent),
+  radial-gradient(circle at 95.5% 50.4%,rgba(255,255,255,.7) 0 4px,transparent 5px),radial-gradient(ellipse 28px 34px at 96% 52%,#3FA9F5 97%,transparent),
+  radial-gradient(circle at 2.5% 80.4%,rgba(255,255,255,.7) 0 4px,transparent 5px),radial-gradient(ellipse 26px 31px at 3% 82%,#9B7BFF 97%,transparent),
+  radial-gradient(circle at 20% 10%,#fff 0 2px,transparent 3px),radial-gradient(circle at 40% 22%,#FFE08A 0 3px,transparent 4px),radial-gradient(circle at 62% 8%,#fff 0 2px,transparent 3px),
+  radial-gradient(circle at 76% 30%,#fff 0 2px,transparent 3px),radial-gradient(circle at 88% 12%,#FFE08A 0 3px,transparent 4px),radial-gradient(circle at 52% 44%,#fff 0 1.5px,transparent 2.5px)}
+/* الشريط العلوي: سحابة بيضاء عائمة */
+html[data-band=sky] .topbar{margin:0 10px;border-radius:0 0 30px 30px;background:var(--hud,rgba(255,255,255,.85));box-shadow:var(--soft)}
+html[data-band=sky] .topbar h1{color:var(--bl-d);font-size:32px}
+html[data-band=sky][data-mode=dark] .topbar h1{color:#FFE08A}
+html[data-band=sky] .hbtn{border:0;border-radius:999px;background:var(--gloss),#fff;color:var(--ink);box-shadow:inset 0 -3px 0 rgba(30,127,214,.14),0 6px 14px -8px rgba(30,127,214,.5);font-weight:700}
+html[data-band=sky][data-mode=dark] .hbtn{background:var(--gloss),#3D4A9A;color:#fff;box-shadow:inset 0 -3px 0 rgba(0,0,0,.2)}
+html[data-band=sky] .hbtn.instbtn{background:var(--gloss),var(--sn);color:#4A3200;box-shadow:inset 0 -4px 0 var(--sn-d)}
+/* الأزرار: بالونات لامعة */
+html[data-band=sky] .btn{--b:var(--bl);--bd:var(--bl-d);background:linear-gradient(180deg,rgba(255,255,255,.5) 0%,rgba(255,255,255,.16) 44%,rgba(255,255,255,0) 46%),var(--b);border-radius:999px;font-weight:800;padding:6px 22px 9px;
+  box-shadow:inset 0 -5px 0 var(--bd),inset 0 2px 0 rgba(255,255,255,.5),0 10px 18px -10px var(--bd)}
+html[data-band=sky] .btn:active{transform:translateY(3px);box-shadow:inset 0 -2px 0 var(--bd),0 4px 8px -6px var(--bd)}
+html[data-band=sky] .btn.alt{--b:var(--pk);--bd:var(--pk-d)} html[data-band=sky] .btn.blue{--b:var(--mn);--bd:var(--mn-d)}
+html[data-band=sky] .btn.ghost{--b:#fff;--bd:#CFE3F7;background:var(--gloss),#fff;color:var(--bl-d);border:0}
+html[data-band=sky][data-mode=dark] .btn.ghost{--b:#3D4A9A;--bd:#252F6E;background:var(--gloss),#3D4A9A;color:#fff}
+html[data-band=sky] .btn.big{font-family:var(--font-head);font-weight:800;font-size:28px;padding:10px 32px 14px;border-radius:999px;box-shadow:inset 0 -7px 0 var(--bd),inset 0 3px 0 rgba(255,255,255,.5),0 14px 24px -12px var(--bd)}
+html[data-band=sky] .btn.sm{padding:3px 15px 6px;box-shadow:inset 0 -4px 0 var(--bd),0 6px 12px -8px var(--bd)}
+/* مجموع الدرجات: كبسولة الشمس */
+html[data-band=sky] .hscore{border:0;border-radius:999px;background:var(--gloss),var(--sn);color:#4A3200;box-shadow:inset 0 -4px 0 var(--sn-d),0 8px 16px -10px var(--sn-d);padding:2px 16px 5px}
+html[data-band=sky] .hscore small{color:#6B4D00}
+/* الدرس الحالي: بالون أزرق كبير */
+html[data-band=sky] .nextc{border-radius:38px;border:4px solid #fff;background:radial-gradient(90% 70% at 85% 0%,rgba(255,255,255,.35),transparent 60%),linear-gradient(160deg,#59B9FF,#2F8EE6);
+  box-shadow:inset 0 -8px 0 rgba(20,90,170,.35),0 22px 40px -20px rgba(30,127,214,.75);padding:26px 28px}
+html[data-band=sky] .nextc .tag{background:var(--gloss),var(--sn);color:#4A3200;border-radius:999px;transform:rotate(-2deg);box-shadow:inset 0 -3px 0 var(--sn-d);font-family:var(--font-head);font-weight:800}
+html[data-band=sky] .nextc h2{font-weight:800;text-shadow:0 3px 0 rgba(20,90,170,.35)}
+html[data-band=sky] .nextc .nic{width:clamp(92px,13vw,128px);height:clamp(92px,13vw,128px);display:grid;place-items:center;border-radius:50%;font-size:clamp(52px,7vw,72px);
+  background:radial-gradient(circle at 35% 28%,#fff 0 18%,rgba(255,255,255,.9) 19%,#DDF0FF 70%);box-shadow:inset 0 -6px 0 rgba(30,127,214,.18),0 14px 24px -10px rgba(10,60,130,.6);animation:skyBob 3.2s ease-in-out infinite}
+@keyframes skyBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+html[data-band=sky] .nextc .meta span{background:rgba(255,255,255,.22);border-radius:999px}
+html[data-band=sky] .nextc .btn{--b:var(--sn);--bd:var(--sn-d);color:#4A3200}
+/* قائمة التميّز وتحدي الشعب: بطاقات بيضاء ناعمة */
+html[data-band=sky] .rankc,html[data-band=sky] .teamc{background:var(--surface);color:var(--ink);border:4px solid #fff;border-radius:34px;box-shadow:var(--soft)}
+html[data-band=sky][data-mode=dark] .rankc,html[data-band=sky][data-mode=dark] .teamc{border-color:#4352A0}
+html[data-band=sky] .rankc h3,html[data-band=sky] .tc-t{color:var(--pk-d)!important}
+html[data-band=sky][data-mode=dark] .rankc h3,html[data-band=sky][data-mode=dark] .tc-t{color:#FFB3CF!important}
+html[data-band=sky] .rankc .mypos{background:var(--gloss),#E3F3FF;border:0;border-radius:24px;box-shadow:inset 0 -4px 0 #C4E2FA}
+html[data-band=sky][data-mode=dark] .rankc .mypos{background:var(--gloss),#3D4A9A;box-shadow:inset 0 -4px 0 #252F6E}
+html[data-band=sky] .rankc .mypos b{color:var(--bl-d)} html[data-band=sky][data-mode=dark] .rankc .mypos b{color:#7CCBFF}
+html[data-band=sky] .rankc .mypos div{color:var(--muted)} html[data-band=sky] .rankc .mypos em{color:var(--pk-d)}
+html[data-band=sky] .rankc li{border-top:2px dashed var(--line)} html[data-band=sky] .rankc li.me{color:var(--bl-d)}
+html[data-band=sky] .rankc .m{box-shadow:inset 0 -3px 0 rgba(0,0,0,.15),inset 0 2px 0 rgba(255,255,255,.6)}
+html[data-band=sky] .rankc .pts{color:var(--pk-d)}
+html[data-band=sky][data-mode=dark] .rankc .more{color:#9AD6FF!important;box-shadow:inset 0 -3px 0 #252F6E}
+html[data-band=sky] .rankc .more{background:var(--gloss),var(--surface-2);color:var(--bl-d);border:0;border-radius:999px;box-shadow:inset 0 -3px 0 var(--line)}
+html[data-band=sky] .tc-msg{background:#FFF1F6;color:var(--pk-d)} html[data-band=sky][data-mode=dark] .tc-msg{background:#3D4A9A;color:#FFD0E0}
+html[data-band=sky] .tc-team{background:var(--surface-2);border:3px solid #fff;border-radius:26px;color:var(--ink)}
+html[data-band=sky] .tc-team.lead{background:linear-gradient(180deg,#FFF6D6,#FFFFFF);border-color:var(--sn)}
+html[data-band=sky] .tc-sc{background:var(--gloss),var(--bl);color:#fff!important;border-radius:999px;box-shadow:inset 0 -4px 0 var(--bl-d)}
+html[data-band=sky] .tc-team.mine{box-shadow:0 0 0 4px var(--pk)} html[data-band=sky] .tc-sub{color:var(--muted)}
+/* بطاقات الدروس: كل بطاقة بلون بالون */
+html[data-band=sky] .lgrid{gap:28px 20px;margin-top:22px}
+html[data-band=sky] .lgrid .lt:nth-child(4n+1){--tc:var(--bl);--td:var(--bl-d);--tl:#E2F2FF}
+html[data-band=sky] .lgrid .lt:nth-child(4n+2){--tc:var(--pk);--td:var(--pk-d);--tl:#FFE6EF}
+html[data-band=sky] .lgrid .lt:nth-child(4n+3){--tc:var(--mn);--td:var(--mn-d);--tl:#DDF8EF}
+html[data-band=sky] .lgrid .lt:nth-child(4n+4){--tc:var(--gp);--td:var(--gp-d);--tl:#ECE6FF}
+html[data-band=sky] .lt{border-radius:34px;border:4px solid #fff;padding:24px 18px 18px;box-shadow:0 16px 30px -18px var(--td,#1E7FD6);background:linear-gradient(180deg,var(--tl,#E2F2FF) 0,var(--surface) 96px)}
+html[data-band=sky][data-mode=dark] .lt{border-color:#4352A0;background:linear-gradient(180deg,color-mix(in srgb,var(--tc) 28%,var(--surface)) 0,var(--surface) 96px)}
+html[data-band=sky] .lt .n{top:-18px;inset-inline-start:18px;width:40px;height:44px;padding:0;display:grid;place-items:center;border:0;border-radius:50% 50% 46% 46%;
+  background:var(--gloss),var(--tc);color:#fff;font-family:var(--font-head);font-weight:800;font-size:20px;box-shadow:inset 0 -4px 0 var(--td),0 6px 12px -6px var(--td)}
+html[data-band=sky] .lt .em{width:76px;height:76px;display:grid;place-items:center;border-radius:50%;font-size:46px;background:radial-gradient(circle at 35% 28%,#fff 0 16%,rgba(255,255,255,.85) 17%,var(--tl) 75%);box-shadow:inset 0 -5px 0 color-mix(in srgb,var(--tc) 30%,transparent),0 10px 18px -10px var(--td)}
+html[data-band=sky] .lt h4{font-size:23px;font-weight:800}
+html[data-band=sky] .lt .bar{height:18px;border-radius:999px;background:var(--surface-2);box-shadow:inset 0 2px 4px rgba(30,60,120,.12)}
+html[data-band=sky] .lt .bar i{border-radius:999px;background:var(--gloss),linear-gradient(90deg,var(--tc),color-mix(in srgb,var(--tc) 60%,#fff))}
+html[data-band=sky] .lt .acts2 .btn:not(.ghost){--b:var(--tc);--bd:var(--td)}
+html[data-band=sky] .lt .chip{border-radius:999px;font-weight:700}
+html[data-band=sky] .unit-head{font-family:var(--font-head);font-weight:800;font-size:24px;color:var(--gp-d);display:inline-flex;background:var(--gloss),#EDE7FF;padding:4px 18px 6px;border-radius:999px;box-shadow:inset 0 -3px 0 #D6CAFF}
+html[data-band=sky] .unit-head::after{display:none}
+html[data-band=sky][data-mode=dark] .unit-head{background:var(--gloss),#4A3F9E;color:#E6DEFF;box-shadow:inset 0 -3px 0 #2E2675}
+/* صفحة «صفّي / مساحتي» */
+html[data-band=sky] .space-btns button{border-radius:40px;border:4px solid #fff;box-shadow:inset 0 -8px 0 var(--bd),0 20px 34px -18px var(--bd)}
+html[data-band=sky] .space-btns .sp-cls{background:var(--gloss),linear-gradient(160deg,#6CC6FF,#2F8EE6);--bd:#1E6FC0}
+html[data-band=sky] .space-btns .sp-priv{background:var(--gloss),linear-gradient(160deg,#FF94BC,#FF5C95);--bd:#D23B74}
+html[data-band=sky] .card{border:4px solid #fff;border-radius:30px;box-shadow:var(--soft)}
+html[data-band=sky][data-mode=dark] .card{border-color:#4352A0}
+html[data-band=sky] .lesson-card{border-radius:30px}
+html[data-band=sky] .hb{border-radius:38px;border:4px solid #fff;box-shadow:0 22px 44px -22px rgba(80,60,200,.7);
+  background:radial-gradient(90% 60% at 50% 0%,rgba(255,226,122,.35),transparent 70%),radial-gradient(70% 50% at 100% 100%,rgba(255,111,163,.35),transparent 70%),linear-gradient(160deg,#5867E6 0%,#6E4FD8 55%,#8A4CCF 100%)}
+html[data-band=sky] .hb::before{display:none}
+html[data-band=sky] .hb-sub,html[data-band=sky] .hb-empty{color:#E8E2FF} html[data-band=sky] .hb-row{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.18);border-radius:999px} html[data-band=sky] .hb-row .cl{color:#D9D2FF} html[data-band=sky] .hb-foot{color:#D0C8FF}
+@media (prefers-reduced-motion:reduce){html[data-band=sky] .nextc .nic{animation:none}}
+/* ---------- الصفوف 4–6: «حلبة الأبطال» — لامعة، حادة الأناقة، مريحة للعين ---------- */
+html[data-band=quest]{--font:'Readex Pro','Tajawal',sans-serif;--font-head:'Changa','Readex Pro',sans-serif;
+  --c1:#12B5CB;--c1d:#0B8597;--c2:#4C5FD5;--c2d:#3242A8;--c3:#FFB020;--c3d:#D88A00;--c4:#FF5D73;--c4d:#D63A52;--c5:#2FC47E;--c5d:#1C9259;
+  --vio:#4C5FD5;--vio-d:#3242A8;--buzz:#FF5D73;--buzz-d:#D63A52;--cup:#FFB020;--cup-d:#D88A00;--sky:#12B5CB;--sky-d:#0B8597;--ok:#2FC47E;--ok-d:#1C9259;
+  --bg:#EEF3FF;--card:#fff;--surface:#fff;--surface-2:#F4F7FF;--tint:#EAF0FF;--line:#DCE3F7;--lip:#CBD5F2;--muted:#56608A;--ink:#18203F;--teal:#3242A8;--radius:22px;
+  --sheen:linear-gradient(180deg,rgba(255,255,255,.42) 0%,rgba(255,255,255,.10) 48%,rgba(255,255,255,0) 50%);--soft:0 16px 32px -20px rgba(50,66,168,.55)}
+html[data-band=quest][data-mode=dark]{--bg:#121A3A;--card:#1B2550;--surface:#1B2550;--surface-2:#172047;--tint:#212C5E;--input-bg:#172047;--line:#2C3A74;--lip:#0A0F26;
+  --ink:#EEF2FF;--muted:#AEB8E6;--teal:#7FE3F0;--hud:rgba(14,20,46,.82);--soft:0 16px 32px -18px rgba(0,0,0,.85);
+  --sheen:linear-gradient(180deg,rgba(255,255,255,.22) 0%,rgba(255,255,255,.05) 48%,rgba(255,255,255,0) 50%)}
+html[data-band=quest] h1,html[data-band=quest] h2,html[data-band=quest] h3{font-family:var(--font-head);font-weight:800;letter-spacing:0}
+html[data-band=quest] h4{font-family:var(--font);font-weight:700}
+/* الخلفية: ضوء ساحة مسابقة — أشعة مائلة ناعمة وشبكة نقاط خفيفة */
+html[data-band=quest] body::before{background:
+  linear-gradient(115deg,transparent 0 58%,rgba(18,181,203,.10) 58% 64%,transparent 64% 70%,rgba(76,95,213,.08) 70% 73%,transparent 73%),
+  radial-gradient(60% 45% at 90% 0%,rgba(255,176,32,.20),transparent 70%),radial-gradient(60% 45% at 0% 100%,rgba(18,181,203,.18),transparent 70%),
+  linear-gradient(180deg,#E7EEFF 0%,#F2F6FF 55%,#F7F5FF 100%)}
+html[data-band=quest] body::after{opacity:.55;background-image:radial-gradient(circle,rgba(76,95,213,.28) 1.2px,transparent 1.6px);background-size:26px 26px;background-repeat:repeat;
+  -webkit-mask:linear-gradient(180deg,#000,transparent 55%);mask:linear-gradient(180deg,#000,transparent 55%)}
+html[data-band=quest][data-mode=dark] body::before{background:
+  linear-gradient(115deg,transparent 0 58%,rgba(18,181,203,.12) 58% 64%,transparent 64% 70%,rgba(76,95,213,.12) 70% 73%,transparent 73%),
+  radial-gradient(60% 45% at 90% 0%,rgba(255,176,32,.14),transparent 70%),radial-gradient(60% 45% at 0% 100%,rgba(18,181,203,.16),transparent 70%),
+  linear-gradient(180deg,#18214A 0%,#121A3A 100%)}
+html[data-band=quest][data-mode=dark] body::after{background-image:radial-gradient(circle,rgba(127,227,240,.22) 1.2px,transparent 1.6px)}
+/* الشريط العلوي */
+html[data-band=quest] .topbar{background:var(--hud,rgba(255,255,255,.86));box-shadow:0 1px 0 var(--line),var(--soft)}
+html[data-band=quest] .topbar h1{color:var(--c2d);font-size:30px} html[data-band=quest][data-mode=dark] .topbar h1{color:#7FE3F0}
+html[data-band=quest] .hbtn{border:1.5px solid var(--line);border-radius:14px;background:var(--sheen),var(--surface);color:var(--ink);box-shadow:inset 0 -3px 0 var(--line);font-weight:600}
+html[data-band=quest][data-mode=dark] .hbtn{background:var(--sheen),#24306A;color:#fff;border-color:#33418A;box-shadow:inset 0 -3px 0 #0E1430}
+html[data-band=quest] .hbtn.instbtn{background:var(--sheen),var(--c3);color:#3A2600;border-color:var(--c3d);box-shadow:inset 0 -3px 0 var(--c3d)}
+/* الأزرار: «جوهرة» لامعة بحافة سفلية */
+html[data-band=quest] .btn{--b:var(--c2);--bd:var(--c2d);background:var(--sheen),var(--b);border-radius:14px;font-weight:700;padding:6px 20px 9px;
+  box-shadow:inset 0 -5px 0 var(--bd),inset 0 1px 0 rgba(255,255,255,.5),0 10px 18px -12px var(--bd)}
+html[data-band=quest] .btn:active{transform:translateY(3px);box-shadow:inset 0 -2px 0 var(--bd)}
+html[data-band=quest] .btn.alt{--b:var(--c4);--bd:var(--c4d)} html[data-band=quest] .btn.blue{--b:var(--c1);--bd:var(--c1d)}
+html[data-band=quest] .btn.ghost{--bd:var(--line);background:var(--sheen),var(--surface);color:var(--c2d);border:1.5px solid var(--line)}
+html[data-band=quest][data-mode=dark] .btn.ghost{--bd:#0E1430;background:var(--sheen),#24306A;color:#fff;border-color:#33418A}
+html[data-band=quest] .btn.big{font-family:var(--font-head);font-weight:800;font-size:26px;border-radius:16px;padding:9px 30px 13px;box-shadow:inset 0 -6px 0 var(--bd),inset 0 1px 0 rgba(255,255,255,.5),0 14px 24px -12px var(--bd)}
+/* مجموع الدرجات: عدّاد نقاط */
+html[data-band=quest] .hscore{font-family:var(--font-head);font-weight:800;border:0;border-radius:14px;background:var(--sheen),linear-gradient(90deg,#FFC24D,#FF9F1A);color:#3A2600;box-shadow:inset 0 -4px 0 var(--c3d),0 8px 16px -10px var(--c3d)}
+html[data-band=quest] .hscore small{color:#6A4700}
+/* بطاقة «التحدي» الحالي */
+html[data-band=quest] .nextc{border-radius:26px;border:0;padding:24px 26px;
+  background:repeating-linear-gradient(135deg,rgba(255,255,255,.06) 0 14px,transparent 14px 28px),radial-gradient(80% 70% at 100% 0%,rgba(255,255,255,.22),transparent 60%),linear-gradient(135deg,#4C5FD5 0%,#2E8FE0 55%,#12B5CB 100%);
+  box-shadow:inset 0 -6px 0 rgba(20,30,110,.35),0 0 0 3px rgba(255,255,255,.7),0 24px 44px -22px rgba(50,66,168,.85)}
+html[data-band=quest] .nextc .tag{background:var(--sheen),var(--c3);color:#3A2600;border-radius:10px;transform:skewX(-8deg);font-family:var(--font-head);font-weight:800;box-shadow:inset 0 -3px 0 var(--c3d)}
+html[data-band=quest] .nextc h2{font-weight:800;text-shadow:0 2px 0 rgba(20,30,110,.35)}
+html[data-band=quest] .nextc .nic{width:clamp(88px,12vw,118px);height:clamp(88px,12vw,118px);display:grid;place-items:center;border-radius:28px;transform:rotate(-8deg);font-size:clamp(50px,7vw,66px);
+  background:linear-gradient(160deg,rgba(255,255,255,.95),rgba(225,236,255,.9));box-shadow:inset 0 -6px 0 rgba(50,66,168,.18),0 16px 26px -12px rgba(10,20,80,.7);animation:qGlow 3.6s ease-in-out infinite}
+@keyframes qGlow{0%,100%{box-shadow:inset 0 -6px 0 rgba(50,66,168,.18),0 16px 26px -12px rgba(10,20,80,.7)}50%{box-shadow:inset 0 -6px 0 rgba(50,66,168,.18),0 16px 26px -12px rgba(10,20,80,.7),0 0 0 8px rgba(255,255,255,.18)}}
+html[data-band=quest] .nextc .meta span{background:rgba(255,255,255,.16);border-radius:10px}
+html[data-band=quest] .nextc .btn{--b:var(--c3);--bd:var(--c3d);color:#3A2600}
+/* الترتيب وتحدي الشعب: لوحة نتائج زجاجية داكنة */
+html[data-band=quest] .rankc,html[data-band=quest] .teamc{border-radius:26px;border:1.5px solid rgba(127,227,240,.35);background:radial-gradient(80% 60% at 100% 0%,rgba(18,181,203,.22),transparent 60%),linear-gradient(160deg,#1F2A63,#141B42);box-shadow:0 16px 30px -18px rgba(10,15,50,.9)}
+html[data-band=quest] .rankc h3,html[data-band=quest] .tc-t{color:#FFC24D!important;font-family:var(--font-head)}
+html[data-band=quest] .rankc .mypos{border-radius:18px;background:linear-gradient(90deg,rgba(18,181,203,.25),rgba(76,95,213,.15));border:1px solid rgba(127,227,240,.45)}
+html[data-band=quest] .rankc .mypos b{color:#7FE3F0;font-family:var(--font-head);font-weight:800}
+html[data-band=quest] .rankc .m{border-radius:10px;font-family:var(--font-head);font-weight:800}
+html[data-band=quest] .rankc .pts{font-family:var(--font-head);font-weight:800;color:#FFC24D}
+html[data-band=quest] .rankc .more{border-radius:12px}
+html[data-band=quest] .tc-team{border-radius:18px} html[data-band=quest] .tc-sc{border-radius:10px;font-family:var(--font-head);font-weight:800}
+html[data-band=quest] .tc-bar i{background:linear-gradient(90deg,#12B5CB,#7FE3F0)}
+/* بطاقات الدروس: «بطاقات مستوى» بحافة لونية وعدّاد طاقة */
+html[data-band=quest] .lgrid{gap:24px 18px;margin-top:20px}
+html[data-band=quest] .lgrid .lt:nth-child(4n+1){--tc:var(--c2);--td:var(--c2d)}
+html[data-band=quest] .lgrid .lt:nth-child(4n+2){--tc:var(--c1);--td:var(--c1d)}
+html[data-band=quest] .lgrid .lt:nth-child(4n+3){--tc:var(--c4);--td:var(--c4d)}
+html[data-band=quest] .lgrid .lt:nth-child(4n+4){--tc:var(--c5);--td:var(--c5d)}
+html[data-band=quest] .lt{border-radius:22px;border:1.5px solid var(--line);border-inline-start:7px solid var(--tc,#4C5FD5);padding:22px 16px 16px;box-shadow:var(--soft);background:linear-gradient(180deg,color-mix(in srgb,var(--tc,#4C5FD5) 8%,var(--surface)) 0,var(--surface) 90px)}
+html[data-band=quest] .lt .n{top:-15px;inset-inline-start:14px;width:38px;height:42px;padding:0;display:grid;place-items:center;border:0;color:#fff;font-family:var(--font-head);font-weight:800;font-size:18px;
+  background:var(--sheen),var(--tc);clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);border-radius:0}
+html[data-band=quest] .lt .em{width:66px;height:66px;display:grid;place-items:center;border-radius:18px;font-size:40px;transform:rotate(-6deg);
+  background:linear-gradient(160deg,#fff,color-mix(in srgb,var(--tc) 14%,#fff));box-shadow:inset 0 -4px 0 color-mix(in srgb,var(--tc) 28%,transparent),0 10px 16px -10px var(--td)}
+html[data-band=quest][data-mode=dark] .lt .em{background:linear-gradient(160deg,#2A3670,#202A5C)}
+html[data-band=quest] .lt h4{font-size:21px}
+html[data-band=quest] .lt .bar{height:14px;border-radius:7px;background:var(--surface-2);box-shadow:inset 0 0 0 1px var(--line)}
+html[data-band=quest] .lt .bar i{border-radius:7px;background:repeating-linear-gradient(90deg,transparent 0 14px,rgba(255,255,255,.55) 14px 16px),linear-gradient(90deg,var(--tc),color-mix(in srgb,var(--tc) 55%,#fff))}
+html[data-band=quest] .lt .ft b{font-family:var(--font-head);font-weight:800}
+html[data-band=quest] .lt .acts2 .btn:not(.ghost){--b:var(--tc);--bd:var(--td)}
+html[data-band=quest] .lt .chip{border-radius:8px;font-weight:700}
+html[data-band=quest] .unit-head{font-family:var(--font-head);font-weight:800;font-size:22px;color:var(--c2d);display:inline-flex;align-items:center;gap:8px;padding:3px 16px 5px;border-radius:10px;
+  background:var(--sheen),#E5EAFF;box-shadow:inset 0 -3px 0 #C9D2FA;transform:skewX(-6deg)}
+html[data-band=quest] .unit-head::after{display:none}
+html[data-band=quest][data-mode=dark] .unit-head{background:var(--sheen),#2A3670;color:#C9D2FF;box-shadow:inset 0 -3px 0 #141B42}
+/* «صفّي / مساحتي» */
+html[data-band=quest] .space-btns button{border-radius:26px;box-shadow:inset 0 -7px 0 var(--bd),0 0 0 3px rgba(255,255,255,.7),0 20px 34px -18px var(--bd)}
+html[data-band=quest] .space-btns button b{font-family:var(--font-head);font-weight:800}
+html[data-band=quest] .space-btns .sp-cls{background:var(--sheen),linear-gradient(135deg,#4C5FD5,#12B5CB);--bd:#2A3A9A}
+html[data-band=quest] .space-btns .sp-priv{background:var(--sheen),linear-gradient(135deg,#FF7A5C,#FF4F7B);--bd:#C2324F}
+html[data-band=quest] .card{border-radius:22px;box-shadow:var(--soft)}
+/* قائمة التميّز الكبيرة: ساحة ليلية بلون الهوية */
+html[data-band=quest] .hb{border-radius:28px;background:radial-gradient(80% 50% at 50% 0%,rgba(255,176,32,.28),transparent 70%),radial-gradient(60% 50% at 100% 100%,rgba(18,181,203,.25),transparent 70%),linear-gradient(160deg,#1F2A63,#141B42)}
+html[data-band=quest] .hb-sub,html[data-band=quest] .hb-empty{color:#C6CEF2}
+@media (prefers-reduced-motion:reduce){html[data-band=quest] .nextc .nic{animation:none}}
+/* ---------- الصفوف 10–12: «منصة البطولة» (أزرق ملكي + نحاسي) — متزن، أنيق، نظيف ---------- */
+html[data-band=noble]{--font:'IBM Plex Sans Arabic','Readex Pro',sans-serif;--font-head:'IBM Plex Sans Arabic','Readex Pro',sans-serif;--num:'Changa','Readex Pro',sans-serif;
+  --ac:#2F4A9E;--ac-d:#1F3375;--ac-l:#E7ECF8;--cu:#C27A35;--cu-d:#955A22;--gd:#C9A54A;--sv:#A9B3BD;--bz:#B9774A;
+  --vio:#2F4A9E;--vio-d:#1F3375;--buzz:#C27A35;--buzz-d:#955A22;--cup:#C9A54A;--cup-d:#9C7E2F;--sky:#3E7BC4;--ok:#1F9D6B;--ok-d:#167650;
+  --bg:#F5F6F9;--card:#fff;--surface:#fff;--surface-2:#F7F8FB;--tint:#EEF1F9;--line:#E2E6EE;--lip:#D5DBE6;--muted:#5C6476;--ink:#141A2B;--teal:#1F3375;--radius:16px;
+  --soft:0 1px 0 rgba(20,26,43,.04),0 12px 28px -20px rgba(20,26,43,.35);--beam:transparent}
+html[data-band=noble][data-mode=dark]{--bg:#0E121C;--card:#161C2A;--surface:#161C2A;--surface-2:#121825;--tint:#1C2436;--input-bg:#121825;--line:#262F45;--lip:#06080E;
+  --ink:#EDF0F7;--muted:#A3ADC4;--teal:#9DB4F2;--ac-l:#1E2A4E;--hud:rgba(12,16,26,.86);--soft:0 1px 0 rgba(255,255,255,.03),0 14px 30px -18px rgba(0,0,0,.9)}
+html[data-band=noble] body{font-size:20px;line-height:1.75}
+html[data-band=noble] h1,html[data-band=noble] h2,html[data-band=noble] h3{font-family:var(--font-head);font-weight:700;letter-spacing:0}
+/* الخلفية: خطوط مضمار سباق رفيعة، هادئة جدًا */
+html[data-band=noble] body::before{background:
+  radial-gradient(120% 90% at 110% -10%,transparent 0 58%,rgba(47,74,158,.10) 58% 58.25%,transparent 58.25% 63%,rgba(47,74,158,.08) 63% 63.25%,transparent 63.25% 68%,rgba(194,122,53,.10) 68% 68.25%,transparent 68.25%),
+  linear-gradient(180deg,#FAFBFD 0%,#F2F4F8 100%)}
+html[data-band=noble] body::after{display:none}
+html[data-band=noble][data-mode=dark] body::before{background:
+  radial-gradient(120% 90% at 110% -10%,transparent 0 58%,rgba(157,180,242,.10) 58% 58.25%,transparent 58.25% 63%,rgba(157,180,242,.07) 63% 63.25%,transparent 63.25% 68%,rgba(194,122,53,.12) 68% 68.25%,transparent 68.25%),
+  linear-gradient(180deg,#111725 0%,#0E121C 100%)}
+/* الشريط العلوي: خط رفيع فقط */
+html[data-band=noble] .topbar{background:var(--hud,rgba(255,255,255,.9));box-shadow:0 1px 0 var(--line)}
+html[data-band=noble] .topbar h1{color:var(--ac-d);font-size:26px;font-weight:700}
+html[data-band=noble][data-mode=dark] .topbar h1{color:#9DB4F2}
+html[data-band=noble] .hbtn{border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--ink);box-shadow:none;font-weight:500}
+html[data-band=noble][data-mode=dark] .hbtn{background:#1A2133;color:#E6EEED;border-color:#2A3450}
+html[data-band=noble] .hbtn.instbtn{background:var(--ac);color:#fff;border-color:var(--ac)}
+/* الأزرار: مصمتة متزنة، بلمسة ضغط خفيفة */
+html[data-band=noble] .btn{--b:var(--ac);--bd:var(--ac-d);background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,0) 60%),var(--b);border-radius:12px;font-weight:600;padding:6px 20px 8px;
+  box-shadow:inset 0 -3px 0 var(--bd),0 8px 16px -12px var(--bd)}
+html[data-band=noble] .btn:active{transform:translateY(2px);box-shadow:inset 0 -1px 0 var(--bd)}
+html[data-band=noble] .btn.alt{--b:var(--cu);--bd:var(--cu-d)} html[data-band=noble] .btn.blue{--b:#3E7BC4;--bd:#2B5A94}
+html[data-band=noble] .btn.ghost{--bd:var(--line);background:var(--surface);color:var(--ac-d);border:1px solid var(--line);box-shadow:inset 0 -2px 0 var(--line)}
+html[data-band=noble][data-mode=dark] .btn.ghost{--bd:#080B14;background:#1A2133;color:#E6EEED;border-color:#2A3450;box-shadow:inset 0 -2px 0 #080B14}
+html[data-band=noble] .btn.big{font-family:var(--font-head);font-weight:700;font-size:23px;border-radius:14px;padding:9px 28px 12px;box-shadow:inset 0 -4px 0 var(--bd),0 12px 22px -14px var(--bd)}
+/* مجموع الدرجات: رقم لوحة نتائج */
+html[data-band=noble] .hscore{border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--ink);font-family:var(--num);font-weight:700;box-shadow:none}
+html[data-band=noble] .hscore small{font-family:var(--font)}
+html[data-band=noble][data-mode=dark] .hscore{background:#1A2133;border-color:#2A3450}
+/* الدرس الحالي: بطاقة «المنافسة» */
+html[data-band=noble] .nextc{border-radius:22px;border:0;padding:26px 28px;color:#fff;
+  background:radial-gradient(130% 100% at 110% -20%,transparent 0 50%,rgba(255,255,255,.07) 50% 50.4%,transparent 50.4% 56%,rgba(255,255,255,.06) 56% 56.4%,transparent 56.4% 62%,rgba(201,165,74,.25) 62% 62.4%,transparent 62.4%),
+    linear-gradient(135deg,#3A58B5 0%,#1C2E6B 60%,#16245A 100%);box-shadow:0 22px 44px -26px rgba(22,36,90,.9)}
+html[data-band=noble] .nextc .tag{background:transparent;border:1px solid rgba(201,165,74,.8);color:#F1DFAE;border-radius:999px;transform:none;font-family:var(--font);font-weight:600;font-size:15px;padding:3px 14px}
+html[data-band=noble] .nextc h2{font-weight:700;letter-spacing:0}
+html[data-band=noble] .nextc p{color:#D3DCF5}
+html[data-band=noble] .nextc .nic{width:clamp(84px,11vw,108px);height:clamp(84px,11vw,108px);display:grid;place-items:center;border-radius:50%;font-size:clamp(44px,6vw,56px);
+  background:rgba(255,255,255,.08);box-shadow:inset 0 0 0 1px rgba(255,255,255,.18),0 0 0 6px rgba(201,165,74,.18)}
+html[data-band=noble] .nextc .meta span{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:999px;font-size:15px}
+html[data-band=noble] .nextc .btn{--b:var(--cu);--bd:var(--cu-d);color:#fff}
+/* الترتيب وتحدي الشعب: جدول ترتيب أنيق فاتح */
+html[data-band=noble] .rankc,html[data-band=noble] .teamc{background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:22px;box-shadow:var(--soft)}
+html[data-band=noble] .rankc h3,html[data-band=noble] .tc-t{color:var(--ac-d)!important;font-family:var(--font-head)!important;font-weight:700!important}
+html[data-band=noble][data-mode=dark] .rankc h3,html[data-band=noble][data-mode=dark] .tc-t{color:#9DB4F2!important}
+html[data-band=noble] .rankc .mypos{background:var(--ac-l);border:0;border-radius:16px}
+html[data-band=noble] .rankc .mypos b{font-family:var(--num);font-weight:700;color:var(--ac)} html[data-band=noble][data-mode=dark] .rankc .mypos b{color:#9DB4F2}
+html[data-band=noble] .rankc .mypos div{color:var(--muted)} html[data-band=noble] .rankc .mypos em{color:var(--cu)}
+html[data-band=noble] .rankc li{border-top:1px solid var(--line)} html[data-band=noble] .rankc li.me{color:var(--ac)} html[data-band=noble][data-mode=dark] .rankc li.me{color:#9DB4F2}
+html[data-band=noble] .rankc .m{font-family:var(--num);font-weight:700;width:28px;height:28px;font-size:15px;color:#fff;background:#C9CFD3}
+html[data-band=noble] .rankc .m1{background:var(--gd)} html[data-band=noble] .rankc .m2{background:var(--sv)} html[data-band=noble] .rankc .m3{background:var(--bz)}
+html[data-band=noble] .rankc .pts{font-family:var(--num);font-weight:700;color:var(--ink)}
+html[data-band=noble] .rankc .more{background:transparent;color:var(--ac-d);border:1px solid var(--line);border-radius:12px} html[data-band=noble][data-mode=dark] .rankc .more{color:#9DB4F2}
+html[data-band=noble] .tc-msg{background:var(--ac-l);color:var(--ac-d)} html[data-band=noble][data-mode=dark] .tc-msg{color:#C9D6FA}
+html[data-band=noble] .tc-team{background:var(--surface-2);border:1px solid var(--line);border-radius:16px;color:var(--ink)}
+html[data-band=noble] .tc-team.lead{border-color:var(--gd);background:linear-gradient(180deg,#FBF6E8,var(--surface))} html[data-band=noble][data-mode=dark] .tc-team.lead{background:linear-gradient(180deg,#2A2618,var(--surface))}
+html[data-band=noble] .tc-sc{background:transparent;color:var(--ink)!important;font-family:var(--num);font-weight:700;padding:0} html[data-band=noble] .tc-team.mine{box-shadow:0 0 0 2px var(--ac)}
+html[data-band=noble] .tc-bar{background:var(--line)} html[data-band=noble] .tc-bar i{background:var(--ac)} html[data-band=noble] .tc-sub{color:var(--muted)}
+/* بطاقات الدروس: «حارات السباق» — رقم كبير شفاف ومؤشر تقدّم دقيق */
+html[data-band=noble] .lgrid{gap:18px;margin-top:16px}
+html[data-band=noble] .lt{border-radius:18px;border:1px solid var(--line);padding:20px 18px 16px;box-shadow:var(--soft);overflow:hidden}
+html[data-band=noble] .lt::before{content:"";position:absolute;inset:0 0 auto 0;height:3px;background:linear-gradient(90deg,var(--ac),var(--cu))}
+html[data-band=noble] .lt.done::before{background:linear-gradient(90deg,var(--gd),var(--cu))}
+html[data-band=noble] .lt .n{top:10px;inset-inline-start:auto;inset-inline-end:14px;background:none;border:0;padding:0;font-family:var(--num);font-weight:700;font-size:40px;line-height:1;color:var(--ac);opacity:.14}
+html[data-band=noble] .lt .em{width:56px;height:56px;display:grid;place-items:center;border-radius:50%;font-size:30px;background:var(--surface-2);box-shadow:inset 0 0 0 1px var(--line)}
+html[data-band=noble] .lt h4{font-size:20px;font-weight:700}
+html[data-band=noble] .lt .bar{height:6px;border-radius:6px;background:var(--line);box-shadow:none}
+html[data-band=noble] .lt .bar i{border-radius:6px;background:var(--ac)}
+html[data-band=noble] .lt.done .bar i{background:linear-gradient(90deg,var(--ac),var(--gd))}
+html[data-band=noble] .lt .ft b{font-family:var(--num);font-weight:700}
+html[data-band=noble] .lt .chip{border-radius:999px;font-weight:600}
+html[data-band=noble] .unit-head{font-family:var(--font-head);font-weight:700;font-size:19px;color:var(--muted)}
+html[data-band=noble] .unit-head::after{background:var(--line);height:1px}
+/* «صفّي / مساحتي» */
+html[data-band=noble] .space-btns button{border-radius:22px;box-shadow:inset 0 -4px 0 var(--bd),0 18px 30px -20px var(--bd)}
+html[data-band=noble] .space-btns button b{font-family:var(--font-head);font-weight:700}
+html[data-band=noble] .space-btns .sp-cls{background:linear-gradient(135deg,#3A58B5,#16245A);--bd:#101C47}
+html[data-band=noble] .space-btns .sp-priv{background:linear-gradient(135deg,#C9884A,#955A22);--bd:#6B3F16}
+html[data-band=noble] .card{border-radius:18px;border:1px solid var(--line);box-shadow:var(--soft)}
+/* قائمة التميّز الكبيرة */
+html[data-band=noble] .hb{border-radius:22px;background:radial-gradient(80% 50% at 50% 0%,rgba(201,165,74,.22),transparent 70%),linear-gradient(160deg,#3A58B5,#16245A 70%)}
+html[data-band=noble] .hb-sub,html[data-band=noble] .hb-empty{color:#D3DCF5}
 </style>
 </head>
 <body>
@@ -1741,7 +2033,7 @@ async function createTeacherDoc(user) {
     return false;
   }
 }
-async function doLogout() { window.MUSTM = null; try { closeModal(); } catch (e) {} await flushProgress(); stopTimers(); try { closeModal(); } catch (e) {} await API.logout(); }
+async function doLogout() { window.MUSTM = null; setTheme(''); try { closeModal(); } catch (e) {} await flushProgress(); stopTimers(); try { closeModal(); } catch (e) {} await API.logout(); }
 const TIMERS = [];
 function stopTimers() { while (TIMERS.length) clearInterval(TIMERS.pop()); }
 
@@ -4690,7 +4982,8 @@ function gradePick(boxId, inputId, val, stage) {
 /* ================= التصميم: حسب الصف + نهاري/ليلي ================= */
 const THEME_NAMES = {sky:'غيمة', quest:'رحلة', aurora:'شفق', noble:'وقار', diwan:'ديوان'};
 function themeOfGrade(g) { const i = gradeIdx(g); return i < 0 ? 'aurora' : i < 3 ? 'sky' : i < 6 ? 'quest' : i < 9 ? 'aurora' : 'noble'; }
-function setTheme(t) { document.documentElement.dataset.theme = 'arena'; }   /* تصميم واحد «مسرح المسابقة» لكل الصفوف */
+/* هوية «مسرح المسابقة» واحدة، ولكل ثلاثة صفوف جوّها: sky (1–3) · quest (4–6) · aurora (7–9) · noble (10–12)؛ والمعلم بلا جو */
+function setTheme(t) { const d = document.documentElement; d.dataset.theme = 'arena'; if (t && t !== 'diwan') d.dataset.band = t; else delete d.dataset.band; }
 function curMode() { return document.documentElement.dataset.mode === 'dark' ? 'dark' : 'light'; }
 /* الوضع حسب الوقت: نهاري من 4 صباحًا إلى 5 مساءً، وليلي في الباقي.
    زر 🌙/☀️ يغيّره يدويًا حتى موعد التبديل التالي فقط، ثم يعود الوضع إلى الوقت */
