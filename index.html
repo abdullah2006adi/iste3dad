@@ -776,6 +776,27 @@ html[data-theme=arena] .hbtn.bellbtn .bell-dot{background:var(--buzz);font-famil
 .curbtn.on{--b:var(--cup,#ffc531)!important;--bd:var(--cup-d,#d99a00)!important;background:var(--cup,#ffc531)!important;color:#1C1640!important}
 .lrow.curl{border-color:var(--cup,#ffc531)!important;box-shadow:0 0 0 2px var(--cup,#ffc531),0 3px 0 var(--cup-d,#d99a00)!important}
 .chip.curchip{background:var(--cup,#ffc531);color:#1C1640}
+.teams-wrap{margin:12px 0 4px}
+.teamc{border-radius:24px;padding:14px 16px 12px;background:linear-gradient(160deg,#2A1C6E,#150E36);color:#fff;border:2px solid rgba(255,197,49,.45);box-shadow:0 6px 0 #0B0720,0 22px 40px -24px rgba(20,10,60,.9);margin:10px 0}
+.tc-head{display:flex;align-items:center;gap:10px 16px;flex-wrap:wrap;margin-bottom:10px}
+.tc-t{font-family:var(--font-head);font-size:26px;color:var(--cup,#ffc531)}
+.tc-msg{font-size:17px;color:#E1DAFF;background:rgba(255,255,255,.08);border-radius:999px;padding:3px 14px}
+.tc-msg em{font-style:normal;color:var(--cup,#ffc531);font-weight:800}
+.tc-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.tc-team{position:relative;border-radius:18px;padding:10px 12px 10px;background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.12);text-align:center}
+.tc-team.lead{background:linear-gradient(180deg,rgba(255,197,49,.22),rgba(255,197,49,.05));border-color:var(--cup,#ffc531)}
+.tc-team.mine{box-shadow:0 0 0 3px var(--sky,#31c6f5)}
+.tc-md{font-size:26px;line-height:1;font-family:var(--font-head);color:#CFC8F6}
+.tc-cls{font-weight:800;font-size:19px;margin:4px 0 2px}
+.tc-cls .youtag{font-size:12px}
+.tc-sc{display:inline-block;font-family:var(--font-head);font-size:36px;line-height:1.1;color:var(--cup,#ffc531);background:#08051A;border-radius:11px;padding:4px 14px 0;min-width:70px}
+.tc-team.mine .tc-sc{color:var(--sky,#31c6f5)}
+.tc-bar{height:9px;border-radius:6px;background:rgba(255,255,255,.1);margin:8px 2px 4px;overflow:hidden}
+.tc-bar i{display:block;height:100%;border-radius:6px;background:linear-gradient(90deg,#FFE27A,#F5B400)}
+.tc-sub{font-size:13px;color:#B9B2EA}
+.tc-acts{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:-2px}
+.tc-acts .sw{font-size:18px}
+@media (max-width:600px){.teamc{padding:12px 10px 10px}.tc-row{grid-template-columns:repeat(auto-fit,minmax(72px,1fr));gap:6px}.tc-team{padding:8px 4px}.tc-sc{font-size:24px;padding:3px 6px 0;min-width:0}.tc-cls{font-size:15px}.tc-cls .youtag{display:block;width:max-content;margin:2px auto 0}.tc-sub{font-size:11px;line-height:1.4}.tc-md{font-size:20px}.tc-t{font-size:22px}.tc-msg{font-size:15px;border-radius:14px}}
 .hscore{display:inline-flex;align-items:center;gap:8px;border:2px solid var(--cup,#ffc531);border-radius:14px;padding:2px 12px;background:var(--surface);font-family:var(--font-head);font-size:26px;line-height:1.3;color:var(--gold);white-space:nowrap}
 .hscore small{font-family:var(--font);font-size:14px;color:var(--muted);font-weight:500}
 html[data-mode=dark] .hscore{background:#0B0720}
@@ -1109,6 +1130,7 @@ html[data-mode=dark] .nextc{background:linear-gradient(135deg,#3A2A8F,#22175E)}
   <div class="wrap">
     <div class="warnbar" id="rulesWarn" hidden>⚠️ قواعد الحماية في Firebase قديمة. افتح تبويب «⚙️ الإعداد»، وانسخ القواعد الجديدة، والصقها في Firebase ← Firestore ← Rules، ثم اضغط Publish وحدّث الصفحة.</div>
     <div class="adm-stats adminOnly" id="admStats" hidden></div>
+    <div id="teamsBar"></div>
     <div class="subtabs" id="tTabs">
       <button data-t="teachers" class="adminOnly" onclick="tTab('teachers')" hidden>🏫 المعلمون</button>
       <button data-t="curriculum" class="adminOnly" onclick="tTab('curriculum')" hidden>🗂️ المنهج</button>
@@ -1906,7 +1928,7 @@ function drawHomeTop() {
   else if (T.length) { const low = T.filter(x => x.aMax).sort((a, b) => a.best / a.aMax - b.best / b.aMax)[0];
     next = `<div class="nextc"><span class="tag">أحسنت 🎉</span><div class="nic">🏆</div><h2>أرسلتَ كل دروسك</h2><p>${low && low.best < low.aMax ? 'تستطيع أن تحسّن درجتك: أعِد حلّ الدرس الأقل درجة.' : 'حصلتَ على الدرجة الكاملة في كل دروسك!'}</p>
       ${low && low.best < low.aMax ? `<button class="btn big" onclick="openLesson(${A(low.l.id)},'student')">🔁 ${esc(low.l.title)}</button>` : ''}</div>`; }
-  const d = BV.d, L = d && d.on ? ((d.cls || {})[ME.cls] || []) : null;
+  const d = BV.d, L = d && d.on ? ((d.cls || {})[ME.cls] || []) : null; const tmL = d && d.teamsOn && (d.teams || {})[gradeOf(ME.cls)];
   let rank = '';
   if (L) {
     let dr = 0; L.forEach((r, i) => { if (i === 0 || r.total !== L[i - 1].total) dr++; r.dr = dr; });
@@ -1919,7 +1941,8 @@ function drawHomeTop() {
     const top = L.slice(0, 3).map(r => `<li class="${r.uid === ME.cuid ? 'me' : ''}"><span class="m m${r.dr <= 3 ? r.dr : ''}">${r.dr}</span>${esc(r.name)}<span class="pts">${r.total}</span></li>`).join('');
     rank = `<div class="rankc"><h3>🏆 قائمة التميّز · ${esc(ME.cls)}</h3><div class="mypos"><b>${pos}</b><div>${hint}</div></div><ol>${top}</ol>${L.length ? `<button class="more" onclick="$('#homeBoard').scrollIntoView({behavior:'smooth'})">عرض القائمة كاملة ↓</button>` : ''}</div>`;
   }
-  box.innerHTML = next || rank ? `<div class="sh-top${next && rank ? '' : ' one'}">${next}${rank}</div>` : '';
+  const tm = BV.d && BV.d.teamsOn && BV.d.teams ? teamsHtml((BV.d.teams || {})[gradeOf(ME.cls)], ME.cls, '') : '';
+  box.innerHTML = (next || rank ? `<div class="sh-top${next && rank ? '' : ' one'}">${next}${rank}</div>` : '') + tm;
 }
 
 /* ================= مساحتي الخاصة ================= */
@@ -2416,20 +2439,67 @@ function renderAllPriv() {
 }
 
 /* ================= قائمة التميّز ================= */
-const BOARD_DEF = {on:false, showCls:true, showAll:true, n:10};
+const BOARD_DEF = {on:false, showCls:true, showAll:true, n:10, teamsOn:false};
 const shortName = n => String(n || '').trim().split(/\s+/).slice(0, 2).join(' ');
 async function loadBoard(publish) {
   let d = null; try { d = await API.get('board', TD.view); } catch (e) { console.error(e); }
   TD.board = Object.assign({}, BOARD_DEF, d || {});
   renderBoardCard();
-  if (publish && TD.board.on) publishBoard(true);
+  if (publish) await refreshTeams(TD.board.on || TD.board.teamsOn);
 }
+/* ================= تحدي الشعب: مجموع درجات كل شعبة ================= */
+function teamsFrom(rows) {
+  const out = {};
+  myClasses().forEach(c => {
+    const g = gradeOf(c), R = rows.filter(r => r.cls === c), n = (TD.students || []).filter(s => s.cls === c && !s.archived && !s.moved && !s.removed && s.active !== false).length;
+    const total = R.reduce((t, r) => t + r.total, 0);
+    (out[g] = out[g] || []).push({cls:c, total, n, sent:R.length, avg:n ? Math.round(total / n * 10) / 10 : 0});
+  });
+  Object.values(out).forEach(L => L.sort((a, b) => b.total - a.total || b.avg - a.avg || a.cls.localeCompare(b.cls, 'ar')));
+  return out;
+}
+async function refreshTeams(publish) {
+  try { const rows = await computeRows(); TD.teams = teamsFrom(rows); renderTeamsBar(); if (publish) await publishBoard(true, rows); }
+  catch (e) { console.error(e); }
+}
+/* يرسم مربع الشعب: L = شعب صف واحد، myC = شعبة الطالب (أو فارغ عند المعلم) */
+function teamsHtml(L, myC, g) {
+  if (!L || L.length < 2) return '';   /* التحدي يحتاج شعبتين على الأقل */
+  const top = L[0].total || 1; let dr = 0; L.forEach((r, i) => { if (i === 0 || r.total !== L[i - 1].total) dr++; r.dr = dr; });
+  const medal = k => k === 1 ? '🥇' : k === 2 ? '🥈' : k === 3 ? '🥉' : k;
+  let msg = '';
+  if (myC) { const me = L.find(r => r.cls === myC);
+    if (me) { const up = L.filter(r => r.total > me.total).pop();
+      msg = !L.some(r => r.total) ? 'لم تبدأ الشعب بعد… لتكن شعبتك أول من يتقدّم! 🚀'
+        : me.dr === 1 ? (L.filter(r => r.dr === 1).length > 1 ? 'شعبتك متعادلة في الصدارة! درجة واحدة تحسم السباق 🔥' : 'شعبتك في الصدارة 👑')
+        : `تحتاج شعبتك <em>${dgr(up.total - me.total + 1)}</em> لتتجاوز ${esc(up.cls)} 💪 كل درس تحلّه يرفع شعبتك`; } }
+  return `<div class="teamc"><div class="tc-head"><span class="tc-t">⚔️ تحدي الشعب${g ? ' · ' + esc(gradeName(g)) : ''}</span>${msg ? `<span class="tc-msg">${msg}</span>` : ''}</div>
+    <div class="tc-row">${L.map(r => `<div class="tc-team${r.dr === 1 && r.total ? ' lead' : ''}${r.cls === myC ? ' mine' : ''}"><div class="tc-md">${medal(r.dr)}</div>
+      <div class="tc-cls">${esc(r.cls)}${r.cls === myC ? ' <span class="youtag">شعبتك</span>' : ''}</div><div class="tc-sc">${r.total.toLocaleString('ar')}</div>
+      <div class="tc-bar"><i style="width:${Math.round(r.total / top * 100)}%"></i></div><div class="tc-sub">${r.n} طالبًا · المتوسط ${r.avg}</div></div>`).join('')}</div></div>`;
+}
+function renderTeamsBar() {
+  const el = $('#teamsBar'); if (!el) return;
+  const T = TD.teams || {}, G = Object.keys(T).filter(g => T[g].length > 1).sort((a, b) => gradeIdx(a) - gradeIdx(b)), on = TD.board && TD.board.teamsOn;
+  if (!G.length) { el.innerHTML = ''; return; }
+  el.innerHTML = `<div class="teams-wrap">${G.map(g => teamsHtml(T[g], '', G.length > 1 ? g : '')).join('')}
+    <div class="tc-acts"><label class="sw"><input type="checkbox" ${on ? 'checked' : ''} onchange="setTeamsOn(this.checked)"> 📣 أظهر تحدي الشعب لطلابي</label>
+    <button class="btn sm ghost" onclick="refreshTeams(TD.board.on||TD.board.teamsOn).then(()=>toast('حُدّثت مجاميع الشعب ✓'))">🔄 تحديث</button></div></div>`;
+}
+async function setTeamsOn(v) { TD.board.teamsOn = !!v; renderTeamsBar(); await refreshTeams(true); toast(v ? 'ظهر تحدي الشعب لطلابك ✓' : 'أُخفي تحدي الشعب عن طلابك'); }
 function rankList(L, n) {
   L.sort((a, b) => b.total - a.total || b.cnt - a.cnt || a.name.localeCompare(b.name, 'ar'));
   let rk = 0; L.forEach((r, i) => { if (i === 0 || r.total !== L[i - 1].total) rk = i + 1; r.rk = rk; });
   return L.filter(r => r.rk <= n).slice(0, Math.max(n, 1) * 2).map(r => ({uid:r.uid, name:r.name, cls:r.cls, total:r.total, max:r.max, rk:r.rk}));
 }
-async function computeBoard(n) {
+async function computeBoard(n, rows) {
+  rows = rows || await computeRows();
+  const cls = {}, grade = {};
+  [...new Set(rows.map(r => r.cls))].forEach(c => cls[c] = rankList(rows.filter(r => r.cls === c), n));
+  [...new Set(rows.map(r => r.g))].forEach(g => grade[g] = rankList(rows.filter(r => r.g === g), n));
+  return {cls, grade};
+}
+async function computeRows() {
   const subs = await API.where('submissions', {teacherId:TD.view}), by = {};
   subs.forEach(x => (by[x.uid] = by[x.uid] || []).push(x));
   const rows = TD.students.filter(s => !s.archived && !s.moved && !s.removed && s.active !== false).map(s => {
@@ -2443,16 +2513,15 @@ async function computeBoard(n) {
     });
     return {uid:s.uid, name:shortName(s.name), cls:s.cls, g:gradeOf(s.cls), total, max, cnt};
   }).filter(r => r.cnt > 0);
-  const cls = {}, grade = {};
-  [...new Set(rows.map(r => r.cls))].forEach(c => cls[c] = rankList(rows.filter(r => r.cls === c), n));
-  [...new Set(rows.map(r => r.g))].forEach(g => grade[g] = rankList(rows.filter(r => r.g === g), n));
-  return {cls, grade};
+  return rows;
 }
-async function publishBoard(silent) {
+async function publishBoard(silent, rows) {
   const b = TD.board, n = Math.min(100, Math.max(1, +b.n || 10));
-  const data = {on:!!b.on, showCls:!!b.showCls, showAll:!!b.showAll, n, teacherId:TD.view, updatedAt:Date.now(), cls:{}, grade:{}};
+  const data = {on:!!b.on, showCls:!!b.showCls, showAll:!!b.showAll, n, teamsOn:!!b.teamsOn, teams:{}, teacherId:TD.view, updatedAt:Date.now(), cls:{}, grade:{}};
   try {
-    if (b.on) Object.assign(data, await computeBoard(n));
+    if (b.on || b.teamsOn) { rows = rows || await computeRows(); TD.teams = teamsFrom(rows); renderTeamsBar(); }
+    if (b.on) Object.assign(data, await computeBoard(n, rows));
+    if (b.teamsOn) data.teams = TD.teams;
     await API.set('board', TD.view, data); Object.assign(TD.board, data); renderBoardCard();
     if (!silent) toast(b.on ? 'حُدّثت قائمة التميّز عند الطلاب ✓' : 'أُخفيت قائمة التميّز عن الطلاب');
   } catch (e) { console.error(e); if (isPerm(e)) $('#rulesWarn').hidden = false; if (!silent) toast('تعذّر الحفظ: ' + errMsg(e)); }
