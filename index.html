@@ -764,6 +764,15 @@ html[data-theme=arena] .hbtn.who{text-decoration:none;border-radius:999px}
 html[data-theme=arena] .hbtn.instbtn{background:var(--cup);color:#1C1640;border-color:var(--cup-d);box-shadow:0 3px 0 var(--cup-d)}
 html[data-theme=arena] .hbtn.bellbtn .bell-dot{background:var(--buzz);font-family:var(--font-head);font-weight:400}
 /* مجموع درجات الطالب في الشريط */
+.ntriple{display:flex;gap:8px;align-items:flex-end;margin:2px 0 8px}
+.ntriple label{flex:1;min-width:0;margin:0!important;display:flex;flex-direction:column;gap:2px;font-size:16px!important;font-weight:600;color:var(--muted)}
+.ntriple input.locked{background:var(--surface-2);color:var(--muted)}
+.ntriple .tpre{flex:none;align-self:flex-end;display:grid;place-items:center;height:44px;padding:0 12px;border-radius:12px;background:var(--cup,#ffc531);color:#1C1640;font-weight:800}
+.sexpick{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:4px 0 8px}
+.sexpick button{font:inherit;font-size:20px;font-weight:700;padding:8px;border-radius:14px;border:2px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;box-shadow:0 3px 0 var(--line)}
+.sexpick button.on{background:var(--vio,#6d3ce0);border-color:var(--vio,#6d3ce0);color:#fff;box-shadow:0 3px 0 var(--vio-d,#4a22a8)}
+.modal.must .box{border-top-color:var(--buzz,#ff3d6e)}
+@media (max-width:480px){.ntriple{gap:5px}.ntriple label{font-size:14px!important}}
 .hscore{display:inline-flex;align-items:center;gap:8px;border:2px solid var(--cup,#ffc531);border-radius:14px;padding:2px 12px;background:var(--surface);font-family:var(--font-head);font-size:26px;line-height:1.3;color:var(--gold);white-space:nowrap}
 .hscore small{font-family:var(--font);font-size:14px;color:var(--muted);font-weight:500}
 html[data-mode=dark] .hscore{background:#0B0720}
@@ -1006,9 +1015,10 @@ html[data-mode=dark] .nextc{background:linear-gradient(135deg,#3A2A8F,#22175E)}
     <div class="logo">👨‍🏫</div>
     <h2 style="margin-bottom:0">إنشاء حساب معلم</h2>
     <p style="margin-top:0;color:var(--muted)">سيصلك رابط تحقّق على بريدك الإلكتروني</p>
-    <label>الاسم كما يراه طلابك<input type="text" id="suName" placeholder="مثال: أ. عبدالله"></label>
+    <div class="gp-lbl">اسمك كما يراه طلابك</div><div id="suName"></div>
+    <div class="gp-lbl">الجنس</div><div class="sexpick" id="suSex"><button type="button" data-v="ذكر" onclick="pickSex(this)">👦 ذكر</button><button type="button" data-v="أنثى" onclick="pickSex(this)">👧 أنثى</button></div>
     <label>اسم المدرسة<input type="text" id="suSchool" list="schoolList" oninput="schoolHint(this,'suSchoolHint')" placeholder="اكتب أو اختر من القائمة"></label><datalist id="schoolList"></datalist><div class="school-hint" id="suSchoolHint"></div>
-    <label>المدرسة<select id="suGender"><option value="">— اختر —</option><option value="بنين">بنين</option><option value="بنات">بنات</option></select></label>
+    <label>نوع المدرسة (بنين / بنات)<select id="suGender"><option value="">— اختر —</option><option value="بنين">بنين</option><option value="بنات">بنات</option></select></label>
     <label>البريد الإلكتروني<input type="email" class="ltr" id="suMail" autocomplete="email" autocapitalize="off" spellcheck="false" placeholder="name@gmail.com"></label>
     <label>كلمة المرور (6 أحرف على الأقل)<input type="password" class="ltr" id="suPass" autocomplete="new-password"></label>
     <label>تأكيد كلمة المرور<input type="password" class="ltr" id="suPass2" autocomplete="new-password"></label>
@@ -1023,7 +1033,9 @@ html[data-mode=dark] .nextc{background:linear-gradient(135deg,#3A2A8F,#22175E)}
     <div class="logo">🌟</div>
     <h2 style="margin-bottom:0">إنشاء حساب خاص</h2>
     <p style="margin-top:0;color:var(--muted)">للطالب الذي يدرس وحده</p>
-    <label>اسم الطالب<input type="text" id="psName" placeholder="مثال: محمد أحمد"></label>
+    <div class="gp-lbl">اسم الطالب</div><div id="psName"></div>
+    <div class="gp-lbl">الجنس</div><div class="sexpick" id="psSex"><button type="button" data-v="ذكر" onclick="pickSex(this)">👦 ذكر</button><button type="button" data-v="أنثى" onclick="pickSex(this)">👧 أنثى</button></div>
+    <label>اسم المدرسة<input type="text" id="psSchool" list="schoolList" oninput="schoolHint(this,'psSchoolHint')" placeholder="اكتب أو اختر من القائمة"></label><div class="school-hint" id="psSchoolHint"></div>
     <div class="gp-lbl">اختر صفّك</div><div class="gpick" id="psPick"></div><input type="hidden" id="psGrade">
     <label>البريد الإلكتروني (لصغار الصفوف: بريد وليّ الأمر)<input type="email" class="ltr" id="psMail" autocomplete="email" autocapitalize="off" spellcheck="false" placeholder="name@gmail.com"></label>
     <label>كلمة المرور (6 أحرف على الأقل)<input type="password" class="ltr" id="psPass" autocomplete="new-password"></label>
@@ -1369,11 +1381,12 @@ const errMsg = e => { const c = (e && (e.code || e.message)) || ''; return c.inc
 const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
 const uidGen = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
 function closeModal(fromNav) {
+  if (window.MUSTM && $('#modalRoot .modal.must')) { setTimeout(() => { if (window.MUSTM && ME) window.MUSTM(); }, 0); return; }
   const had = !!$('#modalRoot .modal'); $('#modalRoot').innerHTML = '';
   if (had && fromNav !== true && !NAV.sup && history.state && history.state.ist === 'modal')
     setTimeout(() => { if (!$('#modalRoot .modal') && history.state && history.state.ist === 'modal') { NAV.skip++; history.back(); } }, 0);
 }
-function openModal(html) { if (!$('#modalRoot .modal')) navPush('modal'); $('#modalRoot').innerHTML = `<div class="modal" onclick="if(event.target===this)closeModal()"><div class="box"><button class="btn sm ghost x" onclick="closeModal()">✕</button>${html}</div></div>`; }
+function openModal(html, must) { if (!$('#modalRoot .modal')) navPush('modal'); $('#modalRoot').innerHTML = must ? `<div class="modal must"><div class="box">${html}</div></div>` : `<div class="modal" onclick="if(event.target===this)closeModal()"><div class="box"><button class="btn sm ghost x" onclick="closeModal()">✕</button>${html}</div></div>`; }
 
 /* ================= الإعدادات العامة ================= */
 const DOMAIN = 'iste3dad-students.com';
@@ -1573,12 +1586,14 @@ async function forgotPass() {
   if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e)) return loginMsg('اكتب بريدك الإلكتروني في الخانة أولًا، ثم اضغط «نسيت كلمة المرور؟»');
   try { await API.resetPass(e); loginMsg('أرسلنا رابط تغيير كلمة المرور إلى بريدك ✓', true); } catch (er) { loginMsg('تعذّر الإرسال: تأكّد من البريد.'); }
 }
-function showSignup() { fillSchoolSuggest(); $('#suMsg').textContent = ''; showScreen('scrSignup'); setTimeout(() => $('#suName').focus(), 50); }
+function showSignup() { fillSchoolSuggest(); $('#suName').innerHTML = nameTriple('su', [], true); pickSex(null, 'suSex'); $('#suMsg').textContent = ''; showScreen('scrSignup'); setTimeout(() => $('#su1').focus(), 50); }
 async function doSignup() {
-  const name = $('#suName').value.trim(), e = $('#suMail').value.trim().toLowerCase(), p = $('#suPass').value, p2 = $('#suPass2').value;
+  const e = $('#suMail').value.trim().toLowerCase(), p = $('#suPass').value, p2 = $('#suPass2').value;
   const msg = t => $('#suMsg').textContent = t;
-  const school = $('#suSchool').value.trim(), gender = $('#suGender').value;
-  if (name.length < 2) return msg('اكتب اسمك');
+  const school = $('#suSchool').value.trim(), gender = $('#suGender').value, nm = readTriple('su'), sex = sexOf('suSex');
+  if (nm.err) return msg(nm.err);
+  const name = tPrefix(nm.name);
+  if (!sex) return msg('اختر الجنس: ذكر أو أنثى');
   if (school.length < 2) return msg('اكتب اسم المدرسة');
   if (!gender) return msg('اختر: بنين أو بنات');
   if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e)) return msg('اكتب البريد الإلكتروني بشكل صحيح');
@@ -1586,7 +1601,7 @@ async function doSignup() {
   if (p.length < 6) return msg('كلمة المرور 6 أحرف على الأقل');
   if (p !== p2) return msg('كلمتا المرور غير متطابقتين');
   const b = $('#suBtn'); b.disabled = true; b.textContent = '⏳ جارٍ الإنشاء…'; msg('');
-  LS.set('iste3dad-signup-name', name); LS.set('iste3dad-signup-school', {school, gender}); LS.set('iste3dad-signup-kind', 'teacher');
+  LS.set('iste3dad-signup-name', name); LS.set('iste3dad-signup-school', {school, gender, sex}); LS.set('iste3dad-signup-kind', 'teacher');
   try { await API.signup(e, p); }
   catch (er) {
     const c = er && er.code || '';
@@ -1613,13 +1628,77 @@ async function resendVerify() {
   try { await API.resendVerify(); $('#vfMsg').textContent = 'أُعيد إرسال الرابط ✓'; $('#vfMsg').classList.add('ok'); }
   catch (e) { $('#vfMsg').textContent = String(e.code || '').includes('too-many') ? 'انتظر قليلًا قبل إعادة الإرسال.' : 'تعذّر الإرسال: ' + errMsg(e); }
 }
+/* ================= الاسم الثلاثي والجنس والمدرسة ================= */
+const T_PRE = /^\s*(أ\s*\.|أ\/|الأستاذة|الأستاذ|أستاذة|أستاذ|د\s*\.)\s*/;
+/* أجزاء الاسم دون اللقب، و«عبد الله» و«أبو بكر» جزء واحد */
+function namePartsOf(n) {
+  const w = String(n || '').replace(T_PRE, '').trim().split(/\s+/).filter(Boolean), out = [];
+  for (let i = 0; i < w.length; i++) { if (/^(عبد|أبو|ابو|أبي|ابي)$/.test(w[i]) && w[i + 1]) { out.push(w[i] + ' ' + w[i + 1]); i++; } else out.push(w[i]); }
+  return out;
+}
+const tPrefix = n => T_PRE.test(n || '') ? String(n).trim() : 'أ. ' + String(n || '').trim();
+function nameTriple(id, have, teacher) {
+  const L = ['الاسم الأول', 'اسم الأب', 'اسم العائلة'];
+  return `<div class="ntriple">${teacher ? '<span class="tpre" title="يُضاف قبل اسم المعلم تلقائيًا">أ.</span>' : ''}${L.map((l, i) => `<label>${l}<input type="text" id="${id}${i + 1}" ${have[i] ? `value="${esc(have[i])}" readonly class="locked"` : ''} autocomplete="off"></label>`).join('')}</div>`;
+}
+function readTriple(id) {
+  const v = [1, 2, 3].map(i => (($('#' + id + i) || {}).value || '').trim().replace(/\s+/g, ' '));
+  const miss = v.findIndex(x => x.length < 2);
+  return miss >= 0 ? {err:'اكتب ' + ['الاسم الأول', 'اسم الأب', 'اسم العائلة'][miss]} : {name:v.join(' ')};
+}
+function pickSex(b, id) {
+  const box = b ? b.parentElement : $('#' + id); if (!box) return;
+  box.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
+}
+const sexOf = id => { const b = $('#' + id + ' button.on'); return b ? b.dataset.v : ''; };
+/* نافذة إكمال البيانات: للمعلمين وأصحاب الحساب الخاص، ولا تُغلق حتى تُملأ */
+function myInfoNeed() {
+  if (!ME) return null;
+  if (ME.role === 'teacher') return {t:true, parts:namePartsOf(ME.name), sex:ME.sex || '', school:'x'};
+  if (ME.role === 'student' && ME.kind === 'private') { const a = ME.acct || {}; return {t:false, parts:namePartsOf(a.name || ME.name), sex:a.sex || '', school:a.school || ''}; }
+  return null;
+}
+async function checkMyInfo() {
+  const n = myInfoNeed(); if (!n) return;
+  if (n.t && n.parts.length >= 3 && !T_PRE.test(ME.name || '')) {   /* المعلمون الحاليون: «أ.» تلقائيًا */
+    const nn = tPrefix(ME.name); try { await API.set('teachers', ME.uid, {name:nn}, true); ME.name = nn; $('#tWho').textContent = '👤 ' + nn; } catch (e) { console.error(e); }
+  }
+  if (n.parts.length >= 3 && n.sex && n.school) { window.MUSTM = null; return afterMyInfo(); }
+  if (!n.school) { try { const d = await API.get('settings', 'schools'); SCHOOLS = (d && d.list) || []; } catch (e) {} }
+  window.MUSTM = () => openInfoModal(n);
+  openInfoModal(n);
+}
+function openInfoModal(n) {
+  const have = n.parts.length >= 3 ? null : n.parts;
+  openModal(`<h3 style="margin-top:0">👤 أكمل بياناتك</h3><p style="margin:0 0 6px;color:var(--muted)">أضفنا إلى المنصة بيانات جديدة. اكتبها مرة واحدة فقط، ثم تكمل عملك.</p>
+    ${have ? `<div class="gp-lbl">${have.length === 1 ? 'اكتب اسم أبيك واسم عائلتك' : 'اكتب اسم عائلتك'}</div>${nameTriple('mi', have, n.t)}` : ''}
+    ${n.sex ? '' : `<div class="gp-lbl">الجنس</div><div class="sexpick" id="miSex"><button type="button" data-v="ذكر" onclick="pickSex(this)">👦 ذكر</button><button type="button" data-v="أنثى" onclick="pickSex(this)">👧 أنثى</button></div>`}
+    ${n.school ? '' : `<label>اسم مدرستك<input type="text" id="miSchool" list="miSchoolList" oninput="schoolHint(this,'miSchoolHint')" placeholder="اكتب أو اختر من القائمة"></label><datalist id="miSchoolList">${(SCHOOLS || []).map(x => `<option value="${esc(x)}">`).join('')}</datalist><div class="school-hint" id="miSchoolHint"></div>`}
+    <div class="login-msg" id="miMsg"></div><button class="btn big" id="miBtn" style="width:100%" onclick="saveMyInfo()">💾 حفظ</button>`, true);
+}
+async function saveMyInfo() {
+  const n = myInfoNeed(), up = {}, msg = t => $('#miMsg').textContent = t;
+  if (n.parts.length < 3) { const r = readTriple('mi'); if (r.err) return msg(r.err); up.name = n.t ? tPrefix(r.name) : r.name; }
+  if (!n.sex) { const x = sexOf('miSex'); if (!x) return msg('اختر الجنس: ذكر أو أنثى'); up.sex = x; }
+  if (!n.school) { const x = ($('#miSchool').value || '').trim(); if (x.length < 2) return msg('اكتب اسم مدرستك'); up.school = x; }
+  $('#miBtn').disabled = true;
+  try {
+    if (n.t) { await API.set('teachers', ME.uid, up, true); Object.assign(ME, up); $('#tWho').textContent = '👤 ' + ME.name + (isAdmin() ? ' (المدير)' : ''); }
+    else { await API.set('accounts', ME.uid, up, true); ME.acct = Object.assign(ME.acct || {}, up); if (up.name) ME.name = up.name; }
+    window.MUSTM = null; closeModal(); toast('حُفظت بياناتك ✓'); afterMyInfo(true);
+  } catch (e) { console.error(e); $('#miBtn').disabled = false; msg(isPerm(e) ? 'تعذّر الحفظ: قواعد الحماية تحتاج تحديثًا (أخبر مدير المنصة).' : 'تعذّر الحفظ: ' + errMsg(e)); }
+}
+function afterMyInfo(changed) {
+  if (ME.role === 'teacher') { if (!ME.school || !ME.gender) openSchoolModal(ME.uid, true); return; }
+  if (changed && ME.kind === 'private') { if ($('#pvWho')) $('#pvWho').textContent = '👤 ' + ME.name; if ($('#pvHello')) $('#pvHello').textContent = 'مرحبًا يا ' + ME.name.split(' ')[0] + ' 👋'; }
+}
 async function createTeacherDoc(user) {
   const name = LS.get('iste3dad-signup-name', '') || (user.email || '').split('@')[0];
   const code = 't' + Math.random().toString(36).slice(2, 6);
   try {
     const sc = LS.get('iste3dad-signup-school', null) || {};
     const doc = {name, email:(user.email || '').toLowerCase(), active:true, classes:[], code, createdAt:Date.now()};
-    if (sc.school) doc.school = sc.school; if (sc.gender) doc.gender = sc.gender;
+    if (sc.school) doc.school = sc.school; if (sc.gender) doc.gender = sc.gender; if (sc.sex) doc.sex = sc.sex;
     await API.set('teachers', user.uid, doc);
     LS.del('iste3dad-signup-name'); LS.del('iste3dad-signup-school'); LS.del('iste3dad-signup-kind'); return true;
   } catch (e) {
@@ -1628,7 +1707,7 @@ async function createTeacherDoc(user) {
     return false;
   }
 }
-async function doLogout() { await flushProgress(); stopTimers(); try { closeModal(); } catch (e) {} await API.logout(); }
+async function doLogout() { window.MUSTM = null; try { closeModal(); } catch (e) {} await flushProgress(); stopTimers(); try { closeModal(); } catch (e) {} await API.logout(); }
 const TIMERS = [];
 function stopTimers() { while (TIMERS.length) clearInterval(TIMERS.pop()); }
 
@@ -1641,19 +1720,22 @@ const catById = id => CAT.find(l => l.id === id);
 const isSynth = () => isStudentEmail(ME && ME.email);
 function showPSignup() {
   $('#psGrade').value = ''; gradePick('psPick', 'psGrade', '');
-  $('#psMsg').textContent = ''; showScreen('scrPSignup'); setTimeout(() => $('#psName').focus(), 50);
+  fillSchoolSuggest(); $('#psName').innerHTML = nameTriple('ps', []); pickSex(null, 'psSex'); $('#psSchool').value = '';
+  $('#psMsg').textContent = ''; showScreen('scrPSignup'); setTimeout(() => $('#ps1').focus(), 50);
 }
 async function doPSignup() {
-  const name = $('#psName').value.trim(), grade = $('#psGrade').value, e = $('#psMail').value.trim().toLowerCase(), p = $('#psPass').value, p2 = $('#psPass2').value;
+  const nm = readTriple('ps'), name = nm.name, sex = sexOf('psSex'), school = $('#psSchool').value.trim(), grade = $('#psGrade').value, e = $('#psMail').value.trim().toLowerCase(), p = $('#psPass').value, p2 = $('#psPass2').value;
   const msg = t => $('#psMsg').textContent = t;
-  if (name.length < 2) return msg('اكتب اسم الطالب');
+  if (nm.err) return msg(nm.err);
+  if (!sex) return msg('اختر الجنس: ذكر أو أنثى');
+  if (school.length < 2) return msg('اكتب اسم المدرسة');
   if (!grade) return msg('اختر الصف');
   if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e)) return msg('اكتب البريد الإلكتروني بشكل صحيح');
   if (isStudentEmail(e) || e === adminEmail()) return msg('هذا البريد غير مسموح');
   if (p.length < 6) return msg('كلمة المرور 6 أحرف على الأقل');
   if (p !== p2) return msg('كلمتا المرور غير متطابقتين');
   const b = $('#psBtn'); b.disabled = true; b.textContent = '⏳ جارٍ الإنشاء…'; msg('');
-  LS.set('iste3dad-psignup', {name, grade}); LS.set('iste3dad-signup-kind', 'pstudent'); ROLE_CHOICE = 'pstudent'; LS.set('iste3dad-role', 'pstudent');
+  LS.set('iste3dad-psignup', {name, grade, sex, school}); LS.set('iste3dad-signup-kind', 'pstudent'); ROLE_CHOICE = 'pstudent'; LS.set('iste3dad-role', 'pstudent');
   try { await API.signup(e, p); }
   catch (er) {
     const c = er && er.code || '';
@@ -1664,6 +1746,7 @@ async function doPSignup() {
 async function createAccountDoc(user) {
   const d = LS.get('iste3dad-psignup', null) || {};
   const ac = {name:d.name || (user.email || '').split('@')[0], grade:d.grade || '', email:(user.email || '').toLowerCase(), share:false, createdAt:Date.now()};
+  if (d.sex) ac.sex = d.sex; if (d.school) ac.school = d.school;
   try { await API.set('accounts', user.uid, ac); LS.del('iste3dad-psignup'); LS.del('iste3dad-signup-kind'); return Object.assign({id:user.uid}, ac); }
   catch (e) { console.error(e); chooseRole('pstudent'); loginMsg(isPerm(e) ? 'تعذّر إنشاء الحساب: قواعد الحماية في Firebase تحتاج تحديثًا (أخبر مدير المنصة).' : 'تعذّر إنشاء الحساب: ' + errMsg(e)); await API.logout().catch(() => {}); return null; }
 }
@@ -1688,6 +1771,7 @@ async function openStudent(user, st, ac) {
   setTheme(themeOfGrade(ME.grade));
   if (ME.cuid) showHub(); else openPrivate();
   initBell();
+  if (ME.kind === 'private') checkMyInfo();
 }
 function showHub() {
   if (!ME || ME.role !== 'student') return;
@@ -2093,7 +2177,7 @@ async function openTeacher() {
   tTab(LS.get('iste3dad-ttab', isAdmin() ? 'curriculum' : 'lessons'));
   if (isAdmin()) { loadTeachers(); loadFeedback(); }
   initBell();
-  if (ME.role === 'teacher' && (!ME.school || !ME.gender)) openSchoolModal(ME.uid, true);
+  if (ME.role === 'teacher') checkMyInfo();
 }
 async function switchView(uid, silent) {
   TD.view = uid;
@@ -2280,11 +2364,15 @@ function bestPairs(list) {
 async function loadAdminTotals() {
   const el = $('#admStats'); if (!el || !isAdmin()) return;
   try {
-    const [sb, ps] = await Promise.all([API.where('submissions', {}), API.where('psubs', {})]);
-    const a = bestPairs(sb), b = bestPairs(ps);
-    const n = a.size + b.size, pts = [...a.values(), ...b.values()].reduce((t, o) => t + o.v, 0);
-    el.innerHTML = `<div class="as-pill">📚 الدروس المنجزة في المنصة <b>${n.toLocaleString('ar')}</b><small>(الصفوف ${a.size.toLocaleString('ar')} · الخاص ${b.size.toLocaleString('ar')})</small></div>
-      <div class="as-pill">⭐ مجموع الدرجات المحرزة <b>${pts.toLocaleString('ar')}</b></div>`;
+    const [sb, ps, tc, st, ac] = await Promise.all([API.where('submissions', {}), API.where('psubs', {}), API.where('teachers', {}), API.where('students', {}), API.where('accounts', {})]);
+    const a = bestPairs(sb), b = bestPairs(ps), N = x => x.toLocaleString('ar');
+    const n = a.size + b.size, sum = m => [...m.values()].reduce((t, o) => t + o.v, 0), pa = sum(a), pb = sum(b);
+    /* المستخدمون: المعلمون (دون المدير)، وطلاب الرمز، وأصحاب الحساب الخاص */
+    const sIds = new Set(st.map(x => x.id)), nT = tc.filter(t => !t.isAdmin && (t.email || '').toLowerCase() !== adminEmail()).length;
+    const nS = st.filter(x => !x.removed).length, nP = ac.filter(x => !sIds.has(x.id) && !isStudentEmail(x.email) && (x.email || '').toLowerCase() !== adminEmail()).length;
+    el.innerHTML = `<div class="as-pill">👥 عدد المستخدمين <b>${N(nT + nS + nP)}</b><small>(معلم ${N(nT)} · طالب رمز ${N(nS)} · خاص ${N(nP)})</small></div>
+      <div class="as-pill">📚 الدروس المنجزة في المنصة <b>${N(n)}</b><small>(الصفوف ${N(a.size)} · الخاص ${N(b.size)})</small></div>
+      <div class="as-pill">⭐ مجموع الدرجات المحرزة <b>${N(pa + pb)}</b><small>(الصفوف ${N(pa)} · الخاص ${N(pb)})</small></div>`;
     el.title = 'يُحتسب كل درس مرة واحدة لكل طالب، بأفضل محاولاته.';
   } catch (e) { console.error(e); }
 }
@@ -3110,10 +3198,10 @@ service cloud.firestore {
       allow create: if isAdmin() || (signedIn() && request.auth.uid == uid
         && request.auth.token.email_verified == true
         && request.resource.data.active == true
-        && request.resource.data.keys().hasOnly(['name', 'email', 'active', 'classes', 'code', 'createdAt', 'school', 'gender'])
+        && request.resource.data.keys().hasOnly(['name', 'email', 'active', 'classes', 'code', 'createdAt', 'school', 'gender', 'sex'])
         && !exists(/databases/$(database)/documents/blocked/$(request.auth.uid)));
       allow update: if isAdmin() || (isTeacher() && request.auth.uid == uid
-        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['classes', 'name', 'school', 'gender', 'email', 'archive']));
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['classes', 'name', 'school', 'gender', 'email', 'archive', 'sex']));
       allow delete: if isAdmin();
     }
     match /students/{uid} {
