@@ -256,6 +256,9 @@ html .site-foot{font-family:'Noto Naskh Arabic',var(--font-head),serif!important
 .ntf .ic{font-size:28px;line-height:1.2}
 .ntf .tx{flex:1;font-size:21px;line-height:1.6}
 .ntf .tm{font-size:16px;color:var(--muted)}
+.ntf-hit{animation:ntfHit 2.4s ease-out}
+@keyframes ntfHit{0%,35%{box-shadow:0 0 0 4px var(--orange);background:var(--warm)}100%{box-shadow:0 0 0 0 transparent}}
+.fbreply{background:var(--surface-2);border-inline-start:4px solid var(--teal);border-radius:10px;padding:6px 12px;margin:6px 0;font-size:20px;white-space:pre-wrap}
 .btn.seen-blue{background:#2563eb;color:#fff;white-space:nowrap}
 .btn.seen-green{background:var(--green);color:#fff;white-space:nowrap}
 tr.picked td{background:var(--orange-l)}
@@ -740,8 +743,8 @@ html[data-mode=dark] .modal{background:rgba(0,0,0,.62)}
     <h2 style="margin-bottom:0">منصة استعداد</h2>
     <p style="margin-top:0;color:var(--muted)">التربية الإسلامية</p>
     <div class="role-btns">
-      <button class="imgb" onclick="chooseRole('teacher')" aria-label="أنا معلم"><img src="btn-teacher.webp" alt="أنا معلم" width="420" height="440"></button>
-      <button class="imgb" onclick="showScreen('scrStuChoice')" aria-label="أنا طالب"><img src="btn-student.webp" alt="أنا طالب" width="432" height="440"></button>
+      <button class="imgb" onclick="uiTap(0);chooseRole('teacher')" aria-label="أنا معلم"><img src="btn-teacher.webp" alt="أنا معلم" width="420" height="440"></button>
+      <button class="imgb" onclick="uiTap(1);showScreen('scrStuChoice')" aria-label="أنا طالب"><img src="btn-student.webp" alt="أنا طالب" width="432" height="440"></button>
     </div>
   </div>
 </section>
@@ -752,8 +755,8 @@ html[data-mode=dark] .modal{background:rgba(0,0,0,.62)}
     <h2 style="margin-bottom:0">دخول الطالب</h2>
     <p style="margin-top:0;color:var(--muted)">كيف تريد الدخول؟</p>
     <div class="role-btns">
-      <button class="imgb" onclick="chooseRole('student')" aria-label="لدي رمز من المعلم"><img src="btn-code.webp" alt="لدي رمز من المعلم" width="439" height="440"></button>
-      <button class="imgb" onclick="chooseRole('pstudent')" aria-label="حساب خاص"><img src="btn-private.webp" alt="حساب خاص" width="431" height="440"></button>
+      <button class="imgb" onclick="uiTap(2);chooseRole('student')" aria-label="لدي رمز من المعلم"><img src="btn-code.webp" alt="لدي رمز من المعلم" width="439" height="440"></button>
+      <button class="imgb" onclick="uiTap(3);chooseRole('pstudent')" aria-label="حساب خاص"><img src="btn-private.webp" alt="حساب خاص" width="431" height="440"></button>
     </div>
     <p style="font-size:19px;color:var(--muted)">«الحساب الخاص» لمن لا يستخدم معلّمه المنصة: تدرس فيه أي درس تريده، وتنضم إلى صف معلمك لاحقًا إن أردت.</p>
     <button class="linkbtn" onclick="navBack(() => showScreen('scrRole'))">→ رجوع</button>
@@ -1681,6 +1684,20 @@ async function getLessonHtml(l) {
    - خريطة الرحلة تستعمل الاسم «port» لمرافئها، والألعاب الطولية تستعمل الاسم نفسه، فتتشوّه الألعاب ونافذة «اختر لعبة أخرى».
    - خيط لعبة «صيد السمك» اسمه «line»، وهو اسم عبارات المشاهد نفسه، فتنضغط العبارات وتتراكب.
    لا يغيّر ملف الدرس المحفوظ، بل النسخة المعروضة فقط. */
+/* صوت لطيف خفيف لأزرار الواجهة الأولى */
+let UI_AC = null;
+function uiTap(k) {
+  try {
+    UI_AC = UI_AC || new (window.AudioContext || window.webkitAudioContext)(); const ac = UI_AC; if (ac.state === 'suspended') ac.resume();
+    const base = [523.25, 587.33, 659.25, 698.46][k || 0], t = ac.currentTime + .01, out = ac.createGain();
+    out.gain.value = .16; out.connect(ac.destination);
+    [[base, 0], [base * 1.5, .07]].forEach(([f, d]) => {
+      const o = ac.createOscillator(), g = ac.createGain(); o.type = 'sine'; o.frequency.setValueAtTime(f, t + d);
+      g.gain.setValueAtTime(0, t + d); g.gain.linearRampToValueAtTime(1, t + d + .012); g.gain.exponentialRampToValueAtTime(.001, t + d + .32);
+      o.connect(g); g.connect(out); o.start(t + d); o.stop(t + d + .35);
+    });
+  } catch (e) {}
+}
 function fixLessonHtml(h) {
   if (!h) return h;
   if (h.indexOf('class="port ${') >= 0) h = h.replace(/(^|[^\w-])\.port(?![\w-])/g, '$1.mport').split('class="port ${').join('class="mport ${');
@@ -1693,6 +1710,11 @@ function fixLessonHtml(h) {
        .join("    const nb = blanks.length; if (st.ans.length > nb) st.ans.length = nb;\n    const phase = () => st.phase || 'read';");
   h = h.split("      const cur = st.ans.length;\n      ctx.el.innerHTML = `<div class=\"ghead\"><h3>🧠 ${esc(c.title || 'تحدي الحفظ')}</h3>")
        .join("      const cur = st.ans.length; if (cur >= nb && !(S.st[ctx.i] || {}).done) setTimeout(() => { if (!(S.st[ctx.i] || {}).done) ctx.finish(scale5(st.ans.filter((a, k) => a === blanks[k].a).length, nb)); }, 60);\n      ctx.el.innerHTML = `<div class=\"ghead\"><h3>🧠 ${esc(c.title || 'تحدي الحفظ')}</h3>");
+  /* أزرار القصة: السهم يشير إلى جهة الزر نفسه (الأيمن ⏭️ للخلف، والأيسر ⏮️ للأمام) */
+  h = h.split('id="cPrev" data-s="flip">⏮️</button>').join('id="cPrev" data-s="flip">⏭️</button>').split('id="cNext" data-s="flip">⏭️</button>').join('id="cNext" data-s="flip">⏮️</button>');
+  /* لعبة الساعة: أزرار الدقائق (:٠٠ و:٣٠) تظهر كلما كان في الأسئلة نصف ساعة، ويُحاسب الطالب عليها */
+  h = h.split('${ctx.lvl >= 2 ? `<div class="g52-row"><button class="g52-btn" id="m0">').join('${(ctx.lvl >= 2 || (ctx.cfg.clocks || []).some(r => r.m)) ? `<div class="g52-row"><button class="g52-btn" id="m0">')
+       .split('const okm = ctx.lvl < 2 || r.m === undefined').join("const okm = !ctx.$('#m0') || r.m === undefined");
   /* زر الرجوع ↩ في الألعاب بملء الشاشة: أكبر قليلًا، وتحت شريط الساعة في الآيباد والآيفون */
   const T = safeTop();
   /* بعد الخروج من اللعبة: يُعاد حساب مقاسها عدة مرات (متصفح الآيفون يتأخر في إرجاع الإطار إلى حجمه)،
@@ -1700,7 +1722,7 @@ function fixLessonHtml(h) {
   const js = `<script>(function(){try{var t=function(){[150,400,900,1600].forEach(function(ms){setTimeout(function(){try{dispatchEvent(new Event('resize'));scrollTo(0,scrollY);}catch(e){}},ms);});};
 var mo=new MutationObserver(function(L){for(var i=0;i<L.length;i++){var r=L[i];if(r.attributeName==='class'&&r.oldValue&&/(^|\\s)g2-fs(\\s|$)/.test(r.oldValue)&&!r.target.classList.contains('g2-fs')){t();break;}}});
 var go=function(){mo.observe(document.body,{subtree:true,attributes:true,attributeFilter:['class'],attributeOldValue:true});};document.body?go():addEventListener('DOMContentLoaded',go);}catch(e){}})();<\/script>`;
-  const css = `<style id="plat-fix">html,body{max-width:100%;overflow-x:hidden}.g2-fs>.g2-fsbar{margin-top:${T}px}.g2-fs>.g2-fsbar button{width:46px;height:46px;font-size:24px;border-radius:13px}.g2-fs.port>.g2-fsbar{right:max(6px,calc((100vw - 100vh * 9 / 16) / 2 - 54px))}</style>`;
+  const css = `<style id="plat-fix">html,body{max-width:100%;overflow-x:hidden}.g2-fs>.g2-fsbar{margin-top:${T}px}.g2-fs>.g2-fsbar button{width:46px;height:46px;font-size:24px;border-radius:13px}.g2-fs.port>.g2-fsbar{right:max(6px,calc((100vw - 100vh * 9 / 16) / 2 - 54px))}.wrap:has(.g2-fs){z-index:2147483001!important}body:has(.g2-fs) header.top{visibility:hidden}</style>`;
   return /<\/head>/i.test(h) ? h.replace(/<\/head>/i, () => css + js + '</head>') : css + js + h;
 }
 function safeTop() {
@@ -3323,7 +3345,12 @@ async function loadFeedback() {
   if ($('#fbList')) $('#fbList').innerHTML = '<p>⏳ جارٍ التحميل…</p>';
   try { FBV.list = (await API.where('feedback', {})).sort((a, b) => (b.at || 0) - (a.at || 0)); FBV.loaded = true; }
   catch (e) { console.error(e); FBV.list = []; if (isPerm(e)) $('#rulesWarn').hidden = false; if ($('#fbList')) $('#fbList').innerHTML = '<p>تعذّر التحميل: ' + esc(errMsg(e)) + '</p>'; updFbDot(); return; }
-  updFbDot(); renderFeedback();
+  updFbDot();
+  const fo = FBV.focus && FBV.list.find(f => f.id === FBV.focus);
+  if (fo) { FBV.tab = fo.type; if (fo.status === 'done') $('#fbShowDone').checked = true; }
+  renderFeedback();
+  if (fo) setTimeout(() => flashEl($(`#fbList .fbitem[data-fb="${CSS.escape(fo.id)}"]`)), 120);
+  FBV.focus = null;
 }
 function updFbDot() { const n = FBV.list.filter(f => f.status !== 'done').length; $('#fbDot').hidden = !n; $('#fbDot').textContent = n; }
 function fbWho(f) {
@@ -3341,14 +3368,38 @@ function renderFeedback() {
   if (!L.length) { $('#fbList').innerHTML = `<p>${all.some(f => f.type === FBV.tab) ? 'لا توجد ملاحظات جديدة هنا. علّم «إظهار ما تمت معالجته» لرؤية القديمة.' : 'لا توجد ملاحظات من هذا النوع بعد.'}</p>`; return; }
   $('#fbList').innerHTML = L.map(f => {
     const where = f.type === 'lesson' ? `<div style="font-size:20px">📍 ${esc(gradeName(f.lGrade))} · ${termName(f.lTerm || 1)} · ${unitName(f.lUnit || 1)} · <b>${esc(f.lessonTitle || '')}</b> · ${esc(f.partWord || 'الجزء')}: <b>${esc(f.part || '')}</b></div>` : '';
-    return `<div class="fbitem${f.status === 'done' ? ' done' : ''}"><div class="meta">${fbWho(f)} · ${fmtFull(f.at)} ${f.status === 'done' ? '<span class="chip done">✔ تمت المعالجة</span>' : '<span class="chip new">جديدة</span>'}</div>${where}
-      <div class="txt">${esc(f.text)}</div>${f.img && /^data:image\/(jpeg|png|webp);base64,/.test(f.img) ? `<img class="fbpic" src="${f.img}" alt="صورة مرفقة" onclick="showFbImg(${A(f.id)})">` : ''}
-      <div class="row" style="gap:4px">${f.status === 'done' ? `<button class="btn sm ghost" onclick="markFb(${A(f.id)},'new')">↩ إعادتها جديدة</button>` : `<button class="btn sm" onclick="markFb(${A(f.id)},'done')">✔ تمت المعالجة</button>`}
+    return `<div class="fbitem${f.status === 'done' ? ' done' : ''}" data-fb="${esc(f.id)}"><div class="meta">${fbWho(f)} · ${fmtFull(f.at)} ${f.status === 'done' ? '<span class="chip done">✔ تمت المعالجة</span>' : '<span class="chip new">جديدة</span>'}</div>${where}
+      <div class="txt">${esc(f.text)}</div>${(f.replies || []).map(r => `<div class="fbreply">↩ <b>ردّك</b> · <small>${fmtFull(r.at)}</small><br>${esc(r.text)}</div>`).join('')}${f.img && /^data:image\/(jpeg|png|webp);base64,/.test(f.img) ? `<img class="fbpic" src="${f.img}" alt="صورة مرفقة" onclick="showFbImg(${A(f.id)})">` : ''}
+      <div class="row" style="gap:4px">${f.uid && f.role !== 'admin' ? `<button class="btn sm alt" onclick="replyFb(${A(f.id)})">↩ رد</button>` : ''}${f.status === 'done' ? `<button class="btn sm ghost" onclick="markFb(${A(f.id)},'new')">↩ إعادتها جديدة</button>` : `<button class="btn sm" onclick="markFb(${A(f.id)},'done')">✔ تمت المعالجة</button>`}
         ${f.type === 'lesson' && catById(f.lessonId) ? `<button class="btn sm ghost" onclick="openLesson(${A(f.lessonId)},'preview')">👁 فتح الدرس</button>` : ''}
         <button class="btn sm ghost" onclick="copyText(${A(f.text)})">📋 نسخ</button><button class="btn sm red" onclick="delFb(${A(f.id)})">🗑</button></div></div>`;
   }).join('');
 }
 function showFbImg(id) { const f = FBV.list.find(x => x.id === id); if (f && f.img) openModal(`<h3 style="margin-top:0">🖼️ الصورة المرفقة</h3><img src="${f.img}" alt="" style="max-width:100%;border-radius:12px">`); }
+/* الرد على ملاحظة: يصل الرد إلى صاحبها رسالةً في جرس الإشعارات، ويُحفظ تحت الملاحظة */
+function replyFb(id) {
+  const f = FBV.list.find(x => x.id === id); if (!f) return;
+  openModal(`<h3 style="margin-top:0">↩ رد على ملاحظة: ${esc(f.name || '')}</h3>
+    <div class="note" style="white-space:pre-wrap;font-size:19px;max-height:22vh;overflow:auto">${esc(f.text)}</div>
+    <textarea id="fbRe" maxlength="1500" style="min-height:140px" placeholder="اكتب ردك هنا…"></textarea>
+    <label style="display:flex;gap:8px;align-items:center;font-size:19px"><input type="checkbox" id="fbReDone" checked style="width:auto"> اجعلها «تمت المعالجة» بعد الرد</label>
+    <div class="row" style="margin-top:8px"><button class="btn" id="fbReSend" onclick="sendFbReply(${A(id)})">📨 إرسال الرد</button><button class="btn ghost" onclick="closeModal()">إلغاء</button></div>`);
+  setTimeout(() => $('#fbRe') && $('#fbRe').focus(), 50);
+}
+async function sendFbReply(id) {
+  const f = FBV.list.find(x => x.id === id), text = ($('#fbRe').value || '').trim(); if (!f) return;
+  if (text.length < 2) return toast('اكتب ردك أولًا');
+  const done = $('#fbReDone').checked, now = Date.now(), q = String(f.text || ''), kind = {suggest:'مقترحك', general:'ملاحظتك', lesson:'ملاحظتك على الدرس'}[f.type] || 'ملاحظتك';
+  const msg = `ردّ مدير المنصة على ${kind}${f.lessonTitle ? ' «' + f.lessonTitle + '»' : ''}:\n«${q.length > 300 ? q.slice(0, 300) + '…' : q}»\n\n${text}`;
+  $('#fbReSend').disabled = true;
+  try {
+    await API.add('msgs', {to:f.uid, toName:f.name || '', from:ME.uid, fromName:myName(), fromRole:'admin', text:msg.slice(0, 2000), fbId:id, at:now});
+    const replies = (f.replies || []).concat([{text, at:now}]), up = {replies};
+    if (done) Object.assign(up, {status:'done', doneAt:now});
+    await API.set('feedback', id, up, true); Object.assign(f, up);
+    closeModal(); updFbDot(); renderFeedback(); toast('أُرسل الرد ✓ وسيصل إلى صاحب الملاحظة في الإشعارات 🔔', 5000);
+  } catch (e) { console.error(e); $('#fbReSend').disabled = false; toast(isPerm(e) ? 'تعذّر الإرسال: قواعد الحماية تحتاج تحديثًا.' : 'تعذّر الإرسال: ' + errMsg(e), 6000); }
+}
 async function markFb(id, st) {
   const f = FBV.list.find(x => x.id === id); if (!f) return;
   try { await API.set('feedback', id, {status:st, doneAt:st === 'done' ? Date.now() : 0}, true); f.status = st; updFbDot(); renderFeedback(); } catch (e) { toast('تعذّر: ' + errMsg(e)); }
@@ -3610,9 +3661,9 @@ async function refreshBell(rerender) {
       const [tc, ac, st, fb, bl] = await Promise.all(['teachers', 'accounts', 'students', 'feedback', 'blocked'].map(c => API.where(c, {}).catch(() => [])));
       const sIds = new Set(st.map(x => x.id));
       tc.filter(t => !t.isAdmin && (t.createdAt || 0) > since).forEach(t => items.push({at:t.createdAt, ic:'👨‍🏫', tx:`سجّل معلم جديد: <b>${esc(t.name)}</b> <small dir="ltr">${esc(t.email || '')}</small>`, go:"tTab('teachers')"}));
-      ac.filter(a => !sIds.has(a.id) && !isStudentEmail(a.email) && (a.createdAt || 0) > since).forEach(a => items.push({at:a.createdAt, ic:'🌟', tx:`سجّل طالب جديد بحساب خاص: <b>${esc(a.name || '')}</b>${a.grade ? ' · ' + esc(gradeName(a.grade)) : ''}`, go:"tTab('teachers')"}));
+      ac.filter(a => !sIds.has(a.id) && !isStudentEmail(a.email) && (a.createdAt || 0) > since).forEach(a => items.push({at:a.createdAt, ic:'🌟', tx:`سجّل طالب جديد بحساب خاص: <b>${esc(a.name || '')}</b>${a.grade ? ' · ' + esc(gradeName(a.grade)) : ''}`, go:`openAllStFor(${JSON.stringify(a.name || '')})`}));
       const fbN = {suggest:'💡 مقترح', general:'📝 ملاحظة عامة', lesson:'📘 خطأ في درس'};
-      fb.filter(f => (f.at || 0) > since).forEach(f => items.push({at:f.at, ic:'📨', tx:`${fbN[f.type] || 'ملاحظة'} من <b>${esc(f.name || '')}</b>: ${esc(String(f.text || '').slice(0, 90))}${String(f.text || '').length > 90 ? '…' : ''}`, go:`FBV.tab=${A(f.type)};tTab('feedback')`}));
+      fb.filter(f => (f.at || 0) > since).forEach(f => items.push({at:f.at, ic:'📨', tx:`${fbN[f.type] || 'ملاحظة'} من <b>${esc(f.name || '')}</b>: ${esc(String(f.text || '').slice(0, 90))}${String(f.text || '').length > 90 ? '…' : ''}`, go:`openFbItem(${JSON.stringify(f.id)})`}));
       NTF.blocked = bl;
       bl.filter(b => b.status === 'pending').forEach(b => items.push({at:b.requestAt || b.at || 0, pin:true, ic:'🔐', tx:`طلب تسجيل من حساب محذوف: <b>${esc(b.name || '')}</b> <small dir="ltr">${esc(b.email || '')}</small> · ${b.role === 'teacher' ? 'معلم' : 'طالب بحساب خاص'}`,
         acts:`<button class="btn sm" onclick="event.stopPropagation();approveBlocked(${A(b.id)})">✅ قبول</button><button class="btn sm red" onclick="event.stopPropagation();rejectBlocked(${A(b.id)})">✖ رفض</button>`}));
@@ -3620,9 +3671,9 @@ async function refreshBell(rerender) {
     if (ME.role === 'admin' || ME.role === 'teacher') {
       const sb = await API.where('submissions', {teacherId:ME.uid}).catch(() => []);
       const nm = uid => { const s = (TD.students || []).find(x => x.uid === uid); return s ? s.name + ' (' + s.cls + ')' : 'طالب'; };
-      sb.filter(x => (x.at || 0) > since).forEach(x => { const l = catById(x.lessonId); items.push({at:x.at, ic:'📝', tx:`<b>${esc(nm(x.uid))}</b> حلّ درس «${esc(l ? l.title : 'درس')}»${l && l.autoMax ? ` · الدرجة: <b>${+x.auto || 0} / ${l.autoMax}</b>` : ''}`, go:`openResultFor(${A(x.lessonId)})`}); });
+      sb.filter(x => (x.at || 0) > since).forEach(x => { const l = catById(x.lessonId); items.push({at:x.at, ic:'📝', tx:`<b>${esc(nm(x.uid))}</b> حلّ درس «${esc(l ? l.title : 'درس')}»${l && l.autoMax ? ` · الدرجة: <b>${+x.auto || 0} / ${l.autoMax}</b>` : ''}`, go:`openResultFor(${JSON.stringify(x.lessonId)},${JSON.stringify(x.uid)})`}); });
       const mv = await API.where('schreq', {teacherId:ME.uid}).catch(() => []); NTF.moves = mv;
-      mv.filter(r => r.status === 'pending').forEach(r => items.push({at:r.at || 0, pin:true, ic:'🚶', tx:`طلب انتقال: الطالب <b>${esc(r.name || '')}</b> (${esc(r.cls || '')}) يقول إنه انتقل إلى «${esc(r.to || '')}»`,
+      mv.filter(r => r.status === 'pending').forEach(r => items.push({at:r.at || 0, pin:true, ic:'🚶', go:"tTab('students')", tx:`طلب انتقال: الطالب <b>${esc(r.name || '')}</b> (${esc(r.cls || '')}) يقول إنه انتقل إلى «${esc(r.to || '')}»`,
         acts:`<button class="btn sm" onclick="event.stopPropagation();answerMove(${A(r.id)},true)">✅ موافقة</button><button class="btn sm red" onclick="event.stopPropagation();answerMove(${A(r.id)},false)">✖ رفض</button>`}));
       const ps = await API.where('pshare', {teacherId:ME.uid}).catch(() => []);
       ps.filter(p => (p.sharedAt || 0) > since).forEach(p => items.push({at:p.sharedAt, ic:'🔐', tx:`شارك الطالب <b>${esc(p.name || '')}</b>${p.cls ? ' (' + esc(p.cls) + ')' : ''} نتائجه الخاصة معك`, go:"tTab('private')"}));
@@ -3654,7 +3705,15 @@ async function openBell() {
   try { await API.set('seen', ME.uid, {at:now}); } catch (e) { LS.set('iste3dad-seen-' + ME.uid, now); }
 }
 function ntfGo(k) { const i = NTF.items[k]; if (!i || !i.go) return; closeModal(); try { (new Function(i.go))(); } catch (e) { console.error(e); } }
-async function openResultFor(lid) { if (TD.view !== ME.uid) await switchView(ME.uid); tTab('results'); if (catById(lid)) { TD.lids = [lid]; try { fillResultLessons(); await loadResults(); } catch (e) { console.error(e); } } }
+async function openResultFor(lid, uid) {
+  if (TD.view !== ME.uid) await switchView(ME.uid); tTab('results');
+  if (catById(lid)) { TD.lids = [lid]; Object.assign(TD.rf, {cls:[], lv:[], send:''}); try { fillResultLessons(); await loadResults(); } catch (e) { console.error(e); } }
+  if (uid) setTimeout(() => flashEl($(`#resTable tr[data-u="${CSS.escape(uid)}"]`)), 150);
+}
+/* إبراز العنصر المقصود من الإشعار */
+function flashEl(el) { if (!el) return; el.scrollIntoView({behavior:'smooth', block:'center'}); el.classList.remove('ntf-hit'); void el.offsetWidth; el.classList.add('ntf-hit'); }
+function openFbItem(id) { FBV.focus = id; tTab('feedback'); }
+function openAllStFor(name) { Object.keys(AS.f).forEach(k => AS.f[k] = ''); AS.f.q = name || ''; tTab('allst'); }
 
 /* ================= المدرسة (بنين/بنات) ================= */
 function openSchoolModal(uid, must) {
