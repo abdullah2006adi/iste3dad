@@ -773,6 +773,9 @@ html[data-theme=arena] .hbtn.bellbtn .bell-dot{background:var(--buzz);font-famil
 .sexpick button.on{background:var(--vio,#6d3ce0);border-color:var(--vio,#6d3ce0);color:#fff;box-shadow:0 3px 0 var(--vio-d,#4a22a8)}
 .modal.must .box{border-top-color:var(--buzz,#ff3d6e)}
 @media (max-width:480px){.ntriple{gap:5px}.ntriple label{font-size:14px!important}}
+.curbtn.on{--b:var(--cup,#ffc531)!important;--bd:var(--cup-d,#d99a00)!important;background:var(--cup,#ffc531)!important;color:#1C1640!important}
+.lrow.curl{border-color:var(--cup,#ffc531)!important;box-shadow:0 0 0 2px var(--cup,#ffc531),0 3px 0 var(--cup-d,#d99a00)!important}
+.chip.curchip{background:var(--cup,#ffc531);color:#1C1640}
 .hscore{display:inline-flex;align-items:center;gap:8px;border:2px solid var(--cup,#ffc531);border-radius:14px;padding:2px 12px;background:var(--surface);font-family:var(--font-head);font-size:26px;line-height:1.3;color:var(--gold);white-space:nowrap}
 .hscore small{font-family:var(--font);font-size:14px;color:var(--muted);font-weight:500}
 html[data-mode=dark] .hscore{background:#0B0720}
@@ -1858,7 +1861,7 @@ async function loadStudentLessons() {
   let subs = [];
   try {
     const [cat, show] = await Promise.all([loadCatalog(), ME.teacherId ? ME.capi.get('tshow', ME.teacherId) : null]);
-    SHOW = (show && show.lessons) || {};
+    SHOW = (show && show.lessons) || {}; SHOW_CUR = (show && show.cur) || '';
     LESSONS = cat.filter(l => (SHOW[l.id] || []).includes(ME.cls)).sort(byLessonOrder);
     subs = MYSUBS = await ME.capi.where('submissions', {uid:ME.cuid});
     const nt = await ME.capi.get('snote', ME.cuid).catch(() => null); MYPICK = (nt && nt.pick) || {};
@@ -1887,18 +1890,19 @@ async function loadStudentLessons() {
   HOMEINFO = info; drawHomeTop();
 }
 /* أعلى صفحة الطالب: مجموع درجاته، والدرس التالي، وترتيبه في قائمة التميّز */
-let HOMEINFO = [];
+let HOMEINFO = [], SHOW_CUR = '';
 const dgr = k => k === 1 ? 'درجة واحدة' : k === 2 ? 'درجتين' : k <= 10 ? k + ' درجات' : k + ' درجة';
 function drawHomeTop() {
   const box = $('#homeTop'); if (!box) return;
   const T = HOMEINFO.filter(x => x.l.tracked !== false), total = T.reduce((a, x) => a + (x.best || 0), 0), max = T.reduce((a, x) => a + x.aMax, 0);
   const sc = $('#homeScore'); if (sc) { sc.hidden = !T.length; sc.innerHTML = `⭐ ${total}<small>من ${max} · مجموع درجاتك</small>`; }
-  const nx = T.find(x => !x.sent && x.started) || T.find(x => !x.sent);
+  const cx = SHOW_CUR && HOMEINFO.find(x => x.l.id === SHOW_CUR), nx = cx || T.find(x => !x.sent && x.started) || T.find(x => !x.sent);
   let next = '';
   if (nx) { const l = nx.l;
-    next = `<div class="nextc"><span class="tag">${nx.started ? 'أكمل من حيث توقفت' : 'الدرس التالي'}</span><div class="nic">${esc(l.icon || '📘')}</div><h2>${esc(l.title)}</h2><p>${esc(l.sub || '')}</p>
+    const tag = nx === cx ? '⭐ الدرس الحالي' : nx.started ? 'أكمل من حيث توقفت' : 'الدرس التالي', bt = nx.sent ? '▶ افتح الدرس' : nx.started ? '▶ أكمل الدرس' : '▶ ابدأ الدرس';
+    next = `<div class="nextc"><span class="tag">${tag}</span><div class="nic">${esc(l.icon || '📘')}</div><h2>${esc(l.title)}</h2><p>${esc(l.sub || '')}</p>
       <div class="meta"><span>📘 ${esc(termName(l.term || 1) + ' · ' + unitName(l.unit || 1))}</span>${nx.aMax ? `<span>🏁 ${nx.aMax} درجة</span>` : ''}</div>
-      <button class="btn big" onclick="openLesson(${A(l.id)},'student')">▶ ${nx.started ? 'أكمل الدرس' : 'ابدأ الدرس'}</button></div>`; }
+      <button class="btn big" onclick="openLesson(${A(l.id)},'student')">${bt}</button></div>`; }
   else if (T.length) { const low = T.filter(x => x.aMax).sort((a, b) => a.best / a.aMax - b.best / b.aMax)[0];
     next = `<div class="nextc"><span class="tag">أحسنت 🎉</span><div class="nic">🏆</div><h2>أرسلتَ كل دروسك</h2><p>${low && low.best < low.aMax ? 'تستطيع أن تحسّن درجتك: أعِد حلّ الدرس الأقل درجة.' : 'حصلتَ على الدرجة الكاملة في كل دروسك!'}</p>
       ${low && low.best < low.aMax ? `<button class="btn big" onclick="openLesson(${A(low.l.id)},'student')">🔁 ${esc(low.l.title)}</button>` : ''}</div>`; }
@@ -2206,7 +2210,7 @@ async function loadTeacherData() {
   try {
     const [st, show, nts] = await Promise.all([API.where('students', {teacherId:TD.view}), API.get('tshow', TD.view), API.where('snote', {teacherId:TD.view}).catch(() => [])]);
     TD.notes = {}; nts.forEach(n => TD.notes[n.id] = n);
-    TD.students = st.map(s => Object.assign({uid:s.id}, s)); TD.show = (show && show.lessons) || {}; TD.showAt = (show && show.showAt) || {};
+    TD.students = st.map(s => Object.assign({uid:s.id}, s)); TD.show = (show && show.lessons) || {}; TD.showAt = (show && show.showAt) || {}; TD.cur = (show && show.cur) || '';
   } catch (e) { console.error(e); if (isPerm(e)) $('#rulesWarn').hidden = false; toast('تعذّر تحميل البيانات: ' + errMsg(e)); }
   try {
     const [ps, ap] = await Promise.all([API.where('pshare', {teacherId:TD.view}), API.get('tapprove', TD.view)]);
@@ -2963,16 +2967,23 @@ function renderShowList() {
   if (!L.length) html += '<p>لا توجد دروس في هذا الباب بعد.</p>';
   html += L.map(l => {
     const on = TD.show[l.id] || [];
-    return `<div class="lrow"><span class="ic">${esc(l.icon || '📘')}</span><div class="t"><b>${esc(l.title)}</b><br><small style="color:var(--muted)">${esc(l.sub || '')}</small></div>
+    const isCur = TD.cur === l.id;
+    return `<div class="lrow${isCur ? ' curl' : ''}"><span class="ic">${esc(l.icon || '📘')}</span><div class="t"><b>${esc(l.title)}</b>${isCur ? ' <span class="chip curchip">⭐ الدرس الحالي</span>' : ''}<br><small style="color:var(--muted)">${esc(l.sub || '')}</small></div>
       <div class="row" style="gap:6px">${C.map(c => `<label class="cls-toggle ${on.includes(c) ? 'on' : ''}"><input type="checkbox" ${on.includes(c) ? 'checked' : ''} onchange="toggleShow(${A(l.id)},${A(c)},this.checked)"> ${esc(c)}</label>`).join('')}
       ${C.length > 1 ? `<button class="btn sm ghost" onclick="showAll(${A(l.id)},${A(C)})">${C.every(c => on.includes(c)) ? '🙈 إخفاء عن الكل' : '✅ للكل'}</button>` : ''}
+      <button class="btn sm curbtn${isCur ? ' on' : ''}" title="يظهر للطالب في المربع الكبير أعلى صفحته" onclick="setCurLesson(${A(l.id)})">${isCur ? '⭐' : '☆'} الحالي</button>
       <button class="btn sm" onclick="openLesson(${A(l.id)},'preview')">👁 معاينة</button></div></div>`;
   }).join('');
   $('#lsList').innerHTML = html;
 }
 async function saveShow(msg) {
-  try { await API.set('tshow', TD.view, {lessons:TD.show, showAt:TD.showAt || {}, teacherId:TD.view, updatedAt:Date.now()}); renderShowList(); fillResultLessons(); if (msg) toast(msg); }
+  try { await API.set('tshow', TD.view, {lessons:TD.show, showAt:TD.showAt || {}, cur:TD.cur || '', teacherId:TD.view, updatedAt:Date.now()}); renderShowList(); fillResultLessons(); if (msg) toast(msg); }
   catch (e) { console.error(e); if (isPerm(e)) $('#rulesWarn').hidden = false; toast('تعذّر الحفظ: ' + errMsg(e)); }
+}
+/* «الحالي»: درس واحد فقط، يظهر للطالب في المربع الكبير أعلى صفحته */
+function setCurLesson(id) {
+  TD.cur = TD.cur === id ? '' : id;
+  saveShow(TD.cur ? '⭐ صار «' + ((catById(id) || {}).title || '') + '» الدرس الحالي' : 'أُلغي اختيار الدرس الحالي');
 }
 function markShown(id, c) { TD.showAt = TD.showAt || {}; TD.showAt[id] = Object.assign({}, TD.showAt[id], {[c]:Date.now()}); }
 function toggleShow(id, c, on) {
@@ -3060,7 +3071,7 @@ async function saveEditClass(c) {
     let showCh = false;
     Object.keys(TD.show || {}).forEach(id => { const a = TD.show[id] || []; if (a.includes(c)) { TD.show[id] = [...new Set(a.map(x => x === c ? v : x))]; showCh = true; } });
     Object.keys(TD.showAt || {}).forEach(id => { const o = TD.showAt[id]; if (o && o[c] != null) { o[v] = o[c]; delete o[c]; showCh = true; } });
-    if (showCh) await API.set('tshow', TD.view, {lessons:TD.show, showAt:TD.showAt || {}, teacherId:TD.view, updatedAt:Date.now()});
+    if (showCh) await API.set('tshow', TD.view, {lessons:TD.show, showAt:TD.showAt || {}, cur:TD.cur || '', teacherId:TD.view, updatedAt:Date.now()});
     const i = C.indexOf(c); C[i] = v; C.sort((a, b) => a.localeCompare(b, 'ar', {numeric:true}));
     await saveClasses(C);
     closeModal(); try { renderShowList(); fillResultLessons(); renderResults(); } catch (e) {}
