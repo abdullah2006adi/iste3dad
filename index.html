@@ -16,7 +16,7 @@
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Baloo+Bhaijaan+2:wght@400..800&family=Changa:wght@400..700&family=El+Messiri:wght@400..700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Lalezar&family=Noto+Naskh+Arabic:wght@600;700&family=Readex+Pro:wght@400..700&family=Reem+Kufi:wght@400..700&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
-<script>(function(){try{var d=document.documentElement,m=localStorage.getItem("iste3dad-mode"),t=localStorage.getItem("iste3dad-theme");d.dataset.mode=m?JSON.parse(m):(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");d.dataset.theme=t?JSON.parse(t):"diwan";}catch(e){document.documentElement.dataset.theme="diwan";document.documentElement.dataset.mode="light";}})();</script>
+<script>(function(){var d=document.documentElement;d.dataset.theme="arena";try{var h=new Date().getHours(),a=(h>=4&&h<17)?"light":"dark",o=JSON.parse(localStorage.getItem("iste3dad-mode2")||"null");d.dataset.mode=(o&&o.until>Date.now())?o.m:a;}catch(e){d.dataset.mode="light";}})();</script>
 <style>
 :root{
   --bg:#f7f3e8; --card:#fff; --ink:#1f2a2a; --muted:#5f6b6b;
@@ -715,6 +715,222 @@ html[data-mode=dark] .viewas{color:#1b1b1b}
 html[data-mode=dark] .applogo,html[data-mode=dark] .tlogo{box-shadow:0 0 0 1px rgba(255,255,255,.12),0 8px 18px rgba(0,0,0,.6)}
 html[data-mode=dark] .modal{background:rgba(0,0,0,.62)}
 
+
+/* ================================================================
+   هوية «مسرح المسابقة» (نوفمبر 2026) — تصميم واحد لكل الصفوف والمعلمين
+   الوضع حسب الوقت: نهاري من 4 صباحًا إلى 5 مساءً، وليلي في الباقي
+   ================================================================ */
+html[data-theme=arena]{--font:'Readex Pro','Tajawal','Sakkal Majalla',sans-serif;--font-head:'Lalezar','Readex Pro',sans-serif;
+  --vio:#6D3CE0;--vio-d:#4A22A8;--buzz:#FF3D6E;--buzz-d:#C81E4E;--cup:#FFC531;--cup-d:#D99A00;--sky:#31C6F5;--sky-d:#0E8FC0;--ok:#12C98A;--ok-d:#0A8F62;
+  --stage:#150E36;--stage2:#231758;--stage3:#33237A;--sp1:#33237A;--sp2:#150E36;
+  --bg:#EEEBFF;--card:#fff;--surface:#fff;--surface-2:#F6F4FF;--tint:#F1EDFF;--warm:#FFF5D6;--danger-tint:#FFE8EE;--input-bg:#fff;
+  --ink:#1C1640;--muted:#625C8E;--line:#E0DAF5;--teal:#4A22A8;--green:#0FA874;--green-l:#D7F7EA;--orange:#FF3D6E;--orange-l:#FFE1E8;--blue:#0E8FC0;--blue-l:#DCF3FD;
+  --gold:#C98A00;--gold-l:#FFF1C9;--red:#D91E4F;--red-l:#FFE1E8;--top-a:#FFFFFF;--top-b:#F3EFFF;--top-ink:#1C1640;--lip:#CFC6F2;--radius:20px;
+  --sh1:0 4px 0 var(--line),0 14px 30px -20px rgba(40,20,120,.35);--sh2:0 6px 0 var(--line),0 26px 50px -24px rgba(40,20,120,.45);
+  --hud:rgba(255,255,255,.82);--beam:rgba(255,197,49,.24);--btn-ink:#fff}
+html[data-theme=arena][data-mode=dark]{
+  --bg:#150E36;--card:#22185A;--surface:#22185A;--surface-2:#1B1349;--tint:#2B1F6B;--warm:#3A2C14;--danger-tint:#3A1530;--input-bg:#1B1349;
+  --ink:#F3F0FF;--muted:#B4ACE6;--line:#3A2D80;--teal:#FFC531;--green:#2EDB9C;--green-l:#123F3A;--orange:#FF5C86;--orange-l:#4A1B3A;--blue:#5AD3FA;--blue-l:#173A63;
+  --gold:#FFC531;--gold-l:#3E3112;--red:#FF6B8E;--red-l:#4A1B33;--top-a:#0E0928;--top-b:#150E36;--top-ink:#fff;--lip:#0B0720;
+  --sh1:0 4px 0 #0B0720,0 18px 34px -20px rgba(0,0,0,.8);--sh2:0 6px 0 #0B0720,0 28px 50px -24px rgba(0,0,0,.9);
+  --hud:rgba(13,9,40,.72);--beam:rgba(255,236,170,.16)}
+html[data-theme=arena] body{font-size:21px;line-height:1.65;background:var(--bg)}
+html[data-theme=arena] button,html[data-theme=arena] input,html[data-theme=arena] select,html[data-theme=arena] textarea{font-family:var(--font);font-size:19px}
+/* المسرح: إضاءة من الأعلى وأرضية مضيئة */
+html[data-theme=arena] body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:conic-gradient(from 196deg at 88% -8%,transparent 0deg,var(--beam) 6deg,var(--beam) 16deg,transparent 24deg,transparent 360deg),
+    conic-gradient(from 140deg at 12% -8%,transparent 0deg,var(--beam) 8deg,var(--beam) 18deg,transparent 24deg,transparent 360deg),
+    radial-gradient(70% 45% at 50% 105%,rgba(49,198,245,.20),transparent 70%),
+    radial-gradient(120% 70% at 50% -10%,#FFFFFF 0%,#F1EDFF 40%,#DDD5FF 85%)}
+html[data-theme=arena][data-mode=dark] body::before{background:conic-gradient(from 196deg at 88% -8%,transparent 0deg,var(--beam) 6deg,var(--beam) 16deg,transparent 24deg,transparent 360deg),
+    conic-gradient(from 140deg at 12% -8%,transparent 0deg,var(--beam) 8deg,var(--beam) 18deg,transparent 24deg,transparent 360deg),
+    radial-gradient(70% 45% at 50% 105%,rgba(49,198,245,.18),transparent 70%),
+    radial-gradient(120% 70% at 50% -10%,#33237A 0%,#231758 35%,#150E36 75%)}
+/* العناوين */
+html[data-theme=arena] h1,html[data-theme=arena] h2,html[data-theme=arena] h3{font-family:var(--font-head);font-weight:400;letter-spacing:0}
+html[data-theme=arena] h2{font-size:36px;color:var(--teal)} html[data-theme=arena] h3{font-size:28px;color:var(--teal)}
+html[data-theme=arena] h4{font-family:var(--font);font-weight:700}
+/* الشريط العلوي (شريط المتسابق) */
+html[data-theme=arena] .topbar{background:var(--hud);color:var(--top-ink);backdrop-filter:blur(12px) saturate(1.4);-webkit-backdrop-filter:blur(12px) saturate(1.4);
+  box-shadow:0 1px 0 var(--line),0 12px 30px -22px rgba(30,15,90,.6);padding-bottom:10px}
+html[data-theme=arena][data-mode=dark] .topbar{box-shadow:0 1px 0 rgba(255,255,255,.08),0 12px 30px -20px rgba(0,0,0,.9)}
+html[data-theme=arena] .topbar h1{font-size:30px;color:var(--vio);display:flex;align-items:center;gap:10px}
+html[data-theme=arena][data-mode=dark] .topbar h1{color:var(--cup)}
+html[data-theme=arena] .tlogo{width:42px;height:42px;border-radius:12px;box-shadow:0 0 0 2px rgba(255,197,49,.55),0 6px 14px -6px rgba(0,0,0,.5)}
+html[data-theme=arena] .hbtn{background:var(--surface);color:var(--ink);border:1.5px solid var(--line);border-radius:14px;padding:3px 13px;font-size:18px;font-weight:600;min-height:42px;box-shadow:0 3px 0 var(--line)}
+html[data-theme=arena][data-mode=dark] .hbtn{background:rgba(255,255,255,.08);color:#fff;border-color:rgba(255,255,255,.14);box-shadow:none}
+html[data-theme=arena] .hbtn:active{transform:translateY(2px);box-shadow:0 1px 0 var(--line)}
+html[data-theme=arena] .hbtn.who{text-decoration:none;border-radius:999px}
+html[data-theme=arena] .hbtn.instbtn{background:var(--cup);color:#1C1640;border-color:var(--cup-d);box-shadow:0 3px 0 var(--cup-d)}
+html[data-theme=arena] .hbtn.bellbtn .bell-dot{background:var(--buzz);font-family:var(--font-head);font-weight:400}
+/* مجموع درجات الطالب في الشريط */
+.hscore{display:inline-flex;align-items:center;gap:8px;border:2px solid var(--cup,#ffc531);border-radius:14px;padding:2px 12px;background:var(--surface);font-family:var(--font-head);font-size:26px;line-height:1.3;color:var(--gold);white-space:nowrap}
+.hscore small{font-family:var(--font);font-size:14px;color:var(--muted);font-weight:500}
+html[data-mode=dark] .hscore{background:#0B0720}
+/* أزرار الجرس */
+html[data-theme=arena] .btn{--b:var(--vio);--bd:var(--vio-d);background:var(--b);color:var(--btn-ink);border:0;border-radius:14px;padding:5px 20px 7px;font-weight:700;
+  box-shadow:0 5px 0 var(--bd),0 12px 20px -12px var(--bd);transition:transform .08s,box-shadow .08s,filter .2s}
+html[data-theme=arena] .btn:hover{filter:brightness(1.07)}
+html[data-theme=arena] .btn:active{transform:translateY(4px);box-shadow:0 1px 0 var(--bd)}
+html[data-theme=arena] .btn.alt{--b:var(--buzz);--bd:var(--buzz-d)}
+html[data-theme=arena] .btn.blue{--b:var(--sky);--bd:var(--sky-d)}
+html[data-theme=arena] .btn.wa{--b:#25d366;--bd:#128c4b}
+html[data-theme=arena] .btn.seen-blue{--b:#2563eb;--bd:#1e40af} html[data-theme=arena] .btn.seen-green{--b:var(--ok);--bd:var(--ok-d)}
+html[data-theme=arena] .btn.ghost{--bd:var(--line);background:var(--surface);color:var(--teal);border:2px solid var(--line);box-shadow:0 4px 0 var(--line)}
+html[data-theme=arena] .btn.red{--bd:var(--red-l);background:var(--surface);color:var(--red);border:2px solid var(--red-l);box-shadow:0 4px 0 var(--red-l)}
+html[data-theme=arena] .btn.wa.nophone{--bd:#b8f0cf;background:var(--surface);color:#128c4b;border:2px solid #25d366}
+html[data-theme=arena][data-mode=dark] .btn.ghost{background:var(--surface-2);color:var(--ink);border-color:var(--line);--bd:#0B0720;box-shadow:0 4px 0 #0B0720}
+html[data-theme=arena][data-mode=dark] .btn.red{background:var(--surface-2);--bd:#0B0720;box-shadow:0 4px 0 #0B0720}
+html[data-theme=arena] .btn.sm{padding:2px 13px 4px;font-size:17px;border-radius:11px;box-shadow:0 3px 0 var(--bd)}
+html[data-theme=arena] .btn.sm:active{transform:translateY(2px);box-shadow:0 1px 0 var(--bd)}
+html[data-theme=arena] .btn.big{font-family:var(--font-head);font-weight:400;font-size:27px;padding:10px 28px 12px;border-radius:18px;box-shadow:0 7px 0 var(--bd),0 14px 24px -12px var(--bd)}
+html[data-theme=arena] .btn.big:active{transform:translateY(6px);box-shadow:0 1px 0 var(--bd)}
+html[data-theme=arena] .btn:focus-visible,html[data-theme=arena] button:focus-visible{outline:3px solid var(--cup);outline-offset:3px}
+html[data-theme=arena] .linkbtn{color:var(--vio);font-weight:600}
+html[data-theme=arena][data-mode=dark] .linkbtn{color:var(--sky)}
+/* الحقول */
+html[data-theme=arena] input[type=text],html[data-theme=arena] input[type=number],html[data-theme=arena] input[type=password],html[data-theme=arena] input[type=email],html[data-theme=arena] input[type=tel],html[data-theme=arena] input[type=search],html[data-theme=arena] select,html[data-theme=arena] textarea{
+  border:2px solid var(--line);border-radius:12px;padding:6px 12px;background:var(--input-bg)}
+html[data-theme=arena] input:focus,html[data-theme=arena] select:focus,html[data-theme=arena] textarea:focus{outline:3px solid rgba(109,60,224,.25);border-color:var(--vio)}
+html[data-theme=arena] input[type=checkbox],html[data-theme=arena] input[type=radio]{accent-color:var(--vio)}
+/* البطاقات */
+html[data-theme=arena] .card{background:var(--surface);border:1.5px solid var(--line);border-radius:22px;padding:16px 20px;box-shadow:var(--sh1)}
+html[data-theme=arena] .card>h3:first-child{display:flex;align-items:center;gap:8px}
+html[data-theme=arena] .note{background:var(--warm);border-radius:14px}
+html[data-theme=arena] .warnbar{border-radius:16px}
+html[data-theme=arena] .viewas{background:var(--cup);color:#1C1640;border-radius:16px;box-shadow:0 4px 0 var(--cup-d)}
+/* التبويبات */
+html[data-theme=arena] .subtabs button{border:2px solid var(--line);background:var(--surface);color:var(--ink);border-radius:13px;padding:3px 15px;font-weight:600;font-size:18px;box-shadow:0 3px 0 var(--line)}
+html[data-theme=arena] .subtabs button.on{background:var(--cup);border-color:var(--cup);color:#1C1640;box-shadow:0 3px 0 var(--cup-d)}
+html[data-theme=arena] .subtabs button .dot{background:var(--buzz);font-family:var(--font-head);font-weight:400}
+html[data-theme=arena] #tTabs{background:linear-gradient(180deg,var(--stage2),var(--stage));padding:10px;border-radius:20px;gap:7px;box-shadow:0 5px 0 #0B0720,0 18px 34px -22px rgba(20,10,60,.9);margin:14px 0}
+html[data-theme=arena] #tTabs button{background:rgba(255,255,255,.08);color:#E3DEFF;border:1.5px solid rgba(255,255,255,.12);box-shadow:none}
+html[data-theme=arena] #tTabs button:hover{background:rgba(255,255,255,.16)}
+html[data-theme=arena] #tTabs button.on{background:var(--cup);color:#1C1640;border-color:var(--cup);box-shadow:0 4px 0 var(--cup-d)}
+html[data-theme=arena] #tTabs button.hbgold{background:linear-gradient(180deg,#FFE27A,#F5B400)!important;color:#2a1c04!important;border-color:transparent!important;box-shadow:0 4px 0 #B07D00!important}
+/* لوحات الأرقام (الإحصاءات) */
+html[data-theme=arena] .stats{gap:12px}
+html[data-theme=arena] .stat{position:relative;background:linear-gradient(180deg,var(--stage2),var(--stage));border:0;border-radius:18px;padding:12px 12px 10px;color:#CFC8F6;font-size:17px;text-align:right;box-shadow:0 5px 0 #0B0720}
+html[data-theme=arena] .stat b{display:table;font-family:var(--font-head);font-weight:400;font-size:42px;line-height:1.1;color:#fff;background:#08051A;border-radius:11px;padding:6px 14px 2px;margin-bottom:6px;box-shadow:inset 0 0 0 2px rgba(255,255,255,.06)}
+html[data-theme=arena] .stat:nth-child(2) b{color:var(--ok)} html[data-theme=arena] .stat:nth-child(3) b{color:var(--cup)}
+html[data-theme=arena] .stat:nth-child(4) b{color:var(--sky)} html[data-theme=arena] .stat:nth-child(5) b{color:var(--buzz)}
+html[data-theme=arena] .stat.click:hover{transform:translateY(-3px)}
+html[data-theme=arena] .stat.on{outline:3px solid var(--cup);outline-offset:-3px;background:linear-gradient(180deg,var(--stage3),var(--stage2))}
+html[data-theme=arena] .adm-stats .as-pill{background:linear-gradient(180deg,var(--stage2),var(--stage));color:#E3DEFF;border-radius:18px;box-shadow:0 5px 0 #0B0720}
+html[data-theme=arena] .adm-stats .as-pill b{color:var(--cup);font-weight:400}
+/* شرائح التصفية */
+html[data-theme=arena] .rf-chip{border:2px solid var(--line);background:var(--surface);color:var(--ink);font-weight:600;font-size:16px;padding:3px 14px}
+html[data-theme=arena] .rf-chip.on{background:var(--stage);border-color:var(--stage);color:#fff}
+html[data-theme=arena][data-mode=dark] .rf-chip.on{background:var(--cup);border-color:var(--cup);color:#1C1640}
+html[data-theme=arena] .rf-lbl{color:var(--teal)}
+html[data-theme=arena] .chip{border-radius:999px;font-family:var(--font);font-weight:600;font-size:15px;padding:2px 11px;vertical-align:middle}
+html[data-theme=arena] .lvl{border-radius:999px;padding:2px 11px;font-size:16px;font-weight:600}
+/* الجداول */
+html[data-theme=arena] .tbl-scroll{border-radius:20px;border:1.5px solid var(--line);background:var(--surface);box-shadow:var(--sh1)}
+html[data-theme=arena] .tbl-scroll>table{border-collapse:separate;border-spacing:0;background:transparent;font-size:18px}
+html[data-theme=arena] th{background:var(--surface-2);color:var(--muted);font-weight:600;font-size:15px}
+html[data-theme=arena] .tbl-scroll th{border:0;border-bottom:2px solid var(--line);padding:10px}
+html[data-theme=arena] .tbl-scroll th:first-child{border-start-start-radius:19px} html[data-theme=arena] .tbl-scroll th:last-child{border-start-end-radius:19px}
+html[data-theme=arena] .tbl-scroll td{white-space:nowrap;border:0;border-bottom:1px solid var(--line);padding:9px 10px}
+html[data-theme=arena] .tbl-scroll tr:last-child>td{border-bottom:0}
+html[data-theme=arena] .tbl-scroll tr:not([style]):hover>td{background:var(--tint)}
+html[data-theme=arena] .tbl-scroll td:first-child{color:var(--muted);font-family:var(--font-head);font-size:19px;text-align:center}
+html[data-theme=arena] td,html[data-theme=arena] th{border-color:var(--line)}
+html[data-theme=arena] tr.nosub td{background:var(--surface-2);color:var(--muted)}
+/* بطاقات المجموعة والدروس في صفحة المعلم */
+html[data-theme=arena] .lrow,html[data-theme=arena] .clsitem{border:1.5px solid var(--line);border-radius:16px;background:var(--surface);box-shadow:0 3px 0 var(--line)}
+html[data-theme=arena] .clsitem .cname{color:var(--teal);font-family:var(--font-head);font-weight:400}
+html[data-theme=arena] .cls-toggle{border:2px solid var(--line);font-size:17px}
+html[data-theme=arena] .cls-toggle.on{background:var(--green-l);border-color:var(--green);color:var(--green)}
+html[data-theme=arena] .unit-head{font-family:var(--font-head);font-weight:400;font-size:24px;color:var(--teal);background:none;padding:2px 0;display:flex;align-items:center;gap:10px}
+html[data-theme=arena] .unit-head::after{content:"";flex:1;height:3px;border-radius:3px;background:linear-gradient(90deg,var(--line),transparent)}
+/* شاشات الدخول */
+html[data-theme=arena] .login-card{background:var(--surface);border:1.5px solid var(--line);border-radius:26px;box-shadow:var(--sh2)}
+html[data-theme=arena] .login-card h2{font-size:34px}
+html[data-theme=arena] .login-card label{font-size:18px;font-weight:600;color:var(--muted)}
+html[data-theme=arena] .login-card .logo{font-size:58px}
+html[data-theme=arena] .applogo{border-radius:24px;box-shadow:0 0 0 4px rgba(255,197,49,.5),0 0 40px rgba(255,197,49,.35)}
+/* شاشة البداية: المسرح */
+html[data-theme=arena] #scrRole .login-card,html[data-theme=arena] #scrStuChoice .login-card{background:none;border:0;box-shadow:none;max-width:640px;margin-top:5vh}
+html[data-theme=arena] #scrRole h2{font-size:clamp(70px,13vw,112px);line-height:1.05;margin:12px 0 0!important;color:var(--vio);text-shadow:0 5px 0 var(--cup),0 14px 34px rgba(109,60,224,.3)}
+html[data-theme=arena][data-mode=dark] #scrRole h2{color:var(--cup);text-shadow:0 5px 0 #B45309,0 14px 34px rgba(255,197,49,.35)}
+html[data-theme=arena] #scrRole h2 .pre{display:none}
+html[data-theme=arena] #scrRole p,html[data-theme=arena] #scrStuChoice p{color:var(--muted)!important;font-size:20px}
+html[data-theme=arena] #scrStuChoice h2{font-size:48px}
+html[data-theme=arena] .role-btns{gap:clamp(16px,5vw,48px);margin-top:4vh}
+html[data-theme=arena] .role-btns button.imgb{position:relative;overflow:visible}
+html[data-theme=arena] .role-btns button.imgb::after{content:"";position:absolute;inset:auto -6% -16px -6%;height:26px;border-radius:50%;z-index:-1;background:radial-gradient(closest-side,rgba(255,197,49,.6),transparent)}
+html[data-theme=arena] .role-btns button.imgb:hover{transform:translateY(-6px) rotate(-1deg)}
+html[data-theme=arena] body:has(#scrRole:not([hidden])) .site-foot,html[data-theme=arena] body:has(#scrStuChoice:not([hidden])) .site-foot{color:var(--ink)}
+/* الصفحة الرئيسية للطالب (صفّي / مساحتي) */
+html[data-theme=arena] .space-btns button{border-radius:26px;padding:24px 18px 26px;box-shadow:0 7px 0 var(--bd),0 22px 34px -18px var(--bd);transition:transform .08s,box-shadow .08s}
+html[data-theme=arena] .space-btns button:active{transform:translateY(6px);box-shadow:0 1px 0 var(--bd)}
+html[data-theme=arena] .space-btns button b{font-family:var(--font-head);font-weight:400;font-size:38px}
+html[data-theme=arena] .space-btns .sp-cls{background:linear-gradient(160deg,#4FD3FA,var(--sky-d));--bd:#0A6A90}
+html[data-theme=arena] .space-btns .sp-priv{background:linear-gradient(160deg,#8A5CF0,var(--vio-d));--bd:#331680}
+/* اختيار الصف */
+html[data-theme=arena] .gp-stage,html[data-theme=arena] .gp-grade,html[data-theme=arena] .fb-choices button{border:2px solid var(--line);background:var(--surface);color:var(--ink);box-shadow:0 4px 0 var(--line);border-radius:16px}
+html[data-theme=arena] .gp-grade{font-family:var(--font-head);font-weight:400}
+html[data-theme=arena] .gp-grade.on{background:var(--cup);border-color:var(--cup);color:#1C1640;box-shadow:0 5px 0 var(--cup-d)}
+html[data-theme=arena] .gp-stage.on{background:var(--vio);border-color:var(--vio);color:#fff;box-shadow:0 4px 0 var(--vio-d)}
+html[data-theme=arena] .fb-choices button.on{border-color:var(--buzz);background:var(--orange-l)}
+html[data-theme=arena] .gchip{border:2px solid var(--line);border-radius:999px;box-shadow:0 3px 0 var(--line)} html[data-theme=arena] .gchip.on{background:var(--vio);border-color:var(--vio);color:#fff;box-shadow:0 3px 0 var(--vio-d)}
+/* النوافذ والإشعارات */
+html[data-theme=arena] .modal{background:rgba(12,7,34,.55);backdrop-filter:blur(3px)}
+html[data-theme=arena] .modal .box{border-radius:26px;border:1.5px solid var(--line);border-top:5px solid var(--cup);box-shadow:0 30px 70px -20px rgba(0,0,0,.6)}
+html[data-theme=arena] .ntf{border:1.5px solid var(--line);border-radius:16px;box-shadow:0 3px 0 var(--line)}
+html[data-theme=arena] .ntf.new{background:var(--warm);border-color:var(--cup)}
+html[data-theme=arena] .fbitem{border-radius:16px;border-inline-start-width:6px}
+html[data-theme=arena] .toast{background:var(--stage);border:2px solid var(--cup);font-family:var(--font);font-size:19px;box-shadow:0 10px 30px -10px rgba(0,0,0,.6)}
+html[data-theme=arena] #splash{background:radial-gradient(120% 70% at 50% -10%,#33237A,#231758 40%,#150E36 80%)}
+html[data-theme=arena] #splash .sp-bar i{background:linear-gradient(90deg,var(--cup),#fff)}
+html[data-theme=arena] .pbar{background:var(--stage);color:#fff;font-family:var(--font)}
+html[data-theme=arena] .pbar .hbtn{background:rgba(255,255,255,.1);color:#fff;border-color:rgba(255,255,255,.18);box-shadow:none}
+html[data-theme=arena] .pbar .prev{background:var(--cup);color:#1C1640}
+html[data-theme=arena] .demo-banner{background:var(--buzz)}
+html[data-theme=arena] .site-foot{color:var(--teal)}
+html[data-theme=arena] .drop{border-color:var(--vio);border-radius:20px}
+
+/* ===== صفحة الطالب «صفّي»: الدرس التالي + ترتيبي + بطاقات الدروس ===== */
+.sh-top{display:grid;grid-template-columns:1.55fr 1fr;gap:18px;margin:10px 0 6px}
+.sh-top.one{grid-template-columns:1fr}
+.nextc{position:relative;overflow:hidden;border-radius:26px;padding:22px 24px;color:#fff;background:linear-gradient(135deg,#7B48EC,#4A22A8);border:2px solid rgba(255,197,49,.6);box-shadow:0 6px 0 #331680,0 24px 40px -22px rgba(51,22,128,.9)}
+html[data-mode=dark] .nextc{background:linear-gradient(135deg,#3A2A8F,#22175E)}
+.nextc .tag{display:inline-block;background:var(--buzz,#ff3d6e);color:#fff;font-family:var(--font-head);font-size:18px;padding:5px 14px 3px;border-radius:10px;transform:rotate(-2deg)}
+.nextc h2{font-size:clamp(32px,5vw,44px)!important;line-height:1.15;margin:12px 0 2px;color:#fff!important;padding-inline-end:100px}
+.nextc p{margin:0 0 14px;color:#E1DAFF;font-size:18px}
+.nextc .nic{position:absolute;inset-inline-end:22px;top:18px;font-size:clamp(60px,9vw,92px);line-height:1;filter:drop-shadow(0 10px 18px rgba(0,0,0,.35))}
+.nextc .meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.nextc .meta span{background:rgba(255,255,255,.13);border-radius:10px;padding:3px 12px;font-size:16px}
+.nextc .btn{--b:var(--buzz,#ff3d6e);--bd:var(--buzz-d,#c81e4e)}
+.rankc{border-radius:26px;padding:16px 18px;background:#0F0A2B;color:#fff;border:2px solid rgba(255,255,255,.1);box-shadow:0 6px 0 #07041A}
+.rankc h3{font-size:24px!important;margin:0!important;color:var(--cup,#ffc531)!important}
+.rankc .mypos{display:flex;align-items:center;gap:14px;margin:12px 0 8px;background:rgba(49,198,245,.12);border:1.5px solid rgba(49,198,245,.45);border-radius:16px;padding:8px 14px}
+.rankc .mypos b{font-family:var(--font-head);font-weight:400;font-size:48px;line-height:1;color:var(--sky,#31c6f5)}
+.rankc .mypos div{font-size:16px;color:#D6D0FA;line-height:1.55}
+.rankc .mypos em{font-style:normal;color:var(--cup,#ffc531);font-weight:700}
+.rankc ol{list-style:none;margin:0;padding:0}
+.rankc li{display:flex;align-items:center;gap:10px;padding:7px 4px;border-top:1px solid rgba(255,255,255,.08);font-size:17px}
+.rankc li.me{color:var(--sky,#31c6f5);font-weight:700}
+.rankc .m{width:32px;height:32px;flex:none;border-radius:50%;display:grid;place-items:center;font-family:var(--font-head);font-size:18px;color:#1C1640;background:#E4DFFA}
+.rankc .m1{background:linear-gradient(#FFE27A,#F5B400)} .rankc .m2{background:linear-gradient(#F3F4F6,#A9AFBC)} .rankc .m3{background:linear-gradient(#F3B98A,#B8692F)}
+.rankc .pts{margin-inline-start:auto;font-family:var(--font-head);font-size:20px;color:var(--cup,#ffc531)}
+.rankc .more{display:block;width:100%;margin-top:8px;background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.15);color:#fff;border-radius:12px;padding:5px;font:600 16px var(--font);cursor:pointer}
+.lgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:18px 16px;margin:14px 0 8px}
+.lt{position:relative;display:flex;flex-direction:column;border-radius:22px;padding:18px 16px 14px;background:var(--surface);color:var(--ink);border:1.5px solid var(--line);box-shadow:0 6px 0 var(--lip)}
+.lt .n{position:absolute;top:-13px;inset-inline-start:16px;font-family:var(--font-head);font-size:18px;line-height:28px;background:var(--stage,#150e36);color:var(--cup,#ffc531);padding:0 12px;border-radius:9px;border:2px solid var(--cup,#ffc531)}
+.lt .top{display:flex;align-items:center;gap:12px}
+.lt .em{font-size:44px;line-height:1;flex:none}
+.lt h4{font-size:20px;line-height:1.35;margin:0}
+.lt .sub{margin:2px 0 0;color:var(--muted);font-size:15px;line-height:1.5}
+.lt .bar{height:12px;border-radius:8px;background:var(--surface-2);box-shadow:inset 0 0 0 1px var(--line);margin:14px 0 6px;overflow:hidden}
+.lt .bar i{display:block;height:100%;border-radius:8px;background:linear-gradient(90deg,var(--ok,#12c98a),#7BE7B7)}
+.lt .ft{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:15px;color:var(--muted);flex-wrap:wrap}
+.lt .ft b{font-family:var(--font-head);font-weight:400;font-size:24px;color:var(--ink)}
+.lt .acts2{display:flex;gap:8px;align-items:center;margin-top:12px;flex-wrap:wrap}
+.lt .acts2 .btn{flex:1}
+.lt.done{border-color:color-mix(in srgb,var(--green) 40%,var(--line))}
+@media (max-width:760px){.sh-top{grid-template-columns:1fr}.hscore small{display:none}}
 </style>
 </head>
 <body>
@@ -740,7 +956,7 @@ html[data-mode=dark] .modal{background:rgba(0,0,0,.62)}
 <section id="scrRole" hidden>
   <div class="login-card">
     <div class="logo"><img src="icon-180.png" alt="" class="applogo"></div>
-    <h2 style="margin-bottom:0">منصة استعداد</h2>
+    <h2 style="margin-bottom:0"><span class="pre">منصة </span>استعداد</h2>
     <p style="margin-top:0;color:var(--muted)">التربية الإسلامية</p>
     <div class="role-btns">
       <button class="imgb" onclick="uiTap(0);chooseRole('teacher')" aria-label="أنا معلم"><img src="btn-teacher.webp" alt="أنا معلم" width="420" height="440"></button>
@@ -845,13 +1061,14 @@ html[data-mode=dark] .modal{background:rgba(0,0,0,.62)}
 </section>
 
 <section id="scrHome" hidden>
-  <div class="topbar"><div class="wrap"><h1>🏫 صفّي</h1><div class="row"><button id="homeWho" class="hbtn who" onclick="openProfile()" title="صفحتي: البريد والمدرسة"></button><button class="hbtn bellbtn" onclick="openBell()" title="الإشعارات">🔔<span class="dot bell-dot" hidden></span></button><button class="hbtn modebtn" onclick="toggleMode()" title="الوضع الليلي">🌙</button><button class="hbtn instbtn" onclick="installApp()" title="اجعلني على سطح المكتب" hidden>📲<span class="hl"> اجعلني على سطح المكتب</span></button><button class="hbtn fbbtn" onclick="openFeedback()" title="أرسل ملاحظة">💬<span class="hl"> أرسل ملاحظة</span></button><button class="hbtn" onclick="navBack(showHub)" title="الرئيسية">🏠<span class="hl"> الرئيسية</span></button><button class="hbtn" onclick="doLogout()" title="خروج">🚪<span class="hl"> خروج</span></button></div></div></div>
+  <div class="topbar"><div class="wrap"><h1>🏫 صفّي <span class="hscore" id="homeScore" hidden title="مجموع درجاتك في دروس صفّك"></span></h1><div class="row"><button id="homeWho" class="hbtn who" onclick="openProfile()" title="صفحتي: البريد والمدرسة"></button><button class="hbtn bellbtn" onclick="openBell()" title="الإشعارات">🔔<span class="dot bell-dot" hidden></span></button><button class="hbtn modebtn" onclick="toggleMode()" title="الوضع الليلي">🌙</button><button class="hbtn instbtn" onclick="installApp()" title="اجعلني على سطح المكتب" hidden>📲<span class="hl"> اجعلني على سطح المكتب</span></button><button class="hbtn fbbtn" onclick="openFeedback()" title="أرسل ملاحظة">💬<span class="hl"> أرسل ملاحظة</span></button><button class="hbtn" onclick="navBack(showHub)" title="الرئيسية">🏠<span class="hl"> الرئيسية</span></button><button class="hbtn" onclick="doLogout()" title="خروج">🚪<span class="hl"> خروج</span></button></div></div></div>
   <div class="wrap">
     <h2 id="homeHello"></h2>
     <div class="row" style="margin:-4px 0 10px"><button class="btn sm alt" onclick="msgMyTeacher()">✉️ راسل معلّمك</button></div>
-    <div id="homeBoard"></div>
+    <div id="homeTop"></div>
     <h3>📚 دروسي</h3>
     <div id="homeLessons"></div>
+    <div id="homeBoard" style="margin-top:22px"></div>
   </div>
 </section>
 
@@ -1541,7 +1758,7 @@ function showAttempts(title, max, list, pickAt) {
 /* ================= صفّي (دروس المعلم) ================= */
 let LESSONS = [], SHOW = {}, MYSUBS = [], MYPICK = {};
 async function openHome() {
-  showScreen('scrHome');
+  showScreen('scrHome'); HOMEINFO = []; if ($('#homeTop')) $('#homeTop').innerHTML = ''; if ($('#homeScore')) $('#homeScore').hidden = true;
   $('#homeWho').textContent = '👤 ' + (ME.cname || ME.name) + ' · ' + ME.cls;
   $('#homeHello').textContent = 'مرحبًا يا ' + (ME.cname || ME.name || '').split(' ')[0] + ' 👋';
   loadStudentBoard();
@@ -1559,23 +1776,57 @@ async function loadStudentLessons() {
   } catch (e) { console.error(e); $('#homeLessons').innerHTML = '<p>تعذّر تحميل الدروس. حدّث الصفحة.</p>'; return; }
   if (!LESSONS.length) { $('#homeLessons').innerHTML = '<div class="card">لا توجد دروس متاحة الآن. سيُظهر معلّمك الدروس قريبًا 🌿 وتستطيع أن تدرس ما تشاء في «🌟 مساحتي الخاصة».</div>'; return; }
   const prog = await Promise.all(LESSONS.map(l => l.tracked === false ? null : ME.capi.get('progress', ME.cuid + '_' + l.id).then(d => d ? JSON.parse(d.s || 'null') : null).catch(() => null)));
-  let html = '', last = '';
+  let html = '', last = '', open = false, n = 0; const info = [];
   LESSONS.forEach((l, i) => {
     const head = termName(l.term || 1) + ' · ' + unitName(l.unit || 1);
-    if (head !== last) { html += `<div class="unit-head">📘 ${head}</div>`; last = head; }
+    if (head !== last) { html += (open ? '</div>' : '') + `<div class="unit-head">📘 ${head}</div><div class="lgrid">`; last = head; open = true; }
     const my = subs.filter(s => s.lessonId === l.id), p = prog[i];
     const pk = MYPICK[l.id], ch = pk && my.find(s => s.at === pk.at);
     const best = ch ? +ch.auto || 0 : my.length ? Math.max(...my.map(s => +s.auto || 0)) : null, aMax = +l.autoMax || 0;
     const started = p && (p.page || Object.keys(p).length > 3);
+    info.push({l, best, aMax, sent:my.length > 0, started});
     let chip, btn;
-    if (l.tracked === false) { chip = '<span class="chip grey">📖 للاطلاع</span>'; btn = 'افتح الدرس ←'; }
-    else { chip = my.length ? '<span class="chip done">✅ أُرسل</span>' : started ? '<span class="chip wip">⏳ قيد الحل</span>' : '<span class="chip new">🆕 جديد</span>'; btn = my.length ? 'افتح الدرس ←' : started ? 'أكمل الدرس ←' : 'ابدأ الدرس ←'; }
-    const scoreLine = my.length ? `<div style="font-size:21px">🏅 ${ch ? 'الدرجة المعتمدة' : 'أفضل درجة'}: <b>${best} / ${aMax}</b> · المحاولات: <b>${my.length}</b> <button class="btn sm ghost" onclick="showAttempts(${A(l.title)},${aMax},MYSUBS.filter(s=>s.lessonId===${A(l.id)}),${ch ? ch.at : 0})">📜 المحاولات</button></div>` : '';
-    html += `<div class="lesson-card"><div class="ic">${esc(l.icon || '📘')}</div>
-      <div class="info"><h3 style="margin:0">${esc(l.title)} ${chip}</h3><div style="color:var(--muted)">${esc(l.sub || '')}</div>${scoreLine}</div>
-      <button class="btn alt big" onclick="openLesson(${A(l.id)},'student')">${btn}</button></div>`;
+    if (l.tracked === false) { chip = '<span class="chip grey">📖 للاطلاع</span>'; btn = 'افتح الدرس'; }
+    else { chip = my.length ? '<span class="chip done">✅ أُرسل</span>' : started ? '<span class="chip wip">⏳ قيد الحل</span>' : '<span class="chip new">🆕 جديد</span>'; btn = my.length ? 'افتح الدرس' : started ? 'أكمل الدرس' : 'ابدأ الدرس'; }
+    const pct = my.length && aMax ? Math.round(best / aMax * 100) : 0;
+    const score = l.tracked === false ? '<span>درس للاطلاع</span>' : my.length ? `<span>${ch ? 'الدرجة المعتمدة' : 'أفضل درجة'} <b>${best}</b> / ${aMax}</span>` : `<span>${started ? 'بدأتَ الدرس ولم ترسله' : 'لم تبدأ بعد'}</span>`;
+    html += `<div class="lt${my.length ? ' done' : ''}"><span class="n">${++n}</span><div class="top"><span class="em">${esc(l.icon || '📘')}</span><div><h4>${esc(l.title)}</h4><div class="sub">${esc(l.sub || '')}</div></div></div>
+      ${l.tracked === false ? '' : `<div class="bar"><i style="width:${pct}%"></i></div>`}<div class="ft">${score}${chip}</div>
+      <div class="acts2"><button class="btn ${my.length ? '' : 'alt'}" onclick="openLesson(${A(l.id)},'student')">${my.length ? '' : '▶ '}${btn}</button>${my.length ? `<button class="btn sm ghost" onclick="showAttempts(${A(l.title)},${aMax},MYSUBS.filter(s=>s.lessonId===${A(l.id)}),${ch ? ch.at : 0})">📜 المحاولات (${my.length})</button>` : ''}</div></div>`;
   });
-  $('#homeLessons').innerHTML = html;
+  $('#homeLessons').innerHTML = html + (open ? '</div>' : '');
+  HOMEINFO = info; drawHomeTop();
+}
+/* أعلى صفحة الطالب: مجموع درجاته، والدرس التالي، وترتيبه في قائمة التميّز */
+let HOMEINFO = [];
+const dgr = k => k === 1 ? 'درجة واحدة' : k === 2 ? 'درجتين' : k <= 10 ? k + ' درجات' : k + ' درجة';
+function drawHomeTop() {
+  const box = $('#homeTop'); if (!box) return;
+  const T = HOMEINFO.filter(x => x.l.tracked !== false), total = T.reduce((a, x) => a + (x.best || 0), 0), max = T.reduce((a, x) => a + x.aMax, 0);
+  const sc = $('#homeScore'); if (sc) { sc.hidden = !T.length; sc.innerHTML = `⭐ ${total}<small>من ${max} · مجموع درجاتك</small>`; }
+  const nx = T.find(x => !x.sent && x.started) || T.find(x => !x.sent);
+  let next = '';
+  if (nx) { const l = nx.l;
+    next = `<div class="nextc"><span class="tag">${nx.started ? 'أكمل من حيث توقفت' : 'الدرس التالي'}</span><div class="nic">${esc(l.icon || '📘')}</div><h2>${esc(l.title)}</h2><p>${esc(l.sub || '')}</p>
+      <div class="meta"><span>📘 ${esc(termName(l.term || 1) + ' · ' + unitName(l.unit || 1))}</span>${nx.aMax ? `<span>🏁 ${nx.aMax} درجة</span>` : ''}</div>
+      <button class="btn big" onclick="openLesson(${A(l.id)},'student')">▶ ${nx.started ? 'أكمل الدرس' : 'ابدأ الدرس'}</button></div>`; }
+  else if (T.length) { const low = T.filter(x => x.aMax).sort((a, b) => a.best / a.aMax - b.best / b.aMax)[0];
+    next = `<div class="nextc"><span class="tag">أحسنت 🎉</span><div class="nic">🏆</div><h2>أرسلتَ كل دروسك</h2><p>${low && low.best < low.aMax ? 'تستطيع أن تحسّن درجتك: أعِد حلّ الدرس الأقل درجة.' : 'حصلتَ على الدرجة الكاملة في كل دروسك!'}</p>
+      ${low && low.best < low.aMax ? `<button class="btn big" onclick="openLesson(${A(low.l.id)},'student')">🔁 ${esc(low.l.title)}</button>` : ''}</div>`; }
+  const d = BV.d, L = d && d.on ? ((d.cls || {})[ME.cls] || []) : null;
+  let rank = '';
+  if (L) {
+    let dr = 0; L.forEach((r, i) => { if (i === 0 || r.total !== L[i - 1].total) dr++; r.dr = dr; });
+    const mine = L.find(r => r.uid === ME.cuid), myT = mine ? mine.total : total;
+    let pos, hint;
+    if (mine && mine.dr === 1) { pos = 1; hint = 'أنت في <em>الصدارة</em> 👑 حافظ على مركزك'; }
+    else if (mine) { pos = mine.dr; const up = L.filter(r => r.total > mine.total).pop(); hint = `ترتيبك في الشعبة<br>تحتاج <em>${dgr(up.total - mine.total)}</em> لتتقدّم مركزًا`; }
+    else if (L.length) { pos = '—'; const lastT = L[L.length - 1].total, g = Math.max(1, lastT - myT + 1); hint = `لستَ في القائمة بعد<br>تحتاج <em>${dgr(g)}</em> لتدخلها`; }
+    else { pos = '—'; hint = 'لم يُرسل أحد نتائجه بعد<br>كن <em>الأول</em> 🚀'; }
+    const top = L.slice(0, 3).map(r => `<li class="${r.uid === ME.cuid ? 'me' : ''}"><span class="m m${r.dr <= 3 ? r.dr : ''}">${r.dr}</span>${esc(r.name)}<span class="pts">${r.total}</span></li>`).join('');
+    rank = `<div class="rankc"><h3>🏆 قائمة التميّز · ${esc(ME.cls)}</h3><div class="mypos"><b>${pos}</b><div>${hint}</div></div><ol>${top}</ol>${L.length ? `<button class="more" onclick="$('#homeBoard').scrollIntoView({behavior:'smooth'})">عرض القائمة كاملة ↓</button>` : ''}</div>`;
+  }
+  box.innerHTML = next || rank ? `<div class="sh-top${next && rank ? '' : ' one'}">${next}${rank}</div>` : '';
 }
 
 /* ================= مساحتي الخاصة ================= */
@@ -2201,7 +2452,7 @@ async function loadStudentBoard() {
   try { BV.d = ME.teacherId ? await ME.capi.get('board', ME.teacherId) : null; } catch (e) { BV.d = null; }
   drawStudentBoard();
 }
-function drawStudentBoard() { $('#homeBoard').innerHTML = boardHtml(BV.d, ME.cls, BV.m, ME.cuid, 'BV.m', 'drawStudentBoard'); }
+function drawStudentBoard() { $('#homeBoard').innerHTML = boardHtml(BV.d, ME.cls, BV.m, ME.cuid, 'BV.m', 'drawStudentBoard'); if (HOMEINFO.length) drawHomeTop(); }
 function showDetails(uid) {
   const s = TD.students.find(x => x.uid === uid); if (!s) return;
   const LL = curLessons().filter(l => (TD.show[l.id] || []).includes(s.cls));
@@ -4216,14 +4467,22 @@ function gradePick(boxId, inputId, val, stage) {
 /* ================= التصميم: حسب الصف + نهاري/ليلي ================= */
 const THEME_NAMES = {sky:'غيمة', quest:'رحلة', aurora:'شفق', noble:'وقار', diwan:'ديوان'};
 function themeOfGrade(g) { const i = gradeIdx(g); return i < 0 ? 'aurora' : i < 3 ? 'sky' : i < 6 ? 'quest' : i < 9 ? 'aurora' : 'noble'; }
-function setTheme(t) { document.documentElement.dataset.theme = t; LS.set('iste3dad-theme', t); }
+function setTheme(t) { document.documentElement.dataset.theme = 'arena'; }   /* تصميم واحد «مسرح المسابقة» لكل الصفوف */
 function curMode() { return document.documentElement.dataset.mode === 'dark' ? 'dark' : 'light'; }
-function setMode(m) {
-  document.documentElement.dataset.mode = m; LS.set('iste3dad-mode', m);
+/* الوضع حسب الوقت: نهاري من 4 صباحًا إلى 5 مساءً، وليلي في الباقي.
+   زر 🌙/☀️ يغيّره يدويًا حتى موعد التبديل التالي فقط، ثم يعود الوضع إلى الوقت */
+function autoMode() { const h = new Date().getHours(); return h >= 4 && h < 17 ? 'light' : 'dark'; }
+function nextSwitch() { const d = new Date(), h = d.getHours(), t = new Date(d); t.setMinutes(0, 0, 0);
+  if (h < 4) t.setHours(4); else if (h < 17) t.setHours(17); else { t.setDate(t.getDate() + 1); t.setHours(4); } return t.getTime(); }
+function modeNow() { try { const o = JSON.parse(localStorage.getItem('iste3dad-mode2') || 'null'); if (o && o.until > Date.now()) return o.m; } catch (e) {} return autoMode(); }
+setInterval(() => { if (curMode() !== modeNow()) setMode(modeNow()); }, 60000);
+function setMode(m, manual) {
+  document.documentElement.dataset.mode = m;
+  try { if (manual) localStorage.setItem('iste3dad-mode2', JSON.stringify({m, until:nextSwitch()})); } catch (e) {}
   $$('.modebtn, #modeFab').forEach(b => { b.textContent = m === 'dark' ? '☀️' : '🌙'; b.title = m === 'dark' ? 'الوضع النهاري' : 'الوضع الليلي'; b.setAttribute('aria-label', b.title); });
   const mc = document.querySelector('meta[name=theme-color]'); if (mc) mc.content = getComputedStyle(document.documentElement).getPropertyValue('--top-a').trim() || '#1b2540';
 }
-function toggleMode() { setMode(curMode() === 'dark' ? 'light' : 'dark'); }
+function toggleMode() { setMode(curMode() === 'dark' ? 'light' : 'dark', true); }
 setMode(curMode());
 /* ================= التشغيل ================= */
 setupCuDrop();
