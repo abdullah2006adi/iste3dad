@@ -797,6 +797,10 @@ html[data-theme=arena] .hbtn.bellbtn .bell-dot{background:var(--buzz);font-famil
 .tc-acts{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:-2px}
 .tc-acts .sw{font-size:18px}
 @media (max-width:600px){.teamc{padding:12px 10px 10px}.tc-row{grid-template-columns:repeat(auto-fit,minmax(72px,1fr));gap:6px}.tc-team{padding:8px 4px}.tc-sc{font-size:24px;padding:3px 6px 0;min-width:0}.tc-cls{font-size:15px}.tc-cls .youtag{display:block;width:max-content;margin:2px auto 0}.tc-sub{font-size:11px;line-height:1.4}.tc-md{font-size:20px}.tc-t{font-size:22px}.tc-msg{font-size:15px;border-radius:14px}}
+/* الحسابات الخاصة في «كل الطلاب»: مظلّلة بالأصفر */
+#asTable tr.pacct>td{background:#FFF1B8!important;color:#1C1640}
+html[data-mode=dark] #asTable tr.pacct>td{background:#4A3B0E!important;color:#FFF6D6}
+#asTable tr.pacct .chip.grey{background:#F5B400;color:#2a1c04}
 .hscore{display:inline-flex;align-items:center;gap:8px;border:2px solid var(--cup,#ffc531);border-radius:14px;padding:2px 12px;background:var(--surface);font-family:var(--font-head);font-size:26px;line-height:1.3;color:var(--gold);white-space:nowrap}
 .hscore small{font-family:var(--font);font-size:14px;color:var(--muted);font-weight:500}
 html[data-mode=dark] .hscore{background:#0B0720}
@@ -4343,7 +4347,7 @@ function renderAsTable() {
   L.sort(by[AS.sort] || by.total);
   if (!L.length) { $('#asTable').innerHTML = `<p>${AS.list.length ? 'لا يوجد طلاب بهذه التصفية.' : 'لا يوجد طلاب بعد.'}</p>`; return; }
   $('#asTable').innerHTML = `<p style="margin:4px 0;color:var(--muted);font-size:19px">عدد الطلاب: <b>${L.length}</b></p><table><tr><th>#</th><th>الطالب</th><th>المدرسة</th><th>الصف</th><th>الدروس التي حلّها</th><th>متوسط الدرجات</th><th>مجموع الدرجات</th><th></th></tr>` +
-    L.map((s, i) => `<tr${s.removed ? ' style="background:var(--danger-tint)"' : ` data-g="${esc(s.gender || '')}"`}><td>${i + 1}</td><td><b>${esc(s.name)}</b>${s.type === 'p' ? ' <span class="chip grey">حساب خاص</span>' : ''}${s.moved ? ` <span class="chip grey">🚶 انتقل إلى ${esc(s.movedTo)}</span>` : ''}${s.removed ? ` <span class="chip off" title="${esc(fmtFull(s.raw.removedAt))}">🗑 حذفه معلمه${s.hideRes ? ' مع نتائجه' : ''}</span>` : !s.active && !s.moved ? ' <span class="chip off">موقوف</span>' : ''}<br><small style="color:var(--muted)">${s.type === 'p' ? `<span dir="ltr">${esc(s.email)}</span>` : esc(s.teacher)}</small></td>
+    L.map((s, i) => `<tr${s.removed ? ' style="background:var(--danger-tint)"' : ` data-g="${esc(s.gender || '')}"${s.type === 'p' ? ' class="pacct"' : ''}`}><td>${i + 1}</td><td><b>${esc(s.name)}</b>${s.type === 'p' ? ' <span class="chip grey">حساب خاص</span>' : ''}${s.moved ? ` <span class="chip grey">🚶 انتقل إلى ${esc(s.movedTo)}</span>` : ''}${s.removed ? ` <span class="chip off" title="${esc(fmtFull(s.raw.removedAt))}">🗑 حذفه معلمه${s.hideRes ? ' مع نتائجه' : ''}</span>` : !s.active && !s.moved ? ' <span class="chip off">موقوف</span>' : ''}<br><small style="color:var(--muted)">${s.type === 'p' ? `<span dir="ltr">${esc(s.email)}</span>` : esc(s.teacher)}</small></td>
       <td>${s.school ? esc(s.school) + `<br><small style="color:var(--muted)">${esc(s.gender)}</small>` : `<small style="color:var(--muted)">${s.type === 'p' ? '—' : 'غير محددة'}</small>`}</td>
       <td>${s.g ? esc(gradeName(s.g).replace('الصف ', '')) : '—'}${s.cls ? `<br><small style="color:var(--muted)">${esc(s.cls)}</small>` : ''}</td>
       <td class="num">${s.n}</td><td class="num">${s.avg == null ? '—' : Math.round(s.avg) + '٪'}</td><td class="num">${s.total}</td>
