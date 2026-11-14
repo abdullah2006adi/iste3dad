@@ -1636,15 +1636,20 @@ function namePartsOf(n) {
   for (let i = 0; i < w.length; i++) { if (/^(عبد|أبو|ابو|أبي|ابي)$/.test(w[i]) && w[i + 1]) { out.push(w[i] + ' ' + w[i + 1]); i++; } else out.push(w[i]); }
   return out;
 }
+const AR_WORD = /^[\u0621-\u064A\u0671-\u06D3\u064B-\u0652\u0670\u0640]+$/;
+/* الاسم بالحروف العربية فقط (يُسمح بالتشكيل والمسافات) */
+const isArName = n => { const w = String(n || '').replace(T_PRE, '').trim().split(/\s+/).filter(Boolean); return w.length > 0 && w.every(x => AR_WORD.test(x)); };
 const tPrefix = n => T_PRE.test(n || '') ? String(n).trim() : 'أ. ' + String(n || '').trim();
 function nameTriple(id, have, teacher) {
   const L = ['الاسم الأول', 'اسم الأب', 'اسم العائلة'];
-  return `<div class="ntriple">${teacher ? '<span class="tpre" title="يُضاف قبل اسم المعلم تلقائيًا">أ.</span>' : ''}${L.map((l, i) => `<label>${l}<input type="text" id="${id}${i + 1}" ${have[i] ? `value="${esc(have[i])}" readonly class="locked"` : ''} autocomplete="off"></label>`).join('')}</div>`;
+  return `<div class="ntriple">${teacher ? '<span class="tpre" title="يُضاف قبل اسم المعلم تلقائيًا">أ.</span>' : ''}${L.map((l, i) => `<label>${l}<input type="text" dir="rtl" lang="ar" placeholder="بالعربية" id="${id}${i + 1}" ${have[i] ? `value="${esc(have[i])}" readonly class="locked"` : ''} autocomplete="off"></label>`).join('')}</div>`;
 }
 function readTriple(id) {
   const v = [1, 2, 3].map(i => (($('#' + id + i) || {}).value || '').trim().replace(/\s+/g, ' '));
-  const miss = v.findIndex(x => x.length < 2);
-  return miss >= 0 ? {err:'اكتب ' + ['الاسم الأول', 'اسم الأب', 'اسم العائلة'][miss]} : {name:v.join(' ')};
+  const L = ['الاسم الأول', 'اسم الأب', 'اسم العائلة'], miss = v.findIndex(x => x.length < 2);
+  if (miss >= 0) return {err:'اكتب ' + L[miss]};
+  const bad = v.findIndex(x => !x.split(' ').every(w => AR_WORD.test(w)));
+  return bad >= 0 ? {err:'اكتب ' + L[bad] + ' بالحروف العربية'} : {name:v.join(' ')};
 }
 function pickSex(b, id) {
   const box = b ? b.parentElement : $('#' + id); if (!box) return;
@@ -1654,13 +1659,13 @@ const sexOf = id => { const b = $('#' + id + ' button.on'); return b ? b.dataset
 /* نافذة إكمال البيانات: للمعلمين وأصحاب الحساب الخاص، ولا تُغلق حتى تُملأ */
 function myInfoNeed() {
   if (!ME) return null;
-  if (ME.role === 'teacher') return {t:true, parts:namePartsOf(ME.name), sex:ME.sex || '', school:'x'};
-  if (ME.role === 'student' && ME.kind === 'private') { const a = ME.acct || {}; return {t:false, parts:namePartsOf(a.name || ME.name), sex:a.sex || '', school:a.school || ''}; }
+  if (ME.role === 'teacher') return {t:true, parts:isArName(ME.name) ? namePartsOf(ME.name) : [], sex:ME.sex || '', school:'x'};
+  if (ME.role === 'student' && ME.kind === 'private') { const a = ME.acct || {}, nm = a.name || ME.name; return {t:false, parts:isArName(nm) ? namePartsOf(nm) : [], sex:a.sex || '', school:a.school || ''}; }
   return null;
 }
 async function checkMyInfo() {
   const n = myInfoNeed(); if (!n) return;
-  if (n.t && n.parts.length >= 3 && !T_PRE.test(ME.name || '')) {   /* المعلمون الحاليون: «أ.» تلقائيًا */
+  if (n.t && ME.name && !T_PRE.test(ME.name)) {   /* المعلمون الحاليون: «أ.» تلقائيًا */
     const nn = tPrefix(ME.name); try { await API.set('teachers', ME.uid, {name:nn}, true); ME.name = nn; $('#tWho').textContent = '👤 ' + nn; } catch (e) { console.error(e); }
   }
   if (n.parts.length >= 3 && n.sex && n.school) { window.MUSTM = null; return afterMyInfo(); }
@@ -1671,7 +1676,7 @@ async function checkMyInfo() {
 function openInfoModal(n) {
   const have = n.parts.length >= 3 ? null : n.parts;
   openModal(`<h3 style="margin-top:0">👤 أكمل بياناتك</h3><p style="margin:0 0 6px;color:var(--muted)">أضفنا إلى المنصة بيانات جديدة. اكتبها مرة واحدة فقط، ثم تكمل عملك.</p>
-    ${have ? `<div class="gp-lbl">${have.length === 1 ? 'اكتب اسم أبيك واسم عائلتك' : 'اكتب اسم عائلتك'}</div>${nameTriple('mi', have, n.t)}` : ''}
+    ${have ? `<div class="gp-lbl">${!have.length ? 'اكتب اسمك الثلاثي بالحروف العربية' : have.length === 1 ? 'اكتب اسم أبيك واسم عائلتك بالحروف العربية' : 'اكتب اسم عائلتك بالحروف العربية'}</div>${nameTriple('mi', have, n.t)}` : ''}
     ${n.sex ? '' : `<div class="gp-lbl">الجنس</div><div class="sexpick" id="miSex"><button type="button" data-v="ذكر" onclick="pickSex(this)">👦 ذكر</button><button type="button" data-v="أنثى" onclick="pickSex(this)">👧 أنثى</button></div>`}
     ${n.school ? '' : `<label>اسم مدرستك<input type="text" id="miSchool" list="miSchoolList" oninput="schoolHint(this,'miSchoolHint')" placeholder="اكتب أو اختر من القائمة"></label><datalist id="miSchoolList">${(SCHOOLS || []).map(x => `<option value="${esc(x)}">`).join('')}</datalist><div class="school-hint" id="miSchoolHint"></div>`}
     <div class="login-msg" id="miMsg"></div><button class="btn big" id="miBtn" style="width:100%" onclick="saveMyInfo()">💾 حفظ</button>`, true);
@@ -3827,6 +3832,8 @@ async function loadTeachers() {
   try {
     const [tc, st, sb, seen] = await Promise.all([API.where('teachers', {}), API.where('students', {}), API.where('submissions', {}).catch(() => []), API.get('settings', 'teacherSeen').catch(() => null)]);
     TD.teachers = tc.map(t => Object.assign({uid:t.id}, t));
+    /* «أ.» قبل اسم كل معلم لم يكتبها (يحفظها المدير لهم مرة واحدة) */
+    TD.teachers.filter(t => !t.isAdmin && t.uid !== ME.uid && t.name && !T_PRE.test(t.name)).forEach(t => { t.name = tPrefix(t.name); API.set('teachers', t.uid, {name:t.name}, true).catch(e => console.error(e)); });
     TD.allStudentIds = new Set(st.map(x => x.id));
     TCS.seen = (seen && seen.map) || {};
     TCS.stats = {};
