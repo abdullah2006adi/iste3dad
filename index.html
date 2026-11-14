@@ -4450,6 +4450,18 @@ function replyMsg(k) {
 
 /* ================= صفحتي (الصفحة الشخصية) ================= */
 const roleName = () => ME.role === 'admin' ? 'مدير المنصة' : ME.role === 'teacher' ? 'معلم' : ME.kind === 'class' ? 'طالب' : 'طالب (حساب خاص)';
+/* المعلم (والمدير) يغيّر اسمه من «صفحتي»: ثلاثي وبالعربية، و«أ.» قبله */
+async function saveMyName() {
+  const r = readTriple('pn'), msg = t => $('#pnMsg').textContent = t; if (r.err) return msg(r.err);
+  const name = tPrefix(r.name); $('#pnBtn').disabled = true;
+  try {
+    await API.set('teachers', ME.uid, {name}, true); ME.name = name;
+    if (ME.tdoc) ME.tdoc.name = name; const t = (TD.teachers || []).find(x => x.uid === ME.uid); if (t) t.name = name; if (TD.vt && TD.view === ME.uid) TD.vt.name = name;
+    $('#tWho').textContent = '👤 ' + name + (isAdmin() ? ' (المدير)' : ''); $('#pfName').textContent = name; $('#pfNameNow').textContent = name;
+    $('#pfNameBox').open = false; [1, 2, 3].forEach(i => $('#pn' + i).value = ''); msg(''); toast('تغيّر اسمك ✓ وسيراه طلابك هكذا: ' + name, 5000);
+  } catch (e) { console.error(e); msg(isPerm(e) ? 'تعذّر الحفظ: قواعد الحماية تحتاج تحديثًا.' : 'تعذّر الحفظ: ' + errMsg(e)); }
+  finally { $('#pnBtn').disabled = false; }
+}
 async function openProfile() {
   if (!ME) return;
   await fillSchoolSuggest();
@@ -4485,7 +4497,13 @@ async function openProfile() {
           <button class="btn sm" id="pfBtn" onclick="changeEmail()">إرسال رابط التأكيد إلى البريد الجديد</button>
           <p style="font-size:18px;color:var(--muted);margin:4px 0">يتغيّر البريد بعد أن تفتح الرابط في البريد الجديد، ثم تدخل به في المرة القادمة.</p></details>`;
   openModal(`<h3 style="margin-top:0">👤 صفحتي</h3>
-    <p style="margin:0"><b style="font-size:26px">${esc(ME.role === 'admin' ? 'المدير' : ME.cname || ME.name || '')}</b> · ${roleName()}${ME.cls ? ' · ' + esc(ME.cls) : ''}</p>
+    <p style="margin:0"><b style="font-size:26px" id="pfName">${esc(ME.cname || ME.name || (ME.role === 'admin' ? 'المدير' : ''))}</b> · ${roleName()}${ME.cls ? ' · ' + esc(ME.cls) : ''}</p>
+    ${isT ? `<div class="card" style="margin:10px 0;padding:10px 14px"><h4 style="margin:0 0 4px">🪪 اسمي كما يراه طلابي</h4>
+      <p style="margin:2px 0">اسمك الحالي: <b id="pfNameNow">${esc(ME.name || '')}</b></p>
+      <details id="pfNameBox"><summary style="cursor:pointer;color:var(--teal);font-weight:700">✏️ تغيير الاسم</summary>
+        <p style="font-size:17px;color:var(--muted);margin:4px 0">اكتب اسمك الثلاثي بالحروف العربية. تُضاف «أ.» قبل اسمك تلقائيًا.</p>
+        ${nameTriple('pn', [], true)}<div class="login-msg" id="pnMsg"></div>
+        <button class="btn sm" id="pnBtn" onclick="saveMyName()">💾 حفظ الاسم</button></details></div>` : ''}
     <div class="card" style="margin:10px 0;padding:10px 14px"><h4 style="margin:0 0 4px">📧 البريد الإلكتروني</h4>${emailHtml}</div>
     <div class="card" style="margin:10px 0;padding:10px 14px"><h4 style="margin:0 0 4px">🏫 المدرسة</h4>${schoolHtml}</div>
     ${ME.role === 'student' ? `<div class="card" style="margin:10px 0;padding:10px 14px"><h4 style="margin:0 0 4px">🔒 كلمة المرور</h4>
