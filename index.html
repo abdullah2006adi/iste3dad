@@ -1261,6 +1261,23 @@ html[data-band=noble] .card{border-radius:18px;border:1px solid var(--line);box-
 /* قائمة التميّز الكبيرة */
 html[data-band=noble] .hb{border-radius:22px;background:radial-gradient(80% 50% at 50% 0%,rgba(201,165,74,.22),transparent 70%),linear-gradient(160deg,#3A58B5,#16245A 70%)}
 html[data-band=noble] .hb-sub,html[data-band=noble] .hb-empty{color:#D3DCF5}
+
+/* أزرار الأيقونات في الشريط العلوي على الجوال: مربعة والرمز في وسطها */
+@media (max-width:640px){
+  html .topbar .hbtn:not(.who){width:42px!important;height:42px!important;min-height:0!important;min-width:0!important;padding:0!important;margin:0;
+    display:inline-flex!important;align-items:center;justify-content:center;flex:none;border-radius:12px!important;font-size:21px!important;line-height:1!important;text-align:center}
+  html .topbar .hbtn:not(.who)[hidden]{display:none!important}
+  html .topbar .hbtn.bellbtn .bell-dot{top:-6px;inset-inline-end:-6px}
+}
+
+/* النتائج: عناوين الأعمدة (أسماء الدروس) ثابتة أعلى الجدول عند النزول */
+#resTable{max-height:calc(100vh - 150px);max-height:calc(100dvh - 150px);overflow:auto;-webkit-overflow-scrolling:touch}
+#resTable table{border-collapse:separate;border-spacing:0}
+#resTable tr:first-child>th{position:sticky;top:0;z-index:3;background:var(--surface-2);box-shadow:0 2px 0 var(--line)}
+/* منع نسخ النصوص المحيطة في الآيفون والآيباد: العناوين والأزرار لا تُحدَّد، والخانات والرموز تُحدَّد وحدها */
+label,button,.btn,.hbtn,h1,h2,h3,.gp-lbl,.site-foot,.login-card p,.login-msg,.topbar,.subtabs,.chip,.rf-chip,th{-webkit-user-select:none;user-select:none}
+input,textarea,select{-webkit-user-select:text;user-select:text}
+#stTable code,.cpy{-webkit-user-select:all;user-select:all;cursor:copy}
 </style>
 </head>
 <body>
@@ -1690,8 +1707,9 @@ const LS = {
   del(k) { try { localStorage.removeItem(k); } catch (e) {} }
 };
 function toast(t, ms) { const el = $('#toast'); el.textContent = t; el.classList.add('on'); clearTimeout(el._t); el._t = setTimeout(() => el.classList.remove('on'), ms || 2800); }
+document.addEventListener('click', e => { const c = e.target.closest && e.target.closest('#stTable code'); if (c) copyText(c.textContent.trim()); });
 function copyText(t) {
-  const fallback = () => { const ta = document.createElement('textarea'); ta.value = t; ta.style.position = 'fixed'; ta.style.opacity = '0'; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); toast('تم النسخ ✓'); } catch (e) { toast('حدّد النص وانسخه يدويًا'); } ta.remove(); };
+  const fallback = () => { const ta = document.createElement('textarea'); ta.value = t; ta.readOnly = true; ta.style.position = 'fixed'; ta.style.top = '0'; ta.style.opacity = '0'; document.body.appendChild(ta); ta.focus(); ta.select(); ta.setSelectionRange(0, t.length); try { document.execCommand('copy'); toast('تم النسخ ✓'); } catch (e) { toast('حدّد النص وانسخه يدويًا'); } ta.remove(); };
   if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(t).then(() => toast('تم النسخ ✓'), fallback); else fallback();
 }
 function saveFile(filename, text, type) { const blob = new Blob([text], {type}); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = filename; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 2000); }
@@ -2376,6 +2394,9 @@ function fixLessonHtml(h) {
        .join("      const cur = st.ans.length; if (cur >= nb && !(S.st[ctx.i] || {}).done) setTimeout(() => { if (!(S.st[ctx.i] || {}).done) ctx.finish(scale5(st.ans.filter((a, k) => a === blanks[k].a).length, nb)); }, 60);\n      ctx.el.innerHTML = `<div class=\"ghead\"><h3>🧠 ${esc(c.title || 'تحدي الحفظ')}</h3>");
   /* أزرار القصة: السهم يشير إلى جهة الزر نفسه (الأيمن ⏭️ للخلف، والأيسر ⏮️ للأمام) */
   h = h.split('id="cPrev" data-s="flip">⏮️</button>').join('id="cPrev" data-s="flip">⏭️</button>').split('id="cNext" data-s="flip">⏭️</button>').join('id="cNext" data-s="flip">⏮️</button>');
+  /* صيد البط: صوت «البطّ» كان يبدأ مع قراءة السؤال فيقطعها في الآيفون والآيباد؛ لا صوت للبط ما دامت القارئة تتكلم */
+  h = h.split('let ducks = [], cross = {x:400, y:180}, flash = 0, quack = 0;').join('let ducks = [], cross = {x:400, y:180}, flash = 0, quack = 2.5;')
+       .split('quack -= dt; if (quack <= 0 && M.cur) {').join("quack -= dt; if (quack <= 0 && M.cur && !(typeof VA !== 'undefined' && !VA.paused && !VA.ended)) {");
   /* لعبة الساعة: أزرار الدقائق (:٠٠ و:٣٠) تظهر كلما كان في الأسئلة نصف ساعة، ويُحاسب الطالب عليها */
   h = h.split('${ctx.lvl >= 2 ? `<div class="g52-row"><button class="g52-btn" id="m0">').join('${(ctx.lvl >= 2 || (ctx.cfg.clocks || []).some(r => r.m)) ? `<div class="g52-row"><button class="g52-btn" id="m0">')
        .split('const okm = ctx.lvl < 2 || r.m === undefined').join("const okm = !ctx.$('#m0') || r.m === undefined");
@@ -2653,7 +2674,7 @@ function renderResults() {
   $('#rSort').value = f.sort;
   $('#rClassChips').innerHTML = `<button class="rf-chip${f.cls.length ? '' : ' on'}" onclick="rfToggle('allcls')">كل الشعب</button>` + C.map(c => `<button class="rf-chip${f.cls.includes(c) ? ' on' : ''}" onclick="rfToggle('cls',${A(c)})">${esc(c)}</button>`).join('');
   const base = ALL.filter(r => !f.send || (f.send === 'y' ? r.sent > 0 : !r.sent));
-  $('#rLevelChips').innerHTML = `<button class="rf-chip${f.lv.length ? '' : ' on'}" onclick="TD.rf.lv=[];renderResults()">كل المستويات</button>` + LEVELS.map(([k, n, d]) => `<button class="rf-chip${f.lv.includes(k) ? ' on' : ''}" title="${esc(d)}" onclick="rfToggle('lv','${k}')">${n} <small>(${base.filter(r => r.lvl === k).length})</small></button>`).join('');
+  $('#rLevelChips').innerHTML = `<button class="rf-chip${f.lv.length || f.send ? '' : ' on'}" onclick="TD.rf.lv=[];TD.rf.send='';renderResults()">كل المستويات</button><button class="rf-chip${f.send === 'y' && !f.lv.length ? ' on' : ''}" title="كل من أرسل نتيجته، أيًّا كان مستواه" onclick="TD.rf.lv=[];TD.rf.send=TD.rf.send==='y'?'':'y';TD.picked=new Set();renderResults()">✅ مَن حل <small>(${ALL.filter(r => r.sent).length})</small></button>` + LEVELS.map(([k, n, d]) => `<button class="rf-chip${f.lv.includes(k) ? ' on' : ''}" title="${esc(d)}" onclick="rfToggle('lv','${k}')">${n} <small>(${base.filter(r => r.lvl === k).length})</small></button>`).join('');
   const R = rfSort(ALL.filter(rfPass)); TD.lastRows = R;
   const filt = f.send || f.lv.length, lv = filt;
   const sent = ALL.filter(r => r.sent), avgPct = sent.length ? Math.round(sent.reduce((a, r) => a + r.pct, 0) / sent.length * 100) + '%' : '—';
@@ -2871,6 +2892,7 @@ async function openBoardCfg() {
   if (!TD.board) await loadBoard(false); else renderBoardCard();
 }
 function previewBoard() {
+  if (!window.htmlToImage) loadScript('https://cdn.jsdelivr.net/npm/html-to-image@1.11.13/dist/html-to-image.js').catch(() => {});
   const C = myClasses().filter(c => (TD.board.cls || {})[c]);
   if (!C.length) return toast('لا توجد نتائج بعد في الشعب');
   BV.prev = {c:C[0], m:TD.board.showCls ? 'cls' : 'all'};
@@ -2892,6 +2914,12 @@ function boardPdf() {
 }
 /* تحميل القائمة صورةً واحدة (PNG) كاملة، كما تظهر في المعاينة */
 function loadScript(src) { return new Promise((ok, no) => { const s = document.createElement('script'); s.src = src; s.onload = ok; s.onerror = no; document.head.appendChild(s); }); }
+let BIMG = null;
+async function shareBoardImg() {
+  if (!BIMG) return;
+  try { await navigator.share({files:[BIMG.file], title:BIMG.nm}); }
+  catch (e) { if (e && e.name !== 'AbortError') toast('تعذّرت المشاركة. اضغط على الصورة ضغطة مطوّلة واختر «حفظ في الصور».', 6000); }
+}
 async function boardImg() {
   const P = BV.prev; if (!P) return;
   const btn = $('#bdImgBtn'), nm = 'قائمة التميّز - ' + (P.m === 'all' ? 'كل شعب ' + gradeName(gradeOf(P.c)) : 'شعبة ' + P.c);
@@ -2904,10 +2932,20 @@ async function boardImg() {
   try {
     if (!window.htmlToImage) await loadScript('https://cdn.jsdelivr.net/npm/html-to-image@1.11.13/dist/html-to-image.js');
     if (document.fonts) await document.fonts.ready;
-    const url = await htmlToImage.toPng(box, {pixelRatio:2, backgroundColor:'#120c2e', cacheBust:true, style:{position:'static', left:'0', top:'0', margin:'0'}});
+    const opt = {pixelRatio:2, backgroundColor:'#120c2e', cacheBust:true, style:{position:'static', left:'0', top:'0', margin:'0'}};
+    const mob = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    if (mob) await htmlToImage.toPng(box, opt).catch(() => {});   /* سفاري يحتاج تمريرة أولى حتى تظهر الخطوط والرسوم */
+    const url = await htmlToImage.toPng(box, opt);
     const blob = await (await fetch(url)).blob(), file = new File([blob], nm + '.png', {type:'image/png'});
-    if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent) && navigator.canShare && navigator.canShare({files:[file]})) {
-      await navigator.share({files:[file], title:nm}).catch(() => {});
+    if (mob) {
+      /* في الآيفون لا تعمل المشاركة إلا بضغطة جديدة، فنعرض الصورة مع زر المشاركة */
+      BIMG = {file, nm, url:URL.createObjectURL(blob)};
+      openModal(`<h3 style="margin-top:0">🖼 صورة قائمة التميّز جاهزة</h3>
+        ${navigator.canShare && navigator.canShare({files:[file]}) ? `<button class="btn big" style="width:100%" onclick="shareBoardImg()">📤 حفظ الصورة / مشاركتها</button>
+        <p style="font-size:17px;color:var(--muted);margin:6px 0">اضغط الزر ثم اختر «حفظ الصورة» لتنزل في ألبوم الصور، أو اختر واتساب لإرسالها.</p>` : ''}
+        <p style="font-size:17px;color:var(--muted);margin:6px 0">أو اضغط على الصورة ضغطة مطوّلة واختر «حفظ في الصور».</p>
+        <img src="${BIMG.url}" alt="${esc(nm)}" style="width:100%;border-radius:14px;display:block;-webkit-touch-callout:default">
+        <div class="row" style="margin-top:10px"><button class="btn ghost" onclick="previewBoard()">↩ رجوع إلى المعاينة</button></div>`);
     } else {
       const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = nm + '.png'; document.body.appendChild(a); a.click();
       setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 4000);
