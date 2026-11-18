@@ -1413,6 +1413,11 @@ html[data-font] body{font-family:var(--uf),'Readex Pro',sans-serif}
 .uchips{margin-top:10px}.uchips .gchip{font-size:21px}
 .clsitem[data-cls]{cursor:pointer;transition:background .15s}
 html .clsitem.sel{border-color:#E0A800!important;background:linear-gradient(100deg,rgba(255,197,49,.30),rgba(255,197,49,.10))!important;box-shadow:0 3px 0 #E0A800!important}
+.ecgrid{display:grid;grid-template-columns:44px 2fr 1fr 1fr;gap:10px;margin-top:12px}
+.ecgrid b{display:block;font-size:18px;margin-bottom:4px;white-space:nowrap}
+.ecta{font:inherit;font-size:19px!important;line-height:34px!important;padding:4px 10px!important;min-height:0!important;resize:vertical;width:100%;box-sizing:border-box;white-space:pre;overflow-x:hidden}
+.ecnum{text-align:center;color:var(--muted);overflow:hidden;resize:none;padding-inline:2px!important}
+@media (max-width:700px){.ecgrid{grid-template-columns:30px 1.6fr 1fr 1fr;gap:5px}.ecta{font-size:15px!important}.ecgrid b{font-size:14px}}
 .sthint{font-size:21px;color:var(--muted);text-align:center;padding:18px 0}
 </style>
 </head>
@@ -3758,16 +3763,57 @@ function editClass(i) {
   const g = gradeOf(c), n = (String(c).match(/(\d+)\s*$/) || [])[1] || '';
   const opts = Object.values(STAGES).flat().map(([full, sh]) => `<option value="${esc(sh)}"${sh.trim() === g ? ' selected' : ''}>${esc(full)}</option>`).join('');
   const cnt = (TD.students || []).filter(s => s.cls === c && !s.removed).length;
-  openModal(`<h3 style="margin-top:0">✏️ تعديل الشعبة «${esc(c)}»</h3>
+  openModal(`<h3 style="margin-top:0">✏️ تعديل الشعبة «${esc(c)}»</h3>`); $('#modalRoot .box').classList.add('wide'); $('#modalRoot .box').insertAdjacentHTML('beforeend', `
     <div class="row" style="gap:10px;align-items:flex-end"><label style="flex:2">الصف<select id="ecLv">${opts}</select></label>
     <label style="flex:1">رقم الشعبة<select id="ecN">${Array.from({length:15}, (_, k) => `<option${String(k + 1) === n ? ' selected' : ''}>${k + 1}</option>`).join('')}</select></label></div>
     <p style="margin:8px 0;font-size:19px">سيتغيّر اسم الشعبة عند طلابها (${cnt})، وفي الدروس الظاهرة لها، ولا يتغيّر شيء من نتائجهم ولا من أسماء دخولهم وكلمات مرورهم.</p>
+    ${ecStudentsBox(c)}
     <div class="login-msg" id="ecMsg"></div>
     <div class="row"><button class="btn" id="ecBtn" onclick="saveEditClass(${A(c)})">💾 حفظ التعديل</button><button class="btn ghost" onclick="closeModal()">إلغاء</button><span id="ecProg"></span></div>`);
 }
+/* خانات الطلاب في نافذة تعديل الشعبة: الأسماء، وبجانبها رقم وليّ الأمر ورقم الطالب (سطر لكل طالب) */
+const ecList = c => (TD.students || []).filter(s => s.cls === c && !s.removed && !s.archived && !s.moved).sort(byClsName);
+function ecStudentsBox(c) {
+  const L = ecList(c); if (!L.length) return '';
+  const ta = (id, v, ph, dir) => `<textarea id="${id}" class="ecta" rows="${Math.min(L.length, 14)}" placeholder="${ph}" dir="${dir}" spellcheck="false" wrap="off" onscroll="ecSync(this)">${esc(v)}</textarea>`;
+  return `<div class="ecgrid"><div><b>#</b><textarea class="ecta ecnum" rows="${Math.min(L.length, 14)}" readonly tabindex="-1">${L.map((_, i) => i + 1).join('\n')}</textarea></div>
+    <div><b>👥 أسماء الطلاب</b>${ta('ecNames', L.map(s => s.name).join('\n'), 'اسم في كل سطر', 'rtl')}</div>
+    <div><b>📞 رقم وليّ الأمر</b>${ta('ecPP', L.map(s => s.parentPhone || '').join('\n'), 'رقم في كل سطر', 'ltr')}</div>
+    <div><b>📱 رقم الطالب</b>${ta('ecSP', L.map(s => s.studentPhone || '').join('\n'), 'رقم في كل سطر', 'ltr')}</div></div>
+    <p style="margin:4px 0;font-size:18px;color:var(--muted)">كل سطر لطالب واحد، بالترتيب نفسه في الخانات الثلاث. تستطيع لصق عمود كامل من إكسل في أي خانة.</p>`;
+}
+function ecSync(el) { $$('.ecta').forEach(x => { if (x !== el) x.scrollTop = el.scrollTop; }); }
+async function saveEcStudents(c) {
+  const L = ecList(c); if (!L.length || !$('#ecNames')) return true;
+  const lines = id => $('#' + id).value.replace(/\r/g, '').split('\n').map(x => x.trim());
+  const N = lines('ecNames'), P = {parentPhone:lines('ecPP'), studentPhone:lines('ecSP')};
+  while (N.length > L.length && !N[N.length - 1]) N.pop();
+  Object.values(P).forEach(a => { while (a.length > L.length && !a[a.length - 1]) a.pop(); });
+  if (N.length !== L.length) { $('#ecMsg').textContent = `في خانة الأسماء ${N.length} سطرًا، وفي الشعبة ${L.length} طالبًا. اجعل لكل طالب سطرًا واحدًا (لإضافة طلاب جدد استعمل «إضافة دفعة»).`; return false; }
+  for (const [f, a] of Object.entries(P)) if (a.length > L.length) { $('#ecMsg').textContent = `في خانة ${f === 'parentPhone' ? 'أرقام أولياء الأمور' : 'أرقام الطلاب'} أسطر أكثر من عدد الطلاب (${L.length}).`; return false; }
+  const ch = [];
+  for (let i = 0; i < L.length; i++) {
+    const s = L[i], d = {};
+    if (!N[i]) { $('#ecMsg').textContent = `السطر ${i + 1} في خانة الأسماء فارغ.`; return false; }
+    if (N[i] !== s.name) d.name = N[i].replace(/\s+/g, ' ');
+    for (const f of ['parentPhone', 'studentPhone']) {
+      const raw = P[f][i] || '', ph = raw ? normPhone(raw) : '';
+      if (raw && !ph) { $('#ecMsg').textContent = `الرقم «${raw}» في السطر ${i + 1} غير صحيح. اكتبه هكذا: 55123456 أو 97455123456`; return false; }
+      if (ph !== (s[f] || '')) d[f] = ph;
+    }
+    if (Object.keys(d).length) ch.push([s, d]);
+  }
+  for (let k = 0; k < ch.length; k++) { $('#ecProg').textContent = `⏳ حفظ الطلاب ${k + 1} من ${ch.length}`; await API.set('students', ch[k][0].uid, ch[k][1], true); Object.assign(ch[k][0], ch[k][1]); }
+  if (ch.length) { try { renderStudents(); renderResults(); } catch (e) {} }
+  window._ecSaved = ch.length; return true;
+}
 async function saveEditClass(c) {
   const v = $('#ecLv').value + $('#ecN').value;
-  if (v === c) return closeModal();
+  $('#ecMsg').textContent = ''; window._ecSaved = 0;
+  try { $('#ecBtn').disabled = true; if (!(await saveEcStudents(c))) { $('#ecBtn').disabled = false; return; } }
+  catch (e) { console.error(e); if (isPerm(e)) $('#rulesWarn').hidden = false; $('#ecMsg').textContent = 'تعذّر الحفظ: ' + errMsg(e); $('#ecBtn').disabled = false; return; }
+  $('#ecBtn').disabled = false;
+  if (v === c) { closeModal(); if (window._ecSaved) toast(`حُفظت تعديلات ${window._ecSaved} طالبًا ✓`); return; }
   const C = myClasses().slice(); if (C.includes(v)) return $('#ecMsg').textContent = `الشعبة «${v}» موجودة من قبل. إن أردت نقل الطلاب إليها فاحذف هذه الشعبة بعد نقلهم.`;
   const gradeChanged = gradeOf(v) !== gradeOf(c);
   $('#ecBtn').disabled = true;
