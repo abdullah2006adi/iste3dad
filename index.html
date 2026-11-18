@@ -1411,6 +1411,8 @@ html[data-font] body{font-family:var(--uf),'Readex Pro',sans-serif}
 .stcls{gap:8px;margin:8px 0 4px;flex-wrap:wrap}
 .stq{width:260px;max-width:100%}
 .uchips{margin-top:10px}.uchips .gchip{font-size:21px}
+.clsitem[data-cls]{cursor:pointer;transition:background .15s}
+html .clsitem.sel{border-color:#E0A800!important;background:linear-gradient(100deg,rgba(255,197,49,.30),rgba(255,197,49,.10))!important;box-shadow:0 3px 0 #E0A800!important}
 .sthint{font-size:21px;color:var(--muted);text-align:center;padding:18px 0}
 </style>
 </head>
@@ -1740,8 +1742,8 @@ html[data-font] body{font-family:var(--uf),'Readex Pro',sans-serif}
             <label class="row" style="gap:4px;font-size:19px"><input type="checkbox" id="sShowOff" onchange="renderStudents()"> إظهار الموقوفين</label>
           </div>
         </div>
-        <div class="row stcls" id="sClsChips"></div>
-        <div class="row" style="margin:6px 0"><button class="btn ghost sm" onclick="copyListCreds()">📋 نسخ بيانات الدخول للقائمة</button><button class="btn ghost sm" onclick="printCards()">🖨 طباعة بطاقات الدخول</button><button class="btn sm qrbtn" onclick="openQrPrint()">🔳 طباعة باركودات</button></div>
+
+        <div class="row" style="margin:6px 0"><button class="btn ghost sm" onclick="copyListCreds()">📋 نسخ بيانات الدخول للقائمة</button><button class="btn sm qrbtn" onclick="openQrPrint()">🔳 طباعة باركودات</button></div>
         <div class="row" style="margin:6px 0"><button class="btn sm wa" onclick="openPhoneImport()">📞 أرقام أولياء الأمور دفعة واحدة (إكسل)</button><button class="btn sm wa" onclick="openPhoneImport('studentPhone')">📱 أرقام الطلاب دفعة واحدة (إكسل)</button><button class="btn ghost sm" onclick="phoneTemplate()">⬇ تنزيل قائمة الطلاب لإضافة الأرقام</button></div>
         <div id="stSel"></div><div class="tbl-scroll" id="stTable"></div>
         <p style="font-size:19px;color:var(--muted)">اكتب رقم وليّ الأمر في خانته بجانب الاسم، ويُحفظ تلقائيًا عند الخروج من الخانة. لحذف طلاب: اضغط «☑️ تحديد» أو «✅ تحديد الكل» فوق القائمة. يُحذف حساب الطالب وتبقى نتائجه محفوظة.</p>
@@ -2969,7 +2971,7 @@ function renderTeamsBar() {
   el.innerHTML = `<div class="teams-wrap">${G.map(g => teamsHtml(T[g], '', G.length > 1 ? g : '')).join('')}
     <div class="tc-acts"><label class="sw"><input type="checkbox" ${on ? 'checked' : ''} onchange="setTeamsOn(this.checked)"> 📣 أظهر تحدي الشعب لطلابي</label>
     <button class="btn sm ghost" onclick="refreshTeams(TD.board.on||TD.board.teamsOn).then(()=>toast('حُدّثت مجاميع الشعب ✓'))">🔄 تحديث</button>
-    <button class="btn sm" onclick="teamsPdf()">⬇ تحميل PDF</button> <button class="btn sm blue" id="tmImgBtn" onclick="teamsImg()">🖼 تحميل صورة JPG</button></div>
+    <button class="btn sm" onclick="teamsPdf()">⬇ تحميل PDF</button> <button class="btn sm blue" id="tmImgBtn" onclick="teamsImg()">🖼️ تحميل صورة JPG</button></div>
     <div class="rf-row" style="margin-top:6px"><span class="rf-lbl">الدروس المحتسبة:</span><div class="rf-chips">
       <button class="rf-chip${tl.length ? '' : ' on'}" onclick="setTeamLids([])">📚 كل الدروس</button>
       <button class="rf-chip${tl.length ? ' on' : ''}" onclick="pickBoardLessons('tlids')">✅ دروس محددة${tl.length ? ' (' + tl.length + ')' : ''}</button></div></div>
@@ -3026,7 +3028,7 @@ async function teamsImg() {
     if (mob) {
       BIMG = {file:files[0].file, files:files.map(f => f.file), nm:files[0].nm, url:URL.createObjectURL(files[0].blob)};
       const canS = navigator.canShare && navigator.canShare({files:BIMG.files});
-      openModal(`<h3 style="margin-top:0">🖼 صورة تحدي الشعب جاهزة</h3>
+      openModal(`<h3 style="margin-top:0">🖼️ صورة تحدي الشعب جاهزة</h3>
         ${canS ? `<button class="btn big" style="width:100%" onclick="shareBoardImg()">📤 حفظ الصورة / مشاركتها</button><p style="font-size:17px;color:var(--muted);margin:6px 0">اضغط الزر ثم اختر «حفظ الصورة»، أو واتساب لإرسالها.</p>` : ''}
         <p style="font-size:17px;color:var(--muted);margin:6px 0">أو اضغط على الصورة ضغطة مطوّلة واختر «حفظ في الصور».</p>
         ${files.map(f => `<img src="${URL.createObjectURL(f.blob)}" alt="${esc(f.nm)}" style="width:100%;border-radius:12px;display:block;margin-bottom:8px;-webkit-touch-callout:default">`).join('')}`);
@@ -3035,7 +3037,7 @@ async function teamsImg() {
       toast('نُزّلت الصورة ✓ ستجدها في مجلد التنزيلات', 5000);
     }
   } catch (e) { console.error(e); toast('تعذّر تجهيز الصورة. تأكد من اتصالك بالإنترنت وحاول مرة أخرى.', 6000); }
-  finally { if (btn) { btn.disabled = false; btn.textContent = '🖼 تحميل صورة JPG'; } }
+  finally { if (btn) { btn.disabled = false; btn.textContent = '🖼️ تحميل صورة JPG'; } }
 }
 async function setTeamsOn(v) { TD.board.teamsOn = !!v; renderTeamsBar(); await refreshTeams(true); toast(v ? 'ظهر تحدي الشعب لطلابك ✓' : 'أُخفي تحدي الشعب عن طلابك'); }
 function rankList(L, n) {
@@ -3149,7 +3151,7 @@ function previewBoard() {
   BV.prev = {c:C[0], m:TD.board.showAll ? 'all' : 'cls'};
   const draw = () => { $('#bvPrev').innerHTML = boardHtml(TD.board, BV.prev.c, BV.prev.m, '', 'BV.prev.m', 'drawPrev'); };
   window.drawPrev = draw;
-  openModal(`<h3 style="margin-top:0">👁 معاينة قائمة التميّز <button class="btn sm" onclick="boardPdf()">⬇ تحميل PDF</button> <button class="btn sm blue" id="bdImgBtn" onclick="boardImg()">🖼 تحميل صورة</button> <button class="btn sm ghost" onclick="openBoardCfg()">↩ رجوع إلى الإعدادات</button></h3><div class="rf-row" style="margin-bottom:8px"><span class="rf-lbl">كما يراها طالب في شعبة:</span><div class="rf-chips">${C.map(c => `<button class="rf-chip" onclick="BV.prev.c=${A(c)};drawPrev();$$('.bvc').forEach(x=>x.classList.toggle('on',x.textContent===${A(c)}))" >${esc(c)}</button>`).join('').replace(/class="rf-chip"/g, 'class="rf-chip bvc"')}</div></div><div id="bvPrev"></div>`);
+  openModal(`<h3 style="margin-top:0">👁 معاينة قائمة التميّز <button class="btn sm" onclick="boardPdf()">⬇ تحميل PDF</button> <button class="btn sm blue" id="bdImgBtn" onclick="boardImg()">🖼️ تحميل صورة</button> <button class="btn sm ghost" onclick="openBoardCfg()">↩ رجوع إلى الإعدادات</button></h3><div class="rf-row" style="margin-bottom:8px"><span class="rf-lbl">كما يراها طالب في شعبة:</span><div class="rf-chips">${C.map(c => `<button class="rf-chip" onclick="BV.prev.c=${A(c)};drawPrev();$$('.bvc').forEach(x=>x.classList.toggle('on',x.textContent===${A(c)}))" >${esc(c)}</button>`).join('').replace(/class="rf-chip"/g, 'class="rf-chip bvc"')}</div></div><div id="bvPrev"></div>`);
   draw(); $$('.bvc').forEach(x => x.classList.toggle('on', x.textContent === BV.prev.c));
 }
 const BV = {m:'all', prev:null};   /* يبدأ الطالب بقائمة «كل الشعب» */
@@ -3191,7 +3193,7 @@ async function boardImg() {
     if (mob) {
       /* في الآيفون لا تعمل المشاركة إلا بضغطة جديدة، فنعرض الصورة مع زر المشاركة */
       BIMG = {file, nm, url:URL.createObjectURL(blob)};
-      openModal(`<h3 style="margin-top:0">🖼 صورة قائمة التميّز جاهزة</h3>
+      openModal(`<h3 style="margin-top:0">🖼️ صورة قائمة التميّز جاهزة</h3>
         ${navigator.canShare && navigator.canShare({files:[file]}) ? `<button class="btn big" style="width:100%" onclick="shareBoardImg()">📤 حفظ الصورة / مشاركتها</button>
         <p style="font-size:17px;color:var(--muted);margin:6px 0">اضغط الزر ثم اختر «حفظ الصورة» لتنزل في ألبوم الصور، أو اختر واتساب لإرسالها.</p>` : ''}
         <p style="font-size:17px;color:var(--muted);margin:6px 0">أو اضغط على الصورة ضغطة مطوّلة واختر «حفظ في الصور».</p>
@@ -3203,7 +3205,7 @@ async function boardImg() {
       toast('نُزّلت الصورة ✓ ستجدها في مجلد التنزيلات', 5000);
     }
   } catch (e) { console.error(e); toast('تعذّر تجهيز الصورة. تأكد من اتصالك بالإنترنت وحاول مرة أخرى.', 6000); }
-  finally { box.remove(); if (btn) { btn.disabled = false; btn.textContent = '🖼 تحميل صورة'; } }
+  finally { box.remove(); if (btn) { btn.disabled = false; btn.textContent = '🖼️ تحميل صورة'; } }
 }
 /* يرسم اللوحة: d = بيانات اللوحة، c = شعبة الطالب، m = cls|all */
 function boardHtml(d, c, m, meUid, mVar, redraw) {
@@ -3707,7 +3709,7 @@ function renderClassChips() {
   if (!$('#clsRows').children.length) addClsRow();
   const C = myClasses();
   const cur = $('#bCls').value || $('#oCls').value, cnt = c => (TD.students || []).filter(s => s.cls === c && s.active !== false && !s.archived).length;
-  $('#clsChips').innerHTML = C.length ? '<div class="clslist">' + C.map((c, i) => `<div class="clsitem${c === cur && (!$('#bulkCard').hidden || !$('#oneCard').hidden) ? ' on' : ''}"><span class="cname">🏫 ${esc(c)}</span><span class="ccount">👥 الطلاب: ${cnt(c)}</span>
+  $('#clsChips').innerHTML = C.length ? '<div class="clslist">' + C.map((c, i) => `<div class="clsitem${c === cur && (!$('#bulkCard').hidden || !$('#oneCard').hidden) ? ' on' : ''}${TD.stCls && TD.stCls.has(c) ? ' sel' : ''}" data-cls="${esc(c)}" title="اضغط لتظهر أسماء طلاب الشعبة في «قائمة الطلاب»" onclick="if(!event.target.closest('button,input,select,a'))stClsToggle(${A(c)})"><span class="cname">🏫 ${esc(c)}</span><span class="ccount">👥 الطلاب: ${cnt(c)}</span>
     <button class="btn sm" onclick="openAdd(${i},'one')">👤 إضافة طالب</button><button class="btn sm alt" onclick="openAdd(${i},'bulk')">👥 إضافة دفعة</button><button class="btn sm ghost" title="تعديل الشعبة (الصف أو الرقم)" onclick="editClass(${i})">✏️</button><button class="btn sm ghost" title="حذف الشعبة" onclick="removeClass(${i})">✕</button></div>`).join('') + '</div>' : '<p style="margin:0;color:var(--muted)">لا توجد شعب بعد. أضف أول شعبة من القوائم أدناه.</p>';
 }
 async function saveClasses(C) {
@@ -3796,20 +3798,17 @@ function listStudentsView() {
   if (!S.size && !q) return [];
   return TD.students.filter(s => !s.removed && !s.archived && !s.moved && (!S.size || S.has(s.cls)) && (!q || normName(s.name).includes(q)) && (off || s.active !== false)).sort(byClsName);
 }
-function renderStClsChips() {
-  const el = $('#sClsChips'); if (!el) return; const C = myClasses(), S = TD.stCls || (TD.stCls = new Set());
-  el.innerHTML = C.length ? C.map(c => `<button class="rf-chip${S.has(c) ? ' on' : ''}" onclick="stClsToggle(${A(c)})">🏫 ${esc(c)}</button>`).join('') + (C.length > 1 ? `<button class="rf-chip" onclick="stClsToggle('*')">${S.size === C.length ? '✖ إخفاء الكل' : '✅ كل الشعب'}</button>` : '') : '';
-}
+function renderStClsChips() { $$('#clsChips .clsitem[data-cls]').forEach(el => el.classList.toggle('sel', !!(TD.stCls && TD.stCls.has(el.dataset.cls)))); }
 function stClsToggle(c) {
   const C = myClasses(), S = TD.stCls || (TD.stCls = new Set());
-  if (c === '*') { if (S.size === C.length) S.clear(); else C.forEach(x => S.add(x)); } else if (S.has(c)) S.delete(c); else S.add(c);
+  if (S.has(c)) S.delete(c); else S.add(c);
   renderStClsChips(); renderStudents();
 }
 function renderStudents() {
   try { renderClassChips(); } catch (e) {}
   const L = listStudentsView();
   $('#stSel').innerHTML = selBar('st', L.map(s => s.uid), n => `<button class="btn sm red" ${n ? '' : 'disabled'} onclick="deleteStudents([...selOf('st').ids])">🗑 حذف المحدد (${n})</button> <button class="btn sm blue" ${n ? '' : 'disabled'} onclick="moveStudents([...selOf('st').ids])">🔀 نقل المحدد (${n})</button>`);
-  if (!L.length) { $('#stTable').innerHTML = (TD.stCls && TD.stCls.size) || ($('#sQ') && $('#sQ').value.trim()) ? '<p>لا يوجد طلاب في هذه القائمة.</p>' : '<p class="sthint">👆 اضغط شعبة لتظهر أسماء طلابها، أو اكتب اسم الطالب في خانة البحث.</p>'; return; }
+  if (!L.length) { $('#stTable').innerHTML = (TD.stCls && TD.stCls.size) || ($('#sQ') && $('#sQ').value.trim()) ? '<p>لا يوجد طلاب في هذه القائمة.</p>' : '<p class="sthint">👆 اضغط مستطيل الشعبة في «صفوفي وشعبي» لتظهر أسماء طلابها هنا، أو اكتب اسم الطالب في خانة البحث.</p>'; return; }
   $('#stTable').innerHTML = `<table><tr>${selTh('st')}<th>#</th><th>الاسم</th><th>📞 رقم وليّ الأمر</th><th>📱 رقم الطالب</th><th>الشعبة</th><th>اسم المستخدم</th><th>كلمة المرور</th><th>الحالة</th><th></th></tr>` +
     L.map((s, i) => `<tr${selTr('st', s.uid)}>${selCell('st', s.uid)}<td>${i + 1}</td><td><span class="stname">${esc(s.name)}</span> <button class="btn sm ghost stren" title="تغيير اسم الطالب" onclick="renameStu(${A(s.uid)})">✏️</button></td><td><input type="tel" class="phone" value="${esc(showPhone(s.parentPhone))}" placeholder="—" onchange="savePhone(${A(s.uid)},this)"></td><td><input type="tel" class="phone" value="${esc(showPhone(s.studentPhone))}" placeholder="—" onchange="savePhone(${A(s.uid)},this,'studentPhone')"></td><td>${esc(s.cls)}</td><td><code class="ltr">${esc(s.username)}</code>${s.ownerUid ? ' <span title="انضم إلى صفّك من حسابه الخاص">🔗</span>' : ''}</td><td><code class="ltr">${esc(s.password)}</code></td>
       <td>${s.active === false ? '<span class="chip off">موقوف</span>' : '<span class="chip done">فعّال</span>'}</td>
@@ -4771,7 +4770,7 @@ async function refreshBell(rerender) {
     if (ME.role === 'admin') {
       const [tc, ac, st, fb, bl] = await Promise.all(['teachers', 'accounts', 'students', 'feedback', 'blocked'].map(c => API.where(c, {}).catch(() => [])));
       const sIds = new Set(st.map(x => x.id));
-      tc.filter(t => !t.isAdmin && (t.createdAt || 0) > since).forEach(t => items.push({at:t.createdAt, ic:'👨‍🏫', tx:`سجّل معلم جديد: <b>${esc(t.name)}</b> <small dir="ltr">${esc(t.email || '')}</small>`, go:`openTeacherFor(${JSON.stringify(t.uid)})`}));
+      tc.filter(t => !t.isAdmin && (t.createdAt || 0) > since).forEach(t => items.push({at:t.createdAt, ic:'👨‍🏫', tx:`سجّل معلم جديد: <b>${esc(t.name)}</b> <small dir="ltr">${esc(t.email || '')}</small>`, go:`openTeacherFor(${JSON.stringify(t.uid || t.id)})`}));
       ac.filter(a => !sIds.has(a.id) && !isStudentEmail(a.email) && (a.createdAt || 0) > since).forEach(a => items.push({at:a.createdAt, ic:'🌟', tx:`سجّل طالب جديد بحساب خاص: <b>${esc(a.name || '')}</b>${a.grade ? ' · ' + esc(gradeName(a.grade)) : ''}`, go:`openAllStFor(${JSON.stringify(a.name || '')})`}));
       const fbN = {suggest:'💡 مقترح', general:'📝 ملاحظة عامة', lesson:'📘 خطأ في درس'};
       fb.filter(f => (f.at || 0) > since).forEach(f => items.push({at:f.at, ic:'📨', tx:`${fbN[f.type] || 'ملاحظة'} من <b>${esc(f.name || '')}</b>: ${esc(String(f.text || '').slice(0, 90))}${String(f.text || '').length > 90 ? '…' : ''}`, go:`openFbItem(${JSON.stringify(f.id)})`}));
@@ -4827,7 +4826,8 @@ function openFbItem(id) { FBV.focus = id; tTab('feedback'); }
 /* من إشعار «سجّل معلم جديد»: يفتح قائمة المعلمين ويبرز صفّه */
 function openTeacherFor(uid) {
   Object.keys(TCF).forEach(k => TCF[k] = ''); TD.goT = uid; TD.goTn = 0; tTab('teachers');
-  if (TD.teachers && TD.teachers.length) { renderTeachers(); }
+  /* إن كان المعلم سجّل بعد تحميل القائمة: تُحمَّل من جديد ثم ينزل إليه */
+  if (TD.teachers && TD.teachers.some(t => t.uid === uid)) renderTeachers(); else loadTeachers();
 }
 /* يُستدعى بعد رسم جدول المعلمين: ينزل إلى صفّ المعلم المطلوب ويبرزه */
 function goTeacherRow() {
@@ -5375,7 +5375,7 @@ setInterval(() => { if (curMode() !== modeNow()) setMode(modeNow()); }, 60000);
 /* ================= باركودات الدخول (رمز QR): من يصوّره يدخل حسابه مباشرة ================= */
 function openQrPrint() {
   const L = listStudentsView().filter(s => s.active !== false);
-  if (!L.length) return toast('اختر شعبة (أو أكثر) أولًا، لتظهر أسماء طلابها، ثم اضغط «طباعة باركودات».', 5000);
+  if (!L.length) return toast('اضغط مستطيل الشعبة (أو أكثر) في «صفوفي وشعبي» أولًا، ثم اضغط «طباعة باركودات».', 5000);
   openModal(`<h3 style="margin-top:0">🔳 طباعة باركودات (${L.length} طالبًا)</h3>
     <div class="qrpick"><button onclick="qrPrint(1)"><span class="qpg"><i></i></span>كل صفحة حساب</button><button onclick="qrPrint(2)"><span class="qpg two"><i></i><i></i></span>كل صفحة حسابان</button></div>`);
 }
