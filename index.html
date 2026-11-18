@@ -5393,9 +5393,11 @@ function qrPrint(per) {
       <div class="qn">${esc(s.name)}</div><div class="qg">${esc(g)}</div><div class="qg">الشعبة ${esc(n)}</div>
       <div class="qhow">صوّر الرمز بكاميرا الجوال أو الآيباد لتدخل حسابك</div></div></div>`; };
   const pages = []; for (let i = 0; i < L.length; i += per) pages.push(L.slice(i, i + per));
-  printHtml(`<style>@page{size:A4 portrait;margin:0}
+  printHtml(`<style>@page{size:A4 portrait;margin:12mm}
     html,body{background:#fff!important}body::before,body::after,html::before,html::after{display:none!important}
-    #printArea .qpage{background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact;width:210mm;height:296mm;box-sizing:border-box;padding:12mm;display:flex;flex-direction:column;gap:10mm;break-after:page;direction:rtl;color:#111}
+    #printArea .qpage{background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact;width:186mm;height:252mm;margin:0 auto;box-sizing:border-box;padding:0;display:flex;flex-direction:column;gap:8mm;break-after:page;page-break-after:always;break-inside:avoid;overflow:hidden;direction:rtl;color:#111}
+    #printArea .qpage:last-child{break-after:auto;page-break-after:auto}
+    #printArea .qc{break-inside:avoid;page-break-inside:avoid;min-height:0}
     #printArea .qc{flex:1;border:1.2mm solid #2F2A7A;border-radius:8mm;display:flex;align-items:center;gap:8mm;padding:8mm;box-sizing:border-box;-webkit-print-color-adjust:exact;print-color-adjust:exact}
     #printArea .qq svg{display:block;width:100%;height:100%}
     #printArea .qt{flex:1;text-align:center}
@@ -5405,9 +5407,9 @@ function qrPrint(per) {
     #printArea .qg{font-size:20pt;font-weight:600;color:#333;line-height:1.5}
     #printArea .qhow{font-size:12pt;color:#666;margin-top:6mm}
     #printArea .p1 .qc{flex-direction:column;justify-content:center}
-    #printArea .p1 .qq{width:150mm;height:150mm}
+    #printArea .p1 .qq{width:135mm;height:135mm}
     #printArea .p1 .qn{font-size:40pt}
-    #printArea .p2 .qq{width:95mm;height:95mm;flex:none}
+    #printArea .p2 .qq{width:85mm;height:85mm;flex:none}
     #printArea .p2 .qc{border-style:solid}
     #printArea .p2 .qc + .qc{position:relative}
   </style>` + pages.map(P => `<div class="qpage p${per}">${P.map(card).join('')}${per === 2 && P.length === 1 ? '<div style="flex:1"></div>' : ''}</div>`).join(''));
