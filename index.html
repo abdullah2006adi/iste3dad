@@ -3257,7 +3257,6 @@ function boardHtml(d, c, m, meUid, mVar, redraw) {
 /* عند الطالب في «صفّي» */
 async function loadStudentBoard(quiet) {
   const el = $('#homeBoard'); if (!el) return; if (!quiet) el.innerHTML = '';
-  if (!BV.stT) { BV.stT = setInterval(() => { if (!document.hidden && ME && ME.role === 'student' && $('#homeBoard') && $('#homeBoard').offsetParent) loadStudentBoard(true); }, 5 * 60 * 1000); TIMERS.push(BV.stT); }
   try { BV.d = ME.teacherId ? await ME.capi.get('board', ME.teacherId) : null; } catch (e) { BV.d = null; }
   drawStudentBoard();
 }
@@ -4797,14 +4796,12 @@ async function rejectBlocked(uid) {
 
 /* ================= جرس الإشعارات ================= */
 const NTF = {items:[], seenAt:0, blocked:[], busy:false, msgs:[], lastAt:0, adm:null, admAt:0};
-/* عند العودة إلى التبويب بعد غياب: حدّث الجرس مرة واحدة إن كان قديمًا */
-document.addEventListener('visibilitychange', () => { if (!document.hidden && ME && Date.now() - (NTF.lastAt || 0) > 5 * 60 * 1000) refreshBell(); });
 const NTF_DAYS = 30 * 864e5;
 async function initBell() {
   NTF.items = []; NTF.seenAt = 0; updBell();
   try { const d = await API.get('seen', ME.uid); NTF.seenAt = (d && d.at) || 0; } catch (e) { NTF.seenAt = +LS.get('iste3dad-seen-' + ME.uid, 0) || 0; }
   await refreshBell();
-  const iv = setInterval(() => { if (!document.hidden) refreshBell(); }, 5 * 60 * 1000); TIMERS.push(iv);
+  /* لا تحديث تلقائي: الإشعارات تُجلب عند تحميل الصفحة فقط (أو بزر 🔄 داخل الجرس) */
 }
 async function refreshBell(rerender) {
   if (!ME || NTF.busy) return; NTF.busy = true; NTF.lastAt = Date.now();
