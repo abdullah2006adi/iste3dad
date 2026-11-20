@@ -2733,7 +2733,7 @@ async function loadTeacherData() {
   await loadResults();
   loadBoard(true);
   loadAdminTotals();
-  if (!BV.autoT) { BV.autoT = setInterval(() => { if (document.hidden || !ME || ME.role === 'student' || !TD.board || !(TD.board.on || TD.board.teamsOn)) return; publishBoard(true); }, 10 * 60 * 1000); TIMERS.push(BV.autoT); }
+  /* قائمة التميّز تُحدَّث تلقائيًا من الدالة السحابية (firebase-admin/projects/iste3dad/functions) عند تغيّر الدرجات */
 }
 function tTab(t) {
   if (!$('#tv-' + t) || ($('#tTabs button[data-t="' + t + '"]') || {}).hidden) t = isAdmin() ? 'curriculum' : 'lessons';
