@@ -2980,7 +2980,7 @@ function renderTeamsBar() {
   el.innerHTML = `<div class="teams-wrap">${G.map(g => teamsHtml(T[g], '', G.length > 1 ? g : '')).join('')}
     <div class="tc-acts"><label class="sw"><input type="checkbox" ${on ? 'checked' : ''} onchange="setTeamsOn(this.checked)"> 📣 أظهر تحدي الشعب لطلابي</label>
     <button class="btn sm ghost" onclick="refreshTeams(TD.board.on||TD.board.teamsOn).then(()=>toast('حُدّثت مجاميع الشعب ✓'))">🔄 تحديث</button>
-    <button class="btn sm" onclick="teamsPdf()">⬇ تحميل PDF</button> <button class="btn sm blue" id="tmImgBtn" onclick="teamsImg()">🖼️ تحميل صورة JPG</button></div>
+    <button class="btn sm" onclick="teamsPdf()">⬇ تحميل PDF</button> <button class="btn sm blue" id="tmImgBtn" onclick="teamsImg()">🖼️ تحميل صورة JPG</button> <button class="btn sm ghost" id="tmCpBtn" onclick="copyTeamsImg()">📋 نسخ الصورة</button></div>
     <div class="rf-row" style="margin-top:6px"><span class="rf-lbl">الدروس المحتسبة:</span><div class="rf-chips">
       <button class="rf-chip${tl.length ? '' : ' on'}" onclick="setTeamLids([])">📚 كل الدروس</button>
       <button class="rf-chip${tl.length ? ' on' : ''}" onclick="pickBoardLessons('tlids')">✅ دروس محددة${tl.length ? ' (' + tl.length + ')' : ''}</button></div></div>
@@ -3161,7 +3161,7 @@ function previewBoard() {
   BV.prev = {c:C[0], m:TD.board.showAll ? 'all' : 'cls'};
   const draw = () => { $('#bvPrev').innerHTML = boardHtml(TD.board, BV.prev.c, BV.prev.m, '', 'BV.prev.m', 'drawPrev'); };
   window.drawPrev = draw;
-  openModal(`<h3 style="margin-top:0">👁 معاينة قائمة التميّز <button class="btn sm" onclick="boardPdf()">⬇ تحميل PDF</button> <button class="btn sm blue" id="bdImgBtn" onclick="boardImg()">🖼️ تحميل صورة</button> <button class="btn sm ghost" onclick="openBoardCfg()">↩ رجوع إلى الإعدادات</button></h3><div class="rf-row" style="margin-bottom:8px"><span class="rf-lbl">كما يراها طالب في شعبة:</span><div class="rf-chips">${C.map(c => `<button class="rf-chip" onclick="BV.prev.c=${A(c)};drawPrev();$$('.bvc').forEach(x=>x.classList.toggle('on',x.textContent===${A(c)}))" >${esc(c)}</button>`).join('').replace(/class="rf-chip"/g, 'class="rf-chip bvc"')}</div></div><div id="bvPrev"></div>`);
+  openModal(`<h3 style="margin-top:0">👁 معاينة قائمة التميّز <button class="btn sm" onclick="boardPdf()">⬇ تحميل PDF</button> <button class="btn sm blue" id="bdImgBtn" onclick="boardImg()">🖼️ تحميل صورة</button> <button class="btn sm ghost" id="bdCpBtn" onclick="copyBoardImg()">📋 نسخ الصورة</button> <button class="btn sm ghost" onclick="openBoardCfg()">↩ رجوع إلى الإعدادات</button></h3><div class="rf-row" style="margin-bottom:8px"><span class="rf-lbl">كما يراها طالب في شعبة:</span><div class="rf-chips">${C.map(c => `<button class="rf-chip" onclick="BV.prev.c=${A(c)};drawPrev();$$('.bvc').forEach(x=>x.classList.toggle('on',x.textContent===${A(c)}))" >${esc(c)}</button>`).join('').replace(/class="rf-chip"/g, 'class="rf-chip bvc"')}</div></div><div id="bvPrev"></div>`);
   draw(); $$('.bvc').forEach(x => x.classList.toggle('on', x.textContent === BV.prev.c));
 }
 const BV = {m:'all', prev:null};   /* يبدأ الطالب بقائمة «كل الشعب» */
@@ -3183,6 +3183,47 @@ async function shareBoardImg() {
   try { await navigator.share({files:BIMG.files || [BIMG.file], title:BIMG.nm}); }
   catch (e) { if (e && e.name !== 'AbortError') toast('تعذّرت المشاركة. اضغط على الصورة ضغطة مطوّلة واختر «حفظ في الصور».', 6000); }
 }
+/* ===== نسخ صورة القائمة (قائمة التميّز / تحدي الشعب) لتُلصق في مكان آخر ===== */
+const H2I = 'https://cdn.jsdelivr.net/npm/html-to-image@1.11.13/dist/html-to-image.js';
+async function boardPngBlob() {
+  const P = BV.prev; if (!P) throw new Error('no board');
+  const box = document.createElement('div'); box.className = 'nf';
+  box.style.cssText = 'position:fixed;top:0;left:-12000px;width:760px;padding:20px;direction:rtl;background:' + (document.documentElement.dataset.mode === 'dark' ? '#120c2e' : '#FFF8E6');
+  box.innerHTML = `<div class="hb-print">${boardHtml(TD.board, P.c, P.m, '', 'BV.prev.m', 'drawPrev')}</div>`;
+  box.querySelectorAll('.hb-tabs').forEach(x => x.remove()); document.body.appendChild(box);
+  try {
+    if (!window.htmlToImage) await loadScript(H2I); if (document.fonts) await document.fonts.ready;
+    const opt = {pixelRatio:2, backgroundColor:box.style.background || '#120c2e', cacheBust:true, style:{position:'static', left:'0', top:'0', margin:'0'}};
+    await htmlToImage.toPng(box, opt).catch(() => {});   /* تمريرة أولى حتى تظهر الخطوط */
+    return await (await fetch(await htmlToImage.toPng(box, opt))).blob();
+  } finally { box.remove(); }
+}
+async function teamsPngBlob() {
+  const G = teamsGrades(); if (!G.length) throw new Error('no teams');
+  if (!window.htmlToImage) await loadScript(H2I); if (document.fonts) await document.fonts.ready;
+  const imgs = [];
+  for (const g of G) {
+    const box = document.createElement('div'); box.className = 'nf'; box.style.cssText = 'position:fixed;top:0;left:-14000px'; box.innerHTML = teamsPoster(g, TD.teams[g]); document.body.appendChild(box);
+    const el = box.firstElementChild, opt = {pixelRatio:1.5, backgroundColor:'#150E36', cacheBust:true, width:1280, height:720};
+    try { await htmlToImage.toPng(el, opt).catch(() => {}); const im = new Image(); im.src = await htmlToImage.toPng(el, opt); await im.decode(); imgs.push(im); } finally { box.remove(); }
+  }
+  const c = document.createElement('canvas'); c.width = imgs[0].naturalWidth; c.height = imgs.reduce((h, i) => h + i.naturalHeight, 0);
+  const x = c.getContext('2d'); let y = 0; imgs.forEach(i => { x.drawImage(i, 0, y); y += i.naturalHeight; });
+  return await new Promise(ok => c.toBlob(ok, 'image/png'));
+}
+/* يُستدعى الحافظة فورًا مع الضغطة (سفاري يشترط ذلك) وتُمرَّر الصورة وعدًا يكتمل بعد تجهيزها */
+async function copyImgTo(btnId, mk) {
+  const btn = $('#' + btnId), t0 = btn ? btn.textContent : '';
+  if (!navigator.clipboard || !window.ClipboardItem) return toast('متصفحك لا يسمح بنسخ الصور. استعمل زر «تحميل صورة» بدلًا منه.', 6000);
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ جارٍ النسخ…'; }
+  try {
+    await navigator.clipboard.write([new ClipboardItem({'image/png': mk()})]);
+    toast('نُسخت الصورة ✓ الصقها حيث تريد (Ctrl+V أو ضغطة مطوّلة ← لصق)', 6000);
+  } catch (e) { console.error(e); toast('تعذّر نسخ الصورة. استعمل زر «تحميل صورة» بدلًا منه.', 6000); }
+  finally { if (btn) { btn.disabled = false; btn.textContent = t0; } }
+}
+const copyBoardImg = () => copyImgTo('bdCpBtn', boardPngBlob);
+const copyTeamsImg = () => copyImgTo('tmCpBtn', teamsPngBlob);
 async function boardImg() {
   const P = BV.prev; if (!P) return;
   const btn = $('#bdImgBtn'), nm = 'قائمة التميّز - ' + (P.m === 'all' ? 'كل شعب ' + gradeName(gradeOf(P.c)) : 'شعبة ' + P.c);
