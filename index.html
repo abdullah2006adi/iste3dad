@@ -1423,6 +1423,9 @@ html .clsitem.sel{border-color:#E0A800!important;background:linear-gradient(100d
 /* خانة الرقم الفارغة في قائمة الطلاب: مظللة بالأصفر */
 html #stTable input.phone:placeholder-shown{background:#FFF1A8!important;border-color:#E0A800!important}
 html #stTable input.phone:placeholder-shown::placeholder{color:#8a6d00}
+
+/* زر تحديث الصفحة: يظهر فقط عند فتح المنصة من أيقونة التطبيق */
+html:not(.appmode) .reloadbtn{display:none!important}
 </style>
 </head>
 <body>
@@ -1547,7 +1550,7 @@ html #stTable input.phone:placeholder-shown::placeholder{color:#8a6d00}
 </section>
 
 <section id="scrHub" hidden>
-  <div class="topbar"><div class="wrap"><h1><img src="icon-180.png" alt="" class="tlogo"> منصة استعداد</h1><div class="row"><button id="hubWho" class="hbtn who" onclick="openProfile()" title="صفحتي: البريد والمدرسة"></button><button class="hbtn bellbtn" onclick="openBell()" title="الإشعارات">🔔<span class="dot bell-dot" hidden></span></button><button class="hbtn modebtn" onclick="toggleMode()" title="الوضع الليلي">🌙</button><button class="hbtn fontbtn" onclick="openFontPick(this)" title="الخط">🅰<span class="hl"> الخط</span></button><button class="hbtn instbtn" onclick="installApp()" title="اجعلني على سطح المكتب" hidden>📲<span class="hl"> اجعلني على سطح المكتب</span></button><button class="hbtn fbbtn" onclick="openFeedback()" title="أرسل ملاحظة">💬<span class="hl"> أرسل ملاحظة</span></button><button class="hbtn" onclick="doLogout()" title="خروج">🚪<span class="hl"> خروج</span></button></div></div></div>
+  <div class="topbar"><div class="wrap"><h1><img src="icon-180.png" alt="" class="tlogo"> منصة استعداد</h1><div class="row"><button id="hubWho" class="hbtn who" onclick="openProfile()" title="صفحتي: البريد والمدرسة"></button><button class="hbtn bellbtn" onclick="openBell()" title="الإشعارات">🔔<span class="dot bell-dot" hidden></span></button><button class="hbtn modebtn" onclick="toggleMode()" title="الوضع الليلي">🌙</button><button class="hbtn reloadbtn" onclick="appReload()" title="تحديث الصفحة">🔄</button><button class="hbtn fontbtn" onclick="openFontPick(this)" title="الخط">🅰<span class="hl"> الخط</span></button><button class="hbtn instbtn" onclick="installApp()" title="اجعلني على سطح المكتب" hidden>📲<span class="hl"> اجعلني على سطح المكتب</span></button><button class="hbtn fbbtn" onclick="openFeedback()" title="أرسل ملاحظة">💬<span class="hl"> أرسل ملاحظة</span></button><button class="hbtn" onclick="doLogout()" title="خروج">🚪<span class="hl"> خروج</span></button></div></div></div>
   <div class="wrap">
     <h2 id="hubHello"></h2>
     <div class="space-btns">
@@ -1560,7 +1563,7 @@ html #stTable input.phone:placeholder-shown::placeholder{color:#8a6d00}
 </section>
 
 <section id="scrHome" hidden>
-  <div class="topbar"><div class="wrap"><h1>🏫 صفّي <span class="hscore" id="homeScore" hidden title="مجموع درجاتك في دروس صفّك"></span></h1><div class="row"><button id="homeWho" class="hbtn who" onclick="openProfile()" title="صفحتي: البريد والمدرسة"></button><button class="hbtn bellbtn" onclick="openBell()" title="الإشعارات">🔔<span class="dot bell-dot" hidden></span></button><button class="hbtn modebtn" onclick="toggleMode()" title="الوضع الليلي">🌙</button><button class="hbtn fontbtn" onclick="openFontPick(this)" title="الخط">🅰<span class="hl"> الخط</span></button><button class="hbtn instbtn" onclick="installApp()" title="اجعلني على سطح المكتب" hidden>📲<span class="hl"> اجعلني على سطح المكتب</span></button><button class="hbtn fbbtn" onclick="openFeedback()" title="أرسل ملاحظة">💬<span class="hl"> أرسل ملاحظة</span></button><button class="hbtn" onclick="navBack(showHub)" title="الرئيسية">🏠<span class="hl"> الرئيسية</span></button><button class="hbtn" onclick="doLogout()" title="خروج">🚪<span class="hl"> خروج</span></button></div></div></div>
+  <div class="topbar"><div class="wrap"><h1>🏫 صفّي <span class="hscore" id="homeScore" hidden title="مجموع درجاتك في دروس صفّك"></span></h1><div class="row"><button id="homeWho" class="hbtn who" onclick="openProfile()" title="صفحتي: البريد والمدرسة"></button><button class="hbtn bellbtn" onclick="openBell()" title="الإشعارات">🔔<span class="dot bell-dot" hidden></span></button><button class="hbtn modebtn" onclick="toggleMode()" title="الوضع الليلي">🌙</button><button class="hbtn reloadbtn" onclick="appReload()" title="تحديث الصفحة">🔄</button><button class="hbtn fontbtn" onclick="openFontPick(this)" title="الخط">🅰<span class="hl"> الخط</span></button><button class="hbtn instbtn" onclick="installApp()" title="اجعلني على سطح المكتب" hidden>📲<span class="hl"> اجعلني على سطح المكتب</span></button><button class="hbtn fbbtn" onclick="openFeedback()" title="أرسل ملاحظة">💬<span class="hl"> أرسل ملاحظة</span></button><button class="hbtn" onclick="navBack(showHub)" title="الرئيسية">🏠<span class="hl"> الرئيسية</span></button><button class="hbtn" onclick="doLogout()" title="خروج">🚪<span class="hl"> خروج</span></button></div></div></div>
   <div class="wrap">
     <h2 id="homeHello"></h2>
     <div class="row" style="margin:-4px 0 10px"><button class="btn sm alt" onclick="msgMyTeacher()">✉️ راسل معلّمك</button></div>
@@ -1572,7 +1575,7 @@ html #stTable input.phone:placeholder-shown::placeholder{color:#8a6d00}
 </section>
 
 <section id="scrPriv" hidden>
-  <div class="topbar"><div class="wrap"><h1>🌟 مساحتي الخاصة</h1><div class="row"><button id="pvWho" class="hbtn who" onclick="openProfile()" title="صفحتي: البريد والمدرسة"></button><button class="hbtn bellbtn" onclick="openBell()" title="الإشعارات">🔔<span class="dot bell-dot" hidden></span></button><button class="hbtn modebtn" onclick="toggleMode()" title="الوضع الليلي">🌙</button><button class="hbtn fontbtn" onclick="openFontPick(this)" title="الخط">🅰<span class="hl"> الخط</span></button><button class="hbtn instbtn" onclick="installApp()" title="اجعلني على سطح المكتب" hidden>📲<span class="hl"> اجعلني على سطح المكتب</span></button><button class="hbtn fbbtn" onclick="openFeedback()" title="أرسل ملاحظة">💬<span class="hl"> أرسل ملاحظة</span></button><button class="hbtn" id="pvHub" onclick="navBack(showHub)" title="الرئيسية">🏠<span class="hl"> الرئيسية</span></button><button class="hbtn" onclick="doLogout()" title="خروج">🚪<span class="hl"> خروج</span></button></div></div></div>
+  <div class="topbar"><div class="wrap"><h1>🌟 مساحتي الخاصة</h1><div class="row"><button id="pvWho" class="hbtn who" onclick="openProfile()" title="صفحتي: البريد والمدرسة"></button><button class="hbtn bellbtn" onclick="openBell()" title="الإشعارات">🔔<span class="dot bell-dot" hidden></span></button><button class="hbtn modebtn" onclick="toggleMode()" title="الوضع الليلي">🌙</button><button class="hbtn reloadbtn" onclick="appReload()" title="تحديث الصفحة">🔄</button><button class="hbtn fontbtn" onclick="openFontPick(this)" title="الخط">🅰<span class="hl"> الخط</span></button><button class="hbtn instbtn" onclick="installApp()" title="اجعلني على سطح المكتب" hidden>📲<span class="hl"> اجعلني على سطح المكتب</span></button><button class="hbtn fbbtn" onclick="openFeedback()" title="أرسل ملاحظة">💬<span class="hl"> أرسل ملاحظة</span></button><button class="hbtn" id="pvHub" onclick="navBack(showHub)" title="الرئيسية">🏠<span class="hl"> الرئيسية</span></button><button class="hbtn" onclick="doLogout()" title="خروج">🚪<span class="hl"> خروج</span></button></div></div></div>
   <div class="wrap">
     <h2 id="pvHello"></h2>
     <div class="warnbar" id="pvWarn" hidden></div>
@@ -1589,7 +1592,7 @@ html #stTable input.phone:placeholder-shown::placeholder{color:#8a6d00}
 </section>
 
 <section id="scrTeacher" hidden>
-  <div class="topbar"><div class="wrap"><h1><img src="icon-180.png" alt="" class="tlogo"> <span id="tHead">استعداد · لوحة المعلم</span></h1><div class="row"><button id="tWho" class="hbtn who" onclick="openProfile()" title="صفحتي: البريد والمدرسة"></button><button class="hbtn bellbtn" onclick="openBell()" title="الإشعارات">🔔<span class="dot bell-dot" hidden></span></button><button class="hbtn modebtn" onclick="toggleMode()" title="الوضع الليلي">🌙</button><button class="hbtn fontbtn" onclick="openFontPick(this)" title="الخط">🅰<span class="hl"> الخط</span></button><button class="hbtn instbtn" onclick="installApp()" title="اجعلني على سطح المكتب" hidden>📲<span class="hl"> اجعلني على سطح المكتب</span></button><button class="hbtn fbbtn" onclick="openFeedback()" title="أرسل ملاحظة">💬<span class="hl"> أرسل ملاحظة</span></button><button class="hbtn" onclick="doLogout()" title="خروج">🚪<span class="hl"> خروج</span></button></div></div></div>
+  <div class="topbar"><div class="wrap"><h1><img src="icon-180.png" alt="" class="tlogo"> <span id="tHead">استعداد · لوحة المعلم</span></h1><div class="row"><button id="tWho" class="hbtn who" onclick="openProfile()" title="صفحتي: البريد والمدرسة"></button><button class="hbtn bellbtn" onclick="openBell()" title="الإشعارات">🔔<span class="dot bell-dot" hidden></span></button><button class="hbtn modebtn" onclick="toggleMode()" title="الوضع الليلي">🌙</button><button class="hbtn reloadbtn" onclick="appReload()" title="تحديث الصفحة">🔄</button><button class="hbtn fontbtn" onclick="openFontPick(this)" title="الخط">🅰<span class="hl"> الخط</span></button><button class="hbtn instbtn" onclick="installApp()" title="اجعلني على سطح المكتب" hidden>📲<span class="hl"> اجعلني على سطح المكتب</span></button><button class="hbtn fbbtn" onclick="openFeedback()" title="أرسل ملاحظة">💬<span class="hl"> أرسل ملاحظة</span></button><button class="hbtn" onclick="doLogout()" title="خروج">🚪<span class="hl"> خروج</span></button></div></div></div>
   <div class="wrap">
     <div class="warnbar" id="rulesWarn" hidden>⚠️ قواعد الحماية في Firebase قديمة. افتح تبويب «⚙️ الإعداد»، وانسخ القواعد الجديدة، والصقها في Firebase ← Firestore ← Rules، ثم اضغط Publish وحدّث الصفحة.</div>
     <div class="adm-stats adminOnly" id="admStats" hidden></div>
@@ -4610,6 +4613,8 @@ async function delFb(id) {
 
 /* ================= اجعلني على سطح المكتب (تثبيت المنصة) ================= */
 let INST_EVT = null;
+function appReload() { try { navigator.serviceWorker && navigator.serviceWorker.getRegistration().then(r => r && r.update()).catch(() => {}); } catch (e) {} setTimeout(() => location.reload(), 150); }
+(function () { try { if (navigator.standalone === true || (window.matchMedia && matchMedia('(display-mode: standalone), (display-mode: fullscreen), (display-mode: minimal-ui)').matches)) document.documentElement.classList.add('appmode'); } catch (e) {} })();
 const isAppMode = () => navigator.standalone === true || (window.matchMedia && matchMedia('(display-mode: standalone), (display-mode: fullscreen), (display-mode: minimal-ui)').matches);
 const UA = navigator.userAgent || '';
 const isIOS = () => /iPhone|iPad|iPod/.test(UA) || (/Macintosh/.test(UA) && navigator.maxTouchPoints > 1);
